@@ -3,8 +3,7 @@ name: Alpha Hunter Daily Scan
 on:
   workflow_dispatch:
   schedule:
-    # GitHub cron uses UTC.
-    # 22:55 UTC Sun-Thu = 06:55 Asia/Taipei Mon-Fri.
+    # 22:55 UTC = 06:55 Asia/Taipei next day. Sun-Thu UTC = Mon-Fri Taiwan.
     - cron: '55 22 * * 0-4'
 
 permissions:
@@ -13,7 +12,7 @@ permissions:
 jobs:
   scan:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 40
 
     steps:
       - name: Checkout repository
@@ -29,14 +28,25 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
-      - name: Run Alpha Hunter scanner
+      - name: Run Alpha Hunter v2.3
         run: python daily_scan.py
 
-      - name: Commit latest scanner outputs to repository
+      - name: Commit canonical outputs
         run: |
           git config user.name "alpha-hunter-bot"
           git config user.email "actions@users.noreply.github.com"
-          git add output/
+          git add \
+            output/manifest.json \
+            output/market_snapshot.csv \
+            output/market_snapshot.json \
+            output/theme_breadth.csv \
+            output/leader_registry.csv \
+            output/feature_history.csv \
+            output/taiwan_candidates.csv \
+            output/taiwan_candidate_history.csv \
+            output/taiwan_industry_breadth.csv \
+            output/taiwan_universe.csv \
+            output/transmission_watchlist.csv
           git diff --cached --quiet && exit 0
-          git commit -m "daily market snapshot $(date -u +%F)"
+          git commit -m "alpha hunter v2.3 snapshot $(date -u +%F)"
           git push
