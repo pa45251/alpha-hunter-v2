@@ -1,63 +1,86 @@
-# Alpha Hunter v2
+# Alpha Hunter v2.3
 
-A durable **Global Trend Sensor** for the user's Global Regime → ETF Core → Taiwan Alpha workflow.
+A zero-infrastructure-cost market sensing pipeline for:
 
-## Architecture
+**Global Sensor → Taiwan Full-Market Sensor → Transmission Hypotheses → Gemini Research → ChatGPT Final Decision**
 
-1. **Fixed market skeleton** — stable factor/industry ETFs and macro proxies.
-2. **Broad global universe** — stocks grouped by theme; expandable without changing the decision rules.
-3. **Dynamic Leader Engine** — calculates raw return, relative strength, acceleration, trend, volume, drawdown, 52-week position and two Keynes variants.
-4. **Breadth Engine** — measures whether a theme is broad or only held up by a few names.
-5. **Leader Registry** — uses confirmation streaks/hysteresis to reduce one-day ranking churn.
-6. **Gemini Spark** — adds causes, fundamentals, catalysts, counter-evidence and missing-universe candidates.
-7. **ChatGPT** — performs the final causal audit, ETF-vs-stock decision, risk budget, entry/exit and weekly shadow audit.
+## What changed in v2.3
 
-## Keynes indicators
+### 1. Taiwan Full-Market Sensor
+At each scheduled run, the scanner obtains the current TWSE and TPEX security universe from the public TWSE ISIN pages and filters to ordinary four-digit common-stock codes. Yahoo Finance symbols are mapped to `.TW` (TWSE) and `.TWO` (TPEX).
 
-### Legacy
-Retains the original idea:
-`8 * 20D momentum - 1.5 * (90D std(price) / 90D EMA(price))`
+The full universe is scanned in memory using:
+- 1D / 5D / 20D / 60D returns
+- RS vs `^TWII`
+- acceleration
+- Keynes Legacy
+- Keynes v2
+- Efficiency Ratio
+- MA structure / slope
+- volume ratio
+- 20D turnover
+- 20D / 52W position
+- drawdown / volatility
 
-### v2 (experimental)
-`(20D return / 20D realized return volatility) * Efficiency Ratio(20D)`
+Only the top discovery funnel is persisted as `taiwan_candidates.csv`. This prevents the Git repository from accumulating a full 1,500–2,000-row market snapshot every day.
 
-v2 is intended to measure **trend quality**: clean persistent movement scores better than a choppy path with the same endpoint return.
-Neither is a calibrated buy/sell rule. Both are written to `feature_history.csv` for forward testing.
+### 2. Taiwan Candidate Score v1
+A transparent, deliberately non-optimized discovery heuristic. It emphasizes improving RS/acceleration/trend quality rather than simply ranking the strongest already-extended stocks. It is **not a buy signal**.
 
-## Leader Score v1
-The code includes a deliberately simple, non-optimized provisional score. Raw features are always saved so weekly audits can test whether the score or any component actually predicts future excess return / drawdown.
+### 3. Global → Taiwan Transmission Watchlist
+`transmission_watchlist.csv` maps strong Global themes to plausible Taiwan industries and combines Global theme strength with Taiwan quantitative candidate quality.
 
-## Run locally
+Every row is explicitly `HYPOTHESIS_ONLY`. Gemini must validate the actual economic linkage and fundamentals before downstream use.
 
-```bash
-pip install -r requirements.txt
-python daily_scan.py
-streamlit run app.py
-```
+### 4. Canonical Data Contract
+`output/manifest.json` is the first file every research agent must read. It contains:
+- repository identity
+- branch
+- scanner/schema version
+- timestamps
+- Global/Taiwan coverage
+- Taiwan universe source status
+- required file list
+- raw canonical URLs
+- SHA-256 hashes
+- hard-gate instructions
 
-Outputs:
+This prevents an agent from searching for a similarly named GitHub repository or silently substituting stale/external data.
+
+## Scheduled flow
+
+GitHub Actions runs at approximately **06:55 Asia/Taipei, Monday–Friday**:
+
+1. Run Global Sensor.
+2. Refresh TWSE/TPEX common-stock universe.
+3. Scan Taiwan full market.
+4. Produce top Taiwan candidates and industry breadth.
+5. Produce `HYPOTHESIS_ONLY` Global → Taiwan transmission candidates.
+6. Write `manifest.json` last.
+7. Commit only canonical research outputs back to the public repository.
+
+No Streamlit page needs to be opened to trigger scanning.
+
+## Canonical files
+
+- `output/manifest.json` — **read first**
 - `output/market_snapshot.csv`
-- `output/market_snapshot.json`
 - `output/theme_breadth.csv`
 - `output/leader_registry.csv`
 - `output/feature_history.csv`
+- `output/market_snapshot.json`
+- `output/taiwan_candidates.csv`
+- `output/taiwan_candidate_history.csv`
+- `output/taiwan_industry_breadth.csv`
+- `output/taiwan_universe.csv`
+- `output/transmission_watchlist.csv`
 
-## GitHub Actions (GitHub Free compatible)
-Push this folder to a repository. The included workflow runs at 06:55 Asia/Taipei on weekdays (GitHub schedules can be delayed slightly) and can also be run manually.
+## Cost design
 
-Repository Settings → Actions → General must allow workflows to write repository contents if you want automatic snapshot commits.
+The workflow uses standard GitHub-hosted runners on a public repository and does not upload Actions artifacts or use pip cache. It commits compact research outputs rather than the full Taiwan market matrix.
 
-## Optional Google Drive upload
-Create a Google Cloud service account, enable Google Drive API, and share one Drive folder with the service-account email.
-Then add repository secrets:
+## Research separation
 
-- `GDRIVE_SERVICE_ACCOUNT_JSON` — the complete service account JSON (never commit it)
-- `GDRIVE_FOLDER_ID` — the destination Drive folder ID
-
-The Action then updates the five output files in that folder. If the secrets do not exist, the scan still runs and saves artifacts/repo snapshots.
-
-## Gemini schedule
-Use the provided `GEMINI_SPARK_PROMPT.md` as a weekday Spark task after the scanner has run. Use `GEMINI_WEEKLY_DISCOVERY_PROMPT.md` once per week to propose missing companies/themes.
-
-## Important design rule
-**Fixed observation framework; dynamic leaders.** Gemini may propose candidates, but it must not directly rewrite the official universe. This prevents narrative chasing and creates a clean audit trail.
+- **Python**: observable market structure and deterministic candidate funnels.
+- **Gemini Spark**: causal/fundamental/counter-evidence research.
+- **ChatGPT**: Global regime, ETF-vs-stock decision, portfolio fit, entry/risk/exit, and system audit.

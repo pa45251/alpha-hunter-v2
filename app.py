@@ -7,177 +7,134 @@ import pandas as pd
 import streamlit as st
 
 TAIPEI = ZoneInfo("Asia/Taipei")
+OUT = Path("output")
 
-st.set_page_config(page_title="Alpha Hunter v2.2", page_icon="🌎", layout="wide")
-st.title("🌎 Alpha Hunter v2.2 — Global Trend Sensor")
+st.set_page_config(page_title="Alpha Hunter v2.3", page_icon="🌎", layout="wide")
+st.title("🌎 Alpha Hunter v2.3 — Global + Taiwan Sensor")
 st.caption(
-    "Official data comes from the scheduled GitHub Actions scan. "
-    "This dashboard is view-only and does not create the official daily snapshot."
+    "Official data comes from scheduled GitHub Actions. Global Sensor finds world leadership; "
+    "Taiwan Sensor scans the full TWSE/TPEX common-stock universe and only publishes the research funnel outputs."
 )
 
-OUT = Path("output")
-snap = OUT / "market_snapshot.csv"
-breadth = OUT / "theme_breadth.csv"
-registry = OUT / "leader_registry.csv"
-meta_file = OUT / "market_snapshot.json"
-universe_file = Path("config/universe.csv")
-
-
-def _parse_dt(value):
-    if not value:
-        return None
-    try:
-        dt = datetime.fromisoformat(str(value).replace("Z", "+00:00"))
-        if dt.tzinfo is None:
-            dt = dt.replace(tzinfo=TAIPEI)
-        return dt.astimezone(TAIPEI)
-    except Exception:
-        return None
-
-
-def _freshness(meta: dict):
-    """Operational freshness gate for the scheduled snapshot.
-
-    It deliberately judges the *scanner run*, not merely calendar distance from
-    the last market date. This avoids false stale alarms on weekends/holidays.
-    """
-    now = datetime.now(TAIPEI)
-    generated = _parse_dt(meta.get("generated_at_taipei"))
-    quality = meta.get("scan_quality", {}) or {}
-
-    if generated is None:
-        return "STALE", "No valid scanner timestamp was found.", None
-
-    age_h = (now - generated).total_seconds() / 3600
-    weekday = now.weekday()  # Mon=0 ... Sun=6
-
-    # Weekend, or Monday before the scheduled morning scan, can legitimately
-    # still use Friday's recently generated snapshot.
-    weekend_window = weekday in (5, 6) or (weekday == 0 and now.time() < time(7, 45))
-    max_age_h = 84 if weekend_window else 30
-
-    scanned = int(quality.get("scanned_count", 0) or 0)
-    expected = None
-    try:
-        expected = len(pd.read_csv(universe_file)) if universe_file.exists() else None
-    except Exception:
-        expected = None
-
-    coverage = (scanned / expected) if expected else None
-    earliest = quality.get("earliest_price_date")
-    latest = quality.get("latest_price_date")
-
-    date_spread_days = None
-    try:
-        date_spread_days = (
-            pd.Timestamp(latest).normalize() - pd.Timestamp(earliest).normalize()
-        ).days
-    except Exception:
-        pass
-
-    if age_h > max_age_h:
-        return (
-            "STALE",
-            f"Official scanner output is {age_h:.1f} hours old. Do not use it for a new trading decision.",
-            age_h,
-        )
-
-    if coverage is not None and coverage < 0.95:
-        return (
-            "WARNING",
-            f"Scanner ran recently, but coverage is only {coverage:.1%} ({scanned}/{expected}).",
-            age_h,
-        )
-
-    if date_spread_days is not None and date_spread_days > 3:
-        return (
-            "WARNING",
-            f"Scanner ran recently, but security price dates span {date_spread_days} calendar days.",
-            age_h,
-        )
-
-    return "FRESH", "Scheduled scanner output is recent and coverage checks passed.", age_h
-
-
-if not meta_file.exists():
-    st.error("🚨 STALE DATA — No official scanner metadata exists yet. Do not use this dashboard for a trading decision.")
+manifest_file = OUT / "manifest.json"
+if not manifest_file.exists():
+    st.error("🚨 DATA CONTRACT MISSING — output/manifest.json does not exist. Run GitHub Actions first.")
     st.stop()
 
 try:
-    meta = json.loads(meta_file.read_text(encoding="utf-8"))
+    manifest = json.loads(manifest_file.read_text(encoding="utf-8"))
 except Exception as exc:
-    st.error(f"🚨 STALE DATA — Could not read scanner metadata: {exc}")
+    st.error(f"🚨 Could not read manifest.json: {exc}")
     st.stop()
 
-status, status_reason, age_h = _freshness(meta)
-quality = meta.get("scan_quality", {}) or {}
-generated = _parse_dt(meta.get("generated_at_taipei"))
 
+def parse_dt(v):
+    try:
+        d = datetime.fromisoformat(str(v).replace("Z", "+00:00"))
+        if d.tzinfo is None:
+            d = d.replace(tzinfo=TAIPEI)
+        return d.astimezone(TAIPEI)
+    except Exception:
+        return None
+
+
+def freshness_gate(m: dict):
+    now = datetime.now(TAIPEI)
+    generated = parse_dt(m.get("generated_at_taipei"))
+    if generated is None:
+        return "STALE", "No valid generated_at_taipei in manifest.", None
+    age_h = (now - generated).total_seconds() / 3600
+    weekend_window = now.weekday() in (5, 6) or (now.weekday() == 0 and now.time() < time(7, 45))
+    max_age = 84 if weekend_window else 30
+    if m.get("status") != "PASS":
+        return "WARNING", f"Manifest status is {m.get('status')}; required data contract is not fully PASS.", age_h
+    if age_h > max_age:
+        return "STALE", f"Manifest is {age_h:.1f} hours old.", age_h
+    return "FRESH", "Canonical manifest passed and scanner run is recent.", age_h
+
+
+status, reason, age_h = freshness_gate(manifest)
 if status == "FRESH":
-    st.success(f"✅ DATA STATUS: FRESH — {status_reason}")
+    st.success(f"✅ DATA STATUS: FRESH — {reason}")
 elif status == "WARNING":
-    st.warning(f"⚠️ DATA STATUS: WARNING — {status_reason}")
+    st.warning(f"⚠️ DATA STATUS: WARNING — {reason}")
 else:
-    st.error(f"🚨 DATA STATUS: STALE — {status_reason}")
-    st.error("Hard gate: refresh the GitHub Actions scan before using these data for a new market decision.")
+    st.error(f"🚨 DATA STATUS: STALE — {reason}")
 
-c1, c2, c3, c4 = st.columns(4)
-c1.metric("Last market data", str(quality.get("latest_price_date", "Unknown")))
-c2.metric(
-    "Scanner generated (Taipei)",
-    generated.strftime("%Y-%m-%d %H:%M") if generated else "Unknown",
-)
-c3.metric("Securities scanned", str(quality.get("scanned_count", "Unknown")))
-c4.metric("Themes", str(quality.get("theme_count", "Unknown")))
+G = manifest.get("global", {})
+T = manifest.get("taiwan", {})
+X = manifest.get("transmission", {})
 
-with st.expander("Freshness gate details"):
-    st.write(
-        "The dashboard validates the scheduled scan timestamp, universe coverage, and dispersion of last price dates. "
-        "Weekends and Monday before the scheduled scan receive a wider freshness window so Friday data are not falsely labeled stale."
-    )
-    st.json(
-        {
-            "status": status,
-            "scanner_age_hours": round(age_h, 2) if age_h is not None else None,
-            "generated_at_taipei": meta.get("generated_at_taipei"),
-            "latest_price_date": quality.get("latest_price_date"),
-            "earliest_price_date": quality.get("earliest_price_date"),
-            "scanned_count": quality.get("scanned_count"),
-            "theme_count": quality.get("theme_count"),
-            "schema_version": meta.get("schema_version"),
-        }
-    )
+c1, c2, c3, c4, c5 = st.columns(5)
+c1.metric("Global scanned", G.get("scanned_count", "?"))
+c2.metric("Global themes", G.get("theme_count", "?"))
+c3.metric("Taiwan universe", T.get("universe_count", "?"))
+c4.metric("Taiwan scanned", T.get("scanned_count", "?"))
+c5.metric("Taiwan candidates", T.get("candidate_count", "?"))
 
 st.info(
-    "Automation: GitHub Actions runs the official scan at approximately 06:55 Asia/Taipei on weekdays. "
-    "You do not need to open this app to trigger it. GitHub may occasionally start scheduled jobs a few minutes late."
+    "Automation: GitHub Actions is the official trigger. You do not need to open this app. "
+    "Taiwan full-market rows are scanned in-memory; only candidates/breadth/universe/contract outputs are committed, "
+    "which avoids unnecessary Git repository growth."
 )
 
-if snap.exists():
-    df = pd.read_csv(snap)
-    st.subheader("Dynamic leaders")
-    cols = [
-        c for c in [
-            "ticker", "name", "theme", "last_price_date", "price", "ret_5d",
-            "rs_20d_vs_bench", "rs_60d_vs_bench", "acceleration",
-            "keynes_legacy", "keynes_v2", "leader_score_v1", "raw_leader_state"
-        ] if c in df.columns
-    ]
-    st.dataframe(df[cols].head(100), use_container_width=True, height=550)
-else:
-    st.error("market_snapshot.csv is missing from output/. Run the GitHub Actions workflow.")
+with st.expander("Canonical data contract / freshness details"):
+    st.json(manifest)
 
-if breadth.exists():
-    st.subheader("Theme breadth")
-    bdf = pd.read_csv(breadth)
-    st.dataframe(bdf, use_container_width=True)
 
-if registry.exists():
-    st.subheader("Leader registry with hysteresis")
-    rdf = pd.read_csv(registry)
-    st.dataframe(rdf, use_container_width=True)
+tab1, tab2, tab3, tab4 = st.tabs([
+    "Global Leaders", "Taiwan Candidates", "Global → Taiwan Hypotheses", "Breadth"
+])
+
+with tab1:
+    p = OUT / "market_snapshot.csv"
+    if p.exists():
+        df = pd.read_csv(p)
+        cols = [c for c in [
+            "ticker","name","theme","last_price_date","price","ret_5d","rs_20d_vs_bench",
+            "rs_60d_vs_bench","acceleration","keynes_legacy","keynes_v2","leader_score_v1","raw_leader_state"
+        ] if c in df.columns]
+        st.dataframe(df[cols].head(120), use_container_width=True, height=620)
+    else:
+        st.error("market_snapshot.csv missing")
+
+with tab2:
+    p = OUT / "taiwan_candidates.csv"
+    if p.exists():
+        df = pd.read_csv(p, dtype={"code": str})
+        cols = [c for c in [
+            "candidate_rank","code","ticker","name","exchange","industry","last_price_date","price",
+            "ret_5d","ret_20d","rs_20d_vs_bench","rs_60d_vs_bench","acceleration","keynes_legacy",
+            "keynes_v2","bias20","avg_turnover20_twd","taiwan_candidate_score_v1"
+        ] if c in df.columns]
+        st.caption("Discovery candidates only — NOT Hidden Dragon confirmation and NOT a buy list.")
+        st.dataframe(df[cols], use_container_width=True, height=680)
+    else:
+        st.warning("taiwan_candidates.csv is not available yet. Run the v2.3 workflow.")
+
+with tab3:
+    p = OUT / "transmission_watchlist.csv"
+    if p.exists():
+        df = pd.read_csv(p, dtype={"taiwan_code": str})
+        st.warning("Every row is HYPOTHESIS_ONLY. Causal / fundamental validation is mandatory before decision use.")
+        st.dataframe(df, use_container_width=True, height=680)
+    else:
+        st.warning("transmission_watchlist.csv missing")
+
+with tab4:
+    c1, c2 = st.columns(2)
+    with c1:
+        st.subheader("Global theme breadth")
+        p = OUT / "theme_breadth.csv"
+        if p.exists():
+            st.dataframe(pd.read_csv(p), use_container_width=True, height=600)
+    with c2:
+        st.subheader("Taiwan industry breadth")
+        p = OUT / "taiwan_industry_breadth.csv"
+        if p.exists():
+            st.dataframe(pd.read_csv(p), use_container_width=True, height=600)
 
 st.caption(
-    "Research rule: FRESH means the automated data layer is usable as an input, not that any security is a buy. "
-    "Causality, fundamentals, counter-evidence, portfolio fit, entry and exit still belong to the research layer."
+    "Research rule: Scanner outputs describe observable market structure. Gemini validates causes/catalysts/counter-evidence. "
+    "Final ETF vs stock, position risk, entry and exit remain downstream decisions."
 )

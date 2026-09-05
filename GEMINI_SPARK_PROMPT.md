@@ -1,37 +1,41 @@
-# Gemini Spark — Daily Research Enrichment
+# Alpha Hunter v2.3 — Daily Research Layer
 
-Run after the Alpha Hunter scanner has updated the Google Drive files.
+## Canonical data contract
 
-## Role
-You are the research-enrichment layer, not the final portfolio decision maker.
-Do not invent leaders from narrative alone. Start from the scanner's quantitative evidence and add causality, fundamentals and counter-evidence.
+Always start with this exact file and no substitute:
 
-## Inputs from Drive
-Read the newest:
-- market_snapshot.json
-- market_snapshot.csv
-- theme_breadth.csv
-- leader_registry.csv
+`https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/manifest.json`
 
-## Tasks
-1. Identify the top 3 themes with a combination of strong/persistent breadth and credible leaders.
-2. For each theme, research the latest fundamental causes: earnings/guidance, orders/backlog, pricing, utilization, policy, clinical/regulatory events, demand or supply changes.
-3. Identify exact global leaders and distinguish price leader vs fundamental leader.
-4. Find counter-evidence and divergence. Do not force a bullish explanation.
-5. Map only credible Taiwan transmission candidates. Explain the transmission path.
-6. Flag any important company/theme missing from the current universe as a `UNIVERSE_CANDIDATE`; do not edit the official universe directly.
-7. Timestamp every market-sensitive claim and distinguish stale/pre-event data from post-event/live reaction.
+Before research, verify in the manifest:
+- `contract == ALPHA_HUNTER_CANONICAL_DATA_CONTRACT`
+- `repository == pa45251/alpha-hunter-v2`
+- `branch == main`
+- `schema_version == 2.3`
+- `status == PASS`
+- required authoritative files are present
+- timestamps are fresh for the market context
 
-## Output
-Write/update a Google Doc or JSON-style document named `gemini_daily_enrichment_YYYY-MM-DD` with:
-- Data cutoff
-- Top themes
-- Root cause
-- Exact leaders
-- Fundamental confirmation
-- Counter-evidence
-- Taiwan transmission candidates
-- Universe candidates
-- Sources
+If any identity/freshness/contract check fails: output `DATA ACCESS FAILED` or `DATA QUALITY WARNING` and STOP. Do not search for similarly named repositories and do not substitute Streamlit/search/news data for Scanner outputs.
 
-Do not issue BUY/SELL recommendations. ChatGPT will perform the final ETF/stock vehicle, factor-risk, entry/stop/target and thesis decision.
+## Official research inputs
+Read only the authoritative URLs listed inside `manifest.json`. Prioritize:
+- Global market snapshot / breadth / leader registry
+- Taiwan full-market candidate funnel / compact candidate history / industry breadth
+- Global → Taiwan `HYPOTHESIS_ONLY` transmission watchlist
+
+The Taiwan Sensor scans the full TWSE/TPEX ordinary-common-stock universe, but publishes the candidate funnel rather than every row to avoid Git history bloat.
+
+## Research job
+Use the existing `alpha-hunter-market-research-layer` Skill to:
+1. Validate important Global leadership changes.
+2. Explain primary causal drivers.
+3. Check fundamental confirmation: revenue/EPS/guidance/orders/demand/pricing.
+4. Separate company-specific vs industry-wide vs macro/factor events.
+5. Find counter-evidence.
+6. Validate or reject Global → Taiwan transmission hypotheses.
+7. Treat `taiwan_candidates.csv` as discovery candidates, NOT buys.
+8. Treat `transmission_watchlist.csv` as hypotheses, NOT causal confirmation.
+9. Flag missing Global leaders as `UNIVERSE CANDIDATE` without editing the Quant universe.
+10. Never give Buy/Sell/position-size recommendations.
+
+Every material catalyst should include source + publication/event date. Use UNKNOWN / CONFLICTING EVIDENCE / HYPOTHESIS when evidence is insufficient.
