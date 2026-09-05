@@ -1,0 +1,99 @@
+ticker,name,theme,region,benchmark
+SPY,S&P 500,Market_US,US,SPY
+QQQ,Nasdaq 100,Factor_Growth,US,SPY
+RSP,S&P Equal Weight,Factor_Breadth,US,SPY
+IWM,Russell 2000,Factor_SmallCap,US,SPY
+MTUM,US Momentum ETF,Factor_Momentum,US,SPY
+SMH,Semiconductor ETF,Semiconductor,US,SPY
+SOXX,Semiconductor ETF,Semiconductor,US,SPY
+NVDA,NVIDIA,AI_Semiconductor,US,SPY
+AVGO,Broadcom,AI_Semiconductor,US,SPY
+AMD,AMD,AI_Semiconductor,US,SPY
+MU,Micron,Memory,US,SPY
+QCOM,Qualcomm,Semiconductor,US,SPY
+INTC,Intel,Semiconductor,US,SPY
+TXN,Texas Instruments,Analog_Semiconductor,US,SPY
+ASML,ASML,Semiconductor_Equipment,EU,SPY
+AMAT,Applied Materials,Semiconductor_Equipment,US,SPY
+LRCX,Lam Research,Semiconductor_Equipment,US,SPY
+KLAC,KLA,Semiconductor_Equipment,US,SPY
+TSM,TSMC ADR,Foundry,US,SPY
+ANET,Arista Networks,AI_Networking,US,SPY
+VRT,Vertiv,AI_Infrastructure,US,SPY
+DELL,Dell,AI_Server,US,SPY
+HPE,HPE,AI_Server,US,SPY
+SMCI,Super Micro Computer,AI_Server,US,SPY
+ORCL,Oracle,Cloud_AI,US,SPY
+MSFT,Microsoft,Cloud_AI,US,SPY
+AMZN,Amazon,Cloud_AI,US,SPY
+GOOGL,Alphabet,Cloud_AI,US,SPY
+META,Meta,Internet_AI,US,SPY
+PLTR,Palantir,Software_AI,US,SPY
+IGV,Software ETF,Software,US,SPY
+HACK,Cybersecurity ETF,Cybersecurity,US,SPY
+PANW,Palo Alto Networks,Cybersecurity,US,SPY
+CRWD,CrowdStrike,Cybersecurity,US,SPY
+FTNT,Fortinet,Cybersecurity,US,SPY
+ZS,Zscaler,Cybersecurity,US,SPY
+NET,Cloudflare,Cybersecurity,US,SPY
+XBI,Biotech ETF,Biotech,US,SPY
+IBB,Biotech ETF,Biotech,US,SPY
+GNOM,Genomics ETF,Genomics,US,SPY
+IDNA,Genomics ETF,Genomics,US,SPY
+LLY,Eli Lilly,Pharma,US,SPY
+NVO,Novo Nordisk,Pharma,EU,SPY
+REGN,Regeneron,Biotech,US,SPY
+VRTX,Vertex,Biotech,US,SPY
+AMGN,Amgen,Biotech,US,SPY
+MRNA,Moderna,Biotech,US,SPY
+BNTX,BioNTech,Biotech,EU,SPY
+XLI,Industrials ETF,Industrials,US,SPY
+GEV,GE Vernova,Power_Grid,US,SPY
+ETN,Eaton,Power_Grid,US,SPY
+HUBB,Hubbell,Power_Grid,US,SPY
+PWR,Quanta Services,Power_Grid,US,SPY
+CAT,Caterpillar,Industrials,US,SPY
+URI,United Rentals,Industrials,US,SPY
+XLF,Financials ETF,Financials,US,SPY
+JPM,JPMorgan,Financials,US,SPY
+GS,Goldman Sachs,Financials,US,SPY
+BAC,Bank of America,Financials,US,SPY
+XLU,Utilities ETF,Utilities,US,SPY
+CEG,Constellation Energy,Nuclear_Power,US,SPY
+VST,Vistra,Power,US,SPY
+NRG,NRG Energy,Power,US,SPY
+URA,Uranium ETF,Uranium,US,SPY
+CCJ,Cameco,Uranium,CA,SPY
+UEC,Uranium Energy,Uranium,US,SPY
+GDX,Gold Miners ETF,Gold_Miners,US,SPY
+NEM,Newmont,Gold_Miners,US,SPY
+AEM,Agnico Eagle,Gold_Miners,CA,SPY
+COPX,Copper Miners ETF,Copper,US,SPY
+FCX,Freeport-McMoRan,Copper,US,SPY
+SCCO,Southern Copper,Copper,US,SPY
+XLE,Energy ETF,Energy,US,SPY
+XOM,Exxon Mobil,Energy,US,SPY
+CVX,Chevron,Energy,US,SPY
+BOAT,Global Shipping ETF,Shipping,US,SPY
+ZIM,ZIM,Shipping,US,SPY
+SBLK,Star Bulk,Shipping,US,SPY
+DAC,Danaos,Shipping,US,SPY
+ITA,Aerospace Defense ETF,Defense,US,SPY
+LMT,Lockheed Martin,Defense,US,SPY
+RTX,RTX,Defense,US,SPY
+NOC,Northrop Grumman,Defense,US,SPY
+TSLA,Tesla,EV,US,SPY
+GM,General Motors,Auto,US,SPY
+F,Ford,Auto,US,SPY
+AAPL,Apple,Consumer_Tech,US,SPY
+COST,Costco,Consumer,US,SPY
+WMT,Walmart,Consumer,US,SPY
+6981.T,Murata,MLCC,JP,SPY
+6976.T,Taiyo Yuden,MLCC,JP,SPY
+6762.T,TDK,Electronic_Components,JP,SPY
+8035.T,Tokyo Electron,Semiconductor_Equipment,JP,SPY
+6857.T,Advantest,Semiconductor_Equipment,JP,SPY
+6146.T,Disco,Semiconductor_Equipment,JP,SPY
+005930.KS,Samsung Electronics,Memory,KR,SPY
+000660.KS,SK Hynix,Memory,KR,SPY
+009150.KS,Samsung Electro-Mechanics,MLCC,KR,SPY
