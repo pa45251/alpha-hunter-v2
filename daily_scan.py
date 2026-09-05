@@ -8,6 +8,7 @@ import uuid
 from pathlib import Path
 
 import pandas as pd
+import numpy as np
 
 from causal_engine import (
     CausalConfig,
@@ -116,7 +117,7 @@ def build_manifest(
     manifest = {
         "contract": "ALPHA_HUNTER_CANONICAL_DATA_CONTRACT",
         "schema_version": "2.5",
-        "scanner_version": "2.5.1",
+        "scanner_version": "2.5.2",
         "run_id": run_id,
         "repository": repo,
         "branch": branch,
@@ -126,7 +127,7 @@ def build_manifest(
         "generated_at_taipei": datetime.now(TAIPEI_TZ).isoformat(),
         "status": status,
         "missing_required_files": missing,
-        "pipeline_checks": pipeline_checks,
+        "pipeline_checks": {k: bool(v) for k, v in pipeline_checks.items()},
         "global": {
             "scanned_count": int(len(g)),
             "theme_count": int(g["theme"].nunique()),
@@ -178,7 +179,25 @@ def build_manifest(
             "do_not_substitute": "Do not substitute similarly named repositories, Streamlit tables, search snippets, or external prices for scanner outputs.",
         },
     }
-    (OUT / "manifest.json").write_text(json.dumps(manifest, ensure_ascii=False, indent=2), encoding="utf-8")
+    def _json_default(obj):
+        # pandas/numpy reductions often return numpy scalar types (e.g. np.bool_),
+        # which Python's stdlib json encoder cannot serialize directly.
+        if isinstance(obj, np.bool_):
+            return bool(obj)
+        if isinstance(obj, np.integer):
+            return int(obj)
+        if isinstance(obj, np.floating):
+            return float(obj)
+        if isinstance(obj, (pd.Timestamp, datetime)):
+            return obj.isoformat()
+        if isinstance(obj, Path):
+            return str(obj)
+        raise TypeError(f"Object of type {type(obj).__name__} is not JSON serializable")
+
+    (OUT / "manifest.json").write_text(
+        json.dumps(manifest, ensure_ascii=False, indent=2, default=_json_default),
+        encoding="utf-8",
+    )
 
 
 if __name__ == "__main__":
