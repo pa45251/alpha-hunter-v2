@@ -1,15 +1,22 @@
-# Gemini Spark — Weekly Universe Discovery
+# Alpha Hunter v2.4 — Weekly Linkage / Universe Discovery
 
-Once per week, search for globally important companies/themes that may be absent from `config/universe.csv`.
+Use the Alpha Hunter Market Research Layer skill.
 
-Only propose additions when there is evidence of at least two of:
-- unusual 5D/20D relative-strength acceleration,
-- improving earnings/revenue/order revisions,
-- important industry pricing/demand/policy change,
-- leadership confirmed by multiple independent peers or physical data.
+Goal: identify missing Global leaders and missing / stale Taiwan Economic Linkage Graph edges.
 
-For every proposal output:
-Ticker | Company | Theme | Region | Why it matters | Evidence | Suggested benchmark | Confidence | Sources
+Read manifest.json first and enforce the v2.4 canonical data contract.
 
-Write proposals to `candidate_universe_YYYY-MM-DD` in Drive.
-Do NOT modify the official universe automatically. Candidates enter the quantitative scanner first and need repeated confirmation before promotion.
+For each proposed linkage change output only a proposal:
+- global_theme
+- taiwan_code
+- taiwan_company
+- proposed economic_role
+- proposed linkage_tier: DIRECT / STRONG / SECOND_ORDER / SPECULATIVE
+- proposed linkage_confidence
+- concrete economic mechanism
+- primary-source evidence required
+- reason the existing graph is missing / stale
+
+Never silently edit the graph.
+Never infer linkage from TWSE industry category alone.
+Never propose a linkage solely because both stocks recently rose.

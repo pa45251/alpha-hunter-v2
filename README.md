@@ -1,86 +1,91 @@
-# Alpha Hunter v2.3
+# Alpha Hunter v2.4
 
-A zero-infrastructure-cost market sensing pipeline for:
+Global-first quantitative market sensor with a Taiwan full-market discovery layer and a company-level Economic Linkage Graph.
 
-**Global Sensor → Taiwan Full-Market Sensor → Transmission Hypotheses → Gemini Research → ChatGPT Final Decision**
+## What changed in v2.4
 
-## What changed in v2.3
+v2.3 proved that full-market Taiwan scanning works, but its Global → Taiwan transmission layer was too coarse because it mapped broad global themes to broad TWSE industry labels. That could incorrectly classify a semiconductor stock as a Memory beneficiary or a cooling stock as a Nuclear Power beneficiary simply because both sat inside broad industry buckets.
 
-### 1. Taiwan Full-Market Sensor
-At each scheduled run, the scanner obtains the current TWSE and TPEX security universe from the public TWSE ISIN pages and filters to ordinary four-digit common-stock codes. Yahoo Finance symbols are mapped to `.TW` (TWSE) and `.TWO` (TPEX).
+v2.4 fixes that.
 
-The full universe is scanned in memory using:
-- 1D / 5D / 20D / 60D returns
-- RS vs `^TWII`
-- acceleration
-- Keynes Legacy
-- Keynes v2
-- Efficiency Ratio
-- MA structure / slope
-- volume ratio
-- 20D turnover
-- 20D / 52W position
-- drawdown / volatility
+### 1. Economic Linkage Graph
 
-Only the top discovery funnel is persisted as `taiwan_candidates.csv`. This prevents the Git repository from accumulating a full 1,500–2,000-row market snapshot every day.
+`config/economic_linkage_graph.csv` defines explicit company-level edges:
 
-### 2. Taiwan Candidate Score v1
-A transparent, deliberately non-optimized discovery heuristic. It emphasizes improving RS/acceleration/trend quality rather than simply ranking the strongest already-extended stocks. It is **not a buy signal**.
+- `global_theme`
+- `taiwan_code`
+- `economic_role`
+- `linkage_tier` = DIRECT / STRONG / SECOND_ORDER / SPECULATIVE
+- `linkage_confidence`
+- `link_mechanism`
+- `evidence_required`
 
-### 3. Global → Taiwan Transmission Watchlist
-`transmission_watchlist.csv` maps strong Global themes to plausible Taiwan industries and combines Global theme strength with Taiwan quantitative candidate quality.
+Broad-industry fallback is disabled by default.
 
-Every row is explicitly `HYPOTHESIS_ONLY`. Gemini must validate the actual economic linkage and fundamentals before downstream use.
+A transmission hypothesis is promoted only if:
 
-### 4. Canonical Data Contract
-`output/manifest.json` is the first file every research agent must read. It contains:
-- repository identity
-- branch
-- scanner/schema version
-- timestamps
-- Global/Taiwan coverage
-- Taiwan universe source status
-- required file list
-- raw canonical URLs
-- SHA-256 hashes
-- hard-gate instructions
+1. the global theme is quantitatively strong enough;
+2. the Taiwan stock is already inside the Taiwan quantitative candidate funnel;
+3. an explicit company-level linkage edge exists;
+4. the edge is not SPECULATIVE;
+5. linkage confidence is at least 0.55.
 
-This prevents an agent from searching for a similarly named GitHub repository or silently substituting stale/external data.
+Even then the result remains `HYPOTHESIS_ONLY` until research validates company-specific causality and fundamentals.
 
-## Scheduled flow
+### 2. Transmission score v2
 
-GitHub Actions runs at approximately **06:55 Asia/Taipei, Monday–Friday**:
+The hypothesis score combines:
 
-1. Run Global Sensor.
-2. Refresh TWSE/TPEX common-stock universe.
-3. Scan Taiwan full market.
-4. Produce top Taiwan candidates and industry breadth.
-5. Produce `HYPOTHESIS_ONLY` Global → Taiwan transmission candidates.
-6. Write `manifest.json` last.
-7. Commit only canonical research outputs back to the public repository.
+- 35% global theme strength
+- 25% Taiwan candidate strength
+- 25% economic linkage score
+- 15% Taiwan industry breadth support
 
-No Streamlit page needs to be opened to trigger scanning.
+A simultaneous negative RS20 and negative acceleration applies a contradiction penalty.
 
-## Canonical files
+The weights are provisional and intentionally non-optimized.
 
-- `output/manifest.json` — **read first**
-- `output/market_snapshot.csv`
-- `output/theme_breadth.csv`
-- `output/leader_registry.csv`
-- `output/feature_history.csv`
-- `output/market_snapshot.json`
-- `output/taiwan_candidates.csv`
-- `output/taiwan_candidate_history.csv`
-- `output/taiwan_industry_breadth.csv`
-- `output/taiwan_universe.csv`
-- `output/transmission_watchlist.csv`
+### 3. Linkage audit
 
-## Cost design
+`output/transmission_linkage_audit.csv` records every curated linkage edge and explains why it was or was not promoted:
 
-The workflow uses standard GitHub-hosted runners on a public repository and does not upload Actions artifacts or use pip cache. It commits compact research outputs rather than the full Taiwan market matrix.
+- `PROMOTED`
+- `NO_GLOBAL_CONFIRMATION`
+- `NOT_IN_TAIWAN_FUNNEL`
+- `LINKAGE_TOO_WEAK`
 
-## Research separation
+This makes the transmission layer auditable rather than narrative-driven.
 
-- **Python**: observable market structure and deterministic candidate funnels.
-- **Gemini Spark**: causal/fundamental/counter-evidence research.
-- **ChatGPT**: Global regime, ETF-vs-stock decision, portfolio fit, entry/risk/exit, and system audit.
+### 4. Canonical data contract
+
+`output/manifest.json` is schema/scanner version 2.4 and includes the Economic Linkage Graph outputs in the required-file contract.
+
+Research agents must read `manifest.json` first.
+
+## Pipeline
+
+```text
+Global Sensor
+    ↓
+Global Theme Strength
+    ↓
+Economic Linkage Graph  ← explicit Taiwan company / role edges
+    ↓
+Taiwan Full-Market Quant Funnel
+    ↓
+Breadth + Linkage Hard Gates
+    ↓
+HYPOTHESIS_ONLY watchlist
+    ↓
+Gemini causal / fundamental validation
+    ↓
+ChatGPT final ETF vs stock / risk / entry / exit audit
+```
+
+## Important limitations
+
+The linkage graph is a curated seed, not a complete supply-chain database. A missing edge means `NOT EVALUATED`, not `NO ECONOMIC LINKAGE`.
+
+Company business mixes change. Gemini weekly discovery should propose new or revised edges, but should never silently modify the graph without review.
+
+The scanner does not issue buy/sell recommendations.

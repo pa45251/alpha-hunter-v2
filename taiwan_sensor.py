@@ -104,7 +104,7 @@ def _parse_isin_table(html: str, exchange: str, suffix: str) -> pd.DataFrame:
 
 
 def fetch_taiwan_universe(timeout: int = 30) -> pd.DataFrame:
-    headers = {"User-Agent": "Mozilla/5.0 AlphaHunter/2.3"}
+    headers = {"User-Agent": "Mozilla/5.0 AlphaHunter/2.4"}
     parts = []
     for url, exchange, suffix in [
         (TWSE_ISIN_URL, "TWSE", ".TW"),
