@@ -28,7 +28,7 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
-      - name: Run Alpha Hunter v2.4
+      - name: Run Alpha Hunter v2.5
         run: python daily_scan.py
 
       - name: Commit canonical outputs
@@ -46,9 +46,11 @@ jobs:
             output/taiwan_candidate_history.csv \
             output/taiwan_industry_breadth.csv \
             output/taiwan_universe.csv \
-            output/transmission_watchlist.csv \
-            output/transmission_linkage_audit.csv \
-            output/economic_linkage_graph.csv
+            output/causal_research_queue.csv \
+            output/structural_matches.csv \
+            output/causal_graph_audit.csv \
+            output/causal_driver_taxonomy.csv \
+            output/structural_exposure_graph.csv
           git diff --cached --quiet && exit 0
-          git commit -m "alpha hunter v2.4 snapshot $(date -u +%F)"
+          git commit -m "alpha hunter v2.5 snapshot $(date -u +%F)"
           git push
