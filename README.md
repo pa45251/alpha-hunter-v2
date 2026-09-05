@@ -1,91 +1,53 @@
-# Alpha Hunter v2.4
+# Alpha Hunter v2.5 — Dynamic Causal Transmission Sensor
 
-Global-first quantitative market sensor with a Taiwan full-market discovery layer and a company-level Economic Linkage Graph.
+Alpha Hunter v2.5 separates market observation, causal research, structural economic exposure, Taiwan price confirmation, and final investment decisions.
 
-## What changed in v2.4
-
-v2.3 proved that full-market Taiwan scanning works, but its Global → Taiwan transmission layer was too coarse because it mapped broad global themes to broad TWSE industry labels. That could incorrectly classify a semiconductor stock as a Memory beneficiary or a cooling stock as a Nuclear Power beneficiary simply because both sat inside broad industry buckets.
-
-v2.4 fixes that.
-
-### 1. Economic Linkage Graph
-
-`config/economic_linkage_graph.csv` defines explicit company-level edges:
-
-- `global_theme`
-- `taiwan_code`
-- `economic_role`
-- `linkage_tier` = DIRECT / STRONG / SECOND_ORDER / SPECULATIVE
-- `linkage_confidence`
-- `link_mechanism`
-- `evidence_required`
-
-Broad-industry fallback is disabled by default.
-
-A transmission hypothesis is promoted only if:
-
-1. the global theme is quantitatively strong enough;
-2. the Taiwan stock is already inside the Taiwan quantitative candidate funnel;
-3. an explicit company-level linkage edge exists;
-4. the edge is not SPECULATIVE;
-5. linkage confidence is at least 0.55.
-
-Even then the result remains `HYPOTHESIS_ONLY` until research validates company-specific causality and fundamentals.
-
-### 2. Transmission score v2
-
-The hypothesis score combines:
-
-- 35% global theme strength
-- 25% Taiwan candidate strength
-- 25% economic linkage score
-- 15% Taiwan industry breadth support
-
-A simultaneous negative RS20 and negative acceleration applies a contradiction penalty.
-
-The weights are provisional and intentionally non-optimized.
-
-### 3. Linkage audit
-
-`output/transmission_linkage_audit.csv` records every curated linkage edge and explains why it was or was not promoted:
-
-- `PROMOTED`
-- `NO_GLOBAL_CONFIRMATION`
-- `NOT_IN_TAIWAN_FUNNEL`
-- `LINKAGE_TOO_WEAK`
-
-This makes the transmission layer auditable rather than narrative-driven.
-
-### 4. Canonical data contract
-
-`output/manifest.json` is schema/scanner version 2.4 and includes the Economic Linkage Graph outputs in the required-file contract.
-
-Research agents must read `manifest.json` first.
-
-## Pipeline
+## Architecture
 
 ```text
-Global Sensor
-    ↓
-Global Theme Strength
-    ↓
-Economic Linkage Graph  ← explicit Taiwan company / role edges
-    ↓
-Taiwan Full-Market Quant Funnel
-    ↓
-Breadth + Linkage Hard Gates
-    ↓
-HYPOTHESIS_ONLY watchlist
-    ↓
-Gemini causal / fundamental validation
-    ↓
-ChatGPT final ETF vs stock / risk / entry / exit audit
+Global Sensor (what moved)
+        ↓
+Causal Research Queue (which exact driver needs investigation)
+        ↓
+Research Layer (why / ACTIVE vs INACTIVE vs UNKNOWN)
+        ↓
+Structural Exposure Graph (who economically benefits if active)
+        ↓
+Taiwan Full-Market Sensor (pre-confirmation / confirming / extended / broken)
+        ↓
+Downstream Final Audit (ETF / stock / cash + risk / entry / exit)
 ```
 
-## Important limitations
+## v2.5 hard rules
 
-The linkage graph is a curated seed, not a complete supply-chain database. A missing edge means `NOT EVALUATED`, not `NO ECONOMIC LINKAGE`.
+- Price cannot create causality.
+- Broad-industry causal fallback is disabled.
+- Structural matching is built from the **full Taiwan scan**, not only top candidates.
+- The Taiwan candidate funnel reserves room for early/pre-confirmation stocks and caps extended names.
+- A structural match is not an active transmission.
+- Dynamic driver activation requires external research evidence.
+- Scanner/research layers cannot make trade decisions.
 
-Company business mixes change. Gemini weekly discovery should propose new or revised edges, but should never silently modify the graph without review.
+## New canonical files
 
-The scanner does not issue buy/sell recommendations.
+- `config/causal_driver_taxonomy.csv`
+- `config/structural_exposure_graph.csv`
+- `input/driver_activation.csv` (optional future research write-back bridge)
+- `output/causal_research_queue.csv`
+- `output/structural_matches.csv`
+- `output/causal_graph_audit.csv`
+- `V2_5_DESIGN_REVIEW.md`
+
+The legacy v2.4 `economic_linkage_graph.csv` may remain in the repository for history, but v2.5 does not use it as the production causal engine.
+
+## Daily automation
+
+GitHub Actions runs at approximately 06:55 Asia/Taipei on weekdays. No manual Streamlit trigger is required.
+
+## Optional driver activation bridge
+
+`input/driver_activation.csv` is optional. It is intentionally empty by default. A future research agent can populate known canonical `driver_id` values with evidence, timestamps and confidence. Unknown drivers, stale activations, malformed rows and unsourced activations are ignored.
+
+## Model risk
+
+Read `V2_5_DESIGN_REVIEW.md`. v2.5 is designed to expose uncertainty rather than hide it.

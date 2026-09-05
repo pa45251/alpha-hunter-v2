@@ -191,10 +191,44 @@ def add_taiwan_candidate_score(df: pd.DataFrame) -> pd.DataFrame:
         + 0.05 * x["r_turnover"]
         + 0.10 * x["r_extension"]
     )
+
+    # v2.5 separates price confirmation from economic causality. This prevents the
+    # candidate funnel from becoming a hidden "must already be strong" gate.
+    rs20 = x["rs_20d_vs_bench"].fillna(-999)
+    rs60 = x["rs_60d_vs_bench"].fillna(-999)
+    accel = x["acceleration"].fillna(-999)
+    bias20 = x["bias20"].fillna(0)
+    ret5 = x["ret_5d"].fillna(0)
+    trend = x["trend"].fillna("UNKNOWN")
+
+    x["reaction_state"] = "UNKNOWN"
+    x.loc[(trend == "BEAR") & (rs20 < 0), "reaction_state"] = "BROKEN"
+    x.loc[(rs20 <= 0) & (accel > 0) & (trend != "BEAR"), "reaction_state"] = "PRE_CONFIRMATION"
+    x.loc[(rs20 > 0) & (accel > 0), "reaction_state"] = "CONFIRMING"
+    x.loc[(rs20 > 0) & (rs60 > 0) & (trend == "STRONG_UP"), "reaction_state"] = "PERSISTENT"
+    x.loc[(rs20 > 0) & (accel <= 0) & (trend == "PULLBACK"), "reaction_state"] = "PULLBACK"
+    x.loc[(bias20 > 0.20) | (ret5 > 0.25), "reaction_state"] = "EXTENDED"
+
+    # A separate early-discovery score favors acceleration/quality without requiring
+    # already-positive RS20. It is used only to preserve lead-lag candidates.
+    x["taiwan_early_score_v2"] = (
+        0.30 * x["r_accel"]
+        + 0.25 * x["r_quality"]
+        + 0.15 * x["r_slope"]
+        + 0.10 * x["r_volume"]
+        + 0.10 * x["r_turnover"]
+        + 0.10 * x["r_extension"]
+    )
     return x
 
 
 def select_taiwan_candidates(stocks: pd.DataFrame, cfg: TaiwanScanConfig) -> pd.DataFrame:
+    """Balanced discovery funnel.
+
+    v2.5 deliberately reserves room for PRE_CONFIRMATION names so the system does
+    not only discover stocks after the move is already obvious. EXTENDED names are
+    still visible but cannot dominate the entire list.
+    """
     x = stocks.copy()
     liquid = x["avg_turnover20_twd"].fillna(0) >= cfg.min_turnover20
     price_ok = x["price"].fillna(0) >= cfg.min_price
@@ -203,11 +237,35 @@ def select_taiwan_candidates(stocks: pd.DataFrame, cfg: TaiwanScanConfig) -> pd.
         | (x["rs_20d_vs_bench"].fillna(-999) > 0)
         | (x["keynes_v2"].fillna(-999) > 0)
     )
-    x["candidate_eligible"] = liquid & price_ok & improving
+    x["candidate_eligible"] = liquid & price_ok & improving & x["reaction_state"].ne("BROKEN")
     x = x[x["candidate_eligible"]].copy()
-    x = x.sort_values("taiwan_candidate_score_v1", ascending=False)
-    x["candidate_rank"] = np.arange(1, len(x) + 1)
-    return x.head(cfg.top_candidates)
+
+    n = int(cfg.top_candidates)
+    n_early = max(20, int(n * 0.30))
+    n_extended = max(10, int(n * 0.15))
+    n_confirmed = max(1, n - n_early - n_extended)
+
+    confirmed = x[x["reaction_state"].isin(["CONFIRMING", "PERSISTENT", "PULLBACK"])].sort_values(
+        "taiwan_candidate_score_v1", ascending=False
+    ).head(n_confirmed)
+    early = x[x["reaction_state"].isin(["PRE_CONFIRMATION", "UNKNOWN"])].sort_values(
+        "taiwan_early_score_v2", ascending=False
+    ).head(n_early)
+    extended = x[x["reaction_state"].eq("EXTENDED")].sort_values(
+        "taiwan_candidate_score_v1", ascending=False
+    ).head(n_extended)
+
+    out = pd.concat([confirmed, early, extended], ignore_index=True).drop_duplicates("ticker", keep="first")
+    if len(out) < n:
+        filler = x[~x["ticker"].isin(out["ticker"])].sort_values("taiwan_candidate_score_v1", ascending=False).head(n-len(out))
+        out = pd.concat([out, filler], ignore_index=True)
+    out["candidate_bucket"] = out["reaction_state"].map({
+        "PRE_CONFIRMATION": "EARLY", "UNKNOWN": "EARLY", "EXTENDED": "EXTENDED",
+        "CONFIRMING": "CONFIRMED", "PERSISTENT": "CONFIRMED", "PULLBACK": "CONFIRMED"
+    }).fillna("OTHER")
+    out = out.sort_values(["candidate_bucket", "taiwan_candidate_score_v1"], ascending=[True, False])
+    out["candidate_rank"] = np.arange(1, len(out) + 1)
+    return out.head(n)
 
 
 def run_taiwan_scan(cfg: TaiwanScanConfig = TaiwanScanConfig(), cached_universe: str = "output/taiwan_universe.csv"):

@@ -9,24 +9,18 @@ import streamlit as st
 TAIPEI = ZoneInfo("Asia/Taipei")
 OUT = Path("output")
 
-st.set_page_config(page_title="Alpha Hunter v2.4", page_icon="🌎", layout="wide")
-st.title("🌎 Alpha Hunter v2.4 — Global + Taiwan Economic Linkage Sensor")
+st.set_page_config(page_title="Alpha Hunter v2.5", page_icon="🌎", layout="wide")
+st.title("🌎 Alpha Hunter v2.5 — Dynamic Causal Transmission Sensor")
 st.caption(
-    "Official data comes from scheduled GitHub Actions. Global Sensor finds world leadership; "
-    "Taiwan Sensor scans the full TWSE/TPEX common-stock universe; the v2.4 Transmission Engine only uses explicit "
-    "company-level economic linkage edges."
+    "Global price structure nominates what deserves research. It does not decide the active causal driver. "
+    "Structural company exposure, dynamic driver activation, Taiwan price confirmation, and final investment decisions are separate layers."
 )
 
-manifest_file = OUT / "manifest.json"
-if not manifest_file.exists():
-    st.error("🚨 DATA CONTRACT MISSING — output/manifest.json does not exist. Run GitHub Actions first.")
+mf = OUT / "manifest.json"
+if not mf.exists():
+    st.error("🚨 DATA CONTRACT MISSING — run GitHub Actions first.")
     st.stop()
-
-try:
-    manifest = json.loads(manifest_file.read_text(encoding="utf-8"))
-except Exception as exc:
-    st.error(f"🚨 Could not read manifest.json: {exc}")
-    st.stop()
+manifest = json.loads(mf.read_text(encoding="utf-8"))
 
 
 def parse_dt(v):
@@ -39,20 +33,20 @@ def parse_dt(v):
         return None
 
 
-def freshness_gate(m: dict):
+def freshness_gate(m):
     now = datetime.now(TAIPEI)
     generated = parse_dt(m.get("generated_at_taipei"))
     if generated is None:
-        return "STALE", "No valid generated_at_taipei in manifest.", None
+        return "STALE", "No valid generated_at_taipei", None
     age_h = (now - generated).total_seconds() / 3600
     weekend_window = now.weekday() in (5, 6) or (now.weekday() == 0 and now.time() < time(7, 45))
     max_age = 84 if weekend_window else 30
     if m.get("status") != "PASS":
-        return "WARNING", f"Manifest status is {m.get('status')}; required data contract is not fully PASS.", age_h
-    if str(m.get("schema_version")) != "2.4":
-        return "WARNING", f"Expected schema 2.4 but found {m.get('schema_version')}.", age_h
+        return "WARNING", f"Manifest status is {m.get('status')}", age_h
+    if str(m.get("schema_version")) != "2.5":
+        return "WARNING", f"Expected schema 2.5, found {m.get('schema_version')}", age_h
     if age_h > max_age:
-        return "STALE", f"Manifest is {age_h:.1f} hours old.", age_h
+        return "STALE", f"Manifest is {age_h:.1f} hours old", age_h
     return "FRESH", "Canonical manifest passed and scanner run is recent.", age_h
 
 
@@ -66,109 +60,107 @@ else:
 
 G = manifest.get("global", {})
 T = manifest.get("taiwan", {})
-X = manifest.get("transmission", {})
-
+C = manifest.get("causal_engine", {})
 c1, c2, c3, c4, c5, c6 = st.columns(6)
 c1.metric("Global scanned", G.get("scanned_count", "?"))
 c2.metric("Global themes", G.get("theme_count", "?"))
 c3.metric("Taiwan universe", T.get("universe_count", "?"))
 c4.metric("Taiwan scanned", T.get("scanned_count", "?"))
 c5.metric("Taiwan candidates", T.get("candidate_count", "?"))
-c6.metric("Linkage hypotheses", X.get("candidate_count", "?"))
+c6.metric("Unresolved causal tasks", C.get("research_queue_count", "?"))
 
 st.info(
-    "Automation: GitHub Actions is the official trigger. You do not need to open this app. "
-    "v2.4 disables broad-industry causal matching: a transmission hypothesis can only be promoted when an explicit "
-    "company-level Economic Linkage Graph edge exists and passes its linkage hard gate."
+    "v2.5 hard rule: PRICE CANNOT CREATE CAUSALITY. A strong Global theme only opens a research queue. "
+    "Structural exposure can exist while the dynamic driver is dormant or unknown. Final ETF/stock/risk decisions remain downstream."
 )
 
-with st.expander("Canonical data contract / freshness details"):
+with st.expander("Canonical contract / known model risks"):
     st.json(manifest)
 
-
-tab1, tab2, tab3, tab4, tab5 = st.tabs([
-    "Global Leaders", "Taiwan Candidates", "Economic Linkage Hypotheses", "Breadth", "Linkage Audit"
+tabs = st.tabs([
+    "Global Leaders", "Taiwan Candidates", "Causal Research Queue",
+    "Structural Matches", "Breadth", "Graph Audit"
 ])
 
-with tab1:
+with tabs[0]:
     p = OUT / "market_snapshot.csv"
     if p.exists():
-        df = pd.read_csv(p)
+        d = pd.read_csv(p)
         cols = [c for c in [
-            "ticker","name","theme","last_price_date","price","ret_5d","rs_20d_vs_bench",
-            "rs_60d_vs_bench","acceleration","keynes_legacy","keynes_v2","leader_score_v1","raw_leader_state"
-        ] if c in df.columns]
-        st.dataframe(df[cols].head(120), use_container_width=True, height=620)
-    else:
-        st.error("market_snapshot.csv missing")
+            "ticker", "name", "theme", "last_price_date", "price", "ret_5d", "rs_20d_vs_bench",
+            "rs_60d_vs_bench", "acceleration", "keynes_legacy", "keynes_v2", "leader_score_v1", "raw_leader_state"
+        ] if c in d.columns]
+        st.dataframe(d[cols].head(120), use_container_width=True, height=620)
 
-with tab2:
+with tabs[1]:
     p = OUT / "taiwan_candidates.csv"
     if p.exists():
-        df = pd.read_csv(p, dtype={"code": str})
+        d = pd.read_csv(p, dtype={"code": str})
+        st.caption("Balanced discovery funnel: confirmed + early/pre-confirmation + capped extended names. NOT a buy list.")
         cols = [c for c in [
-            "candidate_rank","code","ticker","name","exchange","industry","last_price_date","price",
-            "ret_5d","ret_20d","rs_20d_vs_bench","rs_60d_vs_bench","acceleration","keynes_legacy",
-            "keynes_v2","bias20","avg_turnover20_twd","taiwan_candidate_score_v1"
-        ] if c in df.columns]
-        st.caption("Discovery candidates only — NOT Hidden Dragon confirmation and NOT a buy list.")
-        st.dataframe(df[cols], use_container_width=True, height=680)
-    else:
-        st.warning("taiwan_candidates.csv is not available yet. Run the v2.4 workflow.")
+            "candidate_rank", "candidate_bucket", "reaction_state", "code", "ticker", "name", "exchange", "industry",
+            "last_price_date", "price", "ret_5d", "ret_20d", "rs_20d_vs_bench", "rs_60d_vs_bench", "acceleration",
+            "keynes_legacy", "keynes_v2", "bias20", "avg_turnover20_twd", "taiwan_candidate_score_v1", "taiwan_early_score_v2"
+        ] if c in d.columns]
+        st.dataframe(d[cols], use_container_width=True, height=680)
 
-with tab3:
-    p = OUT / "transmission_watchlist.csv"
+with tabs[2]:
+    p = OUT / "causal_research_queue.csv"
+    st.warning(
+        "Every driver below is UNRESOLVED_RESEARCH_REQUIRED. Price action nominated the broad theme; it did NOT prove which sub-driver is active."
+    )
     if p.exists():
-        df = pd.read_csv(p, dtype={"taiwan_code": str})
-        st.warning(
-            "Every row is HYPOTHESIS_ONLY. v2.4 requires an explicit company-level economic linkage edge, "
-            "but causal / fundamental validation is still mandatory before decision use."
-        )
-        preferred = [c for c in [
-            "global_theme","global_theme_strength_v1","taiwan_code","taiwan_name","taiwan_industry",
-            "economic_role","linkage_tier","linkage_confidence","link_mechanism","evidence_required",
-            "taiwan_candidate_score_v1","taiwan_rs20","taiwan_acceleration","taiwan_keynes_v2",
-            "taiwan_industry_breadth_support","contradiction_flag","combined_hypothesis_score_v2","status"
-        ] if c in df.columns]
-        st.dataframe(df[preferred] if preferred else df, use_container_width=True, height=680)
-    else:
-        st.warning("transmission_watchlist.csv missing")
+        d = pd.read_csv(p)
+        st.dataframe(d, use_container_width=True, height=680)
 
-with tab4:
-    c1, c2 = st.columns(2)
-    with c1:
+with tabs[3]:
+    p = OUT / "structural_matches.csv"
+    st.warning(
+        "Structural Match ≠ active causal transmission. These rows answer 'who could economically benefit if this driver is active?' "
+        "They are built from the full Taiwan scan, not only the top-150 funnel."
+    )
+    if p.exists():
+        d = pd.read_csv(p, dtype={"taiwan_code": str})
+        pref = [c for c in [
+            "research_priority_score", "global_theme", "driver_id", "driver_label", "taiwan_code", "name", "industry",
+            "economic_role", "linkage_tier", "linkage_confidence", "polarity", "causal_time_state", "reaction_state",
+            "in_top_candidate_funnel", "rs_20d_vs_bench", "acceleration", "keynes_v2", "dynamic_driver_state", "causal_status"
+        ] if c in d.columns]
+        st.dataframe(d[pref] if pref else d, use_container_width=True, height=680)
+
+with tabs[4]:
+    a, b = st.columns(2)
+    with a:
         st.subheader("Global theme breadth")
         p = OUT / "theme_breadth.csv"
-        if p.exists():
-            st.dataframe(pd.read_csv(p), use_container_width=True, height=600)
-    with c2:
+        if p.exists(): st.dataframe(pd.read_csv(p), use_container_width=True, height=600)
+    with b:
         st.subheader("Taiwan industry breadth")
         p = OUT / "taiwan_industry_breadth.csv"
-        if p.exists():
-            st.dataframe(pd.read_csv(p), use_container_width=True, height=600)
+        if p.exists(): st.dataframe(pd.read_csv(p), use_container_width=True, height=600)
 
-with tab5:
-    st.subheader("Economic Linkage Graph audit")
+with tabs[5]:
+    st.subheader("Structural exposure graph audit")
     st.caption(
-        "PROMOTED means: global theme strong enough + Taiwan stock in the quantitative candidate funnel + "
-        "explicit linkage tier/confidence passed. NOT_IN_TAIWAN_FUNNEL is not a rejection of the business linkage; "
-        "it only means the Taiwan price/quant signal is not currently strong enough."
+        "Edges are slow-moving economic hypotheses and have provenance/review fields. A SEED edge is not equivalent to source-backed verification."
     )
-    p = OUT / "transmission_linkage_audit.csv"
+    p = OUT / "causal_graph_audit.csv"
     if p.exists():
-        audit = pd.read_csv(p, dtype={"taiwan_code": str})
-        st.dataframe(audit, use_container_width=True, height=520)
-        if "audit_status" in audit.columns:
-            st.bar_chart(audit["audit_status"].value_counts())
-    else:
-        st.warning("transmission_linkage_audit.csv missing")
-    gp = OUT / "economic_linkage_graph.csv"
-    if gp.exists():
-        with st.expander("View canonical Economic Linkage Graph"):
-            st.dataframe(pd.read_csv(gp, dtype={"taiwan_code": str}), use_container_width=True, height=520)
+        d = pd.read_csv(p, dtype={"taiwan_code": str})
+        st.dataframe(d, use_container_width=True, height=520)
+        if "review_overdue" in d.columns:
+            c1, c2, c3 = st.columns(3)
+            c1.metric("Edges", len(d))
+            c2.metric("Review overdue", int(d["review_overdue"].fillna(False).sum()))
+            c3.metric("Missing source-backed provenance", int(d["missing_provenance"].fillna(False).sum()))
+    with st.expander("Causal driver taxonomy"):
+        p = OUT / "causal_driver_taxonomy.csv"
+        if p.exists(): st.dataframe(pd.read_csv(p), use_container_width=True, height=480)
+    with st.expander("Structural exposure graph"):
+        p = OUT / "structural_exposure_graph.csv"
+        if p.exists(): st.dataframe(pd.read_csv(p, dtype={"taiwan_code": str}), use_container_width=True, height=520)
 
 st.caption(
-    "Research rule: Scanner outputs describe observable market structure and explicit economic-linkage hypotheses. "
-    "Gemini validates company-specific causality, catalysts, fundamentals and counter-evidence. Final ETF vs stock, "
-    "position risk, entry and exit remain downstream decisions."
+    "Layer discipline: Python = what moved; Research Layer = which exact driver is active and why; structural graph = who has economic exposure; "
+    "Taiwan Sensor = whether price is confirming; final decision system = ETF/stock/cash + entry/risk/exit."
 )

@@ -1,22 +1,28 @@
-# Alpha Hunter v2.4 — Weekly Linkage / Universe Discovery
+# Alpha Hunter v2.5 — Weekly Causal Graph Discovery
 
-Use the Alpha Hunter Market Research Layer skill.
+Review the past week for market drivers or company-level economic relationships that the canonical v2.5 driver taxonomy / structural exposure graph may be missing or that may have become stale.
 
-Goal: identify missing Global leaders and missing / stale Taiwan Economic Linkage Graph edges.
+Do not change the graph. Output proposals only.
 
-Read manifest.json first and enforce the v2.4 canonical data contract.
+For each proposal classify:
 
-For each proposed linkage change output only a proposal:
+- `UNVERIFIED_NEW_DRIVER`
+- `UNVERIFIED_NEW_EDGE`
+- `EDGE_REVIEW_REQUIRED`
+- `EDGE_REMOVE_CANDIDATE`
+
+Required fields:
+
+- driver_id / proposed_driver_id
 - global_theme
-- taiwan_code
-- taiwan_company
-- proposed economic_role
-- proposed linkage_tier: DIRECT / STRONG / SECOND_ORDER / SPECULATIVE
-- proposed linkage_confidence
-- concrete economic mechanism
-- primary-source evidence required
-- reason the existing graph is missing / stale
+- Taiwan code/company when applicable
+- economic role
+- causal mechanism
+- polarity
+- supporting primary/official evidence
+- counter-evidence
+- event/evidence dates
+- confidence HIGH/MEDIUM/LOW
+- why this is not merely a price-fitting narrative
 
-Never silently edit the graph.
-Never infer linkage from TWSE industry category alone.
-Never propose a linkage solely because both stocks recently rose.
+Prioritize true structural changes: new product/customer exposure, capex shifts, technology transitions, industry pricing mechanisms, new supply-chain roles, or clear evidence that an old relationship has weakened.
