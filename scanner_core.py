@@ -4,6 +4,7 @@ import json
 import math
 from dataclasses import dataclass
 from datetime import datetime, timezone
+from zoneinfo import ZoneInfo
 from pathlib import Path
 from typing import Dict, Iterable, Optional
 
@@ -19,6 +20,27 @@ class ScanConfig:
     min_obs: int = 140
     benchmark: str = "SPY"
     output_dir: str = "output"
+
+
+TAIPEI_TZ = ZoneInfo("Asia/Taipei")
+
+def _price_series(hist: pd.DataFrame) -> pd.Series:
+    """Adjusted close for comparable returns; falls back to Close."""
+    if "Adj Close" in hist.columns and hist["Adj Close"].notna().any():
+        return hist["Adj Close"].astype(float)
+    return hist["Close"].astype(float)
+
+def _adjusted_ohlc(hist: pd.DataFrame) -> pd.DataFrame:
+    """Return OHLC on the same adjusted basis as Adj Close when available."""
+    h = hist.copy()
+    if "Adj Close" in h.columns and "Close" in h.columns:
+        raw = h["Close"].astype(float)
+        adj = h["Adj Close"].astype(float)
+        factor = (adj / raw.replace(0, np.nan)).replace([np.inf, -np.inf], np.nan).fillna(1.0)
+        for col in ["Open", "High", "Low", "Close"]:
+            if col in h.columns:
+                h[col] = h[col].astype(float) * factor
+    return h
 
 
 def _safe_ret(series: pd.Series, n: int) -> float:
@@ -123,8 +145,10 @@ def trend_state(close: pd.Series) -> str:
 
 
 def extract_features(hist: pd.DataFrame, benchmark_close: Optional[pd.Series] = None) -> Dict[str, float | str]:
-    h = hist.dropna(subset=["Close"]).copy()
-    c = h["Close"].astype(float)
+    raw_h = hist.dropna(subset=["Close"]).copy()
+    raw_close = raw_h["Close"].astype(float)
+    h = _adjusted_ohlc(raw_h)
+    c = _price_series(raw_h)
     if len(c) < 65:
         return {}
     curr = float(c.iloc[-1])
@@ -132,6 +156,9 @@ def extract_features(hist: pd.DataFrame, benchmark_close: Optional[pd.Series] = 
     ma20 = float(c.rolling(20).mean().iloc[-1])
     ma60 = float(c.rolling(60).mean().iloc[-1])
     high52 = float(h["High"].tail(TRADING_DAYS).max()) if "High" in h else float(c.tail(TRADING_DAYS).max())
+    high20 = float(h["High"].tail(20).max()) if "High" in h else float(c.tail(20).max())
+    last_idx = c.dropna().index[-1]
+    last_price_date = pd.Timestamp(last_idx).date().isoformat()
     vol_ratio = np.nan
     if "Volume" in h:
         v = h["Volume"].astype(float)
@@ -150,13 +177,16 @@ def extract_features(hist: pd.DataFrame, benchmark_close: Optional[pd.Series] = 
         "ma20_slope": _slope(c.rolling(20).mean(), 10),
         "ma60_slope": _slope(c.rolling(60).mean(), 20),
         "bias20": curr / ma20 - 1.0 if ma20 else np.nan,
+        "dist_20d_high": curr / high20 - 1.0 if high20 else np.nan,
         "dist_52w_high": curr / high52 - 1.0 if high52 else np.nan,
+        "last_price_date": last_price_date,
+        "calendar_staleness_days": (datetime.now(TAIPEI_TZ).date() - pd.Timestamp(last_idx).date()).days,
         "volume_ratio20": vol_ratio,
         "atr_pct14": atr_pct(h),
         "er20": efficiency_ratio(c, 20),
         "vol20": float(c.pct_change().dropna().tail(20).std(ddof=1) * math.sqrt(20)),
         "maxdd20": max_drawdown(c, 20),
-        "keynes_legacy": keynes_legacy(c),
+        "keynes_legacy": keynes_legacy(raw_close),
         "keynes_v2": keynes_v2(c, 20),
         "trend": trend_state(c),
     }
@@ -266,7 +296,10 @@ def compute_theme_breadth(stock_df: pd.DataFrame) -> pd.DataFrame:
             "above_ma60_pct": float((g["price"] > g["ma60"]).mean()),
             "positive_rs5_pct": float((g["rs_5d_vs_bench"] > 0).mean()),
             "positive_rs20_pct": float((g["rs_20d_vs_bench"] > 0).mean()),
-            "near_20d_high_pct": float((g["dist_52w_high"] > -0.05).mean()),
+            "near_20d_high_pct": float((g["dist_20d_high"] > -0.05).mean()),
+            "near_52w_high_pct": float((g["dist_52w_high"] > -0.05).mean()),
+            "breadth_confidence": "HIGH" if n >= 6 else ("MEDIUM" if n >= 3 else "LOW"),
+            "breadth_eligible": bool(n >= 3),
             "median_rs20": float(g["rs_20d_vs_bench"].median()),
             "median_keynes_v2": float(g["keynes_v2"].median()),
             "median_keynes_legacy": float(g["keynes_legacy"].median()),
@@ -275,6 +308,11 @@ def compute_theme_breadth(stock_df: pd.DataFrame) -> pd.DataFrame:
 
 
 def update_registry(current: pd.DataFrame, previous_path: Path) -> pd.DataFrame:
+    """State registry with observation-date-aware hysteresis.
+
+    Re-running the workflow against the same market close must NOT advance confirmation
+    or weakening streaks. Only a new last_price_date can advance a streak.
+    """
     now = datetime.now(timezone.utc).isoformat()
     prev = pd.DataFrame()
     if previous_path.exists():
@@ -285,26 +323,40 @@ def update_registry(current: pd.DataFrame, previous_path: Path) -> pd.DataFrame:
     prev_map = prev.set_index("ticker").to_dict("index") if not prev.empty and "ticker" in prev else {}
 
     out = []
+    confirm_family = {"EMERGING", "PERSISTENT", "PULLBACK_LEADER", "EARLY_EMERGING"}
     for _, r in current.iterrows():
         p = prev_map.get(r["ticker"], {})
         prev_state = p.get("state", "")
         raw = classify_leader(r)
-        streak = int(p.get("confirmation_streak", 0) or 0)
-
-        confirm_family = {"EMERGING", "PERSISTENT", "PULLBACK_LEADER", "EARLY_EMERGING"}
-        if raw in confirm_family:
-            streak = streak + 1 if prev_state in confirm_family else 1
+        obs_date = str(r.get("last_price_date", ""))
+        prev_obs_date = str(p.get("observation_date", ""))
+        # Migration-safe: an old registry without observation_date is stamped without
+        # advancing the streak. A brand-new ticker starts at one observation.
+        if p and not prev_obs_date:
+            is_new_observation = False
         else:
-            streak = 0
+            is_new_observation = (not prev_obs_date) or (obs_date != prev_obs_date)
 
-        # Hysteresis: one-day spikes stay candidate; persistent requires repeated confirmation.
-        weak_streak = 0
+        streak = int(p.get("confirmation_streak", 0) or 0)
+        weak_streak = int(p.get("weakening_streak", 0) or 0)
+
+        if is_new_observation:
+            if raw in confirm_family:
+                streak = streak + 1 if prev_state in confirm_family else 1
+            else:
+                streak = 0
+
+            if raw == "WEAKENING" and prev_state in {"PERSISTENT", "PULLBACK_LEADER"}:
+                weak_streak += 1
+            elif raw != "WEAKENING":
+                weak_streak = 0
+
+        # Hysteresis: repeated runs on identical data do not promote/demote anything.
         if raw == "PERSISTENT" and streak < 3:
             state = "EMERGING"
         elif raw == "EARLY_EMERGING" and streak < 2:
             state = "CANDIDATE"
         elif raw == "WEAKENING" and prev_state in {"PERSISTENT", "PULLBACK_LEADER"}:
-            weak_streak = int(p.get("weakening_streak", 0) or 0) + 1
             state = "WEAKENING" if weak_streak >= 2 else prev_state
         else:
             state = raw
@@ -315,6 +367,7 @@ def update_registry(current: pd.DataFrame, previous_path: Path) -> pd.DataFrame:
             "name": r.get("name", ""),
             "state": state,
             "raw_state": raw,
+            "observation_date": obs_date,
             "confirmation_streak": streak,
             "weakening_streak": weak_streak,
             "leader_score_v1": r.get("leader_score_v1", np.nan),
@@ -341,7 +394,7 @@ def run_scan(universe_csv: str = "config/universe.csv", config: ScanConfig = Sca
     bench_hist = data.get(config.benchmark)
     if bench_hist is None or bench_hist.empty:
         raise RuntimeError(f"Benchmark {config.benchmark} unavailable")
-    bench_close = bench_hist["Close"]
+    bench_close = _price_series(bench_hist)
 
     rows = []
     for _, meta in uni.iterrows():
@@ -382,7 +435,14 @@ def write_outputs(results: Dict[str, pd.DataFrame], output_dir: str = "output") 
 
     payload = {
         "generated_at_utc": ts,
-        "schema_version": "2.0",
+        "schema_version": "2.1",
+        "generated_at_taipei": datetime.now(TAIPEI_TZ).isoformat(),
+        "scan_quality": {
+            "scanned_count": int(len(results["stocks"])),
+            "theme_count": int(results["stocks"]["theme"].nunique()),
+            "latest_price_date": str(results["stocks"]["last_price_date"].max()),
+            "earliest_price_date": str(results["stocks"]["last_price_date"].min()),
+        },
         "notes": {
             "keynes_legacy": "Original user heuristic retained unchanged in spirit.",
             "keynes_v2": "Experimental risk-adjusted trend-quality feature using return volatility and efficiency ratio.",
@@ -396,9 +456,9 @@ def write_outputs(results: Dict[str, pd.DataFrame], output_dir: str = "output") 
 
 def append_audit_log(results: Dict[str, pd.DataFrame], path: str = "output/feature_history.csv") -> None:
     stocks = results["stocks"].copy()
-    stocks["snapshot_date_utc"] = datetime.now(timezone.utc).date().isoformat()
+    stocks["snapshot_date_taipei"] = datetime.now(TAIPEI_TZ).date().isoformat()
     keep = [
-        "snapshot_date_utc","ticker","theme","price","ret_1d","ret_5d","ret_20d","ret_60d",
+        "snapshot_date_taipei","last_price_date","ticker","theme","price","ret_1d","ret_5d","ret_20d","ret_60d",
         "rs_5d_vs_bench","rs_20d_vs_bench","rs_60d_vs_bench","acceleration","er20","vol20","maxdd20",
         "keynes_legacy","keynes_v2","leader_score_v1","raw_leader_state"
     ]
@@ -407,5 +467,5 @@ def append_audit_log(results: Dict[str, pd.DataFrame], path: str = "output/featu
     if p.exists():
         old = pd.read_csv(p)
         stocks = pd.concat([old, stocks], ignore_index=True)
-        stocks = stocks.drop_duplicates(["snapshot_date_utc","ticker"], keep="last")
+        stocks = stocks.drop_duplicates(["snapshot_date_taipei","ticker"], keep="last")
     stocks.to_csv(p, index=False)

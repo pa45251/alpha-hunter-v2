@@ -22,7 +22,7 @@ registry = Path("output/leader_registry.csv")
 if snap.exists():
     df = pd.read_csv(snap)
     st.subheader("Dynamic leaders")
-    cols = [c for c in ["ticker","name","theme","price","ret_5d","rs_20d_vs_bench","rs_60d_vs_bench","keynes_legacy","keynes_v2","leader_score_v1","raw_leader_state"] if c in df.columns]
+    cols = [c for c in ["ticker","name","theme","last_price_date","price","ret_5d","rs_20d_vs_bench","rs_60d_vs_bench","keynes_legacy","keynes_v2","leader_score_v1","raw_leader_state"] if c in df.columns]
     st.dataframe(df[cols].head(80), use_container_width=True, height=550)
 else:
     st.info("No snapshot yet. Click Run live scan or run daily_scan.py.")
