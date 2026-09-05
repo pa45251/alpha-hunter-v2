@@ -1,0 +1,109 @@
+{
+  "contract": "ALPHA_HUNTER_CANONICAL_DATA_CONTRACT",
+  "schema_version": "2.3",
+  "scanner_version": "2.3",
+  "repository": "pa45251/alpha-hunter-v2",
+  "branch": "main",
+  "canonical_output_directory": "https://github.com/pa45251/alpha-hunter-v2/tree/main/output",
+  "generated_at_utc": "2026-09-05T22:43:12.807210+00:00",
+  "generated_at_taipei": "2026-09-06T06:43:12.807221+08:00",
+  "status": "PASS",
+  "missing_required_files": [],
+  "global": {
+    "scanned_count": 98,
+    "theme_count": 40,
+    "latest_price_date": "2026-09-04",
+    "earliest_price_date": "2026-09-04"
+  },
+  "taiwan": {
+    "universe_source_status": "LIVE_OFFICIAL",
+    "universe_count": 1974,
+    "scanned_count": 1969,
+    "candidate_count": 150,
+    "industry_count": 34,
+    "latest_price_date": "2026-09-04",
+    "earliest_price_date": "2026-09-04",
+    "benchmark": "^TWII"
+  },
+  "transmission": {
+    "candidate_count": 120,
+    "status": "HYPOTHESIS_ONLY",
+    "rule": "Requires causal/fundamental validation by Research Layer before any decision use."
+  },
+  "authoritative_files": [
+    {
+      "name": "market_snapshot.csv",
+      "relative_path": "output/market_snapshot.csv",
+      "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/market_snapshot.csv",
+      "sha256": "bd31696b83644ca89206b1bdd326727b7a9a78e7eb46c91f3e283e6fa096b827",
+      "bytes": 69032
+    },
+    {
+      "name": "theme_breadth.csv",
+      "relative_path": "output/theme_breadth.csv",
+      "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/theme_breadth.csv",
+      "sha256": "ac5c876382382a939e3567a2d78b64f1f739d6c013f1a854dab9e465220a3e38",
+      "bytes": 5098
+    },
+    {
+      "name": "leader_registry.csv",
+      "relative_path": "output/leader_registry.csv",
+      "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/leader_registry.csv",
+      "sha256": "66eb73bef2123f1a8b13a62af6ff42aab563880a829028c11be3ea1c95129fe3",
+      "bytes": 19339
+    },
+    {
+      "name": "feature_history.csv",
+      "relative_path": "output/feature_history.csv",
+      "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/feature_history.csv",
+      "sha256": "00468df960c94a94263b72aac8321a9a2a5e83260868ea3b93f9ec0b4413e398",
+      "bytes": 99416
+    },
+    {
+      "name": "market_snapshot.json",
+      "relative_path": "output/market_snapshot.json",
+      "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/market_snapshot.json",
+      "sha256": "b08f0059b96994525d06d413f956e6fcfd907c234a13725784770be45223a0d0",
+      "bytes": 31984
+    },
+    {
+      "name": "taiwan_candidates.csv",
+      "relative_path": "output/taiwan_candidates.csv",
+      "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/taiwan_candidates.csv",
+      "sha256": "5623960ae7f46c26f4b0a1db1ed11461bf583ca2b5108bd99c0500c98110ad70",
+      "bytes": 125436
+    },
+    {
+      "name": "taiwan_candidate_history.csv",
+      "relative_path": "output/taiwan_candidate_history.csv",
+      "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/taiwan_candidate_history.csv",
+      "sha256": "da623b4635d41ecdbcb5c78c863c7fa39763e8a051e9c8a8338778594d60a360",
+      "bytes": 50239
+    },
+    {
+      "name": "taiwan_industry_breadth.csv",
+      "relative_path": "output/taiwan_industry_breadth.csv",
+      "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/taiwan_industry_breadth.csv",
+      "sha256": "6bb93c41c4000caaa0cd0ef1cdfb10d13abd6fab2052a5ab84acc2e65f12ebd9",
+      "bytes": 6622
+    },
+    {
+      "name": "taiwan_universe.csv",
+      "relative_path": "output/taiwan_universe.csv",
+      "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/taiwan_universe.csv",
+      "sha256": "b01016519137a5b4f2cd23891413b4888357e8630c0dc67860e9def264ac0b04",
+      "bytes": 199304
+    },
+    {
+      "name": "transmission_watchlist.csv",
+      "relative_path": "output/transmission_watchlist.csv",
+      "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/transmission_watchlist.csv",
+      "sha256": "837c9d2e41af02aa2c366790a5b1e63ed968fe6e67f6545f38f0b02f7ef06718",
+      "bytes": 23491
+    }
+  ],
+  "hard_gate": {
+    "instruction": "Research agents must read manifest.json first. If status is not PASS, identity mismatches, required files are missing, or freshness fails: DATA ACCESS FAILED / DATA QUALITY WARNING and STOP decision inference.",
+    "do_not_substitute": "Do not substitute similarly named GitHub repositories, Streamlit tables, search snippets, or external price websites for scanner outputs."
+  }
+}
