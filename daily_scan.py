@@ -4,6 +4,7 @@ import hashlib
 import json
 import os
 from datetime import datetime, timezone
+import uuid
 from pathlib import Path
 
 import pandas as pd
@@ -76,6 +77,8 @@ def build_manifest(
     structural_matches: pd.DataFrame,
     graph_audit_df: pd.DataFrame,
     activations: pd.DataFrame,
+    run_id: str,
+    pipeline_checks: dict,
 ) -> None:
     repo = os.getenv("GITHUB_REPOSITORY", "pa45251/alpha-hunter-v2")
     branch = os.getenv("GITHUB_REF_NAME", "main")
@@ -103,7 +106,8 @@ def build_manifest(
     g = global_results["stocks"]
     t = tw["stocks"]
     coverage = len(t) / max(1, len(tw["universe"]))
-    status = "PASS" if not missing and len(g) >= 90 and coverage >= 0.97 else "WARNING"
+    checks_pass = all(bool(v) for v in pipeline_checks.values())
+    status = "PASS" if not missing and len(g) >= 90 and coverage >= 0.97 and checks_pass else "WARNING"
 
     active_count = 0
     if not structural_matches.empty and "dynamic_driver_state" in structural_matches.columns:
@@ -112,14 +116,17 @@ def build_manifest(
     manifest = {
         "contract": "ALPHA_HUNTER_CANONICAL_DATA_CONTRACT",
         "schema_version": "2.5",
-        "scanner_version": "2.5",
+        "scanner_version": "2.5.1",
+        "run_id": run_id,
         "repository": repo,
         "branch": branch,
         "canonical_output_directory": f"https://github.com/{repo}/tree/{branch}/output",
+        "canonical_manifest_raw_url": f"https://raw.githubusercontent.com/{repo}/{branch}/output/manifest.json",
         "generated_at_utc": datetime.now(timezone.utc).isoformat(),
         "generated_at_taipei": datetime.now(TAIPEI_TZ).isoformat(),
         "status": status,
         "missing_required_files": missing,
+        "pipeline_checks": pipeline_checks,
         "global": {
             "scanned_count": int(len(g)),
             "theme_count": int(g["theme"].nunique()),
@@ -161,8 +168,8 @@ def build_manifest(
         "authoritative_files": files,
         "hard_gate": {
             "instruction": (
-                "Research agents must read manifest.json first. If status is not PASS, identity mismatches, required files are missing, "
-                "or freshness fails: DATA ACCESS FAILED / DATA QUALITY WARNING and STOP decision inference."
+                "Research agents must read the exact canonical_manifest_raw_url first. If status is not PASS, repository/branch/schema identity mismatches, "
+                "pipeline_checks are not all true, required files are missing, or freshness fails: DATA ACCESS FAILED / DATA QUALITY WARNING and STOP decision inference."
             ),
             "causal_rule": (
                 "Do not infer an active driver from price alone. causal_research_queue.csv contains unresolved research tasks. "
@@ -175,6 +182,8 @@ def build_manifest(
 
 
 if __name__ == "__main__":
+    run_id = f"{datetime.now(TAIPEI_TZ).strftime('%Y%m%dT%H%M%S%z')}-{uuid.uuid4().hex[:8]}"
+
     # 1) Global market-structure sensor
     gcfg = ScanConfig(lookback="2y", min_obs=140, benchmark="SPY", output_dir="output")
     global_results = run_scan("config/universe.csv", gcfg)
@@ -196,6 +205,7 @@ if __name__ == "__main__":
     ccfg = CausalConfig()
 
     research_queue = build_causal_research_queue(global_results["stocks"], taxonomy, ccfg)
+    research_queue.insert(0, "run_id", run_id)
     research_queue.to_csv(OUT / "causal_research_queue.csv", index=False)
 
     # Structural matching uses the full Taiwan scan, preventing top-candidate confirmation bias.
@@ -206,13 +216,26 @@ if __name__ == "__main__":
     # Optional future bridge: a Research Agent may write driver activations, but only canonical driver_ids are accepted.
     activations = validate_driver_activation_file(Path("input/driver_activation.csv"), research_queue, ccfg)
     structural = apply_driver_activation(structural, activations)
+    structural.insert(0, "run_id", run_id)
     structural.to_csv(OUT / "structural_matches.csv", index=False)
 
     ga = graph_audit(exposures)
+    ga.insert(0, "run_id", run_id)
     ga.to_csv(OUT / "causal_graph_audit.csv", index=False)
     _copy_causal_configs_to_output()
 
-    build_manifest(global_results, tw, research_queue, structural, ga, activations)
+    # Integration contract checks: prove the causal files were rebuilt in THIS run, not merely left over from an older snapshot.
+    pipeline_checks = {
+        "global_outputs_generated": (OUT / "market_snapshot.csv").exists() and len(global_results["stocks"]) > 0,
+        "taiwan_outputs_generated": (OUT / "taiwan_candidates.csv").exists() and len(tw["stocks"]) > 0,
+        "causal_queue_rebuilt_this_run": (not research_queue.empty) and research_queue["run_id"].eq(run_id).all(),
+        "structural_matches_rebuilt_this_run": (not structural.empty) and structural["run_id"].eq(run_id).all(),
+        "graph_audit_rebuilt_this_run": (not ga.empty) and ga["run_id"].eq(run_id).all(),
+        "causal_taxonomy_snapshot_present": (OUT / "causal_driver_taxonomy.csv").exists(),
+        "structural_graph_snapshot_present": (OUT / "structural_exposure_graph.csv").exists(),
+    }
+
+    build_manifest(global_results, tw, research_queue, structural, ga, activations, run_id, pipeline_checks)
 
     print(f"Global: {len(global_results['stocks'])} securities / {global_results['stocks']['theme'].nunique()} themes")
     print(f"Taiwan: {len(tw['stocks'])}/{len(tw['universe'])} common stocks / {tw['stocks']['industry'].nunique()} industries")

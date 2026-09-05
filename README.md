@@ -1,4 +1,4 @@
-# Alpha Hunter v2.5 — Dynamic Causal Transmission Sensor
+# Alpha Hunter v2.5.1 — Dynamic Causal Transmission Sensor
 
 Alpha Hunter v2.5 separates market observation, causal research, structural economic exposure, Taiwan price confirmation, and final investment decisions.
 
@@ -51,3 +51,11 @@ GitHub Actions runs at approximately 06:55 Asia/Taipei on weekdays. No manual St
 ## Model risk
 
 Read `V2_5_DESIGN_REVIEW.md`. v2.5 is designed to expose uncertainty rather than hide it.
+
+
+## v2.5.1 Integration hardening
+- Keeps schema `2.5` for compatibility, bumps scanner implementation to `2.5.1`.
+- Adds a unique `run_id` to each run and to causal queue / structural matches / graph audit.
+- Manifest now includes `pipeline_checks` proving those causal artifacts were rebuilt in the current run.
+- Gemini canonical source is the exact raw manifest URL; it must not search for similarly named repositories.
+- `linkage_confidence` is explicitly a seed prior, not a probability. Unsourced edges remain weak provenance.
