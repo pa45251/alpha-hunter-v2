@@ -144,6 +144,24 @@ def trend_state(close: pd.Series) -> str:
     return "RANGE"
 
 
+
+
+def _normalize_series_index_for_join(series: pd.Series) -> pd.Series:
+    """Normalize market timestamps to timezone-naive calendar dates for cross-market joins.
+
+    yfinance may return timezone-aware indices for Taiwan securities and timezone-naive
+    indices for US benchmarks. Pandas cannot concatenate/sort those mixed indices.
+    For relative-strength alignment we only need the trading calendar date, so convert
+    both to timezone-naive normalized dates and de-duplicate any repeated dates.
+    """
+    s = series.dropna().copy()
+    idx = pd.DatetimeIndex(pd.to_datetime(s.index))
+    if idx.tz is not None:
+        idx = idx.tz_localize(None)
+    idx = idx.normalize()
+    s.index = idx
+    return s[~s.index.duplicated(keep="last")].sort_index()
+
 def extract_features(hist: pd.DataFrame, benchmark_close: Optional[pd.Series] = None) -> Dict[str, float | str]:
     raw_h = hist.dropna(subset=["Close"]).copy()
     raw_close = raw_h["Close"].astype(float)
@@ -191,8 +209,9 @@ def extract_features(hist: pd.DataFrame, benchmark_close: Optional[pd.Series] = 
         "trend": trend_state(c),
     }
     if benchmark_close is not None:
-        b = benchmark_close.dropna()
-        aligned = pd.concat([c.rename("asset"), b.rename("bench")], axis=1).dropna()
+        asset_for_join = _normalize_series_index_for_join(c)
+        b = _normalize_series_index_for_join(benchmark_close)
+        aligned = pd.concat([asset_for_join.rename("asset"), b.rename("bench")], axis=1).dropna()
         for n in (5, 20, 60):
             if len(aligned) > n:
                 ar = aligned["asset"].iloc[-1] / aligned["asset"].iloc[-1-n] - 1
