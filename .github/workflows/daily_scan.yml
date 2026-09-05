@@ -3,8 +3,8 @@ name: Alpha Hunter Daily Scan
 on:
   workflow_dispatch:
   schedule:
-    # 22:55 UTC = 台灣時間隔天 06:55
-    # Sun-Thu UTC = Mon-Fri Taiwan
+    # GitHub cron uses UTC.
+    # 22:55 UTC Sun-Thu = 06:55 Asia/Taipei Mon-Fri.
     - cron: '55 22 * * 0-4'
 
 permissions:
@@ -25,7 +25,6 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-          cache: 'pip'
 
       - name: Install dependencies
         run: pip install -r requirements.txt
@@ -33,14 +32,7 @@ jobs:
       - name: Run Alpha Hunter scanner
         run: python daily_scan.py
 
-      - name: Upload scan outputs
-        uses: actions/upload-artifact@v4
-        with:
-          name: alpha-hunter-output
-          path: output/
-          retention-days: 30
-
-      - name: Commit snapshots back to repository
+      - name: Commit latest scanner outputs to repository
         run: |
           git config user.name "alpha-hunter-bot"
           git config user.email "actions@users.noreply.github.com"
