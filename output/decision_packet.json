@@ -1,14 +1,13 @@
 {
   "contract": "ALPHA_HUNTER_DECISION_PACKET",
   "decision_contract_version": "2.7.1",
-  "run_id": "20260906T122431+0800-4938c44d",
-  "generated_at": "2026-09-06T04:26:54.211344+00:00",
+  "run_id": "20260906T123633+0800-2b17a286",
+  "generated_at": "2026-09-06T04:40:11.648467+00:00",
   "gate_first_score_second": true,
   "price_can_create_causality": false,
   "auto_trade_allowed": false,
-  "current_capability": "ETF_VS_STOCK_ENTRY_PLUS_PRIVATE_RISK_GATE",
+  "current_capability": "ETF_VS_STOCK_ENTRY_PLUS_PRIVATE_RISK_PLUS_EXISTING_POSITION_EXIT",
   "missing_downstream_modules": [
-    "EXISTING_POSITION_THESIS_LEDGER",
     "SHADOW_AUDIT_VALIDATION"
   ],
   "action_counts": {
@@ -79,6 +78,20 @@
     "risk_policy_version": "1.1",
     "auto_order_execution": false,
     "privacy_rule": "Private holdings/balances/weights/risk groups and derived metrics are consumed in-memory only and never committed or printed."
+  },
+  "existing_position_layer": {
+    "position_inputs_valid": true,
+    "position_blockers": [],
+    "position_action_counts": {
+      "REVIEW_THESIS": 4,
+      "REDUCE_RISK": 1
+    },
+    "thesis_mapping_counts": {
+      "RISK_GROUP_INFERRED": 3,
+      "MISSING": 2
+    },
+    "private_position_details_committed": false,
+    "privacy_rule": "Per-position actions, tickers, balances, weights and P/L stay in-memory and are never committed or logged."
   },
   "portfolio_action_counts": {
     "WATCH_RESEARCH": 52,
