@@ -1,27 +1,35 @@
-# Alpha Hunter v2.8 — Private Position Thesis Schema
+# Alpha Hunter v2.9 — Private Position Thesis Schema
 
 This document contains schema only. Never place real holdings, balances, cost basis, P/L, or position weights in the public repository.
 
-`ALPHA_HUNTER_PORTFOLIO_JSON` remains the private source of truth. Existing fields continue to work. For more precise HOLD / REDUCE / EXIT decisions, each private position may optionally add:
+`ALPHA_HUNTER_PORTFOLIO_JSON` remains the private source of truth for portfolio/risk data. Existing fields continue to work.
+
+For more precise HOLD / REDUCE / EXIT decisions, v2.9 also supports a separate optional GitHub Actions Secret named `ALPHA_HUNTER_POSITION_THESIS_JSON`. This keeps the investment thesis ledger independent from balances and position sizing.
+
+Synthetic schema example:
 
 ```json
 {
-  "ticker": "SYNTHETIC_EXAMPLE",
-  "market_value_twd": 1000000,
-  "risk_groups": ["AI_CAPEX"],
-  "thesis_driver_ids": ["AI_SERVER_SHIPMENTS"],
-  "thesis_status": "ACTIVE",
-  "cost_basis_twd": 950000,
-  "unrealized_pnl_pct": 5.26
+  "positions": [
+    {
+      "ticker": "SYNTHETIC_EXAMPLE",
+      "thesis_driver_ids": ["AI_SERVER_SHIPMENTS"],
+      "thesis_status": "ACTIVE"
+    }
+  ]
 }
 ```
 
+The same `thesis_driver_ids` and `thesis_status` fields may still live directly inside `ALPHA_HUNTER_PORTFOLIO_JSON`; the separate overlay takes precedence when configured.
+
 ## Fields
 
-- `thesis_driver_ids`: preferred explicit mapping from the holding to one or more canonical causal drivers. If omitted, v2.8 falls back to `risk_groups` where a conservative mapping exists.
-- `thesis_status`: optional manual override. `INVALIDATED` or `BROKEN` creates `EXIT_THESIS`; otherwise the engine relies on live causal/provenance/reaction gates.
-- `cost_basis_twd`: optional. Used only in-memory to derive position P/L when `unrealized_pnl_pct` is absent.
-- `unrealized_pnl_pct`: optional. Enables the existing `max_position_loss_pct` policy to create `EXIT_RISK`.
+- `thesis_driver_ids`: preferred explicit mapping from the holding to one or more canonical causal drivers. If omitted, the engine falls back to `risk_groups` where a conservative mapping exists.
+- `thesis_status`: optional manual state. `INVALIDATED` or `BROKEN` creates `EXIT_THESIS`; otherwise the engine relies on live causal/provenance/reaction gates.
+- `cost_basis_twd`: optional portfolio field. Used only in-memory to derive position P/L when `unrealized_pnl_pct` is absent.
+- `unrealized_pnl_pct`: optional portfolio field. Enables the private `max_position_loss_pct` policy to create `EXIT_RISK`.
+
+A configured but malformed thesis overlay fails closed for the existing-position engine. An absent overlay is allowed and preserves backward compatibility.
 
 ## Decision precedence
 
@@ -35,4 +43,4 @@ This document contains schema only. Never place real holdings, balances, cost ba
 
 ## Privacy contract
 
-Per-position actions are computed in-memory. Tickers, balances, weights, cost basis and P/L are not written to canonical public outputs or logs. The public decision packet contains only aggregate status/counts.
+The overlay is read from environment Secrets and merged in-memory by ticker. Per-position actions are computed in-memory. Tickers, balances, weights, cost basis, P/L, and thesis contents are not written to canonical public outputs or logs. The public decision packet contains only aggregate status/counts.
