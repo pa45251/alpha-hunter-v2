@@ -9,8 +9,8 @@
 
 ## Deployment status
 - SHADOW ONLY: all BUY/SELL/HOLD signals are research outputs; no live order is authorized.
-- Frozen strategy: `NOT_VERIFIED`
-- Freeze integrity: `False`
+- Frozen strategy: `ALPHA_HUNTER_SHADOW_V1`
+- Freeze integrity: `True`
 - First review: 2026-11-29. Review does not automatically enable trading.
 - Existing shadow statistics are gross signal outcomes, not validated strategy performance.
 
