@@ -1,7 +1,7 @@
 {
   "contract": "ALPHA_HUNTER_EXISTING_POSITION_CIO_ADVISORY",
   "schema_version": "1.0",
-  "generated_at": "2026-09-06T13:28:18.746428+00:00",
+  "generated_at": "2026-09-06T13:49:30.647220+00:00",
   "privacy": {
     "alias_only": true,
     "ticker_included": false,
