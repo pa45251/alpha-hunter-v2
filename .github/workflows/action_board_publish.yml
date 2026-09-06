@@ -32,16 +32,22 @@ jobs:
         with:
           python-version: '3.12'
 
+      - name: Install advisory dependencies
+        run: pip install pandas
+
+      - name: Build CIO advisory layer
+        run: python cio_advisory.py
+
       - name: Build privacy-safe one-page action board
         run: python action_board_summary.py
 
-      - name: Commit action board
+      - name: Commit advisory and action board
         run: |
           git config user.name "alpha-hunter-bot"
           git config user.email "actions@users.noreply.github.com"
-          git add output/action_board.md
+          git add output/cio_advisory.csv output/cio_advisory.json output/action_board.md
           if ! git diff --cached --quiet; then
-            git commit -m "publish alpha hunter action board $(date -u +%F)"
+            git commit -m "publish alpha hunter CIO advisory $(date -u +%F)"
             git fetch origin main
             git rebase origin/main
             git push origin HEAD:main
