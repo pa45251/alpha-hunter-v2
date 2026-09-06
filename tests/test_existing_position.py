@@ -1,6 +1,7 @@
+import json
 import pandas as pd
 
-from existing_position import evaluate_existing_positions
+from existing_position import apply_private_thesis_overlay, evaluate_existing_positions, load_private_thesis_overlay
 
 
 def policy(**overrides):
@@ -58,3 +59,25 @@ def test_explicit_private_invalidation_has_priority():
     portfolio = {"gross_exposure_pct": 80, "positions": [{"ticker": "SYN1", "weight_pct": 20, "risk_groups": ["AI_CAPEX"], "thesis_status": "INVALIDATED"}]}
     out = evaluate_existing_positions(board(), policy(), portfolio)
     assert out.iloc[0]["action"] == "EXIT_THESIS"
+
+
+def test_private_thesis_overlay_upgrades_inferred_mapping_to_explicit(monkeypatch):
+    monkeypatch.setenv("ALPHA_HUNTER_POSITION_THESIS_JSON", json.dumps({"positions": [
+        {"ticker": "SYN1.TW", "thesis_driver_ids": ["AI_SERVER_SHIPMENTS"], "thesis_status": "ACTIVE"}
+    ]}))
+    overlay, status = load_private_thesis_overlay()
+    assert status == "VALID"
+    portfolio, applied = apply_private_thesis_overlay(
+        {"positions": [{"ticker": "SYN1", "weight_pct": 20, "risk_groups": ["AI_CAPEX"]}]}, overlay
+    )
+    out = evaluate_existing_positions(board(), policy(), portfolio)
+    assert applied == 1
+    assert out.iloc[0]["thesis_mapping"] == "EXPLICIT"
+    assert out.iloc[0]["action"] == "HOLD"
+
+
+def test_malformed_private_thesis_overlay_is_detected(monkeypatch):
+    monkeypatch.setenv("ALPHA_HUNTER_POSITION_THESIS_JSON", "{not-json")
+    overlay, status = load_private_thesis_overlay()
+    assert overlay == {}
+    assert status == "INVALID_JSON"
