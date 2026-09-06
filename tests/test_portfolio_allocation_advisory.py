@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import json
-from pathlib import Path
 
 import portfolio_allocation_advisory as paa
 
@@ -12,6 +11,7 @@ def test_rotation_prefers_strong_new_edge(tmp_path, monkeypatch):
             "min_edge_spread": 0.18,
             "strong_edge_spread": 0.35,
             "max_source_trim_pct": {"RISK_ON": 50, "NORMAL": 40, "CAUTION": 25, "DEFENSIVE": 15, "CRISIS": 0, "UNKNOWN": 0},
+            "redeploy_pct_of_trim": {"RISK_ON": 100, "NORMAL": 75, "CAUTION": 50, "DEFENSIVE": 25, "CRISIS": 0, "UNKNOWN": 0},
         }
     }
     pos = {
@@ -47,11 +47,14 @@ def test_rotation_prefers_strong_new_edge(tmp_path, monkeypatch):
     out = paa.build_portfolio_allocation()
     assert out["status"] == "READY"
     assert out["best_new_opportunity"]["ticker"] == "2317.TW"
-    assert out["rotations"]
-    assert out["rotations"][0]["source_alias"] == "標的D"
-    assert out["rotations"][0]["destination_ticker"] == "2317.TW"
-    assert out["rotations"][0]["rotation_action"] == "ROTATE_PARTIAL_STRONG"
-    assert out["rotations"][0]["suggested_source_trim_pct"] == 40
+    assert len(out["rotations"]) == 1
+    r = out["rotations"][0]
+    assert r["source_alias"] == "標的D"
+    assert r["destination_ticker"] == "2317.TW"
+    assert r["rotation_action"] == "ROTATE_PARTIAL_STRONG"
+    assert r["suggested_source_trim_pct"] == 40
+    assert r["suggested_redeploy_pct_of_trim"] == 75
+    assert r["suggested_risk_buffer_pct_of_trim"] == 25
 
 
 def test_crisis_blocks_rotation():
