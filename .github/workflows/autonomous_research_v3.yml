@@ -59,9 +59,14 @@ jobs:
           COPILOT_GITHUB_TOKEN: ${{ secrets.COPILOT_GITHUB_TOKEN }}
         run: |
           set +e
+          RESEARCH_PROMPT="$(cat RESEARCH_AGENT_PROMPT_V3.md)
+
+          --- BEGIN AUTHORITATIVE RESEARCH PACKET JSON ---
+          $(cat output/research_packet.json)
+          --- END AUTHORITATIVE RESEARCH PACKET JSON ---"
+
           copilot \
-            -p "$(cat RESEARCH_AGENT_PROMPT_V3.md)" \
-            --attachment output/research_packet.json \
+            -p "$RESEARCH_PROMPT" \
             -s \
             --available-tools='web_search,web_fetch' \
             --allow-all-urls \
