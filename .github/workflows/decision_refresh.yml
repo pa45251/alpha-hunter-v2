@@ -15,6 +15,8 @@ on:
       - 'tests/test_existing_position.py'
       - 'position_alias_output.py'
       - 'tests/test_position_alias_output.py'
+      - 'position_cio_advisory.py'
+      - 'tests/test_position_cio_advisory.py'
       - 'action_board_summary.py'
       - '.github/workflows/decision_refresh.yml'
 
@@ -44,10 +46,10 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
-      - name: Regression-test existing-position and alias-output contracts
+      - name: Regression-test existing-position and advisory contracts
         env:
           PYTHONPATH: ${{ github.workspace }}
-        run: python -m pytest -q tests/test_launch_gate.py tests/test_existing_position.py tests/test_position_alias_output.py
+        run: python -m pytest -q tests/test_launch_gate.py tests/test_existing_position.py tests/test_position_alias_output.py tests/test_position_cio_advisory.py
 
       - name: Rebuild decision layer from latest validated causal source
         env:
@@ -80,6 +82,13 @@ jobs:
           ALPHA_HUNTER_POSITION_ALIAS_JSON: ${{ secrets.ALPHA_HUNTER_POSITION_ALIAS_JSON }}
         run: python position_alias_output.py
 
+      - name: Publish existing-position CIO advisory
+        env:
+          ALPHA_HUNTER_RISK_POLICY_JSON: ${{ secrets.ALPHA_HUNTER_RISK_POLICY_JSON }}
+          ALPHA_HUNTER_PORTFOLIO_JSON: ${{ secrets.ALPHA_HUNTER_PORTFOLIO_JSON }}
+          ALPHA_HUNTER_POSITION_ALIAS_JSON: ${{ secrets.ALPHA_HUNTER_POSITION_ALIAS_JSON }}
+        run: python position_cio_advisory.py
+
       - name: Commit refreshed public decision artifacts
         run: |
           git config user.name "alpha-hunter-bot"
@@ -94,6 +103,9 @@ jobs:
             output/shadow_validation_report.json
           if [ -e output/position_alias_actions.json ] || git ls-files --error-unmatch output/position_alias_actions.json >/dev/null 2>&1; then
             git add -A output/position_alias_actions.json
+          fi
+          if [ -e output/position_cio_advisory.json ] || git ls-files --error-unmatch output/position_cio_advisory.json >/dev/null 2>&1; then
+            git add -A output/position_cio_advisory.json
           fi
           if ! git diff --cached --quiet; then
             git commit -m "refresh alpha hunter decision layer $(date -u +%F)"
