@@ -58,6 +58,13 @@ jobs:
           ALPHA_HUNTER_POSITION_ALIAS_JSON: ${{ secrets.ALPHA_HUNTER_POSITION_ALIAS_JSON }}
         run: python position_alias_output.py
 
+      - name: Publish existing-position CIO advisory
+        env:
+          ALPHA_HUNTER_RISK_POLICY_JSON: ${{ secrets.ALPHA_HUNTER_RISK_POLICY_JSON }}
+          ALPHA_HUNTER_PORTFOLIO_JSON: ${{ secrets.ALPHA_HUNTER_PORTFOLIO_JSON }}
+          ALPHA_HUNTER_POSITION_ALIAS_JSON: ${{ secrets.ALPHA_HUNTER_POSITION_ALIAS_JSON }}
+        run: python position_cio_advisory.py
+
       - name: Commit canonical outputs
         run: |
           git config user.name "alpha-hunter-bot"
@@ -90,6 +97,9 @@ jobs:
             output/structural_exposure_graph.csv
           if [ -e output/position_alias_actions.json ] || git ls-files --error-unmatch output/position_alias_actions.json >/dev/null 2>&1; then
             git add -A output/position_alias_actions.json
+          fi
+          if [ -e output/position_cio_advisory.json ] || git ls-files --error-unmatch output/position_cio_advisory.json >/dev/null 2>&1; then
+            git add -A output/position_cio_advisory.json
           fi
           git diff --cached --quiet && exit 0
           git commit -m "alpha hunter v2.9 decision snapshot $(date -u +%F)"
