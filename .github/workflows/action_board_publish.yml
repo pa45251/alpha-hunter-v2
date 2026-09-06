@@ -52,6 +52,9 @@ jobs:
       - name: Build privacy-safe one-page action board
         run: python action_board_summary.py
 
+      - name: Prepend portfolio allocation summary
+        run: python portfolio_allocation_summary.py
+
       - name: Commit advisory and action board
         run: |
           git config user.name "alpha-hunter-bot"
