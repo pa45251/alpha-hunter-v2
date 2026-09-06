@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import os
 from pathlib import Path
 
 import pandas as pd
@@ -14,6 +15,44 @@ from shadow_validation import write_shadow_validation
 
 
 OUT = Path("output")
+
+
+def _activation_source_for_run(run_id: str) -> tuple[Path, str]:
+    """Prefer same-snapshot v3 autonomous research; otherwise use legacy manual activations.
+
+    A stale v3 artifact is never silently consumed by a newer scanner snapshot.
+    Set ALPHA_HUNTER_ACTIVATION_SOURCE=V3_VALIDATED to require v3 and fail closed.
+    Set ALPHA_HUNTER_ACTIVATION_SOURCE=LEGACY_MANUAL to force the legacy input file.
+    """
+    mode = os.getenv("ALPHA_HUNTER_ACTIVATION_SOURCE", "AUTO").strip().upper()
+    v3_path = OUT / "driver_activation_v3.csv"
+    legacy_path = Path("input/driver_activation.csv")
+
+    if mode not in {"AUTO", "V3_VALIDATED", "LEGACY_MANUAL"}:
+        raise RuntimeError(f"Unknown ALPHA_HUNTER_ACTIVATION_SOURCE: {mode}")
+    if mode == "LEGACY_MANUAL":
+        return legacy_path, "LEGACY_MANUAL"
+
+    if v3_path.exists():
+        try:
+            v3 = pd.read_csv(v3_path)
+            ids_ok = (
+                "research_run_id" in v3.columns
+                and not v3.empty
+                and v3["research_run_id"].astype(str).eq(run_id).all()
+            )
+            source_ok = (
+                "activation_source" in v3.columns
+                and v3["activation_source"].astype(str).eq("V3_AUTONOMOUS_RESEARCH").all()
+            )
+            if ids_ok and source_ok:
+                return v3_path, "V3_AUTONOMOUS_RESEARCH"
+        except Exception:
+            pass
+
+    if mode == "V3_VALIDATED":
+        raise RuntimeError("Decision bridge requires same-snapshot V3 validated activation artifact")
+    return legacy_path, "LEGACY_MANUAL_FALLBACK"
 
 
 def main() -> None:
@@ -42,7 +81,8 @@ def main() -> None:
         if "run_id" not in df.columns or df.empty or not df["run_id"].astype(str).eq(run_id).all():
             raise RuntimeError(f"Decision bridge MIXED_SNAPSHOT_DATA: {name} run_id mismatch")
 
-    activations = validate_driver_activation_file(Path("input/driver_activation.csv"), queue, CausalConfig())
+    activation_path, activation_source = _activation_source_for_run(run_id)
+    activations = validate_driver_activation_file(activation_path, queue, CausalConfig())
     if "activation_valid" not in structural.columns:
         structural = apply_driver_activation(structural, activations)
 
@@ -64,6 +104,14 @@ def main() -> None:
         "output/shadow_validation_report.json",
     )
 
+    packet["activation_layer"] = {
+        "source": activation_source,
+        "path": str(activation_path),
+        "same_snapshot_v3": activation_source == "V3_AUTONOMOUS_RESEARCH",
+        "accepted_activation_rows": int(
+            activations.get("activation_valid", pd.Series(dtype=bool)).fillna(False).sum()
+        ) if not activations.empty else 0,
+    }
     packet["risk_layer"] = risk_meta
     packet["existing_position_layer"] = position_meta
     packet["shadow_validation_layer"] = {
@@ -74,7 +122,7 @@ def main() -> None:
         "execution_assumption": validation_report.get("execution_assumption"),
         "threshold_tuning_allowed": False,
     }
-    packet["current_capability"] = "ETF_VS_STOCK_ENTRY_PLUS_PRIVATE_RISK_PLUS_EXISTING_POSITION_EXIT_PLUS_SHADOW_VALIDATION"
+    packet["current_capability"] = "V3_AUTONOMOUS_RESEARCH_TO_DECISION_PLUS_PRIVATE_RISK_EXIT_SHADOW_VALIDATION"
     packet["missing_downstream_modules"] = []
     if not risk_meta.get("risk_inputs_valid") or not position_meta.get("position_inputs_valid"):
         packet["missing_downstream_modules"] = ["PRIVATE_RISK_INPUTS_IF_NOT_CONFIGURED"]
@@ -82,8 +130,9 @@ def main() -> None:
         str(k): int(v) for k, v in board["portfolio_action"].value_counts(dropna=False).to_dict().items()
     } if "portfolio_action" in board.columns else {}
     packet["rule"] = (
-        "No score can override causal/provenance/reaction gates. Entry triggers must pass private portfolio risk before BUY. "
-        "Existing positions use private thesis/risk gates for HOLD/REDUCE/EXIT. Shadow validation is ex-post only and cannot rewrite history or tune thresholds."
+        "No score can override causal/provenance/reaction gates. Same-snapshot V3 autonomous research is preferred; stale V3 research is never consumed. "
+        "Entry triggers must pass private portfolio risk before BUY. Existing positions use private thesis/risk gates for HOLD/REDUCE/EXIT. "
+        "Shadow validation is ex-post only and cannot rewrite history or tune thresholds."
     )
     packet["auto_order_execution"] = False
     (OUT / "decision_packet.json").write_text(json.dumps(packet, ensure_ascii=False, indent=2), encoding="utf-8")
@@ -92,6 +141,7 @@ def main() -> None:
     edge_backed = int(board.get("gate_edge_source_backed", pd.Series(dtype=bool)).fillna(False).sum()) if not board.empty else 0
     risk_pass = int(board.get("risk_gate_pass", pd.Series(dtype=bool)).fillna(False).sum()) if not board.empty else 0
     print(f"Decision bridge run_id: {run_id}")
+    print(f"Activation source: {activation_source}")
     print(f"Research activations accepted: {accepted}")
     print(f"Source-backed live structural rows: {edge_backed}")
     print(f"Decision board rows: {len(board)}")
