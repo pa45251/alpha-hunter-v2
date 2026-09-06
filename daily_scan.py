@@ -20,6 +20,7 @@ from causal_engine import (
 )
 from scanner_core import TAIPEI_TZ, ScanConfig, append_audit_log, run_scan, write_outputs
 from taiwan_sensor import TaiwanScanConfig, run_taiwan_scan
+from canonical_gate import run_gate
 
 OUT = Path("output")
 OUT.mkdir(parents=True, exist_ok=True)
@@ -116,8 +117,8 @@ def build_manifest(
 
     manifest = {
         "contract": "ALPHA_HUNTER_CANONICAL_DATA_CONTRACT",
-        "schema_version": "2.5",
-        "scanner_version": "2.5.2",
+        "schema_version": "2.6",
+        "scanner_version": "2.6.0",
         "run_id": run_id,
         "repository": repo,
         "branch": branch,
@@ -146,7 +147,7 @@ def build_manifest(
             "benchmark": "^TWII",
         },
         "causal_engine": {
-            "engine": "DYNAMIC_CAUSAL_TRANSMISSION_V1",
+            "engine": "DYNAMIC_CAUSAL_TRANSMISSION_V2_6",
             "research_queue_count": int(len(research_queue)),
             "structural_match_count": int(len(structural_matches)),
             "driver_activation_input_present": bool(not activations.empty),
@@ -162,7 +163,7 @@ def build_manifest(
         "known_model_risks": [
             "Dynamic driver research can hallucinate or become stale; activation requires explicit evidence and timestamping.",
             "Structural exposure graph can drift as customer/product mixes change; edges have review/provenance fields.",
-            "Price-derived global strength, Taiwan reaction and breadth are correlated; v2.5 does not combine them into a trade score.",
+            "Price-derived global strength, Taiwan reaction and breadth are correlated; v2.6 does not combine them into a trade score.",
             "Candidate funnels can create confirmation bias; structural matches are built from the full Taiwan scan, not only top candidates.",
             "A company may have multiple simultaneous drivers or offsets; v2.5 preserves driver-level rows and polarity.",
         ],
@@ -255,6 +256,11 @@ if __name__ == "__main__":
     }
 
     build_manifest(global_results, tw, research_queue, structural, ga, activations, run_id, pipeline_checks)
+
+    # 4) Deterministic hard gate. LLMs never validate identity, hashes, run consistency, or freshness.
+    gate = run_gate("output")
+    if gate.get("gate_status") != "PASS":
+        raise RuntimeError(f"V2.6 deterministic gate failed: {gate.get('failure_code')}")
 
     print(f"Global: {len(global_results['stocks'])} securities / {global_results['stocks']['theme'].nunique()} themes")
     print(f"Taiwan: {len(tw['stocks'])}/{len(tw['universe'])} common stocks / {tw['stocks']['industry'].nunique()} industries")

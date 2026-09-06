@@ -9,8 +9,8 @@ import streamlit as st
 TAIPEI = ZoneInfo("Asia/Taipei")
 OUT = Path("output")
 
-st.set_page_config(page_title="Alpha Hunter v2.5", page_icon="🌎", layout="wide")
-st.title("🌎 Alpha Hunter v2.5 — Dynamic Causal Transmission Sensor")
+st.set_page_config(page_title="Alpha Hunter v2.6", page_icon="🌎", layout="wide")
+st.title("🌎 Alpha Hunter v2.6 — Deterministic Gate + Causal Research Sensor")
 st.caption(
     "Global price structure nominates what deserves research. It does not decide the active causal driver. "
     "Structural company exposure, dynamic driver activation, Taiwan price confirmation, and final investment decisions are separate layers."
@@ -21,6 +21,14 @@ if not mf.exists():
     st.error("🚨 DATA CONTRACT MISSING — run GitHub Actions first.")
     st.stop()
 manifest = json.loads(mf.read_text(encoding="utf-8"))
+
+gate_path = OUT / "gate_report.json"
+gate = json.loads(gate_path.read_text(encoding="utf-8")) if gate_path.exists() else {}
+if gate.get("gate_status") == "PASS":
+    st.success(f"🔒 DETERMINISTIC HARD GATE: PASS — run_id {gate.get('run_id')}")
+else:
+    st.error(f"🚨 DETERMINISTIC HARD GATE: {gate.get('gate_status', 'MISSING')} — {gate.get('failure_code', 'NO_GATE_REPORT')}")
+    st.stop()
 
 
 def parse_dt(v):
@@ -43,8 +51,8 @@ def freshness_gate(m):
     max_age = 84 if weekend_window else 30
     if m.get("status") != "PASS":
         return "WARNING", f"Manifest status is {m.get('status')}", age_h
-    if str(m.get("schema_version")) != "2.5":
-        return "WARNING", f"Expected schema 2.5, found {m.get('schema_version')}", age_h
+    if str(m.get("schema_version")) != "2.6":
+        return "WARNING", f"Expected schema 2.6, found {m.get('schema_version')}", age_h
     if age_h > max_age:
         return "STALE", f"Manifest is {age_h:.1f} hours old", age_h
     return "FRESH", "Canonical manifest passed and scanner run is recent.", age_h
@@ -70,7 +78,7 @@ c5.metric("Taiwan candidates", T.get("candidate_count", "?"))
 c6.metric("Unresolved causal tasks", C.get("research_queue_count", "?"))
 
 st.info(
-    "v2.5 hard rule: PRICE CANNOT CREATE CAUSALITY. A strong Global theme only opens a research queue. "
+    "v2.6 hard rule: PRICE CANNOT CREATE CAUSALITY. A strong Global theme only opens a research queue. "
     "Structural exposure can exist while the dynamic driver is dormant or unknown. Final ETF/stock/risk decisions remain downstream."
 )
 

@@ -454,7 +454,7 @@ def write_outputs(results: Dict[str, pd.DataFrame], output_dir: str = "output") 
 
     payload = {
         "generated_at_utc": ts,
-        "schema_version": "2.4",
+        "schema_version": "2.6",
         "generated_at_taipei": datetime.now(TAIPEI_TZ).isoformat(),
         "scan_quality": {
             "scanned_count": int(len(results["stocks"])),

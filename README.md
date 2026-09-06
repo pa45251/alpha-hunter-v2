@@ -1,61 +1,61 @@
-# Alpha Hunter v2.5.1 — Dynamic Causal Transmission Sensor
+# Alpha Hunter v2.6 — Deterministic Data Plane + Causal Research Plane
 
-Alpha Hunter v2.5 separates market observation, causal research, structural economic exposure, Taiwan price confirmation, and final investment decisions.
-
-## Architecture
+Alpha Hunter v2.6 keeps v2.5's causal discipline and fixes the most important architecture weakness: **an LLM is no longer trusted to validate deterministic data integrity.**
 
 ```text
-Global Sensor (what moved)
-        ↓
-Causal Research Queue (which exact driver needs investigation)
-        ↓
-Research Layer (why / ACTIVE vs INACTIVE vs UNKNOWN)
-        ↓
-Structural Exposure Graph (who economically benefits if active)
-        ↓
-Taiwan Full-Market Sensor (pre-confirmation / confirming / extended / broken)
-        ↓
-Downstream Final Audit (ETF / stock / cash + risk / entry / exit)
+GitHub Actions
+   ↓
+Global + Taiwan scanners          = WHAT MOVED
+   ↓
+Causal research queue             = WHICH EXACT DRIVER NEEDS RESEARCH
+   ↓
+Manifest + canonical outputs
+   ↓
+Python deterministic hard gate    = IDENTITY / HASH / RUN_ID / FRESHNESS / INVARIANTS
+   ↓ PASS only
+research_packet.json
+   ↓
+Research Agent                     = WHY / ACTIVE vs INACTIVE vs UNKNOWN
+   ↓
+Structural exposure + Taiwan state = WHO COULD BENEFIT / HAS PRICE CONFIRMED?
+   ↓
+Challenger / Red Team
+   ↓
+Downstream Decision System         = ETF / STOCK / CASH + ENTRY / RISK / EXIT
 ```
 
-## v2.5 hard rules
+## Hard rule
+**PRICE CANNOT CREATE CAUSALITY.**
 
-- Price cannot create causality.
-- Broad-industry causal fallback is disabled.
-- Structural matching is built from the **full Taiwan scan**, not only top candidates.
-- The Taiwan candidate funnel reserves room for early/pre-confirmation stocks and caps extended names.
-- A structural match is not an active transmission.
-- Dynamic driver activation requires external research evidence.
-- Scanner/research layers cannot make trade decisions.
+## Deterministic gate
+`canonical_gate.py` validates:
+- canonical repository and branch;
+- schema/scanner versions;
+- manifest PASS and pipeline checks;
+- required-file presence;
+- SHA-256 of every authoritative file;
+- same `run_id` in causal queue / structural matches / graph audit;
+- driver-ID consistency across taxonomy/graph/queue/matches;
+- graph-audit completeness;
+- unresolved scanner-time causal queue;
+- scanner cannot mark a trade decision eligible;
+- Taiwan candidate uniqueness;
+- generated-run and market-date freshness.
 
-## New canonical files
+A failed gate exits GitHub Actions before outputs are committed.
 
-- `config/causal_driver_taxonomy.csv`
-- `config/structural_exposure_graph.csv`
-- `input/driver_activation.csv` (optional future research write-back bridge)
-- `output/causal_research_queue.csv`
-- `output/structural_matches.csv`
-- `output/causal_graph_audit.csv`
-- `V2_5_DESIGN_REVIEW.md`
+## Research entry point
+Primary Research Layer reads only:
+`https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/research_packet.json`
 
-The legacy v2.4 `economic_linkage_graph.csv` may remain in the repository for history, but v2.5 does not use it as the production causal engine.
+See `RESEARCH_CONTRACT.md`.
+
+## Gemini
+Gemini is no longer the source-of-truth research gatekeeper. If used, use `CHALLENGER_PROMPT.md` for adversarial review only.
+
+## New v2.6 outputs
+- `output/gate_report.json`
+- `output/research_packet.json` (PASS snapshots only)
 
 ## Daily automation
-
-GitHub Actions runs at approximately 06:55 Asia/Taipei on weekdays. No manual Streamlit trigger is required.
-
-## Optional driver activation bridge
-
-`input/driver_activation.csv` is optional. It is intentionally empty by default. A future research agent can populate known canonical `driver_id` values with evidence, timestamps and confidence. Unknown drivers, stale activations, malformed rows and unsourced activations are ignored.
-
-## Model risk
-
-Read `V2_5_DESIGN_REVIEW.md`. v2.5 is designed to expose uncertainty rather than hide it.
-
-
-## v2.5.1 Integration hardening
-- Keeps schema `2.5` for compatibility, bumps scanner implementation to `2.5.1`.
-- Adds a unique `run_id` to each run and to causal queue / structural matches / graph audit.
-- Manifest now includes `pipeline_checks` proving those causal artifacts were rebuilt in the current run.
-- Gemini canonical source is the exact raw manifest URL; it must not search for similarly named repositories.
-- `linkage_confidence` is explicitly a seed prior, not a probability. Unsourced edges remain weak provenance.
+GitHub Actions runs around 06:55 Asia/Taipei on weekdays. The workflow runs the scanner, executes the deterministic gate, and commits only a passing canonical snapshot.
