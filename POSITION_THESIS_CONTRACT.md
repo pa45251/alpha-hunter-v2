@@ -1,16 +1,24 @@
-# Alpha Hunter — Private Position Thesis Contract
+# Alpha Hunter — Existing Position System Thesis Contract
 
-This contract is the private bridge from the public market/causal decision system to existing-position HOLD / REDUCE / EXIT decisions.
+This contract governs the private bridge from the public causal decision system to existing-position HOLD / REDUCE / EXIT decisions.
 
-## Privacy boundary
+## Core principle
 
-Private holdings and thesis data MUST be supplied only through GitHub Actions secrets. Do not commit real tickers, weights, balances, cost basis, P/L, or per-position thesis text to this public repository.
+The user is **not required** to provide the original investment logic.
 
-The existing-position engine consumes private data in memory. Public artifacts may contain aggregate counts only; they must not contain per-position holdings or actions.
+Existing positions are evaluated from an independently inferred **System Thesis**:
 
-## Secret
+1. exact ticker structural exposure already present in the current decision board;
+2. otherwise private risk-group to canonical-driver mapping;
+3. otherwise `SYSTEM_MAPPING_MISSING` -> `REVIEW_RESEARCH`.
 
-Use repository secret `ALPHA_HUNTER_POSITION_THESIS_JSON`.
+The engine therefore asks: **if the system did not know why the position was bought, does current causal evidence still justify allocating capital to this exposure?**
+
+Price cannot create causality, and the user's stated purchase reason cannot create causality either.
+
+## Optional user thesis challenger
+
+`ALPHA_HUNTER_POSITION_THESIS_JSON` is optional. When present, it is challenger metadata only. It may expose a disagreement between the user's thesis and the system thesis, but it cannot force HOLD or EXIT.
 
 Schema:
 
@@ -18,46 +26,40 @@ Schema:
 {
   "positions": [
     {
-      "ticker": "<same ticker used in ALPHA_HUNTER_PORTFOLIO_JSON>",
+      "ticker": "<same private ticker>",
       "thesis_driver_ids": ["<canonical driver id>"],
-      "thesis_status": "ACTIVE"
+      "thesis_status": "ACTIVE|INVALIDATED|BROKEN"
     }
   ]
 }
 ```
 
-`ticker` is used only as an in-memory join key. `.TW` / `.TWO` suffixes are normalized.
+The public Action Board reports only an aggregate disagreement count. It never writes the ticker-level user thesis.
 
-`thesis_driver_ids` should contain the smallest set of canonical economic drivers that would actually invalidate or sustain the position thesis. Do not list every correlated theme.
+## System decision semantics
 
-`thesis_status` may be `ACTIVE`, `INVALIDATED`, or `BROKEN`. `INVALIDATED` / `BROKEN` is an explicit private hard-invalidation instruction and therefore has priority over market inference.
+- `HOLD`: at least one system-mapped driver is `ACTIVE_RESEARCH_VALIDATED`, `SOURCE_BACKED`, `POSITIVE`, and not `BROKEN`.
+- `EXIT_THESIS`: validated system transmission is broken and no healthy mapped transmission remains.
+- `EXIT_RISK`: configured maximum position-loss policy is breached.
+- `REDUCE_REVIEW`: system-mapped drivers contain both healthy and broken validated evidence.
+- `REDUCE_RISK`: portfolio gross exposure exceeds policy and the deterministic risk-reduction rule selects the position.
+- `REVIEW_RESEARCH`: system exposure mapping is missing, mapped drivers are absent from the current decision board, or current evidence is not research validated.
 
-## Decision semantics
+Missing research is fail-closed: it must never become an invented HOLD or EXIT.
 
-- `HOLD`: at least one mapped thesis driver is ACTIVE_RESEARCH_VALIDATED, SOURCE_BACKED, POSITIVE, and not BROKEN.
-- `EXIT_THESIS`: private thesis is explicitly INVALIDATED/BROKEN, or all validated mapped transmission is BROKEN.
-- `EXIT_RISK`: the configured maximum position loss is breached.
-- `REDUCE_REVIEW`: mapped thesis signals are mixed between healthy and broken.
-- `REDUCE_RISK`: portfolio gross exposure exceeds policy and this position is selected by the deterministic risk reduction rule.
-- `REVIEW_THESIS`: mapping is missing, the mapped driver is absent from the current decision board, or the thesis is not research validated.
+## Privacy boundary
 
-`REVIEW_THESIS` is deliberately fail-closed: missing research must never be converted into an invented HOLD or EXIT.
+Private holdings, tickers, weights, balances, cost basis, P/L, per-position actions, and optional user thesis stay in GitHub Actions secrets / process memory only. They must not be committed to this public repository.
 
-## Mapping precedence
-
-1. Explicit `ALPHA_HUNTER_POSITION_THESIS_JSON` mapping.
-2. Existing private `risk_groups` inference when no explicit mapping exists.
-3. Missing mapping -> `REVIEW_THESIS`.
-
-The separate thesis secret is preferred over embedding thesis directly in the portfolio snapshot because holdings/weights change more frequently than the original investment thesis.
+Public artifacts may contain aggregate counts such as action counts, system-mapping counts, and user/system disagreement count.
 
 ## Public readiness signal
 
-`output/action_board.md` exposes only aggregate readiness:
+`output/action_board.md` reports system mapping readiness only:
 
-- `COMPLETE_EXPLICIT`: every private position has an explicit thesis mapping.
-- `COMPLETE_WITH_INFERENCE`: every position is mapped, but at least one relies on risk-group inference.
-- `PARTIAL`: one or more positions have no thesis mapping.
-- `NOT_CONFIGURED`: the thesis secret is absent.
+- `COMPLETE_EXACT_EXPOSURE`: every private position maps by exact ticker to current structural exposure.
+- `COMPLETE_WITH_SYSTEM_INFERENCE`: all positions map, with at least one using risk-group inference.
+- `PARTIAL`: at least one position still lacks a system exposure map.
+- `BLOCKED_PRIVATE_INPUTS`: private risk/portfolio input validation failed.
 
-No per-position ticker or action is written to the public Action Board.
+The optional user thesis secret is never a prerequisite for system readiness.
