@@ -44,7 +44,7 @@ def _ticker_key(v: Any) -> str:
 
 def _is_taiwan_etf(ticker: str) -> bool:
     key = _ticker_key(ticker)
-    return len(key) == 6 and key.isdigit() and key.startswith("00")
+    return len(key) in {5, 6} and key.isdigit() and key.startswith("00")
 
 
 def _theme_keys(pos: dict[str, Any]) -> list[str]:
