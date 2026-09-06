@@ -37,12 +37,15 @@ No validated BUY/ADD/REDUCE/EXIT/HOLD action is currently emitted by the public 
 ## 4. Existing-position layer (privacy-safe aggregate)
 - Inputs valid: `True`
 - Thesis overlay: `NOT_CONFIGURED`
+- Thesis mapping readiness: `PARTIAL`
+- Position count (aggregate only): `5`
 - Position action counts: `{"REDUCE_RISK": 1, "REVIEW_THESIS": 4}`
 - Thesis mapping counts: `{"MISSING": 2, "RISK_GROUP_INFERRED": 3}`
-- Per-position holdings, balances, weights and P/L are intentionally not written to this public artifact.
+- Per-position holdings, balances, weights, P/L and actions are intentionally not written to this public artifact.
 
 ## 5. Interpretation
 - `GATE_5_ENTRY` is closest to an executable entry but still requires the defined state-transition trigger and private risk pass.
 - `GATE_4_REACTION` means causality and structural transmission passed, but price reaction is already persistent/extended or otherwise not an early entry state.
 - `WATCH_RESEARCH` means an earlier causal/provenance/reaction gate blocked the candidate.
+- Existing-position `PARTIAL` means at least one private holding has no thesis-driver mapping; missing mapping fails closed to REVIEW_THESIS rather than inventing HOLD/EXIT.
 - This board is decision support only; automatic brokerage execution remains disabled.
