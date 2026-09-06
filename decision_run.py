@@ -7,6 +7,7 @@ import pandas as pd
 
 from causal_engine import CausalConfig, apply_driver_activation, validate_driver_activation_file
 from decision_engine import apply_edge_provenance, apply_exposure_map, write_decision_outputs
+from existing_position import apply_existing_position_engine
 from portfolio_risk import apply_portfolio_risk_gate
 from shadow_audit import append_shadow_audit
 
@@ -49,23 +50,18 @@ def main() -> None:
 
     board, packet = write_decision_outputs(structural, run_id, "output")
 
-    # Portfolio risk is intentionally privacy-preserving. Real holdings/risk settings are never
-    # committed to this public repo. Without private inputs, final BUY/SELL remains blocked.
+    # Private risk and existing-position evaluation consume Secrets in-memory only.
+    # Per-position holdings/actions are never committed or printed in this public repository.
     board, risk_meta = apply_portfolio_risk_gate(board)
     board.to_csv(OUT / "decision_board.csv", index=False)
+    _private_position_actions, position_meta = apply_existing_position_engine(board)
 
     packet["risk_layer"] = risk_meta
-    packet["current_capability"] = "ETF_VS_STOCK_ENTRY_PLUS_PRIVATE_RISK_GATE"
-    packet["missing_downstream_modules"] = [
-        "PRIVATE_RISK_INPUTS_IF_NOT_CONFIGURED",
-        "EXISTING_POSITION_THESIS_LEDGER",
-        "SHADOW_AUDIT_VALIDATION",
-    ]
-    if risk_meta.get("risk_inputs_valid"):
-        packet["missing_downstream_modules"] = [
-            "EXISTING_POSITION_THESIS_LEDGER",
-            "SHADOW_AUDIT_VALIDATION",
-        ]
+    packet["existing_position_layer"] = position_meta
+    packet["current_capability"] = "ETF_VS_STOCK_ENTRY_PLUS_PRIVATE_RISK_PLUS_EXISTING_POSITION_EXIT"
+    packet["missing_downstream_modules"] = ["SHADOW_AUDIT_VALIDATION"]
+    if not risk_meta.get("risk_inputs_valid") or not position_meta.get("position_inputs_valid"):
+        packet["missing_downstream_modules"] = ["PRIVATE_RISK_INPUTS_IF_NOT_CONFIGURED", "SHADOW_AUDIT_VALIDATION"]
     packet["portfolio_action_counts"] = {
         str(k): int(v) for k, v in board["portfolio_action"].value_counts(dropna=False).to_dict().items()
     } if "portfolio_action" in board.columns else {}
@@ -84,8 +80,9 @@ def main() -> None:
     print(f"Risk-gate PASS rows: {risk_pass}")
     print(f"Action counts: {packet.get('action_counts', {})}")
     print(f"Portfolio action counts: {packet.get('portfolio_action_counts', {})}")
+    print(f"Existing-position engine status: {'PASS' if position_meta.get('position_inputs_valid') else 'BLOCKED'}")
     print(f"Shadow audit rows retained: {len(audit)}")
-    print("No brokerage/order execution exists. Final BUY_STOCK is allowed only when all decision gates and explicit private risk inputs pass.")
+    print("No brokerage/order execution exists. BUY/REDUCE/EXIT decisions require their respective gates; private position details are never logged.")
 
 
 if __name__ == "__main__":
