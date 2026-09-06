@@ -2,6 +2,9 @@ name: Alpha Hunter v3 Autonomous Research
 
 on:
   workflow_dispatch:
+  workflow_run:
+    workflows: ["Alpha Hunter Daily Scan"]
+    types: [completed]
   push:
     branches: [main]
     paths:
@@ -9,6 +12,8 @@ on:
       - 'RESEARCH_AGENT_PROMPT_V3.md'
       - 'research_ingest_v3.py'
       - 'research_contract_v3.py'
+      - 'research_activation_bridge_v3.py'
+      - 'decision_run.py'
 
 concurrency:
   group: alpha-hunter-v3-research-main
@@ -19,13 +24,15 @@ permissions:
 
 jobs:
   research:
+    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    timeout-minutes: 30
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
         with:
+          ref: main
           fetch-depth: 0
 
       - name: Set up Python
@@ -120,35 +127,59 @@ jobs:
       - name: Deterministic fail-closed research ingest
         run: python research_ingest_v3.py
 
-      - name: Validate v3 contract tests
+      - name: Build same-snapshot v3 activation bridge
+        run: python research_activation_bridge_v3.py
+
+      - name: Run downstream decision layer from v3 research
+        env:
+          ALPHA_HUNTER_ACTIVATION_SOURCE: V3_VALIDATED
+          ALPHA_HUNTER_RISK_POLICY_JSON: ${{ secrets.ALPHA_HUNTER_RISK_POLICY_JSON }}
+          ALPHA_HUNTER_PORTFOLIO_JSON: ${{ secrets.ALPHA_HUNTER_PORTFOLIO_JSON }}
+          ALPHA_HUNTER_POSITION_THESIS_JSON: ${{ secrets.ALPHA_HUNTER_POSITION_THESIS_JSON }}
+        run: python decision_run.py
+
+      - name: Validate v3 contract and bridge tests
         env:
           PYTHONPATH: ${{ github.workspace }}
-        run: python -m pytest -q tests/test_research_contract_v3.py
+        run: |
+          python -m pytest -q tests/test_research_contract_v3.py tests/test_research_activation_bridge_v3.py
 
       - name: Remove unvalidated raw model output
         run: rm -f output/research_result_v3.raw.txt
 
-      - name: Commit validated research artifact
+      - name: Commit validated research and decision artifacts
         run: |
           git config user.name "alpha-hunter-bot"
           git config user.email "actions@users.noreply.github.com"
-          git add output/research_result_v3.json
+          git add \
+            output/research_result_v3.json \
+            output/driver_activation_v3.csv \
+            output/decision_board.csv \
+            output/decision_packet.json \
+            output/decision_history.csv \
+            output/shadow_audit.csv \
+            output/shadow_validation.csv \
+            output/shadow_validation_report.json
           if ! git diff --cached --quiet; then
-            git commit -m "alpha hunter v3 autonomous research $(date -u +%F)"
+            git commit -m "alpha hunter v3 research to decision $(date -u +%F)"
             git fetch origin main
             git rebase origin/main
             git push origin HEAD:main
           fi
 
-      - name: Assert validated research succeeded
+      - name: Assert validated research and decision bridge succeeded
         run: |
           python - <<'PY'
           import json
           from pathlib import Path
-          data = json.loads(Path('output/research_result_v3.json').read_text(encoding='utf-8'))
-          status = data.get('status')
-          valid = sum(1 for x in data.get('results', []) if x.get('confidence', 0) > 0 or x.get('state') != 'UNKNOWN')
-          print(f'validated research status={status}; nontrivial_results={valid}/{len(data.get("results", []))}')
+          research = json.loads(Path('output/research_result_v3.json').read_text(encoding='utf-8'))
+          decision = json.loads(Path('output/decision_packet.json').read_text(encoding='utf-8'))
+          status = research.get('status')
+          activation = decision.get('activation_layer') or {}
+          print(f'validated research status={status}')
+          print(f'decision activation source={activation.get("source")} same_snapshot_v3={activation.get("same_snapshot_v3")} accepted={activation.get("accepted_activation_rows")}')
           if status != 'PASS':
-              raise SystemExit(f'Validated research did not PASS: {status}; errors={data.get("errors")}')
+              raise SystemExit(f'Validated research did not PASS: {status}; errors={research.get("errors")}')
+          if activation.get('source') != 'V3_AUTONOMOUS_RESEARCH' or not activation.get('same_snapshot_v3'):
+              raise SystemExit(f'Decision layer did not consume same-snapshot V3 research: {activation}')
           PY
