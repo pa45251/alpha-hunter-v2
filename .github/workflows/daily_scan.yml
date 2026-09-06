@@ -39,7 +39,10 @@ jobs:
       - name: Build v2.6.1 research handoff
         run: python research_handoff.py
 
-      - name: Build v2.7.1 decision bridge
+      - name: Build v2.7.2 decision + private risk + shadow audit
+        env:
+          ALPHA_HUNTER_RISK_POLICY_JSON: ${{ secrets.ALPHA_HUNTER_RISK_POLICY_JSON }}
+          ALPHA_HUNTER_PORTFOLIO_JSON: ${{ secrets.ALPHA_HUNTER_PORTFOLIO_JSON }}
         run: python decision_run.py
 
       - name: Commit canonical outputs
@@ -54,6 +57,7 @@ jobs:
             output/decision_board.csv \
             output/decision_packet.json \
             output/decision_history.csv \
+            output/shadow_audit.csv \
             output/market_snapshot.csv \
             output/market_snapshot.json \
             output/theme_breadth.csv \
@@ -69,5 +73,5 @@ jobs:
             output/causal_driver_taxonomy.csv \
             output/structural_exposure_graph.csv
           git diff --cached --quiet && exit 0
-          git commit -m "alpha hunter v2.7.1 decision snapshot $(date -u +%F)"
+          git commit -m "alpha hunter v2.7.2 decision snapshot $(date -u +%F)"
           git push
