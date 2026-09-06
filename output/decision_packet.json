@@ -2,7 +2,7 @@
   "contract": "ALPHA_HUNTER_DECISION_PACKET",
   "decision_contract_version": "2.7.1",
   "run_id": "20260906T130002+0800-dd80dd63",
-  "generated_at": "2026-09-06T08:37:56.607720+00:00",
+  "generated_at": "2026-09-06T08:50:15.445738+00:00",
   "gate_first_score_second": true,
   "price_can_create_causality": false,
   "auto_trade_allowed": false,
@@ -221,15 +221,17 @@
     "position_inputs_valid": true,
     "position_blockers": [],
     "position_action_counts": {
-      "REVIEW_THESIS": 4,
+      "REVIEW_RESEARCH": 4,
       "REDUCE_RISK": 1
     },
-    "thesis_mapping_counts": {
-      "RISK_GROUP_INFERRED": 3,
-      "MISSING": 2
+    "system_mapping_counts": {
+      "SYSTEM_RISK_GROUP": 3,
+      "SYSTEM_MAPPING_MISSING": 2
     },
-    "thesis_overlay_status": "NOT_CONFIGURED",
-    "thesis_overlay_applied_count": 0,
+    "user_thesis_overlay_status": "NOT_CONFIGURED",
+    "user_thesis_overlay_applied_count": 0,
+    "user_thesis_disagreement_count": 0,
+    "system_thesis_primary": true,
     "private_position_details_committed": false,
     "privacy_rule": "Per-position actions, tickers, balances, weights and P/L stay in-memory and are never committed or logged."
   },
