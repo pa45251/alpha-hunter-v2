@@ -2,13 +2,13 @@ name: Alpha Hunter Daily Scan
 
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - '.github/workflows/daily_scan.yml'
   schedule:
     # 22:55 UTC = 06:55 Asia/Taipei next day. Sun-Thu UTC = Mon-Fri Taiwan.
     - cron: '55 22 * * 0-4'
+
+concurrency:
+  group: alpha-hunter-daily-main
+  cancel-in-progress: false
 
 permissions:
   contents: write
