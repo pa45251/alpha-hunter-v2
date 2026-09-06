@@ -60,9 +60,16 @@ def main() -> None:
     if not isinstance(results, list) or not results:
         raise RuntimeError("V3 activation bridge research results missing")
 
+    # Freshness must be anchored to the deterministic validator clock, not a model-supplied
+    # researched_at timestamp. Model output can be rounded a few seconds/minutes into the future,
+    # which would otherwise create a negative activation age and silently invalidate a valid row.
+    validated_at = str(research.get("validated_at_utc", "")).strip()
+    validated_ts = pd.to_datetime(validated_at, utc=True, errors="coerce")
+    if not validated_at or pd.isna(validated_ts):
+        raise RuntimeError("V3 activation bridge missing/invalid deterministic validated_at_utc")
+
     rows = []
     seen: set[str] = set()
-    validated_at = str(research.get("validated_at_utc", ""))
     for result in results:
         if not isinstance(result, dict):
             raise RuntimeError("V3 activation bridge encountered non-object research result")
@@ -91,7 +98,7 @@ def main() -> None:
             "driver_id": driver_id,
             "activation_state": state,
             "activation_confidence": confidence,
-            "as_of_utc": str(result.get("researched_at_utc") or validated_at),
+            "as_of_utc": validated_at,
             "source_count": source_count,
             "primary_cause": str(result.get("primary_cause", "")),
             "counter_evidence": _claims(counter),
