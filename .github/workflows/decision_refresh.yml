@@ -11,13 +11,19 @@ on:
       - 'launch_gate.py'
       - 'config/launch_policy.json'
       - 'config/frozen_strategy_v1.json'
+      - 'config/portfolio_allocation_policy.json'
       - 'existing_position.py'
       - 'tests/test_existing_position.py'
       - 'position_alias_output.py'
       - 'tests/test_position_alias_output.py'
       - 'position_cio_advisory.py'
       - 'tests/test_position_cio_advisory.py'
+      - 'risk_regime.py'
+      - 'tests/test_risk_regime.py'
+      - 'portfolio_allocation_advisory.py'
+      - 'tests/test_portfolio_allocation_advisory.py'
       - 'action_board_summary.py'
+      - '.github/workflows/action_board_publish.yml'
       - '.github/workflows/decision_refresh.yml'
 
 concurrency:
@@ -49,7 +55,7 @@ jobs:
       - name: Regression-test existing-position and advisory contracts
         env:
           PYTHONPATH: ${{ github.workspace }}
-        run: python -m pytest -q tests/test_launch_gate.py tests/test_existing_position.py tests/test_position_alias_output.py tests/test_position_cio_advisory.py
+        run: python -m pytest -q tests/test_launch_gate.py tests/test_existing_position.py tests/test_position_alias_output.py tests/test_position_cio_advisory.py tests/test_risk_regime.py tests/test_portfolio_allocation_advisory.py
 
       - name: Rebuild decision layer from latest validated causal source
         env:
