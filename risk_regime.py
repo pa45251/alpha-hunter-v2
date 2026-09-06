@@ -120,6 +120,7 @@ def _band_for(score: int, policy: dict[str, Any]) -> dict[str, Any]:
 
 def build_risk_regime(histories: dict[str, pd.DataFrame] | None = None) -> dict[str, Any]:
     policy = json.loads(POLICY_PATH.read_text(encoding="utf-8"))
+    live_download = histories is None
     histories = histories or _download()
     f = {t: _features(histories.get(t, pd.DataFrame())) for t in RISK_TICKERS}
     missing_core = [t for t in CORE_TICKERS if not f.get(t)]
@@ -130,6 +131,30 @@ def build_risk_regime(histories: dict[str, pd.DataFrame] | None = None) -> dict[
             "generated_at": datetime.now().astimezone().isoformat(),
             "status": "DATA_UNAVAILABLE",
             "missing_core_signals": missing_core,
+            "regime": "UNKNOWN",
+            "risk_score": None,
+            "target_cash_pct": None,
+            "gross_multiplier": None,
+            "auto_trade_allowed": False,
+        }
+
+    # Synthetic histories used in tests can have arbitrary dates. For live downloads,
+    # fail closed if any core signal is older than the policy freshness limit.
+    max_age = int(policy["cash_regime"].get("max_data_age_days", 5))
+    stale_core: list[str] = []
+    if live_download:
+        today = datetime.now().astimezone().date()
+        for ticker in CORE_TICKERS:
+            d = pd.Timestamp(f[ticker]["last_date"]).date()
+            if (today - d).days > max_age:
+                stale_core.append(ticker)
+    if stale_core:
+        return {
+            "contract": "ALPHA_HUNTER_RISK_REGIME",
+            "schema_version": "1.0",
+            "generated_at": datetime.now().astimezone().isoformat(),
+            "status": "STALE_CORE_DATA",
+            "stale_core_signals": stale_core,
             "regime": "UNKNOWN",
             "risk_score": None,
             "target_cash_pct": None,
