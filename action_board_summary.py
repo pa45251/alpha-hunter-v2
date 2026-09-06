@@ -88,6 +88,7 @@ lines += [
     f"- System mapping counts: `{json.dumps(mapping_counts, ensure_ascii=False, sort_keys=True)}`",
     f"- Portfolio-maintenance research lane: `{maintenance.get('maintenance_lane_status', 'NOT_AVAILABLE')}`",
     f"- Maintenance drivers researched/targeted: `{maintenance.get('maintenance_validated_count', 0)}/{maintenance.get('maintenance_target_count', 0)}`",
+    f"- Maintenance driver states (aggregate only): `{json.dumps(maintenance.get('maintenance_state_counts') or {}, ensure_ascii=False, sort_keys=True)}`",
     f"- Maintenance targets truncated by safety cap: `{maintenance.get('maintenance_target_truncated_count', 0)}`",
     f"- Optional user-thesis overlay: `{pos.get('user_thesis_overlay_status', 'NOT_CONFIGURED')}`",
     f"- User/system disagreement count (aggregate only): `{pos.get('user_thesis_disagreement_count', 0)}`",
