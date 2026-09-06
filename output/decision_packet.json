@@ -2,15 +2,15 @@
   "contract": "ALPHA_HUNTER_DECISION_PACKET",
   "decision_contract_version": "2.7.1",
   "run_id": "20260906T130002+0800-dd80dd63",
-  "generated_at": "2026-09-06T08:20:20.684167+00:00",
+  "generated_at": "2026-09-06T08:25:07.380818+00:00",
   "gate_first_score_second": true,
   "price_can_create_causality": false,
   "auto_trade_allowed": false,
   "current_capability": "V3_RESEARCH_CHALLENGER_TO_DECISION_PLUS_PRIVATE_RISK_EXIT_SHADOW_VALIDATION",
   "missing_downstream_modules": [],
   "action_counts": {
-    "WATCH_RESEARCH": 47,
-    "WATCH_ENTRY": 8
+    "WATCH_RESEARCH": 45,
+    "WATCH_ENTRY": 10
   },
   "decision_focus": [
     {
@@ -91,6 +91,42 @@
       "taiwan_code": "2637",
       "ticker": "2637.TW",
       "name": "慧洋-KY",
+      "reaction_state": "PERSISTENT",
+      "previous_reaction_state": "PERSISTENT",
+      "entry_trigger_state": "NOT_TRIGGERED",
+      "etf_ticker": "BOAT",
+      "exposure_purity": "MEDIUM",
+      "stock_vs_etf_state": "STOCK_ALPHA_RESEARCH",
+      "provenance_status": "SOURCE_BACKED",
+      "dynamic_driver_state": "ACTIVE_RESEARCH_VALIDATED",
+      "decision_stage": "GATE_4_REACTION",
+      "candidate_action": "WATCH_ENTRY",
+      "decision_blockers": "INFORMATION_MAY_BE_PRICED"
+    },
+    {
+      "global_theme": "Shipping",
+      "driver_id": "DRY_BULK_FREIGHT",
+      "taiwan_code": "2605",
+      "ticker": "2605.TW",
+      "name": "新興",
+      "reaction_state": "PERSISTENT",
+      "previous_reaction_state": "PERSISTENT",
+      "entry_trigger_state": "NOT_TRIGGERED",
+      "etf_ticker": "BOAT",
+      "exposure_purity": "MEDIUM",
+      "stock_vs_etf_state": "STOCK_ALPHA_RESEARCH",
+      "provenance_status": "SOURCE_BACKED",
+      "dynamic_driver_state": "ACTIVE_RESEARCH_VALIDATED",
+      "decision_stage": "GATE_4_REACTION",
+      "candidate_action": "WATCH_ENTRY",
+      "decision_blockers": "INFORMATION_MAY_BE_PRICED"
+    },
+    {
+      "global_theme": "Shipping",
+      "driver_id": "DRY_BULK_FREIGHT",
+      "taiwan_code": "2617",
+      "ticker": "2617.TW",
+      "name": "台航",
       "reaction_state": "PERSISTENT",
       "previous_reaction_state": "PERSISTENT",
       "entry_trigger_state": "NOT_TRIGGERED",
@@ -206,8 +242,8 @@
     "threshold_tuning_allowed": false
   },
   "portfolio_action_counts": {
-    "WATCH_RESEARCH": 47,
-    "WATCH_ENTRY": 8
+    "WATCH_RESEARCH": 45,
+    "WATCH_ENTRY": 10
   },
   "auto_order_execution": false
 }
