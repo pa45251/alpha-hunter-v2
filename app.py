@@ -9,11 +9,11 @@ import streamlit as st
 TAIPEI = ZoneInfo("Asia/Taipei")
 OUT = Path("output")
 
-st.set_page_config(page_title="Alpha Hunter v2.6", page_icon="🌎", layout="wide")
-st.title("🌎 Alpha Hunter v2.6 — Deterministic Gate + Causal Research Sensor")
+st.set_page_config(page_title="Alpha Hunter v2.7", page_icon="🌎", layout="wide")
+st.title("🌎 Alpha Hunter v2.7 — Causal Research → Decision Bridge")
 st.caption(
-    "Global price structure nominates what deserves research. It does not decide the active causal driver. "
-    "Structural company exposure, dynamic driver activation, Taiwan price confirmation, and final investment decisions are separate layers."
+    "Global price structure nominates research. Research validates the exact causal driver. "
+    "Structural exposure, Taiwan reaction, ETF-vs-stock, entry, risk and exit remain separate auditable layers."
 )
 
 mf = OUT / "manifest.json"
@@ -52,7 +52,7 @@ def freshness_gate(m):
     if m.get("status") != "PASS":
         return "WARNING", f"Manifest status is {m.get('status')}", age_h
     if str(m.get("schema_version")) != "2.6":
-        return "WARNING", f"Expected schema 2.6, found {m.get('schema_version')}", age_h
+        return "WARNING", f"Expected scanner schema 2.6, found {m.get('schema_version')}", age_h
     if age_h > max_age:
         return "STALE", f"Manifest is {age_h:.1f} hours old", age_h
     return "FRESH", "Canonical manifest passed and scanner run is recent.", age_h
@@ -78,19 +78,51 @@ c5.metric("Taiwan candidates", T.get("candidate_count", "?"))
 c6.metric("Unresolved causal tasks", C.get("research_queue_count", "?"))
 
 st.info(
-    "v2.6 hard rule: PRICE CANNOT CREATE CAUSALITY. A strong Global theme only opens a research queue. "
-    "Structural exposure can exist while the dynamic driver is dormant or unknown. Final ETF/stock/risk decisions remain downstream."
+    "Hard rule: PRICE CANNOT CREATE CAUSALITY. Gate first, score second. "
+    "A strong driver cannot rescue weak company provenance, and a correct thesis does not justify chasing EXTENDED price action."
 )
 
 with st.expander("Canonical contract / known model risks"):
     st.json(manifest)
 
 tabs = st.tabs([
-    "Global Leaders", "Taiwan Candidates", "Causal Research Queue",
+    "Decision Board", "Global Leaders", "Taiwan Candidates", "Causal Research Queue",
     "Structural Matches", "Breadth", "Graph Audit"
 ])
 
 with tabs[0]:
+    st.subheader("v2.7 Research → Decision Bridge")
+    dp = OUT / "decision_packet.json"
+    db = OUT / "decision_board.csv"
+    if dp.exists():
+        packet = json.loads(dp.read_text(encoding="utf-8"))
+        if str(packet.get("run_id")) != str(manifest.get("run_id")):
+            st.error("🚨 MIXED_SNAPSHOT_DATA — decision packet run_id does not match manifest.")
+        else:
+            st.caption(
+                "This board is deliberately conservative. Until ETF-vs-stock, entry trigger, portfolio risk and shadow-audit modules are validated, "
+                "automatic BUY/SELL is disabled. WATCH_ENTRY means the causal/provenance/reaction gates passed far enough to justify final-entry research."
+            )
+            a, b, c = st.columns(3)
+            a.metric("Decision contract", packet.get("decision_contract_version", "?"))
+            b.metric("Auto trade", "DISABLED" if not packet.get("auto_trade_allowed", False) else "ENABLED")
+            bcounts = packet.get("action_counts", {})
+            c.metric("WATCH_ENTRY", bcounts.get("WATCH_ENTRY", 0))
+            with st.expander("Decision packet / remaining modules"):
+                st.json(packet)
+    else:
+        st.warning("Decision packet missing — run the current GitHub Actions workflow.")
+
+    if db.exists():
+        d = pd.read_csv(db, dtype={"taiwan_code": str})
+        pref = [c for c in [
+            "candidate_action", "decision_stage", "global_theme", "driver_id", "taiwan_code", "ticker", "name",
+            "reaction_state", "dynamic_driver_state", "provenance_status", "linkage_tier", "linkage_confidence",
+            "rs_20d_vs_bench", "rs_60d_vs_bench", "acceleration", "decision_blockers", "research_priority_score"
+        ] if c in d.columns]
+        st.dataframe(d[pref] if pref else d, use_container_width=True, height=680)
+
+with tabs[1]:
     p = OUT / "market_snapshot.csv"
     if p.exists():
         d = pd.read_csv(p)
@@ -100,7 +132,7 @@ with tabs[0]:
         ] if c in d.columns]
         st.dataframe(d[cols].head(120), use_container_width=True, height=620)
 
-with tabs[1]:
+with tabs[2]:
     p = OUT / "taiwan_candidates.csv"
     if p.exists():
         d = pd.read_csv(p, dtype={"code": str})
@@ -112,16 +144,16 @@ with tabs[1]:
         ] if c in d.columns]
         st.dataframe(d[cols], use_container_width=True, height=680)
 
-with tabs[2]:
+with tabs[3]:
     p = OUT / "causal_research_queue.csv"
     st.warning(
-        "Every driver below is UNRESOLVED_RESEARCH_REQUIRED. Price action nominated the broad theme; it did NOT prove which sub-driver is active."
+        "Every unresolved driver below still requires external causal research. Price action nominated the broad theme; it did NOT prove which sub-driver is active."
     )
     if p.exists():
         d = pd.read_csv(p)
         st.dataframe(d, use_container_width=True, height=680)
 
-with tabs[3]:
+with tabs[4]:
     p = OUT / "structural_matches.csv"
     st.warning(
         "Structural Match ≠ active causal transmission. These rows answer 'who could economically benefit if this driver is active?' "
@@ -136,18 +168,20 @@ with tabs[3]:
         ] if c in d.columns]
         st.dataframe(d[pref] if pref else d, use_container_width=True, height=680)
 
-with tabs[4]:
+with tabs[5]:
     a, b = st.columns(2)
     with a:
         st.subheader("Global theme breadth")
         p = OUT / "theme_breadth.csv"
-        if p.exists(): st.dataframe(pd.read_csv(p), use_container_width=True, height=600)
+        if p.exists():
+            st.dataframe(pd.read_csv(p), use_container_width=True, height=600)
     with b:
         st.subheader("Taiwan industry breadth")
         p = OUT / "taiwan_industry_breadth.csv"
-        if p.exists(): st.dataframe(pd.read_csv(p), use_container_width=True, height=600)
+        if p.exists():
+            st.dataframe(pd.read_csv(p), use_container_width=True, height=600)
 
-with tabs[5]:
+with tabs[6]:
     st.subheader("Structural exposure graph audit")
     st.caption(
         "Edges are slow-moving economic hypotheses and have provenance/review fields. A SEED edge is not equivalent to source-backed verification."
@@ -163,12 +197,14 @@ with tabs[5]:
             c3.metric("Missing source-backed provenance", int(d["missing_provenance"].fillna(False).sum()))
     with st.expander("Causal driver taxonomy"):
         p = OUT / "causal_driver_taxonomy.csv"
-        if p.exists(): st.dataframe(pd.read_csv(p), use_container_width=True, height=480)
+        if p.exists():
+            st.dataframe(pd.read_csv(p), use_container_width=True, height=480)
     with st.expander("Structural exposure graph"):
         p = OUT / "structural_exposure_graph.csv"
-        if p.exists(): st.dataframe(pd.read_csv(p, dtype={"taiwan_code": str}), use_container_width=True, height=520)
+        if p.exists():
+            st.dataframe(pd.read_csv(p, dtype={"taiwan_code": str}), use_container_width=True, height=520)
 
 st.caption(
-    "Layer discipline: Python = what moved; Research Layer = which exact driver is active and why; structural graph = who has economic exposure; "
-    "Taiwan Sensor = whether price is confirming; final decision system = ETF/stock/cash + entry/risk/exit."
+    "Layer discipline: Python scanner = what moved; Research = which exact driver is active and why; structural graph = who has economic exposure; "
+    "Taiwan Sensor = price reaction; Decision Layer = ETF/stock/cash + entry/risk/exit; Shadow Audit = point-in-time accountability."
 )
