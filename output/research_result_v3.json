@@ -2,7 +2,7 @@
   "contract": "ALPHA_HUNTER_V3_VALIDATED_RESEARCH",
   "status": "PASS",
   "research_run_id": "20260906T130002+0800-dd80dd63",
-  "validated_at_utc": "2026-09-06T07:39:04.043325+00:00",
+  "validated_at_utc": "2026-09-06T07:54:53.536738+00:00",
   "target_driver_ids": [
     "DRY_BULK_FREIGHT",
     "CONTAINER_FREIGHT",
@@ -15,82 +15,71 @@
     {
       "driver_id": "DRY_BULK_FREIGHT",
       "state": "UNKNOWN",
-      "confidence": 0.12,
-      "primary_cause": "No verifiable, time-consistent external evidence was found confirming or contradicting the exact dry-bulk freight and commodity-shipping cycle driver after support and counter-evidence searches.",
+      "confidence": 0.05,
+      "primary_cause": "Fresh exact-driver support and counter-evidence searches were attempted using dry-bulk freight, BDI, Capesize, Panamax, commodity-volume, demand, fleet-supply, and rate terms, but no current verifiable source establishing or contradicting the exact driver was retrievable.",
       "industry_scope": "UNKNOWN",
       "supporting_evidence": [],
       "counter_evidence": [],
       "source_count": 0,
       "event_date": null,
       "source_dates": [],
-      "researched_at_utc": "2026-09-06T07:38:25Z",
+      "researched_at_utc": "2026-09-06T07:54:26Z",
       "research_run_id": "20260906T130002+0800-dd80dd63"
     },
     {
       "driver_id": "CONTAINER_FREIGHT",
       "state": "UNKNOWN",
-      "confidence": 0.12,
-      "primary_cause": "No verifiable, time-consistent external evidence was found confirming or contradicting the exact container spot or contract freight and liner-utilization cycle after support and counter-evidence searches.",
+      "confidence": 0.05,
+      "primary_cause": "Fresh exact-driver support and counter-evidence searches were attempted using container freight, SCFI, liner utilization, capacity, spot and contract rates, but no current verifiable source establishing or contradicting the exact driver was retrievable.",
       "industry_scope": "UNKNOWN",
       "supporting_evidence": [],
       "counter_evidence": [],
       "source_count": 0,
       "event_date": null,
       "source_dates": [],
-      "researched_at_utc": "2026-09-06T07:38:25Z",
+      "researched_at_utc": "2026-09-06T07:54:26Z",
       "research_run_id": "20260906T130002+0800-dd80dd63"
     },
     {
       "driver_id": "NUCLEAR_GRID_SECOND_ORDER",
       "state": "UNKNOWN",
-      "confidence": 0.1,
-      "primary_cause": "Searches did not yield a verifiable source establishing nuclear-specific buildout as the cause of second-order grid-equipment demand, nor a conclusive counter-source.",
+      "confidence": 0.05,
+      "primary_cause": "Fresh exact-driver support and counter-evidence searches were attempted using nuclear buildout, transmission, transformer, switchgear, grid interconnection, and nuclear-specific equipment terms, but no current verifiable source establishing the required nuclear-specific second-order causal link or contradicting it was retrievable.",
       "industry_scope": "UNKNOWN",
       "supporting_evidence": [],
       "counter_evidence": [],
       "source_count": 0,
       "event_date": null,
       "source_dates": [],
-      "researched_at_utc": "2026-09-06T07:38:25Z",
+      "researched_at_utc": "2026-09-06T07:54:26Z",
       "research_run_id": "20260906T130002+0800-dd80dd63"
     },
     {
       "driver_id": "POWER_ELECTRONICS_CAPEX",
       "state": "UNKNOWN",
-      "confidence": 0.38,
-      "primary_cause": "Company-level evidence indicates sustained demand, broad-based Energy Management growth, and record backlog, but the available source does not isolate the exact power-electronics capex driver and no verifiable counter-evidence was obtained.",
-      "industry_scope": "COMPANY_SPECIFIC",
-      "supporting_evidence": [
-        {
-          "claim": "Schneider Electric reported sustained demand across end markets, broad-based Energy Management growth, strong demand in electrification and automation, and a record backlog while upgrading its 2026 target.",
-          "source_title": "Schneider Electric financial results",
-          "source_url": "https://www.se.com/ww/en/about-us/investor-relations/financial-results/",
-          "published_at": "2026-07-30T00:00:00Z",
-          "event_date": "2026-06-30T00:00:00Z",
-          "evidence_type": "COMPANY_PRIMARY"
-        }
-      ],
-      "counter_evidence": [],
-      "source_count": 1,
-      "event_date": "2026-06-30T00:00:00Z",
-      "source_dates": [
-        "2026-07-30T00:00:00Z"
-      ],
-      "researched_at_utc": "2026-09-06T07:38:25Z",
-      "research_run_id": "20260906T130002+0800-dd80dd63"
-    },
-    {
-      "driver_id": "AI_SERVER_SHIPMENTS",
-      "state": "UNKNOWN",
-      "confidence": 0.12,
-      "primary_cause": "No verifiable, time-consistent external evidence was found confirming AI server units, rack shipments, ODM backlog, or hyperscaler deployment, nor was a conclusive counter-source found after alternate support and counter-evidence searches.",
+      "confidence": 0.05,
+      "primary_cause": "Fresh exact-driver support and counter-evidence searches were attempted using power electronics, power distribution, UPS, switchgear, transformer, data-center electrical equipment, utility capex, and industrial capex terms, but no current verifiable source establishing or contradicting the exact driver was retrievable.",
       "industry_scope": "UNKNOWN",
       "supporting_evidence": [],
       "counter_evidence": [],
       "source_count": 0,
       "event_date": null,
       "source_dates": [],
-      "researched_at_utc": "2026-09-06T07:38:25Z",
+      "researched_at_utc": "2026-09-06T07:54:26Z",
+      "research_run_id": "20260906T130002+0800-dd80dd63"
+    },
+    {
+      "driver_id": "AI_SERVER_SHIPMENTS",
+      "state": "UNKNOWN",
+      "confidence": 0.05,
+      "primary_cause": "Fresh exact-driver support and counter-evidence searches were attempted using AI server units, rack shipments, ODM shipments, backlog, hyperscaler deployment, OEM guidance, server-market data, demand, and capacity terms, but no current verifiable source establishing or contradicting the exact driver was retrievable.",
+      "industry_scope": "UNKNOWN",
+      "supporting_evidence": [],
+      "counter_evidence": [],
+      "source_count": 0,
+      "event_date": null,
+      "source_dates": [],
+      "researched_at_utc": "2026-09-06T07:54:26Z",
       "research_run_id": "20260906T130002+0800-dd80dd63"
     }
   ]

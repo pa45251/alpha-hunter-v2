@@ -2,24 +2,50 @@
   "contract": "ALPHA_HUNTER_DECISION_PACKET",
   "decision_contract_version": "2.7.1",
   "run_id": "20260906T130002+0800-dd80dd63",
-  "generated_at": "2026-09-06T07:39:04.884636+00:00",
+  "generated_at": "2026-09-06T07:54:54.677000+00:00",
   "gate_first_score_second": true,
   "price_can_create_causality": false,
   "auto_trade_allowed": false,
-  "current_capability": "V3_AUTONOMOUS_RESEARCH_TO_DECISION_PLUS_PRIVATE_RISK_EXIT_SHADOW_VALIDATION",
+  "current_capability": "V3_RESEARCH_CHALLENGER_TO_DECISION_PLUS_PRIVATE_RISK_EXIT_SHADOW_VALIDATION",
   "missing_downstream_modules": [],
   "action_counts": {
-    "WATCH_RESEARCH": 55
+    "WATCH_RESEARCH": 54,
+    "WATCH_ENTRY": 1
   },
-  "decision_focus": [],
+  "decision_focus": [
+    {
+      "global_theme": "AI_Server",
+      "driver_id": "AI_SERVER_SHIPMENTS",
+      "taiwan_code": "2317",
+      "ticker": "2317.TW",
+      "name": "鴻海",
+      "reaction_state": "PRE_CONFIRMATION",
+      "previous_reaction_state": "PRE_CONFIRMATION",
+      "entry_trigger_state": "NOT_TRIGGERED",
+      "etf_ticker": "QQQ",
+      "exposure_purity": "LOW",
+      "stock_vs_etf_state": "STOCK_ALPHA_RESEARCH",
+      "provenance_status": "SOURCE_BACKED",
+      "dynamic_driver_state": "ACTIVE_RESEARCH_VALIDATED",
+      "decision_stage": "GATE_5_ENTRY",
+      "candidate_action": "WATCH_ENTRY",
+      "decision_blockers": "WAIT_FOR_STATE_TRANSITION_ENTRY_TRIGGER"
+    }
+  ],
   "entry_rule": "Only a PRE_CONFIRMATION/EARLY_CONFIRMATION -> CONFIRMING transition, or PULLBACK -> CONFIRMING recovery, can create an entry trigger. No fixed momentum threshold is invented.",
-  "rule": "No score can override causal/provenance/reaction gates. Same-snapshot V3 autonomous research is preferred; stale V3 research is never consumed. Any scanner-carried activation fields are overwritten by the selected current-run activation artifact before decisioning. Entry triggers must pass private portfolio risk before BUY. Existing positions use private thesis/risk gates for HOLD/REDUCE/EXIT. Shadow validation is ex-post only and cannot rewrite history or tune thresholds.",
+  "rule": "No score can override causal/provenance/reaction gates. Same-snapshot challenger adjudication is preferred over autonomous research; stale artifacts are never consumed. Any scanner-carried activation fields are overwritten by the selected current-run activation artifact before decisioning. Entry triggers must pass private portfolio risk before BUY. Existing positions use private thesis/risk gates for HOLD/REDUCE/EXIT. Shadow validation is ex-post only and cannot rewrite history or tune thresholds.",
   "activation_layer": {
-    "source": "V3_AUTONOMOUS_RESEARCH",
-    "path": "output/driver_activation_v3.csv",
+    "source": "CHATGPT_CHALLENGER_ADJUDICATION",
+    "path": "output/driver_activation_adjudicated_v3.csv",
     "same_snapshot_v3": true,
-    "accepted_activation_rows": 1,
-    "active_driver_ids": [],
+    "challenger_adjudicated": true,
+    "accepted_activation_rows": 5,
+    "active_driver_ids": [
+      "AI_SERVER_SHIPMENTS",
+      "CONTAINER_FREIGHT",
+      "DRY_BULK_FREIGHT",
+      "POWER_ELECTRONICS_CAPEX"
+    ],
     "lineage_overwrite_enforced": true
   },
   "risk_layer": {
@@ -54,7 +80,8 @@
     "threshold_tuning_allowed": false
   },
   "portfolio_action_counts": {
-    "WATCH_RESEARCH": 55
+    "WATCH_RESEARCH": 54,
+    "WATCH_ENTRY": 1
   },
   "auto_order_execution": false
 }
