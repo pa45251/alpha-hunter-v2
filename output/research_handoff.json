@@ -2,12 +2,12 @@
   "contract": "ALPHA_HUNTER_V2_6_1_RESEARCH_HANDOFF",
   "handoff_version": "1.0",
   "handoff_status": "PASS",
-  "generated_at_taipei": "2026-09-06T09:10:12.483451+08:00",
+  "generated_at_taipei": "2026-09-06T10:06:29.306586+08:00",
   "repository": "pa45251/alpha-hunter-v2",
   "branch": "main",
   "schema_version": "2.6",
   "scanner_version": "2.6.0",
-  "run_id": "20260906T090755+0800-91eec934",
+  "run_id": "20260906T100352+0800-b33e1cef",
   "gate_status": "PASS",
   "causal_rule": "PRICE_CANNOT_CREATE_CAUSALITY",
   "transport_policy": {
@@ -26,27 +26,27 @@
     "manifest": {
       "relative_path": "output/manifest.json",
       "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/manifest.json",
-      "sha256": "0ea834d71c3872165a602303252839d579c5d07d482aaa39f6d470847fc7cd79",
+      "sha256": "21745b75b1fa81d0d8438aeb510a87fdc99e04fd82d7340d15646d6634fdaf6a",
       "bytes": 7979
     },
     "gate_report": {
       "relative_path": "output/gate_report.json",
       "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/gate_report.json",
-      "sha256": "ca864e43e28644b323e0ca354583a4d93c83d7e2afdd5160f85d3ce936d0750b",
+      "sha256": "f3b21b37db18b9b477f5c78c4a1e4e5c62771740998132f91b95f5965508d205",
       "bytes": 3745
     },
     "research_packet": {
       "relative_path": "output/research_packet.json",
       "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/research_packet.json",
-      "sha256": "93ef3f575487372abf600b64ccf4d7538df19a17e5ca53550f2b21d9cb712a8d",
-      "bytes": 175858
+      "sha256": "166a7a92e77bc3d39f421d2a53e11dda4f1691c81e583a4af3332f6e6a1f3b91",
+      "bytes": 195738
     }
   },
   "research_entrypoint": {
     "relative_path": "output/research_packet.json",
     "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/research_packet.json",
-    "sha256": "93ef3f575487372abf600b64ccf4d7538df19a17e5ca53550f2b21d9cb712a8d",
-    "bytes": 175858
+    "sha256": "166a7a92e77bc3d39f421d2a53e11dda4f1691c81e583a4af3332f6e6a1f3b91",
+    "bytes": 195738
   },
   "research_rule": "Research may begin only when handoff_status=PASS, gate_status=PASS, run_id is consistent, and the fetched research_packet SHA256 matches this handoff."
 }

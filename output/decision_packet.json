@@ -1,0 +1,63 @@
+{
+  "contract": "ALPHA_HUNTER_DECISION_PACKET",
+  "decision_contract_version": "2.7.0",
+  "run_id": "20260906T100352+0800-b33e1cef",
+  "generated_at": "2026-09-06T02:06:29.766390+00:00",
+  "gate_first_score_second": true,
+  "price_can_create_causality": false,
+  "auto_trade_allowed": false,
+  "current_capability": "RESEARCH_TO_DECISION_BRIDGE",
+  "missing_downstream_modules": [
+    "ETF_EXPOSURE_PURITY_AND_STOCK_VS_ETF",
+    "VALIDATED_ENTRY_TRIGGER",
+    "PORTFOLIO_RISK_BUDGET",
+    "EXISTING_POSITION_THESIS_LEDGER",
+    "SHADOW_AUDIT_VALIDATION"
+  ],
+  "action_counts": {
+    "WATCH_RESEARCH": 52,
+    "WATCH_ENTRY": 3
+  },
+  "watch_entry_candidates": [
+    {
+      "global_theme": "Memory",
+      "driver_id": "NAND_STORAGE_CYCLE",
+      "taiwan_code": "4967",
+      "ticker": "4967.TW",
+      "name": "十銓",
+      "reaction_state": "PRE_CONFIRMATION",
+      "provenance_status": "SOURCE_BACKED",
+      "dynamic_driver_state": "ACTIVE_RESEARCH_VALIDATED",
+      "decision_stage": "GATE_3_TO_5_PENDING",
+      "candidate_action": "WATCH_ENTRY",
+      "decision_blockers": "ETF_VS_STOCK_NOT_YET_VALIDATED;ENTRY_TRIGGER_NOT_YET_VALIDATED"
+    },
+    {
+      "global_theme": "AI_Server",
+      "driver_id": "AI_SERVER_SHIPMENTS",
+      "taiwan_code": "2317",
+      "ticker": "2317.TW",
+      "name": "鴻海",
+      "reaction_state": "PRE_CONFIRMATION",
+      "provenance_status": "SOURCE_BACKED",
+      "dynamic_driver_state": "ACTIVE_RESEARCH_VALIDATED",
+      "decision_stage": "GATE_3_TO_5_PENDING",
+      "candidate_action": "WATCH_ENTRY",
+      "decision_blockers": "ETF_VS_STOCK_NOT_YET_VALIDATED;ENTRY_TRIGGER_NOT_YET_VALIDATED"
+    },
+    {
+      "global_theme": "AI_Server",
+      "driver_id": "AI_SERVER_RACK_BUILD",
+      "taiwan_code": "2376",
+      "ticker": "2376.TW",
+      "name": "技嘉",
+      "reaction_state": "PRE_CONFIRMATION",
+      "provenance_status": "SOURCE_BACKED",
+      "dynamic_driver_state": "ACTIVE_RESEARCH_VALIDATED",
+      "decision_stage": "GATE_3_TO_5_PENDING",
+      "candidate_action": "WATCH_ENTRY",
+      "decision_blockers": "ETF_VS_STOCK_NOT_YET_VALIDATED;ENTRY_TRIGGER_NOT_YET_VALIDATED"
+    }
+  ],
+  "rule": "No score can override a failed causal/provenance/reaction gate. Until ETF-vs-stock, entry, and risk modules are validated, code cannot emit automatic BUY/SELL actions."
+}
