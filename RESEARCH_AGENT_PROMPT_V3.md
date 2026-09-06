@@ -73,3 +73,5 @@ Schema:
 }
 
 For UNKNOWN, `primary_cause` must say what exact evidence is missing or conflicting. `source_count` is the count of unique source URLs across supporting and counter evidence. Do not fabricate a source or date.
+
+Operational note: reruns must evaluate the latest `main` snapshot so newly source-backed transmission edges are consumed by the downstream decision layer.
