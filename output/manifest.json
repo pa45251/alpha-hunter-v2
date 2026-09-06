@@ -1,14 +1,14 @@
 {
   "contract": "ALPHA_HUNTER_CANONICAL_DATA_CONTRACT",
-  "schema_version": "2.5",
-  "scanner_version": "2.5.2",
-  "run_id": "20260906T073205+0800-06cb45a2",
+  "schema_version": "2.6",
+  "scanner_version": "2.6.0",
+  "run_id": "20260906T081040+0800-b04df269",
   "repository": "pa45251/alpha-hunter-v2",
   "branch": "main",
   "canonical_output_directory": "https://github.com/pa45251/alpha-hunter-v2/tree/main/output",
   "canonical_manifest_raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/manifest.json",
-  "generated_at_utc": "2026-09-05T23:35:56.780829+00:00",
-  "generated_at_taipei": "2026-09-06T07:35:56.780841+08:00",
+  "generated_at_utc": "2026-09-06T00:14:20.899835+00:00",
+  "generated_at_taipei": "2026-09-06T08:14:20.899845+08:00",
   "status": "PASS",
   "missing_required_files": [],
   "pipeline_checks": {
@@ -38,7 +38,7 @@
     "benchmark": "^TWII"
   },
   "causal_engine": {
-    "engine": "DYNAMIC_CAUSAL_TRANSMISSION_V1",
+    "engine": "DYNAMIC_CAUSAL_TRANSMISSION_V2_6",
     "research_queue_count": 20,
     "structural_match_count": 55,
     "driver_activation_input_present": false,
@@ -51,7 +51,7 @@
   "known_model_risks": [
     "Dynamic driver research can hallucinate or become stale; activation requires explicit evidence and timestamping.",
     "Structural exposure graph can drift as customer/product mixes change; edges have review/provenance fields.",
-    "Price-derived global strength, Taiwan reaction and breadth are correlated; v2.5 does not combine them into a trade score.",
+    "Price-derived global strength, Taiwan reaction and breadth are correlated; v2.6 does not combine them into a trade score.",
     "Candidate funnels can create confirmation bias; structural matches are built from the full Taiwan scan, not only top candidates.",
     "A company may have multiple simultaneous drivers or offsets; v2.5 preserves driver-level rows and polarity."
   ],
@@ -60,8 +60,8 @@
       "name": "market_snapshot.csv",
       "relative_path": "output/market_snapshot.csv",
       "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/market_snapshot.csv",
-      "sha256": "939879d346dd8cc2286866045919f56a09f7281c00dc28573c78c5e2c309651b",
-      "bytes": 69024
+      "sha256": "8d088ca2036840b6160dbfd235ac420419206a93f682d3c6bb703dde872cbae2",
+      "bytes": 69035
     },
     {
       "name": "theme_breadth.csv",
@@ -74,7 +74,7 @@
       "name": "leader_registry.csv",
       "relative_path": "output/leader_registry.csv",
       "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/leader_registry.csv",
-      "sha256": "1ba9a13b9e6ebb1db2fa48cf6cf4d23187c341aca0a22f48a131fa821324fc9a",
+      "sha256": "67bc45ac8796b25ac95fa7881a9db77c8b2118524673ef42ce3804b0fcce1dc8",
       "bytes": 19339
     },
     {
@@ -88,15 +88,15 @@
       "name": "market_snapshot.json",
       "relative_path": "output/market_snapshot.json",
       "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/market_snapshot.json",
-      "sha256": "3a474fed4be4d9ab70be57af23256aa98ef94de0975e6e284ea5ca83c6c509bb",
+      "sha256": "289dfdafe7c14a11f360cc4ea01963a4b2a2a8ed240d62f9bbb2f08906781e32",
       "bytes": 31984
     },
     {
       "name": "taiwan_candidates.csv",
       "relative_path": "output/taiwan_candidates.csv",
       "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/taiwan_candidates.csv",
-      "sha256": "4a00aac93b5c29cc35821651cced6a279e585dd53e9c1781828d0f9fc983445a",
-      "bytes": 131129
+      "sha256": "8d7f47631acabca5f05853d8e03706a71bde97a2f4fcd62e653e18e1ba71b2ba",
+      "bytes": 131141
     },
     {
       "name": "taiwan_candidate_history.csv",
@@ -123,21 +123,21 @@
       "name": "causal_research_queue.csv",
       "relative_path": "output/causal_research_queue.csv",
       "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/causal_research_queue.csv",
-      "sha256": "041d9a0ee13469d4f5657758116a00d0aa448af6ae6d5b2c6d710476354e9b90",
+      "sha256": "75d6272539680fbc36a23d2c5ec8ea6a1cc388897dbea4fd4c3869cd9ae20c75",
       "bytes": 11442
     },
     {
       "name": "structural_matches.csv",
       "relative_path": "output/structural_matches.csv",
       "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/structural_matches.csv",
-      "sha256": "4bb723a62c12166796e0892892d0143f946a7480dfa3b1a90bf5cc54ae96afb0",
+      "sha256": "aff20da784026ded79e47ba63aa0b1d78ffa5e31aa0c43ad86509bca60bcbf9d",
       "bytes": 34508
     },
     {
       "name": "causal_graph_audit.csv",
       "relative_path": "output/causal_graph_audit.csv",
       "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/causal_graph_audit.csv",
-      "sha256": "52c74716055927cab33085d146c5b3432ffc45ea6048098df959ad1455b0d444",
+      "sha256": "1dd3913eb3def9de17b0ae02f4c1cf786dfb9977361167a706fb758f13bf8bed",
       "bytes": 22852
     },
     {
