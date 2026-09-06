@@ -12,6 +12,7 @@ on:
       - 'RESEARCH_AGENT_PROMPT_V3.md'
       - 'research_ingest_v3.py'
       - 'research_contract_v3.py'
+      - 'research_quality_gate_v3.py'
       - 'research_activation_bridge_v3.py'
       - 'decision_run.py'
 
@@ -26,7 +27,7 @@ jobs:
   research:
     if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 35
 
     steps:
       - name: Checkout repository
@@ -56,7 +57,7 @@ jobs:
           COPILOT_GITHUB_TOKEN: ${{ secrets.COPILOT_GITHUB_TOKEN }}
         run: |
           if [ -z "$COPILOT_GITHUB_TOKEN" ]; then
-            echo "::error::Missing repository secret COPILOT_GITHUB_TOKEN. Personal repositories require a user-owned fine-grained PAT with the Copilot Requests account permission."
+            echo "::error::Missing repository secret COPILOT_GITHUB_TOKEN."
             exit 1
           fi
 
@@ -65,7 +66,6 @@ jobs:
           python - <<'PY'
           import json
           from pathlib import Path
-
           packet = json.loads(Path('output/research_packet.json').read_text(encoding='utf-8'))
           keep = (
               'research_priority', 'global_theme', 'driver_id', 'driver_label',
@@ -98,12 +98,11 @@ jobs:
           set +e
           RESEARCH_PROMPT="$(cat RESEARCH_AGENT_PROMPT_V3.md)
 
-          IMPORTANT INPUT OVERRIDE: The authoritative compact handoff is appended below. It contains exactly the first five targets from the canonical output/research_packet.json. Treat research_targets as the targets to research in order; the full packet is intentionally not attached because JSON attachments are unsupported by this CLI.
+          IMPORTANT INPUT OVERRIDE: The authoritative compact handoff is appended below. Treat research_targets as the only targets to research, in order.
 
           --- BEGIN AUTHORITATIVE COMPACT RESEARCH HANDOFF ---
           $(cat /tmp/research_handoff.json)
           --- END AUTHORITATIVE COMPACT RESEARCH HANDOFF ---"
-
           copilot \
             -p "$RESEARCH_PROMPT" \
             -s \
@@ -111,21 +110,63 @@ jobs:
             --allow-all-urls \
             --deny-tool='write,shell,memory' \
             --no-ask-user \
-            --max-ai-credits=35 \
+            --max-ai-credits=30 \
             > output/research_result_v3.raw.txt \
             2> /tmp/copilot_research.err
           code=$?
           echo "exit_code=$code" >> "$GITHUB_OUTPUT"
           if [ "$code" -ne 0 ]; then
             echo "Copilot CLI exited with code $code"
-            sed -n '1,120p' /tmp/copilot_research.err || true
+            sed -n '1,100p' /tmp/copilot_research.err || true
             echo '{}' > output/research_result_v3.raw.txt
-            echo "Copilot research unavailable; deterministic ingest will fail closed to UNKNOWN."
           fi
           exit 0
 
       - name: Deterministic fail-closed research ingest
         run: python research_ingest_v3.py
+
+      - name: Check first-pass research evidence quality
+        id: quality_first
+        continue-on-error: true
+        run: python research_quality_gate_v3.py
+
+      - name: Retry zero-source research once
+        if: steps.quality_first.outcome == 'failure'
+        env:
+          COPILOT_GITHUB_TOKEN: ${{ secrets.COPILOT_GITHUB_TOKEN }}
+        run: |
+          set +e
+          RECOVERY_PROMPT="$(cat RESEARCH_AGENT_PROMPT_V3.md)
+
+          RECOVERY PASS: The previous attempt produced no usable external-source coverage. Perform fresh web_search calls for EVERY target. Do not answer 'web access inadequate' before trying alternate exact-driver queries. Fetch promising sources and return source-backed evidence when it exists. UNKNOWN remains correct if evidence is insufficient, but this recovery pass must actually search. Use the exact same JSON schema and run_id.
+
+          --- BEGIN AUTHORITATIVE COMPACT RESEARCH HANDOFF ---
+          $(cat /tmp/research_handoff.json)
+          --- END AUTHORITATIVE COMPACT RESEARCH HANDOFF ---"
+          copilot \
+            -p "$RECOVERY_PROMPT" \
+            -s \
+            --available-tools='web_search,web_fetch' \
+            --allow-all-urls \
+            --deny-tool='write,shell,memory' \
+            --no-ask-user \
+            --max-ai-credits=15 \
+            > output/research_result_v3.raw.txt \
+            2> /tmp/copilot_research_retry.err
+          code=$?
+          if [ "$code" -ne 0 ]; then
+            echo "Copilot retry exited with code $code"
+            sed -n '1,100p' /tmp/copilot_research_retry.err || true
+            echo '{}' > output/research_result_v3.raw.txt
+          fi
+          exit 0
+
+      - name: Re-ingest recovery research
+        if: steps.quality_first.outcome == 'failure'
+        run: python research_ingest_v3.py
+
+      - name: Enforce research evidence quality
+        run: python research_quality_gate_v3.py
 
       - name: Build same-snapshot v3 activation bridge
         run: python research_activation_bridge_v3.py
@@ -142,7 +183,7 @@ jobs:
         env:
           PYTHONPATH: ${{ github.workspace }}
         run: |
-          python -m pytest -q tests/test_research_contract_v3.py tests/test_research_activation_bridge_v3.py
+          python -m pytest -q tests/test_research_contract_v3.py tests/test_research_activation_bridge_v3.py tests/test_research_quality_gate_v3.py
 
       - name: Remove unvalidated raw model output
         run: rm -f output/research_result_v3.raw.txt
@@ -174,12 +215,12 @@ jobs:
           from pathlib import Path
           research = json.loads(Path('output/research_result_v3.json').read_text(encoding='utf-8'))
           decision = json.loads(Path('output/decision_packet.json').read_text(encoding='utf-8'))
-          status = research.get('status')
           activation = decision.get('activation_layer') or {}
-          print(f'validated research status={status}')
-          print(f'decision activation source={activation.get("source")} same_snapshot_v3={activation.get("same_snapshot_v3")} accepted={activation.get("accepted_activation_rows")}')
-          if status != 'PASS':
-              raise SystemExit(f'Validated research did not PASS: {status}; errors={research.get("errors")}')
+          total_sources = sum(int(x.get('source_count', 0) or 0) for x in research.get('results', []))
+          print(f"validated research status={research.get('status')} total_sources={total_sources}")
+          print(f"decision activation source={activation.get('source')} same_snapshot_v3={activation.get('same_snapshot_v3')} accepted={activation.get('accepted_activation_rows')}")
+          if research.get('status') != 'PASS' or total_sources <= 0:
+              raise SystemExit('Validated research did not meet evidence quality gate')
           if activation.get('source') != 'V3_AUTONOMOUS_RESEARCH' or not activation.get('same_snapshot_v3'):
               raise SystemExit(f'Decision layer did not consume same-snapshot V3 research: {activation}')
           PY
