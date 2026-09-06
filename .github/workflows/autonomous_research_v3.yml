@@ -13,6 +13,7 @@ on:
       - 'research_ingest_v3.py'
       - 'research_contract_v3.py'
       - 'research_quality_gate_v3.py'
+      - 'research_decision_source_gate_v3.py'
       - 'research_activation_bridge_v3.py'
       - 'decision_run.py'
 
@@ -165,13 +166,13 @@ jobs:
         if: steps.quality_first.outcome == 'failure'
         run: python research_ingest_v3.py
 
-      - name: Enforce research evidence quality
-        run: python research_quality_gate_v3.py
+      - name: Enforce research or challenger decision-source quality
+        run: python research_decision_source_gate_v3.py
 
       - name: Build same-snapshot v3 activation bridge
         run: python research_activation_bridge_v3.py
 
-      - name: Run downstream decision layer from v3 research
+      - name: Run downstream decision layer from validated causal source
         env:
           ALPHA_HUNTER_ACTIVATION_SOURCE: V3_VALIDATED
           ALPHA_HUNTER_RISK_POLICY_JSON: ${{ secrets.ALPHA_HUNTER_RISK_POLICY_JSON }}
@@ -208,19 +209,16 @@ jobs:
             git push origin HEAD:main
           fi
 
-      - name: Assert validated research and decision bridge succeeded
+      - name: Assert validated causal source and decision bridge succeeded
         run: |
+          python research_decision_source_gate_v3.py
           python - <<'PY'
           import json
           from pathlib import Path
-          research = json.loads(Path('output/research_result_v3.json').read_text(encoding='utf-8'))
           decision = json.loads(Path('output/decision_packet.json').read_text(encoding='utf-8'))
           activation = decision.get('activation_layer') or {}
-          total_sources = sum(int(x.get('source_count', 0) or 0) for x in research.get('results', []))
-          print(f"validated research status={research.get('status')} total_sources={total_sources}")
-          print(f"decision activation source={activation.get('source')} same_snapshot_v3={activation.get('same_snapshot_v3')} accepted={activation.get('accepted_activation_rows')}")
-          if research.get('status') != 'PASS' or total_sources <= 0:
-              raise SystemExit('Validated research did not meet evidence quality gate')
-          if activation.get('source') != 'V3_AUTONOMOUS_RESEARCH' or not activation.get('same_snapshot_v3'):
-              raise SystemExit(f'Decision layer did not consume same-snapshot V3 research: {activation}')
+          source = activation.get('source')
+          print(f"decision activation source={source} same_snapshot_v3={activation.get('same_snapshot_v3')} accepted={activation.get('accepted_activation_rows')} active={activation.get('active_driver_ids')}")
+          if source not in {'V3_AUTONOMOUS_RESEARCH', 'CHATGPT_CHALLENGER_ADJUDICATION'} or not activation.get('same_snapshot_v3'):
+              raise SystemExit(f'Decision layer did not consume a same-snapshot validated causal source: {activation}')
           PY
