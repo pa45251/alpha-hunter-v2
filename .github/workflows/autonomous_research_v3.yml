@@ -135,7 +135,9 @@ jobs:
           git add output/research_result_v3.json
           if ! git diff --cached --quiet; then
             git commit -m "alpha hunter v3 autonomous research $(date -u +%F)"
-            git push
+            git fetch origin main
+            git rebase origin/main
+            git push origin HEAD:main
           fi
 
       - name: Assert validated research succeeded
