@@ -5,6 +5,7 @@ on:
   workflow_run:
     workflows:
       - "Alpha Hunter v3 Autonomous Research"
+      - "Alpha Hunter Portfolio Maintenance Recovery"
       - "Alpha Hunter Decision Refresh"
     types: [completed]
 
