@@ -30,14 +30,32 @@ _ACTIVATION_DERIVED_COLUMNS = {
 }
 
 
-def _activation_source_for_run(run_id: str) -> tuple[Path, str]:
-    """Prefer same-snapshot v3 autonomous research; otherwise use legacy manual activations.
+def _same_snapshot_activation(path: Path, run_id: str, source_name: str) -> bool:
+    if not path.exists():
+        return False
+    try:
+        df = pd.read_csv(path)
+    except Exception:
+        return False
+    return bool(
+        not df.empty
+        and "research_run_id" in df.columns
+        and df["research_run_id"].astype(str).eq(run_id).all()
+        and "activation_source" in df.columns
+        and df["activation_source"].astype(str).eq(source_name).all()
+    )
 
-    A stale v3 artifact is never silently consumed by a newer scanner snapshot.
-    Set ALPHA_HUNTER_ACTIVATION_SOURCE=V3_VALIDATED to require v3 and fail closed.
-    Set ALPHA_HUNTER_ACTIVATION_SOURCE=LEGACY_MANUAL to force the legacy input file.
+
+def _activation_source_for_run(run_id: str) -> tuple[Path, str]:
+    """Prefer same-snapshot challenger adjudication, then autonomous research.
+
+    The challenger artifact is a human-in-the-loop/ChatGPT research adjudication layer and may
+    override Copilot classifications only when it matches the exact canonical scanner run_id.
+    Stale adjudication and stale autonomous research are never consumed. V3_VALIDATED requires
+    one of these same-snapshot validated sources and fails closed otherwise.
     """
     mode = os.getenv("ALPHA_HUNTER_ACTIVATION_SOURCE", "AUTO").strip().upper()
+    adjudicated_path = OUT / "driver_activation_adjudicated_v3.csv"
     v3_path = OUT / "driver_activation_v3.csv"
     legacy_path = Path("input/driver_activation.csv")
 
@@ -46,25 +64,14 @@ def _activation_source_for_run(run_id: str) -> tuple[Path, str]:
     if mode == "LEGACY_MANUAL":
         return legacy_path, "LEGACY_MANUAL"
 
-    if v3_path.exists():
-        try:
-            v3 = pd.read_csv(v3_path)
-            ids_ok = (
-                "research_run_id" in v3.columns
-                and not v3.empty
-                and v3["research_run_id"].astype(str).eq(run_id).all()
-            )
-            source_ok = (
-                "activation_source" in v3.columns
-                and v3["activation_source"].astype(str).eq("V3_AUTONOMOUS_RESEARCH").all()
-            )
-            if ids_ok and source_ok:
-                return v3_path, "V3_AUTONOMOUS_RESEARCH"
-        except Exception:
-            pass
+    if _same_snapshot_activation(adjudicated_path, run_id, "CHATGPT_CHALLENGER_ADJUDICATION"):
+        return adjudicated_path, "CHATGPT_CHALLENGER_ADJUDICATION"
+
+    if _same_snapshot_activation(v3_path, run_id, "V3_AUTONOMOUS_RESEARCH"):
+        return v3_path, "V3_AUTONOMOUS_RESEARCH"
 
     if mode == "V3_VALIDATED":
-        raise RuntimeError("Decision bridge requires same-snapshot V3 validated activation artifact")
+        raise RuntimeError("Decision bridge requires same-snapshot validated adjudication or V3 research activation artifact")
     return legacy_path, "LEGACY_MANUAL_FALLBACK"
 
 
@@ -72,7 +79,7 @@ def _apply_current_activation(structural: pd.DataFrame, activations: pd.DataFram
     """Replace any scanner-carried activation fields with the current validated activation set.
 
     Canonical structural_matches may contain placeholder or stale activation columns from a
-    previous layer. Their mere presence must never suppress the same-snapshot V3 write-back.
+    previous layer. Their mere presence must never suppress the same-snapshot write-back.
     This function strips activation-derived fields, resets causal decision state, and reapplies
     only the activation artifact selected for the current run.
     """
@@ -81,7 +88,6 @@ def _apply_current_activation(structural: pd.DataFrame, activations: pd.DataFram
     if stale_cols:
         x = x.drop(columns=stale_cols)
 
-    # Reset any carried causal state before applying the selected same-run activation artifact.
     x["dynamic_driver_state"] = "UNRESOLVED"
     x["causal_status"] = "STRUCTURAL_MATCH_RESEARCH_REQUIRED"
     x["decision_eligible"] = False
@@ -125,8 +131,6 @@ def main() -> None:
 
     board, packet = write_decision_outputs(structural, run_id, "output")
 
-    # Private risk and existing-position evaluation consume Secrets in-memory only.
-    # Per-position holdings/actions are never committed or printed in this public repository.
     board, risk_meta = apply_portfolio_risk_gate(board)
     board.to_csv(OUT / "decision_board.csv", index=False)
     _private_position_actions, position_meta = apply_existing_position_engine(board)
@@ -147,10 +151,12 @@ def main() -> None:
         ].astype(str).unique().tolist()
     ) if not activations.empty else []
 
+    same_snapshot_v3 = activation_source in {"V3_AUTONOMOUS_RESEARCH", "CHATGPT_CHALLENGER_ADJUDICATION"}
     packet["activation_layer"] = {
         "source": activation_source,
         "path": str(activation_path),
-        "same_snapshot_v3": activation_source == "V3_AUTONOMOUS_RESEARCH",
+        "same_snapshot_v3": same_snapshot_v3,
+        "challenger_adjudicated": activation_source == "CHATGPT_CHALLENGER_ADJUDICATION",
         "accepted_activation_rows": accepted,
         "active_driver_ids": activated_driver_ids,
         "lineage_overwrite_enforced": True,
@@ -165,7 +171,7 @@ def main() -> None:
         "execution_assumption": validation_report.get("execution_assumption"),
         "threshold_tuning_allowed": False,
     }
-    packet["current_capability"] = "V3_AUTONOMOUS_RESEARCH_TO_DECISION_PLUS_PRIVATE_RISK_EXIT_SHADOW_VALIDATION"
+    packet["current_capability"] = "V3_RESEARCH_CHALLENGER_TO_DECISION_PLUS_PRIVATE_RISK_EXIT_SHADOW_VALIDATION"
     packet["missing_downstream_modules"] = []
     if not risk_meta.get("risk_inputs_valid") or not position_meta.get("position_inputs_valid"):
         packet["missing_downstream_modules"] = ["PRIVATE_RISK_INPUTS_IF_NOT_CONFIGURED"]
@@ -173,7 +179,7 @@ def main() -> None:
         str(k): int(v) for k, v in board["portfolio_action"].value_counts(dropna=False).to_dict().items()
     } if "portfolio_action" in board.columns else {}
     packet["rule"] = (
-        "No score can override causal/provenance/reaction gates. Same-snapshot V3 autonomous research is preferred; stale V3 research is never consumed. "
+        "No score can override causal/provenance/reaction gates. Same-snapshot challenger adjudication is preferred over autonomous research; stale artifacts are never consumed. "
         "Any scanner-carried activation fields are overwritten by the selected current-run activation artifact before decisioning. "
         "Entry triggers must pass private portfolio risk before BUY. Existing positions use private thesis/risk gates for HOLD/REDUCE/EXIT. "
         "Shadow validation is ex-post only and cannot rewrite history or tune thresholds."
