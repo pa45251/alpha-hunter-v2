@@ -1,0 +1,73 @@
+{
+  "contract": "ALPHA_HUNTER_EXISTING_POSITION_CIO_ADVISORY",
+  "schema_version": "1.0",
+  "generated_at": "2026-09-06T13:28:18.746428+00:00",
+  "privacy": {
+    "alias_only": true,
+    "ticker_included": false,
+    "name_included": false,
+    "balances_included": false,
+    "weights_included": false,
+    "risk_groups_included": false,
+    "theme_names_included": false,
+    "alias_mapping_published": false
+  },
+  "rule": "Advisory only. ETF holdings use public global theme breadth; stocks use theme proxy until exact company transmission is validated. Execution rules remain frozen and separate.",
+  "positions": [
+    {
+      "alias": "零碎部位",
+      "lane": "RESIDUAL",
+      "advisory_action": "IGNORE_RESIDUAL",
+      "confidence": "HIGH",
+      "signal_state": "DE_MINIMIS",
+      "signal_score": null,
+      "reason": "POSITION_BELOW_DE_MINIMIS_WEIGHT",
+      "execution_lane_action": "REVIEW_RESEARCH",
+      "theme_coverage_count": 0
+    },
+    {
+      "alias": "標的A",
+      "lane": "ETF_THEME",
+      "advisory_action": "HOLD_BIAS",
+      "confidence": "HIGH",
+      "signal_state": "POSITIVE",
+      "signal_score": 0.5858,
+      "reason": "ETF_THEME_POSITIVE_MARKET_BREADTH",
+      "execution_lane_action": "REVIEW_RESEARCH",
+      "theme_coverage_count": 7
+    },
+    {
+      "alias": "標的B",
+      "lane": "ETF_THEME",
+      "advisory_action": "HOLD_BIAS",
+      "confidence": "MEDIUM",
+      "signal_state": "STRONG",
+      "signal_score": 0.9461,
+      "reason": "ETF_THEME_STRONG_MARKET_BREADTH",
+      "execution_lane_action": "REVIEW_RESEARCH",
+      "theme_coverage_count": 2
+    },
+    {
+      "alias": "標的C",
+      "lane": "ETF_THEME",
+      "advisory_action": "HOLD_BIAS",
+      "confidence": "HIGH",
+      "signal_state": "STRONG",
+      "signal_score": 0.7444,
+      "reason": "ETF_THEME_STRONG_MARKET_BREADTH",
+      "execution_lane_action": "REVIEW_RESEARCH",
+      "theme_coverage_count": 3
+    },
+    {
+      "alias": "標的D",
+      "lane": "STOCK_THEME_PROXY",
+      "advisory_action": "REVIEW_HOLD",
+      "confidence": "MEDIUM",
+      "signal_state": "MIXED",
+      "signal_score": 0.4126,
+      "reason": "STOCK_THEME_PROXY_MIXED_MARKET_BREADTH_COMPANY_TRANSMISSION_NOT_EXACT",
+      "execution_lane_action": "REVIEW_RESEARCH",
+      "theme_coverage_count": 3
+    }
+  ]
+}
