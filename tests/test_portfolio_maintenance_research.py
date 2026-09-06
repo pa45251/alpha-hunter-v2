@@ -68,9 +68,11 @@ def test_private_overlay_never_changes_public_board_and_adapts_states(tmp_path: 
     assert len(private) == 3
     active = private[private["driver_id"].eq("D_ACTIVE")].iloc[0]
     inactive = private[private["driver_id"].eq("D_INACTIVE")].iloc[0]
-    assert active["dynamic_driver_state"] == "ACTIVE_RESEARCH_VALIDATED"
-    assert active["reaction_state"] == "MAINTENANCE_ACTIVE"
-    assert inactive["reaction_state"] == "BROKEN"
+    assert active["dynamic_driver_state"] == "UNRESOLVED"
+    assert active["maintenance_state"] == "ACTIVE"
+    assert active["reaction_state"] == "UNKNOWN"
+    assert inactive["reaction_state"] == "UNKNOWN"
+    assert inactive["maintenance_state"] == "INACTIVE"
     assert meta["maintenance_private_artifact_committed"] is False
 
 
@@ -88,3 +90,15 @@ def test_mixed_snapshot_fails_closed(tmp_path: Path):
     private, meta = private_board_overlay(board, "NEW", p)
     assert len(private) == len(board)
     assert meta["maintenance_lane_status"] == "MIXED_OR_INVALID_SNAPSHOT"
+
+
+def test_full_graph_maps_position_outside_opportunity_queue():
+    from portfolio_maintenance_research import full_exposure_board, _system_drivers_for_position
+    graph = pd.DataFrame([{"driver_id": "OFF_QUEUE", "taiwan_code": "7777", "enabled": 1}])
+    board = pd.DataFrame([{"driver_id": "TOP", "ticker": "8888.TW"}])
+    full = full_exposure_board(graph, board)
+    drivers, mapping = _system_drivers_for_position({"ticker": "7777"}, full)
+    assert drivers == ["OFF_QUEUE"]
+    assert mapping == "SYSTEM_TICKER_EXPOSURE"
+    assert full.iloc[-1]["reaction_state"] == "UNKNOWN"
+    assert full.iloc[-1]["provenance_status"] == "NEEDS_SOURCE_BACKFILL"

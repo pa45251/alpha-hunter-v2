@@ -173,7 +173,7 @@ def _current_group_exposure(portfolio: dict[str, Any], risk_group: str) -> float
 
 
 def _ticker_key(v: Any) -> str:
-    return str(v or "").upper().replace(".TW", "").replace(".TWO", "")
+    return str(v or "").upper().removesuffix(".TWO").removesuffix(".TW")
 
 
 def _current_ticker_weight(portfolio: dict[str, Any], ticker: str) -> float:

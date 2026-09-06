@@ -28,7 +28,7 @@ MAX_TARGETS = 12
 
 
 def _ticker_key(v: Any) -> str:
-    return str(v or "").strip().upper().replace(".TW", "").replace(".TWO", "")
+    return str(v or "").strip().upper().removesuffix(".TWO").removesuffix(".TW")
 
 
 def _list(v: Any) -> list[str]:
@@ -66,7 +66,29 @@ def _extract_json(text: str) -> dict:
     raise ResearchContractError("no valid top-level maintenance research JSON object")
 
 
+
+def full_exposure_board(graph: pd.DataFrame, board: pd.DataFrame) -> pd.DataFrame:
+    """Preserve canonical edges outside the opportunity funnel; never invent prices."""
+    g = graph.copy()
+    g = g[pd.to_numeric(g["enabled"], errors="coerce").eq(1)].copy()
+    g["ticker"] = g["taiwan_code"].map(_ticker_key)
+    g["dynamic_driver_state"] = "UNRESOLVED"
+    g["reaction_state"] = "UNKNOWN"
+    # The graph is a mapping, not current source-backed validation.
+    g["provenance_status"] = "NEEDS_SOURCE_BACKFILL"
+    b = board.copy()
+    g["ticker_key"] = g["ticker"].map(_ticker_key)
+    b["ticker_key"] = b["ticker"].map(_ticker_key)
+    pairs = set(zip(b["ticker_key"], b["driver_id"]))
+    missing = g[[p not in pairs for p in zip(g["ticker_key"], g["driver_id"])]]
+    return pd.concat([b, missing], ignore_index=True)
+
+
 def _current_inputs() -> tuple[str, pd.DataFrame, pd.DataFrame, dict[str, Any]]:
+    from canonical_gate import validate_canonical_snapshot
+    gate = validate_canonical_snapshot(OUT)
+    if gate.get("gate_status") != "PASS":
+        raise RuntimeError("maintenance lane canonical gate failed")
     manifest = json.loads((OUT / "manifest.json").read_text(encoding="utf-8"))
     run_id = str(manifest.get("run_id", ""))
     if not run_id:
@@ -75,6 +97,8 @@ def _current_inputs() -> tuple[str, pd.DataFrame, pd.DataFrame, dict[str, Any]]:
     taxonomy = pd.read_csv(OUT / "causal_driver_taxonomy.csv")
     if structural.empty or "run_id" not in structural.columns or not structural["run_id"].astype(str).eq(run_id).all():
         raise RuntimeError("maintenance lane MIXED_SNAPSHOT_DATA: structural_matches")
+    graph = pd.read_csv(OUT / "structural_exposure_graph.csv", dtype={"taiwan_code": str})
+    structural = full_exposure_board(graph, structural)
     return run_id, structural, taxonomy, load_portfolio_state()
 
 
@@ -109,6 +133,8 @@ def build_handoff(path: Path = DEFAULT_HANDOFF) -> dict[str, Any]:
             if driver not in ordered:
                 ordered.append(driver)
 
+    enabled_ids = set(taxonomy.loc[pd.to_numeric(taxonomy["enabled"], errors="coerce").eq(1), "driver_id"].astype(str))
+    ordered = [d for d in ordered if d in enabled_ids]
     selected = ordered[:MAX_TARGETS]
     truncated = max(0, len(ordered) - len(selected))
     tax = taxonomy.copy()
@@ -227,7 +253,7 @@ def private_board_overlay(board: pd.DataFrame, run_id: str, path: Path | None = 
     """Append ephemeral synthetic driver rows for the private existing-position engine only.
 
     These rows are never written back to decision_board.csv.  ACTIVE becomes a source-backed
-    healthy driver.  Source-backed INACTIVE is adapted to the existing engine's BROKEN semantic.
+    driver classification only. INACTIVE is kept separate from price BROKEN.
     UNKNOWN stays unresolved and therefore fails closed to REVIEW_RESEARCH.
     """
     p = path or Path(os.getenv("ALPHA_HUNTER_MAINTENANCE_RESEARCH_PATH", str(DEFAULT_VALIDATED)))
@@ -261,9 +287,9 @@ def private_board_overlay(board: pd.DataFrame, run_id: str, path: Path | None = 
         source_count = int(r.get("source_count", 0) or 0)
         source_backed = source_count > 0
         if state == "ACTIVE" and source_backed:
-            dynamic, provenance, reaction = "ACTIVE_RESEARCH_VALIDATED", "SOURCE_BACKED", "MAINTENANCE_ACTIVE"
+            dynamic, provenance, reaction = "UNRESOLVED", "UNRESOLVED", "UNKNOWN"
         elif state == "INACTIVE" and source_backed:
-            dynamic, provenance, reaction = "ACTIVE_RESEARCH_VALIDATED", "SOURCE_BACKED", "BROKEN"
+            dynamic, provenance, reaction = "UNRESOLVED", "UNRESOLVED", "UNKNOWN"
         else:
             dynamic, provenance, reaction = "UNRESOLVED", "UNRESOLVED", "MAINTENANCE_UNKNOWN"
         rows.append({
@@ -273,10 +299,23 @@ def private_board_overlay(board: pd.DataFrame, run_id: str, path: Path | None = 
             "provenance_status": provenance,
             "polarity": "POSITIVE",
             "reaction_state": reaction,
+            "maintenance_state": state if source_backed else "UNKNOWN",
             "_private_maintenance_row": True,
         })
 
     private_board = board.copy()
+    # Add mapping-only edges outside the opportunity filter, never fabricated prices.
+    from canonical_gate import validate_canonical_snapshot
+    from decision_engine import apply_edge_provenance
+    gate = validate_canonical_snapshot(OUT)
+    if gate.get("gate_status") == "PASS" and gate.get("run_id") == run_id:
+        graph = pd.read_csv(OUT / "structural_exposure_graph.csv", dtype={"taiwan_code": str})
+        full = full_exposure_board(graph, board)
+        added = full.iloc[len(board):].copy()
+        if not added.empty:
+            added = added.drop(columns=[c for c in added if c.startswith("edge_") or c == "researched_provenance_status"], errors="ignore")
+            added = apply_edge_provenance(added, Path("input/edge_provenance.csv"))
+            private_board = pd.concat([board, added], ignore_index=True)
     private_board["_private_maintenance_row"] = False
     if rows:
         private_board = pd.concat([private_board, pd.DataFrame(rows)], ignore_index=True, sort=False)

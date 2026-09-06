@@ -28,10 +28,10 @@ def test_exact_ticker_system_thesis_holds_without_user_thesis():
     assert out.iloc[0]["thesis_mapping"] == "SYSTEM_TICKER_EXPOSURE"
 
 
-def test_risk_group_system_fallback_holds():
+def test_risk_group_needs_position_exposure_validation():
     portfolio = {"gross_exposure_pct": 80, "positions": [{"ticker": "OTHER", "weight_pct": 20, "risk_groups": ["AI_CAPEX"]}]}
     out = evaluate_existing_positions(board(), policy(), portfolio)
-    assert out.iloc[0]["action"] == "HOLD"
+    assert out.iloc[0]["action"] == "REVIEW_RESEARCH"
     assert out.iloc[0]["thesis_mapping"] == "SYSTEM_RISK_GROUP"
 
 
@@ -94,3 +94,48 @@ def test_malformed_private_thesis_overlay_is_detected(monkeypatch):
     overlay, status = load_private_thesis_overlay()
     assert overlay == {}
     assert status == "INVALID_JSON"
+
+
+def test_peer_broken_cannot_exit_exact_position():
+    b = pd.concat([board(), board("BROKEN", ticker="PEER")])
+    assert evaluate_existing_positions(b, policy(), {"positions": [{"ticker": "SYN1"}]}).iloc[0]["action"] == "HOLD"
+
+
+def test_partial_driver_coverage_requires_review():
+    b = pd.concat([board(), board(driver="SECOND")], ignore_index=True)
+    b.loc[1, "dynamic_driver_state"] = "UNRESOLVED"
+    assert evaluate_existing_positions(b, policy(), {"positions": [{"ticker": "SYN1"}]}).iloc[0]["action"] == "REVIEW_RESEARCH"
+
+
+def test_unknown_position_price_cannot_hold():
+    assert evaluate_existing_positions(board("UNKNOWN"), policy(), {"positions": [{"ticker": "SYN1"}]}).iloc[0]["action"] == "REVIEW_RESEARCH"
+
+
+def test_inactive_is_causal_state_not_fabricated_price_break():
+    p = {"positions": [{"ticker": "SYN1"}]}
+    out = evaluate_existing_positions(board(), policy(), p, {"AI_SERVER_SHIPMENTS": "INACTIVE"})
+    assert out.iloc[0]["action"] == "EXIT_THESIS"
+    assert out.iloc[0]["reason"] == "SYSTEM_THESIS_SOURCE_BACKED_INACTIVE"
+
+
+def test_private_driver_row_cannot_create_structural_provenance():
+    b = board(); b["provenance_status"] = "NEEDS_SOURCE_BACKFILL"
+    private = pd.DataFrame([{ "ticker": "", "driver_id": "AI_SERVER_SHIPMENTS",
+        "maintenance_state": "ACTIVE", "_private_maintenance_row": True,
+        "provenance_status": "SOURCE_BACKED", "polarity": "POSITIVE", "reaction_state": "CONFIRMING"}])
+    out = evaluate_existing_positions(pd.concat([b, private]), policy(), {"positions": [{"ticker": "SYN1"}]})
+    assert out.iloc[0]["action"] == "REVIEW_RESEARCH"
+
+
+def test_existing_exit_counts_toward_gross_reduction():
+    p = {"gross_exposure_pct": 120, "positions": [
+        {"ticker": "SYN1", "weight_pct": 25, "unrealized_pnl_pct": -12},
+        {"ticker": "SYN2", "weight_pct": 30}]}
+    out = evaluate_existing_positions(pd.concat([board(), board(ticker="SYN2")]), policy(), p)
+    assert out["action"].tolist() == ["EXIT_RISK", "HOLD"]
+
+
+def test_tpex_suffix_normalization():
+    from existing_position import _ticker_key
+    from portfolio_risk import _ticker_key as risk_key
+    assert _ticker_key("1234.TWO") == risk_key("1234.TWO") == "1234"

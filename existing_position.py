@@ -39,7 +39,7 @@ def _list(v: Any) -> list[str]:
 
 
 def _ticker_key(v: Any) -> str:
-    return str(v or "").strip().upper().replace(".TW", "").replace(".TWO", "")
+    return str(v or "").strip().upper().removesuffix(".TWO").removesuffix(".TW")
 
 
 def load_private_thesis_overlay() -> tuple[dict[str, dict[str, Any]], str]:
@@ -122,34 +122,66 @@ def _pnl_pct(pos: dict[str, Any]) -> float | None:
     return None
 
 
-def evaluate_existing_positions(board: pd.DataFrame, policy: dict[str, Any], portfolio: dict[str, Any]) -> pd.DataFrame:
+def evaluate_existing_positions(board: pd.DataFrame, policy: dict[str, Any], portfolio: dict[str, Any], maintenance_states: dict[str, str] | None = None) -> pd.DataFrame:
     """Independent system-thesis evaluation. User thesis is challenger metadata only."""
     positions = portfolio.get("positions") or []
     if not positions:
         return pd.DataFrame(columns=["position_index", "action", "reason", "thesis_mapping"])
 
     b = _prepare_board(board)
+    if "_private_maintenance_row" in b:
+        private = b["_private_maintenance_row"].fillna(False).astype(bool)
+        maintenance_states = {
+            str(r["driver_id"]): str(r.get("maintenance_state", "UNKNOWN"))
+            for _, r in b.loc[private].iterrows()
+        }
+        b = b.loc[~private].copy()
     rows: list[dict[str, Any]] = []
     max_loss = _f(policy.get("max_position_loss_pct"), 0)
 
     for i, pos in enumerate(positions):
         drivers, mapping = _system_position_drivers(pos, b)
         matched = b[b["driver_id"].isin(drivers)] if drivers and not b.empty else pd.DataFrame()
+        if mapping == "SYSTEM_TICKER_EXPOSURE" and not matched.empty:
+            matched = matched[matched["ticker_key"].eq(_ticker_key(pos.get("ticker")))].copy()
+        states = maintenance_states or {}
+        if not matched.empty:
+            for driver, state in states.items():
+                matched.loc[matched["driver_id"].eq(driver), "dynamic_driver_state"] = {
+                    "ACTIVE": "ACTIVE_RESEARCH_VALIDATED",
+                    "INACTIVE": "INACTIVE_RESEARCH_VALIDATED",
+                }.get(state, "UNRESOLVED")
+        inactive = matched[
+            matched["dynamic_driver_state"].eq("INACTIVE_RESEARCH_VALIDATED")
+            & matched["provenance_status"].eq("SOURCE_BACKED")
+            & matched["polarity"].eq("POSITIVE")
+        ] if not matched.empty else pd.DataFrame()
         healthy = matched[
             matched["dynamic_driver_state"].eq("ACTIVE_RESEARCH_VALIDATED")
             & matched["provenance_status"].eq("SOURCE_BACKED")
             & matched["polarity"].eq("POSITIVE")
-            & ~matched["reaction_state"].eq("BROKEN")
+            & matched["reaction_state"].isin({"PRE_CONFIRMATION", "EARLY_CONFIRMATION", "CONFIRMING", "PULLBACK", "PERSISTENT", "EXTENDED"})
         ] if not matched.empty else pd.DataFrame()
         broken = matched[
             matched["dynamic_driver_state"].eq("ACTIVE_RESEARCH_VALIDATED")
             & matched["provenance_status"].eq("SOURCE_BACKED")
             & matched["reaction_state"].eq("BROKEN")
+            & matched["polarity"].eq("POSITIVE")
         ] if not matched.empty else pd.DataFrame()
 
+        covered = set(healthy.get("driver_id", [])) | set(broken.get("driver_id", [])) | set(inactive.get("driver_id", []))
+        complete = bool(drivers) and set(drivers).issubset(covered)
         pnl = _pnl_pct(pos)
         if pnl is not None and max_loss > 0 and pnl <= -max_loss:
             action, reason, strength = "EXIT_RISK", "MAX_POSITION_LOSS_BREACHED", 0
+        elif mapping == "SYSTEM_RISK_GROUP":
+            action, reason, strength = "REVIEW_RESEARCH", "SYSTEM_GROUP_RESEARCH_REQUIRES_POSITION_EXPOSURE_VALIDATION", 1
+        elif not complete and mapping != "SYSTEM_MAPPING_MISSING":
+            action, reason, strength = "REVIEW_RESEARCH", "SYSTEM_THESIS_COVERAGE_INCOMPLETE", 1
+        elif not inactive.empty and healthy.empty:
+            action, reason, strength = "EXIT_THESIS", "SYSTEM_THESIS_SOURCE_BACKED_INACTIVE", 0
+        elif not inactive.empty and not healthy.empty:
+            action, reason, strength = "REDUCE_REVIEW", "SYSTEM_THESIS_MIXED_SIGNALS", 1
         elif not broken.empty and healthy.empty:
             action, reason, strength = "EXIT_THESIS", "SYSTEM_THESIS_SOURCE_BACKED_TRANSMISSION_BROKEN", 0
         elif not broken.empty and not healthy.empty:
@@ -189,7 +221,7 @@ def evaluate_existing_positions(board: pd.DataFrame, policy: dict[str, Any], por
         candidates = out[~out["action"].isin({"EXIT_THESIS", "EXIT_RISK"})].sort_values(
             ["thesis_strength", "weight_pct"], ascending=[True, False]
         )
-        covered = 0.0
+        covered = float(out.loc[out["action"].isin({"EXIT_THESIS", "EXIT_RISK"}), "weight_pct"].clip(lower=0).sum())
         for idx, r in candidates.iterrows():
             if covered >= excess:
                 break

@@ -203,7 +203,7 @@ def build_decision_board(structural_matches: pd.DataFrame, cfg: DecisionConfig =
         x = x.sort_values(sort_cols, ascending=[True, False][:len(sort_cols)])
     preferred = [
         "run_id", "decision_contract_version", "global_theme", "driver_id", "driver_label", "taiwan_code", "ticker", "name", "industry",
-        "economic_role", "linkage_tier", "linkage_confidence", "seed_provenance_status", "provenance_status", "edge_research_as_of_utc",
+        "economic_role", "linkage_tier", "linkage_confidence", "polarity", "seed_provenance_status", "provenance_status", "edge_research_as_of_utc",
         "edge_source_count", "edge_source_summary", "edge_counter_evidence", "edge_source_urls", "dynamic_driver_state", "reaction_state",
         "previous_reaction_state", "entry_trigger_state", "etf_ticker", "etf_role", "exposure_purity", "comparison_policy", "stock_vs_etf_state",
         "rs_20d_vs_bench", "rs_60d_vs_bench", "acceleration", "keynes_v2", "gate_driver_active", "gate_edge_source_backed",

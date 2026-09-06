@@ -8,7 +8,7 @@ The user is **not required** to provide the original investment logic.
 
 Existing positions are evaluated from an independently inferred **System Thesis**:
 
-1. exact ticker structural exposure already present in the current decision board;
+1. exact ticker structural exposure from the full enabled canonical graph (including outside the opportunity filter);
 2. otherwise private risk-group to canonical-driver mapping;
 3. otherwise `SYSTEM_MAPPING_MISSING` -> `REVIEW_RESEARCH`.
 
@@ -38,12 +38,14 @@ The public Action Board reports only an aggregate disagreement count. It never w
 
 ## System decision semantics
 
-- `HOLD`: at least one system-mapped driver is `ACTIVE_RESEARCH_VALIDATED`, `SOURCE_BACKED`, `POSITIVE`, and not `BROKEN`.
-- `EXIT_THESIS`: validated system transmission is broken and no healthy mapped transmission remains.
-- `EXIT_RISK`: configured maximum position-loss policy is breached.
-- `REDUCE_REVIEW`: system-mapped drivers contain both healthy and broken validated evidence.
-- `REDUCE_RISK`: portfolio gross exposure exceeds policy and the deterministic risk-reduction rule selects the position.
-- `REVIEW_RESEARCH`: system exposure mapping is missing, mapped drivers are absent from the current decision board, or current evidence is not research validated.
+- `HOLD`: exact position exposure, complete mapped-driver coverage, and healthy source-backed positive transmission with a known non-broken position reaction.
+- `EXIT_THESIS`: complete mapped-driver coverage and no healthy transmission remains; source-backed causal INACTIVE and exact-position price BROKEN remain separate reasons.
+- `EXIT_RISK`: configured maximum position-loss policy is breached, including when research is missing.
+- `REDUCE_REVIEW`: complete driver coverage contains both healthy and broken/inactive evidence.
+- `REDUCE_RISK`: portfolio gross exposure exceeds policy; already nominated exits count toward the required reduction.
+- `REVIEW_RESEARCH`: missing/partial driver research, missing exact exposure provenance or price reaction, or risk-group-only inference.
+
+Maintenance research rows carry causal states only. They cannot create structural provenance, polarity, or a price reaction. A peer's price break cannot invalidate the held ticker. Group-only research still runs, but does not authorize HOLD/EXIT until the position's exposure is verified.
 
 Missing research is fail-closed: it must never become an invented HOLD or EXIT.
 
@@ -63,3 +65,7 @@ Public artifacts may contain aggregate counts such as action counts, system-mapp
 - `BLOCKED_PRIVATE_INPUTS`: private risk/portfolio input validation failed.
 
 The optional user thesis secret is never a prerequisite for system readiness.
+
+## Maintenance lane coverage
+
+The maintenance handoff reads the full canonical graph after rechecking canonical hashes/freshness, independently of Top-5 opportunity ranking. The existing 12-driver maintenance workload cap remains; truncation is reported and unresolved drivers cannot be treated as complete coverage. Graph-only positions with no current reaction stay under review. Public artifacts contain aggregate maintenance status only.
