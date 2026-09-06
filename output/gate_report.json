@@ -3,13 +3,13 @@
   "gate_version": "1.0",
   "gate_status": "PASS",
   "failure_code": null,
-  "validated_at_taipei": "2026-09-06T10:06:29.087592+08:00",
+  "validated_at_taipei": "2026-09-06T10:16:52.775127+08:00",
   "repository": "pa45251/alpha-hunter-v2",
   "branch": "main",
   "schema_version": "2.6",
   "scanner_version": "2.6.0",
-  "run_id": "20260906T100352+0800-b33e1cef",
-  "manifest_sha256": "21745b75b1fa81d0d8438aeb510a87fdc99e04fd82d7340d15646d6634fdaf6a",
+  "run_id": "20260906T101337+0800-760da842",
+  "manifest_sha256": "acbd77502ec1d28f5c43c83a6c9db8e70b6e6ea81b07b81b86691fb46df624f8",
   "checks": [
     {
       "name": "repository_identity",
@@ -56,7 +56,7 @@
     {
       "name": "manifest_run_id",
       "passed": true,
-      "detail": "run_id=20260906T100352+0800-b33e1cef",
+      "detail": "run_id=20260906T101337+0800-760da842",
       "severity": "HARD"
     },
     {
@@ -80,7 +80,7 @@
     {
       "name": "run_consistency",
       "passed": true,
-      "detail": "all=20260906T100352+0800-b33e1cef",
+      "detail": "all=20260906T101337+0800-760da842",
       "severity": "HARD"
     },
     {
