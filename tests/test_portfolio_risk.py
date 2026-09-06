@@ -62,18 +62,19 @@ def test_complete_legacy_private_inputs_can_pass_candidate_risk(monkeypatch):
 
 
 def test_market_value_schema_derives_leverage_and_blocks_when_already_over_limit(monkeypatch):
-    policy = base_policy(max_gross_exposure_pct=160, max_single_position_pct=70, max_theme_exposure_pct=90)
+    # Synthetic values only. Never place real private balances/holdings in public tests.
+    policy = base_policy(max_gross_exposure_pct=160, max_single_position_pct=100, max_theme_exposure_pct=100)
     portfolio = {
         "cash_twd": 0,
-        "market_value_twd": 27231807,
-        "financing_debt_twd": 14565000,
-        "gross_exposure_pct": 214.99,
+        "market_value_twd": 18000000,
+        "financing_debt_twd": 8000000,
+        "gross_exposure_pct": 180,
         "positions": [
-            {"ticker": "00757", "market_value_twd": 9342300, "risk_groups": ["AI_CAPEX"]},
-            {"ticker": "00898", "market_value_twd": 10711440, "risk_groups": ["BIOTECH_RISK"]},
-            {"ticker": "009821", "market_value_twd": 3045150, "risk_groups": ["CRITICAL_MATERIALS"]},
-            {"ticker": "3029", "market_value_twd": 4125500, "risk_groups": ["CYBERSECURITY"]},
-            {"ticker": "006208", "market_value_twd": 7417, "risk_groups": ["TAIWAN_BROAD"]},
+            {"ticker": "SYN1", "market_value_twd": 6000000, "risk_groups": ["AI_CAPEX"]},
+            {"ticker": "SYN2", "market_value_twd": 5000000, "risk_groups": ["BIOTECH_RISK"]},
+            {"ticker": "SYN3", "market_value_twd": 3000000, "risk_groups": ["CRITICAL_MATERIALS"]},
+            {"ticker": "SYN4", "market_value_twd": 2500000, "risk_groups": ["CYBERSECURITY"]},
+            {"ticker": "SYN5", "market_value_twd": 1500000, "risk_groups": ["TAIWAN_BROAD"]},
         ],
     }
     monkeypatch.setenv("ALPHA_HUNTER_RISK_POLICY_JSON", json.dumps(policy))
@@ -82,7 +83,6 @@ def test_market_value_schema_derives_leverage_and_blocks_when_already_over_limit
     assert meta["risk_inputs_valid"] is True
     assert board.iloc[0]["portfolio_action"] == "WATCH_ENTRY"
     assert "PORTFOLIO_ALREADY_OVER_MAX_GROSS" in board.iloc[0]["risk_blockers"]
-    # Exact balances/weights must not be copied into public metadata.
     assert "market_value_twd" not in meta
     assert "gross_exposure_pct" not in meta
 
