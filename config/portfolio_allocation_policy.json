@@ -1,0 +1,26 @@
+{
+  "policy_version": "1.0",
+  "cash_regime": {
+    "bands": [
+      {"max_score": 20, "label": "RISK_ON", "target_cash_pct": 0, "gross_multiplier": 1.00},
+      {"max_score": 35, "label": "NORMAL", "target_cash_pct": 5, "gross_multiplier": 0.90},
+      {"max_score": 55, "label": "CAUTION", "target_cash_pct": 15, "gross_multiplier": 0.75},
+      {"max_score": 75, "label": "DEFENSIVE", "target_cash_pct": 30, "gross_multiplier": 0.60},
+      {"max_score": 100, "label": "CRISIS", "target_cash_pct": 50, "gross_multiplier": 0.45}
+    ],
+    "required_core_signals": ["^VIX", "^VXN", "SPY", "QQQ"],
+    "max_data_age_days": 5
+  },
+  "rotation": {
+    "min_edge_spread": 0.18,
+    "strong_edge_spread": 0.35,
+    "max_source_trim_pct": {
+      "RISK_ON": 50,
+      "NORMAL": 40,
+      "CAUTION": 25,
+      "DEFENSIVE": 15,
+      "CRISIS": 0,
+      "UNKNOWN": 0
+    }
+  }
+}
