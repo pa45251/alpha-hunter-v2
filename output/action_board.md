@@ -16,7 +16,7 @@
 - First review: 2026-11-29. Review does not automatically enable trading.
 - Existing shadow statistics are gross signal outcomes, not validated strategy performance.
 
-## 1. CIO advisory — directional decision, not an order
+## 1. CIO advisory — new opportunities, directional decision not an order
 
 | Rank | Exposure | Name | Advisory | Confidence | Driver | Why |
 |---:|---|---|---|---|---|---|
@@ -39,11 +39,15 @@
 Advisory counts: `{"BUY_BIAS_STOCK": 1, "HOLD_BIAS": 6, "PREFER_ETF": 3, "RESEARCH_FIRST": 40}`
 The advisory lane may say BUY_BIAS/PREFER_ETF/WAIT_PULLBACK/AVOID even when execution remains blocked. That is intentional.
 
-## 2. Execution-lane research signals (not executable orders)
+## 2. Existing-position CIO advisory — alias only
+
+Existing-position CIO advisory artifact is not available for this run.
+
+## 3. Execution-lane research signals (not executable orders)
 
 No validated BUY/ADD/REDUCE/EXIT/HOLD action is currently emitted by the frozen execution lane.
 
-## 3. Closest to execution action
+## 4. Closest to execution action
 
 | Ticker | Name | Driver | Reaction | Stage | Blocker |
 |---|---|---|---|---|---|
@@ -58,14 +62,14 @@ No validated BUY/ADD/REDUCE/EXIT/HOLD action is currently emitted by the frozen 
 | 6669.TW | 緯穎 | AI_SERVER_SHIPMENTS | PERSISTENT | GATE_4_REACTION | INFORMATION_MAY_BE_PRICED |
 | 3231.TW | 緯創 | AI_SERVER_SHIPMENTS | PERSISTENT | GATE_4_REACTION | INFORMATION_MAY_BE_PRICED |
 
-## 4. Main execution blockers
+## 5. Main execution blockers
 - `DRIVER_NOT_ACTIVE_RESEARCH_VALIDATED`: 40
 - `EDGE_PROVENANCE_NOT_SOURCE_BACKED`: 40
 - `INFORMATION_MAY_BE_PRICED`: 9
 - `REACTION_STATE_NOT_ENTRY_READY`: 3
 - `WAIT_FOR_STATE_TRANSITION_ENTRY_TRIGGER`: 1
 
-## 5. Existing-position layer — privacy-safe alias view
+## 6. Existing-position strict layer — privacy-safe alias view
 
 | Alias | Action | Reason | Thesis mapping |
 |---|---|---|---|
@@ -87,17 +91,15 @@ No validated BUY/ADD/REDUCE/EXIT/HOLD action is currently emitted by the frozen 
 - Maintenance targets truncated by safety cap: `0`
 - Optional user-thesis overlay: `NOT_CONFIGURED`
 - User/system disagreement count: `0`
-- Public alias output contains no ticker, company name, market value, weight, cost, P/L, cash or financing data.
+- Public alias outputs contain no ticker, company name, market value, weight, cost, P/L, cash or financing data.
 - The ticker-to-alias map remains inside GitHub Secrets/private runtime and is never committed.
 
-## 6. Interpretation
-- Opportunity discovery, CIO advisory, execution permission, and portfolio maintenance are separate layers.
-- CIO advisory answers the decision question under uncertainty; it does not authorize a brokerage order.
-- Weak or unverified Taiwan stock alpha should fall back to a mapped ETF or cash instead of forcing endless research. Company provenance is a stock gate, not an ETF-advisory gate.
-- Existing-position HOLD/REDUCE/EXIT is driven by system-inferred economic exposure, not by the user's stated purchase reason.
+## 7. Interpretation
+- Opportunity discovery, existing-position advisory, execution permission, and portfolio maintenance are separate layers.
+- Existing-position CIO advisory is forced to express a directional bias from market evidence even when the frozen strict lane remains REVIEW_RESEARCH.
+- ETF holdings are judged by global theme breadth; single stocks require more company-specific transmission before strict HOLD/EXIT can be validated.
+- Weak or unverified Taiwan stock alpha should fall back to a mapped ETF or cash instead of forcing endless research.
+- Existing-position strict HOLD/REDUCE/EXIT is driven by system-inferred economic exposure, not by the user's stated purchase reason.
 - `SYSTEM_TICKER_EXPOSURE` is preferred; risk-group mapping is a fallback. Missing system mapping fails closed to `REVIEW_RESEARCH`.
 - Alias-level existing-position actions may be public, but the underlying instrument mapping stays private.
-- User thesis is optional challenger metadata only; it cannot force HOLD or EXIT.
-- `GATE_5_ENTRY` is closest to an executable entry but still requires the defined state-transition trigger and private risk pass.
-- `GATE_4_REACTION` means causality and structural transmission passed, but price reaction is already persistent/extended or otherwise not an early entry state.
 - Automatic brokerage execution remains disabled.

@@ -2,7 +2,7 @@
   "contract": "ALPHA_HUNTER_CIO_ADVISORY_PACKET",
   "advisory_version": "1.0",
   "run_id": "20260906T130002+0800-dd80dd63",
-  "generated_at": "2026-09-06T13:18:02.561320+00:00",
+  "generated_at": "2026-09-06T13:26:27.358275+00:00",
   "advisory_is_order": false,
   "auto_trade_allowed": false,
   "purpose": "Directional CIO decision support under uncertainty. Execution permissions remain governed by the frozen shadow execution lane.",
