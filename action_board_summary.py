@@ -30,6 +30,23 @@ for r in rows:
             if item:
                 blockers[item] += 1
 
+mapping_counts = pos.get("thesis_mapping_counts") or {}
+explicit_count = int(mapping_counts.get("EXPLICIT", 0) or 0)
+inferred_count = int(mapping_counts.get("RISK_GROUP_INFERRED", 0) or 0)
+missing_count = int(mapping_counts.get("MISSING", 0) or 0)
+mapped_count = explicit_count + inferred_count
+position_count = mapped_count + missing_count
+if not pos.get("position_inputs_valid", False):
+    thesis_readiness = "BLOCKED_PRIVATE_INPUTS"
+elif missing_count > 0:
+    thesis_readiness = "PARTIAL"
+elif position_count == 0:
+    thesis_readiness = "NO_POSITIONS"
+elif inferred_count > 0:
+    thesis_readiness = "COMPLETE_WITH_INFERENCE"
+else:
+    thesis_readiness = "COMPLETE_EXPLICIT"
+
 lines = [
     "# Alpha Hunter — Action Board",
     "",
@@ -72,17 +89,20 @@ lines += [
     "## 4. Existing-position layer (privacy-safe aggregate)",
     f"- Inputs valid: `{pos.get('position_inputs_valid', False)}`",
     f"- Thesis overlay: `{pos.get('thesis_overlay_status', 'UNKNOWN')}`",
+    f"- Thesis mapping readiness: `{thesis_readiness}`",
+    f"- Position count (aggregate only): `{position_count}`",
     f"- Position action counts: `{json.dumps(pos.get('position_action_counts') or {}, ensure_ascii=False, sort_keys=True)}`",
-    f"- Thesis mapping counts: `{json.dumps(pos.get('thesis_mapping_counts') or {}, ensure_ascii=False, sort_keys=True)}`",
-    "- Per-position holdings, balances, weights and P/L are intentionally not written to this public artifact.",
+    f"- Thesis mapping counts: `{json.dumps(mapping_counts, ensure_ascii=False, sort_keys=True)}`",
+    "- Per-position holdings, balances, weights, P/L and actions are intentionally not written to this public artifact.",
     "",
     "## 5. Interpretation",
     "- `GATE_5_ENTRY` is closest to an executable entry but still requires the defined state-transition trigger and private risk pass.",
     "- `GATE_4_REACTION` means causality and structural transmission passed, but price reaction is already persistent/extended or otherwise not an early entry state.",
     "- `WATCH_RESEARCH` means an earlier causal/provenance/reaction gate blocked the candidate.",
+    "- Existing-position `PARTIAL` means at least one private holding has no thesis-driver mapping; missing mapping fails closed to REVIEW_THESIS rather than inventing HOLD/EXIT.",
     "- This board is decision support only; automatic brokerage execution remains disabled.",
     "",
 ]
 
 (OUT / "action_board.md").write_text("\n".join(lines), encoding="utf-8")
-print(f"Wrote output/action_board.md: focus={len(focus)} near={len(near)} now={len(now)}")
+print(f"Wrote output/action_board.md: focus={len(focus)} near={len(near)} now={len(now)} thesis_readiness={thesis_readiness}")
