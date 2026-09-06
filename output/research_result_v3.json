@@ -1,0 +1,88 @@
+{
+  "contract": "ALPHA_HUNTER_V3_VALIDATED_RESEARCH",
+  "status": "RESEARCH_UNAVAILABLE",
+  "research_run_id": "20260906T130002+0800-dd80dd63",
+  "validated_at_utc": "2026-09-06T06:07:26.212400+00:00",
+  "target_driver_ids": [
+    "DRY_BULK_FREIGHT",
+    "CONTAINER_FREIGHT",
+    "NUCLEAR_GRID_SECOND_ORDER",
+    "POWER_ELECTRONICS_CAPEX",
+    "AI_SERVER_SHIPMENTS"
+  ],
+  "errors": [
+    "research contract marker mismatch"
+  ],
+  "results": [
+    {
+      "driver_id": "DRY_BULK_FREIGHT",
+      "state": "UNKNOWN",
+      "confidence": 0.0,
+      "primary_cause": "Autonomous research output missing or failed deterministic validation.",
+      "industry_scope": "UNKNOWN",
+      "supporting_evidence": [],
+      "counter_evidence": [],
+      "source_count": 0,
+      "event_date": null,
+      "source_dates": [],
+      "researched_at_utc": "2026-09-06T06:07:26.212376+00:00",
+      "research_run_id": "20260906T130002+0800-dd80dd63"
+    },
+    {
+      "driver_id": "CONTAINER_FREIGHT",
+      "state": "UNKNOWN",
+      "confidence": 0.0,
+      "primary_cause": "Autonomous research output missing or failed deterministic validation.",
+      "industry_scope": "UNKNOWN",
+      "supporting_evidence": [],
+      "counter_evidence": [],
+      "source_count": 0,
+      "event_date": null,
+      "source_dates": [],
+      "researched_at_utc": "2026-09-06T06:07:26.212391+00:00",
+      "research_run_id": "20260906T130002+0800-dd80dd63"
+    },
+    {
+      "driver_id": "NUCLEAR_GRID_SECOND_ORDER",
+      "state": "UNKNOWN",
+      "confidence": 0.0,
+      "primary_cause": "Autonomous research output missing or failed deterministic validation.",
+      "industry_scope": "UNKNOWN",
+      "supporting_evidence": [],
+      "counter_evidence": [],
+      "source_count": 0,
+      "event_date": null,
+      "source_dates": [],
+      "researched_at_utc": "2026-09-06T06:07:26.212395+00:00",
+      "research_run_id": "20260906T130002+0800-dd80dd63"
+    },
+    {
+      "driver_id": "POWER_ELECTRONICS_CAPEX",
+      "state": "UNKNOWN",
+      "confidence": 0.0,
+      "primary_cause": "Autonomous research output missing or failed deterministic validation.",
+      "industry_scope": "UNKNOWN",
+      "supporting_evidence": [],
+      "counter_evidence": [],
+      "source_count": 0,
+      "event_date": null,
+      "source_dates": [],
+      "researched_at_utc": "2026-09-06T06:07:26.212397+00:00",
+      "research_run_id": "20260906T130002+0800-dd80dd63"
+    },
+    {
+      "driver_id": "AI_SERVER_SHIPMENTS",
+      "state": "UNKNOWN",
+      "confidence": 0.0,
+      "primary_cause": "Autonomous research output missing or failed deterministic validation.",
+      "industry_scope": "UNKNOWN",
+      "supporting_evidence": [],
+      "counter_evidence": [],
+      "source_count": 0,
+      "event_date": null,
+      "source_dates": [],
+      "researched_at_utc": "2026-09-06T06:07:26.212398+00:00",
+      "research_run_id": "20260906T130002+0800-dd80dd63"
+    }
+  ]
+}
