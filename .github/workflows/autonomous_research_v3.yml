@@ -1,0 +1,81 @@
+name: Alpha Hunter v3 Autonomous Research
+
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: alpha-hunter-v3-research-main
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  copilot-requests: write
+
+jobs:
+  research:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+
+      - name: Install Copilot CLI
+        run: npm install -g @github/copilot
+
+      - name: Run bounded autonomous causal research
+        id: copilot_research
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          set +e
+          copilot \
+            -p "$(cat RESEARCH_AGENT_PROMPT_V3.md)" \
+            --attachment output/research_packet.json \
+            -s \
+            --available-tools='web_search,web_fetch' \
+            --allow-all-urls \
+            --deny-tool='write,shell,memory' \
+            --no-ask-user \
+            --max-ai-credits=35 \
+            > output/research_result_v3.raw.txt \
+            2> /tmp/copilot_research.err
+          code=$?
+          echo "exit_code=$code" >> "$GITHUB_OUTPUT"
+          if [ "$code" -ne 0 ]; then
+            echo '{}' > output/research_result_v3.raw.txt
+            echo "Copilot research unavailable; deterministic ingest will fail closed to UNKNOWN."
+          fi
+          exit 0
+
+      - name: Deterministic fail-closed research ingest
+        run: python research_ingest_v3.py
+
+      - name: Validate v3 contract tests
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+        run: python -m pytest -q tests/test_research_contract_v3.py
+
+      - name: Remove unvalidated raw model output
+        run: rm -f output/research_result_v3.raw.txt
+
+      - name: Commit validated research artifact
+        run: |
+          git config user.name "alpha-hunter-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add output/research_result_v3.json
+          git diff --cached --quiet && exit 0
+          git commit -m "alpha hunter v3 autonomous research $(date -u +%F)"
+          git push
