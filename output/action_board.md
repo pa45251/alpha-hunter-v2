@@ -13,6 +13,25 @@
 PREPARE_ROTATION means the edge is strong enough to nominate the switch, but the destination has not reached the required entry-confirmation state; current trim remains zero.
 Rotation and cash outputs are CIO advisories only. They do not authorize brokerage orders.
 
+## 0.5 Global Alignment Leaderboard
+- Purpose: find Taiwan stocks whose own trend quality is supported by the corresponding international market and an ACTIVE causal driver.
+- Alignment score is a relative opportunity/evidence score, **not a calibrated win probability**.
+- Highest alignment now: **2606.TW 裕民** — score `0.9027` / `HOLD_DONT_CHASE` / global `Shipping` / reaction `PERSISTENT`
+
+| Rank | Taiwan stock | Global theme | Alignment | Global | Taiwan | Breadth | Keynes | State |
+|---:|---|---|---:|---:|---:|---:|---:|---|
+| 1 | 2606.TW 裕民 | Shipping | 0.9027 | 0.9656 | 0.7909 | 1.0 | 0.7818 | HOLD_DONT_CHASE |
+| 2 | 2615.TW 萬海 | Shipping | 0.9002 | 0.9656 | 0.68 | 1.0 | 0.9455 | HOLD_DONT_CHASE |
+| 3 | 2637.TW 慧洋-KY | Shipping | 0.8949 | 0.9656 | 0.7927 | 1.0 | 0.7273 | HOLD_DONT_CHASE |
+| 4 | 2617.TW 台航 | Shipping | 0.8922 | 0.9656 | 0.7073 | 1.0 | 0.8545 | HOLD_DONT_CHASE |
+| 5 | 2609.TW 陽明 | Shipping | 0.8666 | 0.9656 | 0.6873 | 1.0 | 0.7091 | HOLD_DONT_CHASE |
+| 6 | 2603.TW 長榮 | Shipping | 0.8489 | 0.9656 | 0.5836 | 1.0 | 0.7636 | HOLD_DONT_CHASE |
+| 7 | 2605.TW 新興 | Shipping | 0.8408 | 0.9656 | 0.6327 | 1.0 | 0.6364 | HOLD_DONT_CHASE |
+| 8 | 6669.TW 緯穎 | AI_Server | 0.8138 | 0.8765 | 0.8418 | 0.55 | 0.8727 | HOLD_DONT_CHASE |
+| 9 | 3231.TW 緯創 | AI_Server | 0.7435 | 0.8765 | 0.7273 | 0.55 | 0.6 | HOLD_DONT_CHASE |
+
+Global Alignment is advisory only; BROKEN/EXTENDED names cannot become fresh entries through this leaderboard.
+
 - Run: `20260906T130002+0800-dd80dd63`
 - Causal source: `CHATGPT_CHALLENGER_ADJUDICATION`
 - Same snapshot: `True`
