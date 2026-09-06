@@ -2,7 +2,7 @@
   "contract": "ALPHA_HUNTER_POSITION_ALIAS_ACTIONS",
   "schema_version": "1.0",
   "run_id": "20260906T130002+0800-dd80dd63",
-  "generated_at": "2026-09-06T13:06:14.540615+00:00",
+  "generated_at": "2026-09-06T13:17:38.213004+00:00",
   "privacy": {
     "alias_only": true,
     "ticker_included": false,
@@ -31,8 +31,8 @@
     },
     {
       "alias": "標的B",
-      "action": "REDUCE_RISK",
-      "reason": "PORTFOLIO_GROSS_EXPOSURE_ABOVE_POLICY",
+      "action": "REVIEW_RESEARCH",
+      "reason": "SYSTEM_GROUP_RESEARCH_REQUIRES_POSITION_EXPOSURE_VALIDATION",
       "thesis_mapping": "SYSTEM_RISK_GROUP",
       "thesis_strength": 1,
       "user_thesis_disagrees": false

@@ -2,7 +2,7 @@
   "contract": "ALPHA_HUNTER_DECISION_PACKET",
   "decision_contract_version": "2.7.1",
   "run_id": "20260906T130002+0800-dd80dd63",
-  "generated_at": "2026-09-06T13:05:59.921639+00:00",
+  "generated_at": "2026-09-06T13:17:18.262451+00:00",
   "gate_first_score_second": true,
   "price_can_create_causality": false,
   "auto_trade_allowed": false,
@@ -258,8 +258,7 @@
     "position_inputs_valid": true,
     "position_blockers": [],
     "position_action_counts": {
-      "REVIEW_RESEARCH": 4,
-      "REDUCE_RISK": 1
+      "REVIEW_RESEARCH": 5
     },
     "system_mapping_counts": {
       "SYSTEM_RISK_GROUP": 3,
