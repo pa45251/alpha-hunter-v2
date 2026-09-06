@@ -12,6 +12,7 @@
 - Frozen strategy: `ALPHA_HUNTER_SHADOW_V1`
 - Freeze integrity: `True`
 - CIO Advisory is deliberately separate from execution permission: it must express the best directional decision under uncertainty, while the frozen execution lane may still block an order.
+- Existing-position identities are published only as user-defined aliases; ticker-to-alias mapping remains private.
 - First review: 2026-11-29. Review does not automatically enable trading.
 - Existing shadow statistics are gross signal outcomes, not validated strategy performance.
 
@@ -64,11 +65,14 @@ No validated BUY/ADD/REDUCE/EXIT/HOLD action is currently emitted by the frozen 
 - `REACTION_STATE_NOT_ENTRY_READY`: 3
 - `WAIT_FOR_STATE_TRANSITION_ENTRY_TRIGGER`: 1
 
-## 5. Existing-position layer (privacy-safe aggregate)
+## 5. Existing-position layer — privacy-safe alias view
+
+Alias output unavailable: `NOT_AVAILABLE`. No ticker identity is inferred or guessed.
+
 - Inputs valid: `True`
 - System thesis primary: `True`
 - System mapping readiness: `PARTIAL`
-- Position count (aggregate only): `5`
+- Position count: `5`
 - Position action counts: `{"REDUCE_RISK": 1, "REVIEW_RESEARCH": 4}`
 - System mapping counts: `{"SYSTEM_MAPPING_MISSING": 2, "SYSTEM_RISK_GROUP": 3}`
 - Portfolio-maintenance research lane: `NOT_AVAILABLE`
@@ -76,8 +80,9 @@ No validated BUY/ADD/REDUCE/EXIT/HOLD action is currently emitted by the frozen 
 - Maintenance driver states (aggregate only): `{}`
 - Maintenance targets truncated by safety cap: `0`
 - Optional user-thesis overlay: `NOT_CONFIGURED`
-- User/system disagreement count (aggregate only): `0`
-- Per-position holdings, maintenance driver identities, balances, weights, P/L and actions are intentionally not written to this public artifact.
+- User/system disagreement count: `0`
+- Public alias output contains no ticker, company name, market value, weight, cost, P/L, cash or financing data.
+- The ticker-to-alias map remains inside GitHub Secrets/private runtime and is never committed.
 
 ## 6. Interpretation
 - Opportunity discovery, CIO advisory, execution permission, and portfolio maintenance are separate layers.
@@ -85,7 +90,7 @@ No validated BUY/ADD/REDUCE/EXIT/HOLD action is currently emitted by the frozen 
 - Weak or unverified Taiwan stock alpha should fall back to a mapped ETF or cash instead of forcing endless research. Company provenance is a stock gate, not an ETF-advisory gate.
 - Existing-position HOLD/REDUCE/EXIT is driven by system-inferred economic exposure, not by the user's stated purchase reason.
 - `SYSTEM_TICKER_EXPOSURE` is preferred; risk-group mapping is a fallback. Missing system mapping fails closed to `REVIEW_RESEARCH`.
-- Maintenance research is ephemeral and private. Only aggregate readiness/counts may reach this public Action Board.
+- Alias-level existing-position actions may be public, but the underlying instrument mapping stays private.
 - User thesis is optional challenger metadata only; it cannot force HOLD or EXIT.
 - `GATE_5_ENTRY` is closest to an executable entry but still requires the defined state-transition trigger and private risk pass.
 - `GATE_4_REACTION` means causality and structural transmission passed, but price reaction is already persistent/extended or otherwise not an early entry state.
