@@ -48,11 +48,16 @@ def main() -> None:
 
     rotations = alloc.get("rotations") or []
     if rotations:
-        lines += ["", "| Source alias | Destination | Rotation | Edge spread | Suggested source trim |", "|---|---|---|---:|---:|"]
+        lines += [
+            "",
+            "| Source alias | Destination | Rotation | Edge spread | Trim source | Redeploy of trim | Keep as buffer |",
+            "|---|---|---|---:|---:|---:|---:|",
+        ]
         for r in rotations[:5]:
             lines.append(
                 f"| {_md(r.get('source_alias'))} | {_md(r.get('destination_ticker'))} {_md(r.get('destination_name'))} | "
-                f"{_md(r.get('rotation_action'))} | {_md(r.get('edge_spread'))} | {_md(r.get('suggested_source_trim_pct'))}% |"
+                f"{_md(r.get('rotation_action'))} | {_md(r.get('edge_spread'))} | {_md(r.get('suggested_source_trim_pct'))}% | "
+                f"{_md(r.get('suggested_redeploy_pct_of_trim'))}% | {_md(r.get('suggested_risk_buffer_pct_of_trim'))}% |"
             )
     else:
         lines.append("- Rotation: no source/destination pair currently clears the policy threshold, or the risk regime blocks redeployment.")
