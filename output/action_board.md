@@ -11,14 +11,38 @@
 - SHADOW ONLY: all BUY/SELL/HOLD signals are research outputs; no live order is authorized.
 - Frozen strategy: `ALPHA_HUNTER_SHADOW_V1`
 - Freeze integrity: `True`
+- CIO Advisory is deliberately separate from execution permission: it must express the best directional decision under uncertainty, while the frozen execution lane may still block an order.
 - First review: 2026-11-29. Review does not automatically enable trading.
 - Existing shadow statistics are gross signal outcomes, not validated strategy performance.
 
-## 1. Research signals (not executable orders)
+## 1. CIO advisory — directional decision, not an order
 
-No validated BUY/ADD/REDUCE/EXIT/HOLD action is currently emitted by the public opportunity board.
+| Rank | Exposure | Name | Advisory | Confidence | Driver | Why |
+|---:|---|---|---|---|---|---|
+| 1 | 2317.TW | 鴻海 | BUY_BIAS_STOCK | MEDIUM | AI_SERVER_SHIPMENTS | Active driver, source-backed company edge, and a non-extended reaction state support a positive stock bias. |
+| 2 | BOAT | Mapped ETF | PREFER_ETF | HIGH | CONTAINER_FREIGHT | Global driver is active; ETF is the cleaner exposure because stock alpha is not clearly superior or is not source-backed. |
+| 3 | QQQ | Mapped ETF | PREFER_ETF | MEDIUM | AI_SERVER_SHIPMENTS | Global driver is active; ETF is the cleaner exposure because stock alpha is not clearly superior or is not source-backed. |
+| 4 | XLI | Mapped ETF | PREFER_ETF | MEDIUM | POWER_ELECTRONICS_CAPEX | The global driver is active but the stock case is not sufficiently verified; prefer the mapped ETF exposure. |
+| 5 | 2606.TW | 裕民 | HOLD_BIAS | MEDIUM | DRY_BULK_FREIGHT | The thesis is confirmed, but more information may already be priced; prefer hold or a better entry over chasing. |
+| 6 | 2637.TW | 慧洋-KY | HOLD_BIAS | MEDIUM | DRY_BULK_FREIGHT | The thesis is confirmed, but more information may already be priced; prefer hold or a better entry over chasing. |
+| 7 | 2605.TW | 新興 | HOLD_BIAS | MEDIUM | DRY_BULK_FREIGHT | The thesis is confirmed, but more information may already be priced; prefer hold or a better entry over chasing. |
+| 8 | 2617.TW | 台航 | HOLD_BIAS | MEDIUM | DRY_BULK_FREIGHT | The thesis is confirmed, but more information may already be priced; prefer hold or a better entry over chasing. |
+| 9 | 6669.TW | 緯穎 | HOLD_BIAS | MEDIUM | AI_SERVER_SHIPMENTS | The thesis is confirmed, but more information may already be priced; prefer hold or a better entry over chasing. |
+| 10 | 3231.TW | 緯創 | HOLD_BIAS | MEDIUM | AI_SERVER_SHIPMENTS | The thesis is confirmed, but more information may already be priced; prefer hold or a better entry over chasing. |
+| 11 | 3006.TW | 晶豪科 | RESEARCH_FIRST | INSUFFICIENT | MEMORY_IC_CYCLE | The causal driver is not validated active; price strength cannot substitute for causality. |
+| 12 | 2882.TW | 國泰金 | RESEARCH_FIRST | INSUFFICIENT | FINANCIALS_RATE_CREDIT_CYCLE | The causal driver is not validated active; price strength cannot substitute for causality. |
+| 13 | 2881.TW | 富邦金 | RESEARCH_FIRST | INSUFFICIENT | FINANCIALS_RATE_CREDIT_CYCLE | The causal driver is not validated active; price strength cannot substitute for causality. |
+| 14 | 2408.TW | 南亞科 | RESEARCH_FIRST | INSUFFICIENT | DRAM_PRICING | The causal driver is not validated active; price strength cannot substitute for causality. |
+| 15 | 3017.TW | 奇鋐 | RESEARCH_FIRST | INSUFFICIENT | AI_SERVER_THERMAL_DENSITY | The causal driver is not validated active; price strength cannot substitute for causality. |
 
-## 2. Closest to action
+Advisory counts: `{"BUY_BIAS_STOCK": 1, "HOLD_BIAS": 6, "PREFER_ETF": 3, "RESEARCH_FIRST": 40}`
+The advisory lane may say BUY_BIAS/PREFER_ETF/WAIT_PULLBACK/AVOID even when execution remains blocked. That is intentional.
+
+## 2. Execution-lane research signals (not executable orders)
+
+No validated BUY/ADD/REDUCE/EXIT/HOLD action is currently emitted by the frozen execution lane.
+
+## 3. Closest to execution action
 
 | Ticker | Name | Driver | Reaction | Stage | Blocker |
 |---|---|---|---|---|---|
@@ -33,35 +57,36 @@ No validated BUY/ADD/REDUCE/EXIT/HOLD action is currently emitted by the public 
 | 6669.TW | 緯穎 | AI_SERVER_SHIPMENTS | PERSISTENT | GATE_4_REACTION | INFORMATION_MAY_BE_PRICED |
 | 3231.TW | 緯創 | AI_SERVER_SHIPMENTS | PERSISTENT | GATE_4_REACTION | INFORMATION_MAY_BE_PRICED |
 
-## 3. Main blockers
-- `DRIVER_NOT_ACTIVE_RESEARCH_VALIDATED;EDGE_PROVENANCE_NOT_SOURCE_BACKED`: 38
+## 4. Main execution blockers
+- `DRIVER_NOT_ACTIVE_RESEARCH_VALIDATED`: 40
+- `EDGE_PROVENANCE_NOT_SOURCE_BACKED`: 40
 - `INFORMATION_MAY_BE_PRICED`: 9
 - `REACTION_STATE_NOT_ENTRY_READY`: 3
-- `EDGE_PROVENANCE_NOT_SOURCE_BACKED`: 2
-- `DRIVER_NOT_ACTIVE_RESEARCH_VALIDATED`: 2
 - `WAIT_FOR_STATE_TRANSITION_ENTRY_TRIGGER`: 1
 
-## 4. Existing-position layer (privacy-safe aggregate)
+## 5. Existing-position layer (privacy-safe aggregate)
 - Inputs valid: `True`
 - System thesis primary: `True`
 - System mapping readiness: `PARTIAL`
 - Position count (aggregate only): `5`
 - Position action counts: `{"REDUCE_RISK": 1, "REVIEW_RESEARCH": 4}`
-- System mapping counts: `{"SYSTEM_MAPPING_MISSING": 2, "SYSTEM_RISK_GROUP": 2, "SYSTEM_TICKER_EXPOSURE": 1}`
-- Portfolio-maintenance research lane: `PARTIAL_FAIL_CLOSED`
-- Maintenance drivers researched/targeted: `3/4`
-- Maintenance driver states (aggregate only): `{"UNKNOWN": 4}`
+- System mapping counts: `{"SYSTEM_MAPPING_MISSING": 2, "SYSTEM_RISK_GROUP": 3}`
+- Portfolio-maintenance research lane: `NOT_AVAILABLE`
+- Maintenance drivers researched/targeted: `0/0`
+- Maintenance driver states (aggregate only): `{}`
 - Maintenance targets truncated by safety cap: `0`
 - Optional user-thesis overlay: `NOT_CONFIGURED`
 - User/system disagreement count (aggregate only): `0`
 - Per-position holdings, maintenance driver identities, balances, weights, P/L and actions are intentionally not written to this public artifact.
 
-## 5. Interpretation
-- Opportunity discovery and portfolio maintenance are separate research lanes: the first finds new entries; the second re-tests the economic drivers behind existing positions.
+## 6. Interpretation
+- Opportunity discovery, CIO advisory, execution permission, and portfolio maintenance are separate layers.
+- CIO advisory answers the decision question under uncertainty; it does not authorize a brokerage order.
+- Weak or unverified Taiwan stock alpha should fall back to a mapped ETF or cash instead of forcing endless research. Company provenance is a stock gate, not an ETF-advisory gate.
 - Existing-position HOLD/REDUCE/EXIT is driven by system-inferred economic exposure, not by the user's stated purchase reason.
 - `SYSTEM_TICKER_EXPOSURE` is preferred; risk-group mapping is a fallback. Missing system mapping fails closed to `REVIEW_RESEARCH`.
 - Maintenance research is ephemeral and private. Only aggregate readiness/counts may reach this public Action Board.
 - User thesis is optional challenger metadata only; it cannot force HOLD or EXIT.
 - `GATE_5_ENTRY` is closest to an executable entry but still requires the defined state-transition trigger and private risk pass.
 - `GATE_4_REACTION` means causality and structural transmission passed, but price reaction is already persistent/extended or otherwise not an early entry state.
-- This board is decision support only; automatic brokerage execution remains disabled.
+- Automatic brokerage execution remains disabled.
