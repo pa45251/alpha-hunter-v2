@@ -2,7 +2,7 @@
   "contract": "ALPHA_HUNTER_V3_VALIDATED_RESEARCH",
   "status": "PASS",
   "research_run_id": "20260906T130002+0800-dd80dd63",
-  "validated_at_utc": "2026-09-06T07:24:43.471603+00:00",
+  "validated_at_utc": "2026-09-06T07:39:04.043325+00:00",
   "target_driver_ids": [
     "DRY_BULK_FREIGHT",
     "CONTAINER_FREIGHT",
@@ -14,104 +14,83 @@
   "results": [
     {
       "driver_id": "DRY_BULK_FREIGHT",
-      "state": "ACTIVE",
-      "confidence": 0.84,
-      "primary_cause": "Capesize vessel availability tightened while Pacific and Atlantic commodity demand increased, with Australian exports ramping and Guinea iron-ore flows improving; the resulting BDI and Capesize rate surge directly confirms the dry-bulk freight cycle.",
-      "industry_scope": "INDUSTRY_WIDE",
-      "supporting_evidence": [
-        {
-          "claim": "The Baltic Dry Index rose 5.5% to 3,331 points, its highest level since December 2023, while Capesize rates surged more than 8%. The article attributes the move to tighter vessel supply, stronger demand in both basins, increased Australian exports, and rising Guinea iron-ore flows.",
-          "source_title": "Dry Bulk Shipping Rates Surge on Tight Capesize Vessel Supply",
-          "source_url": "https://gcaptain.com/dry-bulk-shipping-rates-surge-on-tight-capesize-vessel-supply/",
-          "published_at": "2026-09-03T16:31:08Z",
-          "event_date": null,
-          "evidence_type": "HIGH_QUALITY_REPORTING"
-        }
-      ],
+      "state": "UNKNOWN",
+      "confidence": 0.12,
+      "primary_cause": "No verifiable, time-consistent external evidence was found confirming or contradicting the exact dry-bulk freight and commodity-shipping cycle driver after support and counter-evidence searches.",
+      "industry_scope": "UNKNOWN",
+      "supporting_evidence": [],
       "counter_evidence": [],
-      "source_count": 1,
+      "source_count": 0,
       "event_date": null,
-      "source_dates": [
-        "2026-09-03T16:31:08Z"
-      ],
-      "researched_at_utc": "2026-09-06T07:25:00Z",
+      "source_dates": [],
+      "researched_at_utc": "2026-09-06T07:38:25Z",
       "research_run_id": "20260906T130002+0800-dd80dd63"
     },
     {
       "driver_id": "CONTAINER_FREIGHT",
-      "state": "ACTIVE",
-      "confidence": 0.72,
-      "primary_cause": "Current reporting indicates spot container rates and liner profits were still rising in August 2026, consistent with an active container freight and liner utilization cycle; the available counter result described soft demand and lower rates in January 2026 and is not sufficiently current to reverse the classification.",
-      "industry_scope": "INDUSTRY_WIDE",
-      "supporting_evidence": [
-        {
-          "claim": "Liner profits continued to mount as spot rates rose again, indicating ongoing strength in container freight pricing and liner conditions.",
-          "source_title": "No peak yet: Liner profits mount as spot rates rise again",
-          "source_url": "https://news.google.com/rss/articles/CBMimAFBVV95cUxPYmQ2d2ZrQUlUai1wdEJzb2ZMWFA0Uldaakt6ajg0cU01anNNWFU2MGhDSkx1S3MtU2pKUDlGaFZCUXZWSkR1T2N0dTVYT0x5TWlvdUszbWhORzl0cng5TXotWlBaOTN6ekU2d2xyUGNtSTZrelExaDBYT1pCQngzV0ZiZDhXLTJhaWk5cndteVVMV1ZNOGowXw?oc=5",
-          "published_at": "2026-08-14T07:00:00Z",
-          "event_date": null,
-          "evidence_type": "HIGH_QUALITY_REPORTING"
-        }
-      ],
-      "counter_evidence": [
-        {
-          "claim": "Earlier reporting described soft demand and lower ocean freight rates ahead of Lunar New Year, but this evidence predates the later August rate-strength reports and does not establish that the current cycle has weakened.",
-          "source_title": "Soft Demand Sends Ocean Freight Rates Lower Ahead of Lunar New Year",
-          "source_url": "https://news.google.com/rss/articles/CBMi8AFBVV95cUxOcVZSamlnc2pSQS1aY25JM1BaS1dmV3l0d1hPUmtOM09zaG5SdER5M1BtNVNtZllPQmlYcGFjenJLaVowMkhvRkZwemFjcHdzaTNrbGhkVlhlTU1UdFBBTFJIRnNEbVhlYzI5V0s5TDBXRHVkc2tIY1l3SEZLMmRFT2xISWRoQWNrRExGdkc2aG41ZTlvdGt5TS1PT2JEcndzb2lSZ1VTYVJuVmFtdGpFd1gycU1qTWVSX0RDV0NaWlBaVzZaZjJUcnZ5eHN4RHNZbU50b2h1N05scjJueGtEbHZOWUNvRmdLb2VGd3B3Um8?oc=5",
-          "published_at": "2026-01-28T08:00:00Z",
-          "event_date": null,
-          "evidence_type": "HIGH_QUALITY_REPORTING"
-        }
-      ],
-      "source_count": 2,
+      "state": "UNKNOWN",
+      "confidence": 0.12,
+      "primary_cause": "No verifiable, time-consistent external evidence was found confirming or contradicting the exact container spot or contract freight and liner-utilization cycle after support and counter-evidence searches.",
+      "industry_scope": "UNKNOWN",
+      "supporting_evidence": [],
+      "counter_evidence": [],
+      "source_count": 0,
       "event_date": null,
-      "source_dates": [
-        "2026-08-14T07:00:00Z",
-        "2026-01-28T08:00:00Z"
-      ],
-      "researched_at_utc": "2026-09-06T07:25:00Z",
+      "source_dates": [],
+      "researched_at_utc": "2026-09-06T07:38:25Z",
       "research_run_id": "20260906T130002+0800-dd80dd63"
     },
     {
       "driver_id": "NUCLEAR_GRID_SECOND_ORDER",
       "state": "UNKNOWN",
-      "confidence": 0.34,
-      "primary_cause": "Searches found current nuclear-power activity and broad grid-equipment shortage reporting, but no sufficiently verified source directly linking nuclear-specific buildout to second-order transformer, switchgear, or transmission-equipment demand; the evidence remains broad-theme rather than driver-specific.",
+      "confidence": 0.1,
+      "primary_cause": "Searches did not yield a verifiable source establishing nuclear-specific buildout as the cause of second-order grid-equipment demand, nor a conclusive counter-source.",
       "industry_scope": "UNKNOWN",
       "supporting_evidence": [],
       "counter_evidence": [],
       "source_count": 0,
       "event_date": null,
       "source_dates": [],
-      "researched_at_utc": "2026-09-06T07:25:00Z",
+      "researched_at_utc": "2026-09-06T07:38:25Z",
       "research_run_id": "20260906T130002+0800-dd80dd63"
     },
     {
       "driver_id": "POWER_ELECTRONICS_CAPEX",
       "state": "UNKNOWN",
-      "confidence": 0.36,
-      "primary_cause": "Searches found reports about transformer shortages and strategic grid-equipment manufacturing, but no sufficiently verified current evidence isolating power-electronics or equipment capex across UPS, switchgear, transformers, and related industrial demand; broad electrification evidence is insufficient.",
-      "industry_scope": "UNKNOWN",
-      "supporting_evidence": [],
+      "confidence": 0.38,
+      "primary_cause": "Company-level evidence indicates sustained demand, broad-based Energy Management growth, and record backlog, but the available source does not isolate the exact power-electronics capex driver and no verifiable counter-evidence was obtained.",
+      "industry_scope": "COMPANY_SPECIFIC",
+      "supporting_evidence": [
+        {
+          "claim": "Schneider Electric reported sustained demand across end markets, broad-based Energy Management growth, strong demand in electrification and automation, and a record backlog while upgrading its 2026 target.",
+          "source_title": "Schneider Electric financial results",
+          "source_url": "https://www.se.com/ww/en/about-us/investor-relations/financial-results/",
+          "published_at": "2026-07-30T00:00:00Z",
+          "event_date": "2026-06-30T00:00:00Z",
+          "evidence_type": "COMPANY_PRIMARY"
+        }
+      ],
       "counter_evidence": [],
-      "source_count": 0,
-      "event_date": null,
-      "source_dates": [],
-      "researched_at_utc": "2026-09-06T07:25:00Z",
+      "source_count": 1,
+      "event_date": "2026-06-30T00:00:00Z",
+      "source_dates": [
+        "2026-07-30T00:00:00Z"
+      ],
+      "researched_at_utc": "2026-09-06T07:38:25Z",
       "research_run_id": "20260906T130002+0800-dd80dd63"
     },
     {
       "driver_id": "AI_SERVER_SHIPMENTS",
       "state": "UNKNOWN",
-      "confidence": 0.42,
-      "primary_cause": "Searches found reporting that an AI-server boom was increasing related component demand and forecasts, but no sufficiently verified current source directly confirming AI-server unit or rack shipments, ODM backlog, and deployment breadth; the available evidence does not cleanly establish the exact shipment cycle.",
+      "confidence": 0.12,
+      "primary_cause": "No verifiable, time-consistent external evidence was found confirming AI server units, rack shipments, ODM backlog, or hyperscaler deployment, nor was a conclusive counter-source found after alternate support and counter-evidence searches.",
       "industry_scope": "UNKNOWN",
       "supporting_evidence": [],
       "counter_evidence": [],
       "source_count": 0,
       "event_date": null,
       "source_dates": [],
-      "researched_at_utc": "2026-09-06T07:25:00Z",
+      "researched_at_utc": "2026-09-06T07:38:25Z",
       "research_run_id": "20260906T130002+0800-dd80dd63"
     }
   ]
