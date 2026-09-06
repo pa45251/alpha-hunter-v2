@@ -47,10 +47,10 @@ No validated BUY/ADD/REDUCE/EXIT/HOLD action is currently emitted by the public 
 - System mapping readiness: `PARTIAL`
 - Position count (aggregate only): `5`
 - Position action counts: `{"REDUCE_RISK": 1, "REVIEW_RESEARCH": 4}`
-- System mapping counts: `{"SYSTEM_MAPPING_MISSING": 2, "SYSTEM_RISK_GROUP": 3}`
-- Portfolio-maintenance research lane: `NOT_AVAILABLE`
-- Maintenance drivers researched/targeted: `0/0`
-- Maintenance driver states (aggregate only): `{}`
+- System mapping counts: `{"SYSTEM_MAPPING_MISSING": 2, "SYSTEM_RISK_GROUP": 2, "SYSTEM_TICKER_EXPOSURE": 1}`
+- Portfolio-maintenance research lane: `PARTIAL_FAIL_CLOSED`
+- Maintenance drivers researched/targeted: `3/4`
+- Maintenance driver states (aggregate only): `{"UNKNOWN": 4}`
 - Maintenance targets truncated by safety cap: `0`
 - Optional user-thesis overlay: `NOT_CONFIGURED`
 - User/system disagreement count (aggregate only): `0`
