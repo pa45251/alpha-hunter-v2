@@ -18,15 +18,51 @@ def _utcnow() -> str:
 
 
 def _extract_json(text: str):
-    text = text.strip()
+    """Extract one top-level JSON object without relaxing downstream validation.
+
+    Copilot CLI can occasionally wrap an otherwise valid JSON object with brief
+    prose/tool chatter. We tolerate only that transport noise. The extracted
+    object must still pass the exact research contract, run_id, target and
+    evidence validators below.
+    """
+    text = text.strip().lstrip("\ufeff")
+    if not text:
+        raise ResearchContractError("empty autonomous research output")
+
+    # Fast path: strict JSON or a single fenced JSON block.
+    candidates = [text]
     if text.startswith("```"):
         lines = text.splitlines()
         if lines and lines[0].startswith("```"):
             lines = lines[1:]
         if lines and lines[-1].strip() == "```":
             lines = lines[:-1]
-        text = "\n".join(lines).strip()
-    return json.loads(text)
+        candidates.append("\n".join(lines).strip())
+
+    for candidate in candidates:
+        try:
+            payload = json.loads(candidate)
+            if not isinstance(payload, dict):
+                raise ResearchContractError("top-level research payload must be an object")
+            return payload
+        except json.JSONDecodeError:
+            pass
+
+    # Bounded recovery for prefix/suffix chatter: scan for the first decodable
+    # top-level object and reject any case where none is found.
+    decoder = json.JSONDecoder()
+    for idx, ch in enumerate(text):
+        if ch != "{":
+            continue
+        try:
+            payload, _end = decoder.raw_decode(text[idx:])
+        except json.JSONDecodeError:
+            continue
+        if isinstance(payload, dict):
+            return payload
+
+    preview = text[:180].replace("\n", " ")
+    raise ResearchContractError(f"no valid top-level JSON object found; raw_prefix={preview!r}")
 
 
 def _unknown(driver_id: str, run_id: str, reason: str) -> dict:
@@ -59,7 +95,8 @@ def main() -> None:
     supplied: dict[str, dict] = {}
 
     try:
-        payload = _extract_json(RAW.read_text(encoding="utf-8"))
+        raw_text = RAW.read_text(encoding="utf-8")
+        payload = _extract_json(raw_text)
         if payload.get("contract") != "ALPHA_HUNTER_V3_AUTONOMOUS_RESEARCH":
             raise ResearchContractError("research contract marker mismatch")
         if str(payload.get("research_run_id")) != run_id:
@@ -115,6 +152,9 @@ def main() -> None:
     }
     OUT.write_text(json.dumps(out, ensure_ascii=False, indent=2), encoding="utf-8")
     print(f"v3 research ingest: {status}; valid={len(supplied)}/{len(target_ids)}")
+    if errors:
+        for err in errors[:8]:
+            print(f"research ingest diagnostic: {err}")
 
 
 if __name__ == "__main__":
