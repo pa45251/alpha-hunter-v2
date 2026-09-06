@@ -35,10 +35,10 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
-      - name: Test risk-regime and allocation contracts
+      - name: Test advisory contracts
         env:
           PYTHONPATH: ${{ github.workspace }}
-        run: python -m pytest -q tests/test_risk_regime.py tests/test_portfolio_allocation_advisory.py
+        run: python -m pytest -q tests/test_risk_regime.py tests/test_portfolio_allocation_advisory.py tests/test_global_alignment.py
 
       - name: Build CIO advisory layer
         run: python cio_advisory.py
@@ -49,8 +49,14 @@ jobs:
       - name: Build portfolio rotation and allocation advisory
         run: python portfolio_allocation_advisory.py
 
+      - name: Build Global Alignment Leaderboard
+        run: python global_alignment.py
+
       - name: Build privacy-safe one-page action board
         run: python action_board_summary.py
+
+      - name: Prepend Global Alignment summary
+        run: python global_alignment_summary.py
 
       - name: Prepend portfolio allocation summary
         run: python portfolio_allocation_summary.py
@@ -64,9 +70,11 @@ jobs:
             output/cio_advisory.json \
             output/risk_regime.json \
             output/portfolio_allocation_advisory.json \
+            output/global_alignment.csv \
+            output/global_alignment.json \
             output/action_board.md
           if ! git diff --cached --quiet; then
-            git commit -m "publish alpha hunter portfolio allocation advisory $(date -u +%F)"
+            git commit -m "publish alpha hunter portfolio and global alignment advisory $(date -u +%F)"
             git fetch origin main
             git rebase origin/main
             git push origin HEAD:main
