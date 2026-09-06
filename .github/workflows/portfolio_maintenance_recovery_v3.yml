@@ -1,0 +1,148 @@
+name: Alpha Hunter Portfolio Maintenance Recovery
+
+on:
+  workflow_dispatch:
+  workflow_run:
+    workflows: ["Alpha Hunter v3 Autonomous Research"]
+    types: [completed]
+
+concurrency:
+  group: alpha-hunter-v3-maintenance-main
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  maintenance-recovery:
+    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout latest main
+        uses: actions/checkout@v6
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+
+      - name: Install Copilot CLI
+        run: npm install -g @github/copilot
+
+      - name: Decide whether maintenance recovery is needed
+        id: need_recovery
+        run: |
+          python - <<'PY' >> "$GITHUB_OUTPUT"
+          import json
+          from pathlib import Path
+          p = json.loads(Path('output/decision_packet.json').read_text(encoding='utf-8'))
+          m = ((p.get('existing_position_layer') or {}).get('maintenance_research') or {})
+          counts = m.get('maintenance_state_counts') or {}
+          resolved = int(counts.get('ACTIVE', 0) or 0) + int(counts.get('INACTIVE', 0) or 0)
+          targets = int(m.get('maintenance_target_count', 0) or 0)
+          status = str(m.get('maintenance_lane_status', 'NOT_AVAILABLE'))
+          need = targets > 0 and (resolved == 0 or status not in {'PASS', 'NO_TARGETS'})
+          print(f"needed={'true' if need else 'false'}")
+          print(f"target_count={targets}")
+          print(f"resolved_count={resolved}")
+          PY
+
+      - name: Build private maintenance handoff
+        if: steps.need_recovery.outputs.needed == 'true'
+        env:
+          ALPHA_HUNTER_PORTFOLIO_JSON: ${{ secrets.ALPHA_HUNTER_PORTFOLIO_JSON }}
+        run: python portfolio_maintenance_research.py build
+
+      - name: Run source-seeking maintenance recovery
+        if: steps.need_recovery.outputs.needed == 'true'
+        env:
+          COPILOT_GITHUB_TOKEN: ${{ secrets.COPILOT_GITHUB_TOKEN }}
+        run: |
+          if [ -z "$COPILOT_GITHUB_TOKEN" ]; then echo "::error::Missing COPILOT_GITHUB_TOKEN"; exit 1; fi
+          set +e
+          PROMPT="$(cat PORTFOLIO_MAINTENANCE_RESEARCH_PROMPT.md)
+
+          RECOVERY REQUIREMENT: the prior maintenance pass did not resolve any driver with source-backed evidence. Perform fresh web_search for EVERY target, including both support and counter-evidence queries. Try alternate exact-driver wording before UNKNOWN. Do not use price as causality.
+
+          --- BEGIN PRIVATE EPHEMERAL MAINTENANCE HANDOFF ---
+          $(cat /tmp/portfolio_maintenance_handoff.json)
+          --- END PRIVATE EPHEMERAL MAINTENANCE HANDOFF ---"
+          copilot \
+            -p "$PROMPT" \
+            -s \
+            --available-tools='web_search,web_fetch' \
+            --allow-all-urls \
+            --deny-tool='write,shell,memory' \
+            --no-ask-user \
+            --max-ai-credits=40 \
+            > /tmp/portfolio_maintenance_result.raw.txt \
+            2> /tmp/copilot_maintenance_recovery.err
+          code=$?
+          if [ "$code" -ne 0 ]; then
+            echo "Maintenance recovery exited with code $code; deterministic ingest will fail closed."
+            echo '{}' > /tmp/portfolio_maintenance_result.raw.txt
+          fi
+          exit 0
+
+      - name: Validate recovered maintenance evidence
+        if: steps.need_recovery.outputs.needed == 'true'
+        env:
+          ALPHA_HUNTER_PORTFOLIO_JSON: ${{ secrets.ALPHA_HUNTER_PORTFOLIO_JSON }}
+        run: python portfolio_maintenance_research.py ingest
+
+      - name: Rebuild decision layer with recovered maintenance evidence
+        if: steps.need_recovery.outputs.needed == 'true'
+        env:
+          ALPHA_HUNTER_ACTIVATION_SOURCE: V3_VALIDATED
+          ALPHA_HUNTER_RISK_POLICY_JSON: ${{ secrets.ALPHA_HUNTER_RISK_POLICY_JSON }}
+          ALPHA_HUNTER_PORTFOLIO_JSON: ${{ secrets.ALPHA_HUNTER_PORTFOLIO_JSON }}
+          ALPHA_HUNTER_POSITION_THESIS_JSON: ${{ secrets.ALPHA_HUNTER_POSITION_THESIS_JSON }}
+          ALPHA_HUNTER_MAINTENANCE_RESEARCH_PATH: /tmp/portfolio_maintenance_result.json
+        run: python decision_run_with_maintenance.py
+
+      - name: Test privacy and maintenance contracts
+        if: steps.need_recovery.outputs.needed == 'true'
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+        run: python -m pytest -q tests/test_portfolio_maintenance_research.py tests/test_existing_position.py
+
+      - name: Commit only privacy-safe decision artifacts
+        if: steps.need_recovery.outputs.needed == 'true'
+        run: |
+          rm -f /tmp/portfolio_maintenance_handoff.json /tmp/portfolio_maintenance_result.raw.txt /tmp/portfolio_maintenance_result.json
+          git config user.name "alpha-hunter-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add output/decision_board.csv output/decision_packet.json output/decision_history.csv output/shadow_audit.csv output/shadow_validation.csv output/shadow_validation_report.json
+          if ! git diff --cached --quiet; then
+            git commit -m "refresh private maintenance decision layer $(date -u +%F)"
+            git fetch origin main
+            git rebase origin/main
+            git push origin HEAD:main
+          fi
+
+      - name: Report aggregate recovery result
+        if: steps.need_recovery.outputs.needed == 'true'
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p = json.loads(Path('output/decision_packet.json').read_text(encoding='utf-8'))
+          m = ((p.get('existing_position_layer') or {}).get('maintenance_research') or {})
+          print('maintenance status=', m.get('maintenance_lane_status'))
+          print('maintenance state counts=', m.get('maintenance_state_counts'))
+          print('position action counts=', (p.get('existing_position_layer') or {}).get('position_action_counts'))
+          if m.get('maintenance_private_artifact_committed') is not False:
+              raise SystemExit('Maintenance privacy invariant missing')
+          PY
