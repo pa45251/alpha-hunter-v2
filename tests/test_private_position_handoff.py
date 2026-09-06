@@ -45,7 +45,7 @@ def test_private_payload_fails_closed_on_bad_position_index():
         raise AssertionError("Expected a fail-closed position index mismatch")
 
 
-def test_public_delivery_meta_never_contains_tickers(tmp_path: Path):
+def test_public_delivery_meta_never_contains_position_identity(tmp_path: Path):
     p = tmp_path / "decision_packet.json"
     p.write_text(json.dumps({
         "run_id": "r1",
@@ -57,4 +57,7 @@ def test_public_delivery_meta_never_contains_tickers(tmp_path: Path):
     assert meta["record_count"] == 5
     assert meta["delivery"] == "GOOGLE_DRIVE_UPLOADED"
     assert meta["private_details_committed"] is False
-    assert "ticker" not in json.dumps(meta).lower()
+    text = json.dumps(meta)
+    assert "AAA" not in text
+    assert "BBB" not in text
+    assert "position_index" not in text
