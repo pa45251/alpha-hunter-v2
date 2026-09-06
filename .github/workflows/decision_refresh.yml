@@ -13,8 +13,11 @@ on:
       - 'config/frozen_strategy_v1.json'
       - 'config/portfolio_allocation_policy.json'
       - 'existing_position.py'
+      - 'existing_position_v2.py'
       - 'tests/test_existing_position.py'
+      - 'tests/test_existing_position_v2.py'
       - 'position_alias_output.py'
+      - 'position_alias_output_v2.py'
       - 'tests/test_position_alias_output.py'
       - 'position_cio_advisory.py'
       - 'tests/test_position_cio_advisory.py'
@@ -22,6 +25,9 @@ on:
       - 'tests/test_risk_regime.py'
       - 'portfolio_allocation_advisory.py'
       - 'tests/test_portfolio_allocation_advisory.py'
+      - 'global_alignment.py'
+      - 'global_alignment_summary.py'
+      - 'tests/test_global_alignment.py'
       - 'action_board_summary.py'
       - '.github/workflows/action_board_publish.yml'
       - '.github/workflows/decision_refresh.yml'
@@ -55,9 +61,9 @@ jobs:
       - name: Regression-test existing-position and advisory contracts
         env:
           PYTHONPATH: ${{ github.workspace }}
-        run: python -m pytest -q tests/test_launch_gate.py tests/test_existing_position.py tests/test_position_alias_output.py tests/test_position_cio_advisory.py tests/test_risk_regime.py tests/test_portfolio_allocation_advisory.py
+        run: python -m pytest -q tests/test_launch_gate.py tests/test_existing_position.py tests/test_existing_position_v2.py tests/test_position_alias_output.py tests/test_position_cio_advisory.py tests/test_risk_regime.py tests/test_portfolio_allocation_advisory.py tests/test_global_alignment.py
 
-      - name: Rebuild decision layer from latest validated causal source
+      - name: Rebuild frozen V1 decision layer from latest validated causal source
         env:
           ALPHA_HUNTER_ACTIVATION_SOURCE: V3_VALIDATED
           ALPHA_HUNTER_RISK_POLICY_JSON: ${{ secrets.ALPHA_HUNTER_RISK_POLICY_JSON }}
@@ -80,13 +86,13 @@ jobs:
               raise SystemExit('Mixed/stale snapshot blocked')
           PY
 
-      - name: Publish alias-only existing-position actions
+      - name: Publish alias-only existing-position actions with V2 contract guard
         env:
           ALPHA_HUNTER_RISK_POLICY_JSON: ${{ secrets.ALPHA_HUNTER_RISK_POLICY_JSON }}
           ALPHA_HUNTER_PORTFOLIO_JSON: ${{ secrets.ALPHA_HUNTER_PORTFOLIO_JSON }}
           ALPHA_HUNTER_POSITION_THESIS_JSON: ${{ secrets.ALPHA_HUNTER_POSITION_THESIS_JSON }}
           ALPHA_HUNTER_POSITION_ALIAS_JSON: ${{ secrets.ALPHA_HUNTER_POSITION_ALIAS_JSON }}
-        run: python position_alias_output.py
+        run: python position_alias_output_v2.py
 
       - name: Publish existing-position CIO advisory
         env:
