@@ -1,0 +1,52 @@
+{
+  "contract": "ALPHA_HUNTER_V2_6_1_RESEARCH_HANDOFF",
+  "handoff_version": "1.0",
+  "handoff_status": "PASS",
+  "generated_at_taipei": "2026-09-06T08:59:02.894797+08:00",
+  "repository": "pa45251/alpha-hunter-v2",
+  "branch": "main",
+  "schema_version": "2.6",
+  "scanner_version": "2.6.0",
+  "run_id": "20260906T085655+0800-49585edf",
+  "gate_status": "PASS",
+  "causal_rule": "PRICE_CANNOT_CREATE_CAUSALITY",
+  "transport_policy": {
+    "source_identity": "GitHub repository pa45251/alpha-hunter-v2 branch main only",
+    "preferred_transport": "GitHub connector exact path output/research_handoff.json",
+    "fallback_transport": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/research_handoff.json",
+    "do_not_substitute": [
+      "Streamlit tables",
+      "GitHub search results",
+      "similarly named repositories",
+      "forks or alternate branches",
+      "cached or reconstructed scanner outputs"
+    ]
+  },
+  "artifacts": {
+    "manifest": {
+      "relative_path": "output/manifest.json",
+      "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/manifest.json",
+      "sha256": "10b83dd57e4e1fdaf36cc9699dbc5e32e4d92de40817ea8c81338eba8644e8d2",
+      "bytes": 7979
+    },
+    "gate_report": {
+      "relative_path": "output/gate_report.json",
+      "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/gate_report.json",
+      "sha256": "320c81146f1ef45a05bee52d994679604ba856eb051c85c82fdbde085056a21a",
+      "bytes": 3745
+    },
+    "research_packet": {
+      "relative_path": "output/research_packet.json",
+      "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/research_packet.json",
+      "sha256": "073a530fedc999527cea4d7efcf3b6981df9412ac03e502552ed24783befe545",
+      "bytes": 172957
+    }
+  },
+  "research_entrypoint": {
+    "relative_path": "output/research_packet.json",
+    "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/research_packet.json",
+    "sha256": "073a530fedc999527cea4d7efcf3b6981df9412ac03e502552ed24783befe545",
+    "bytes": 172957
+  },
+  "research_rule": "Research may begin only when handoff_status=PASS, gate_status=PASS, run_id is consistent, and the fetched research_packet SHA256 matches this handoff."
+}
