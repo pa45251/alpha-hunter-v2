@@ -1,14 +1,13 @@
 {
   "contract": "ALPHA_HUNTER_DECISION_PACKET",
   "decision_contract_version": "2.7.1",
-  "run_id": "20260906T102742+0800-8e1355c0",
-  "generated_at": "2026-09-06T02:30:46.723774+00:00",
+  "run_id": "20260906T122431+0800-4938c44d",
+  "generated_at": "2026-09-06T04:26:54.211344+00:00",
   "gate_first_score_second": true,
   "price_can_create_causality": false,
   "auto_trade_allowed": false,
   "current_capability": "ETF_VS_STOCK_ENTRY_PLUS_PRIVATE_RISK_GATE",
   "missing_downstream_modules": [
-    "PRIVATE_RISK_INPUTS_IF_NOT_CONFIGURED",
     "EXISTING_POSITION_THESIS_LEDGER",
     "SHADOW_AUDIT_VALIDATION"
   ],
@@ -75,14 +74,11 @@
   "entry_rule": "Only a PRE_CONFIRMATION/EARLY_CONFIRMATION -> CONFIRMING transition, or PULLBACK -> CONFIRMING recovery, can create an entry trigger. No fixed momentum threshold is invented.",
   "rule": "No score can override causal/provenance/reaction gates. Entry triggers remain risk-pending until portfolio risk is implemented.",
   "risk_layer": {
-    "risk_inputs_valid": false,
-    "risk_blockers": [
-      "RISK_POLICY_MISSING",
-      "PORTFOLIO_STATE_MISSING"
-    ],
-    "risk_policy_version": "",
+    "risk_inputs_valid": true,
+    "risk_blockers": [],
+    "risk_policy_version": "1.1",
     "auto_order_execution": false,
-    "privacy_rule": "Portfolio holdings and personal risk settings must not be committed to the public repository."
+    "privacy_rule": "Private holdings/balances/weights/risk groups and derived metrics are consumed in-memory only and never committed or printed."
   },
   "portfolio_action_counts": {
     "WATCH_RESEARCH": 52,

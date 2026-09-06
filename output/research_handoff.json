@@ -2,12 +2,12 @@
   "contract": "ALPHA_HUNTER_V2_6_1_RESEARCH_HANDOFF",
   "handoff_version": "1.0",
   "handoff_status": "PASS",
-  "generated_at_taipei": "2026-09-06T10:30:46.335030+08:00",
+  "generated_at_taipei": "2026-09-06T12:26:53.680679+08:00",
   "repository": "pa45251/alpha-hunter-v2",
   "branch": "main",
   "schema_version": "2.6",
   "scanner_version": "2.6.0",
-  "run_id": "20260906T102742+0800-8e1355c0",
+  "run_id": "20260906T122431+0800-4938c44d",
   "gate_status": "PASS",
   "causal_rule": "PRICE_CANNOT_CREATE_CAUSALITY",
   "transport_policy": {
@@ -26,26 +26,26 @@
     "manifest": {
       "relative_path": "output/manifest.json",
       "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/manifest.json",
-      "sha256": "70c4e31f7fa9a89bcda62a9b4b10da627d39d88d042401b45bf46950a70a264c",
+      "sha256": "099140e51b04f09ace0071e12c368d217efdb76dc474a8b6251b35c5f8c2c841",
       "bytes": 7979
     },
     "gate_report": {
       "relative_path": "output/gate_report.json",
       "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/gate_report.json",
-      "sha256": "29feb4968cd513c587c7d06dcf4237289ce1670dcb6b639557e5118aa67d6a2f",
+      "sha256": "89e94e05e97ed66f3ce94d122ab85d272fa7fce33ba49ce4bfa20ec42c16ed4b",
       "bytes": 3745
     },
     "research_packet": {
       "relative_path": "output/research_packet.json",
       "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/research_packet.json",
-      "sha256": "8e09e6772ed61c84fcc04067e939c9f2295249ac7c18b05f265a2ea210ee44bb",
+      "sha256": "198fcb70de94ea396083abe7b119a047cde2920005ac3fff619b3bd4eae69e57",
       "bytes": 195738
     }
   },
   "research_entrypoint": {
     "relative_path": "output/research_packet.json",
     "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/research_packet.json",
-    "sha256": "8e09e6772ed61c84fcc04067e939c9f2295249ac7c18b05f265a2ea210ee44bb",
+    "sha256": "198fcb70de94ea396083abe7b119a047cde2920005ac3fff619b3bd4eae69e57",
     "bytes": 195738
   },
   "research_rule": "Research may begin only when handoff_status=PASS, gate_status=PASS, run_id is consistent, and the fetched research_packet SHA256 matches this handoff."
