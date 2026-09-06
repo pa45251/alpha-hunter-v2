@@ -15,6 +15,9 @@ on:
       - 'research_quality_gate_v3.py'
       - 'research_decision_source_gate_v3.py'
       - 'research_activation_bridge_v3.py'
+      - 'portfolio_maintenance_research.py'
+      - 'decision_run_with_maintenance.py'
+      - 'tests/test_portfolio_maintenance_research.py'
       - 'decision_run.py'
 
 concurrency:
@@ -28,7 +31,7 @@ jobs:
   research:
     if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
-    timeout-minutes: 35
+    timeout-minutes: 45
 
     steps:
       - name: Checkout repository
@@ -62,7 +65,7 @@ jobs:
             exit 1
           fi
 
-      - name: Build compact research handoff
+      - name: Build compact opportunity-research handoff
         run: |
           python - <<'PY'
           import json
@@ -77,6 +80,7 @@ jobs:
           compact = {
               'contract': packet.get('contract'),
               'run_id': packet.get('run_id'),
+              'lane': 'OPPORTUNITY_DISCOVERY',
               'causal_rule': packet.get('causal_rule'),
               'research_targets': [
                   {k: row.get(k) for k in keep if k in row}
@@ -87,11 +91,24 @@ jobs:
               json.dumps(compact, ensure_ascii=False, separators=(',', ':')),
               encoding='utf-8'
           )
-          print('compact handoff bytes:', Path('/tmp/research_handoff.json').stat().st_size)
-          print('target drivers:', [x.get('driver_id') for x in compact['research_targets']])
+          print('opportunity target drivers:', [x.get('driver_id') for x in compact['research_targets']])
           PY
 
-      - name: Run bounded autonomous causal research
+      - name: Build private portfolio-maintenance handoff
+        id: maintenance_handoff
+        env:
+          ALPHA_HUNTER_PORTFOLIO_JSON: ${{ secrets.ALPHA_HUNTER_PORTFOLIO_JSON }}
+        run: |
+          python portfolio_maintenance_research.py build
+          count=$(python - <<'PY'
+          import json
+          print(int(json.load(open('/tmp/portfolio_maintenance_handoff.json'))['target_count']))
+          PY
+          )
+          echo "target_count=$count" >> "$GITHUB_OUTPUT"
+          echo "maintenance target count=$count (driver ids intentionally not logged)"
+
+      - name: Run bounded autonomous opportunity research
         id: copilot_research
         env:
           COPILOT_GITHUB_TOKEN: ${{ secrets.COPILOT_GITHUB_TOKEN }}
@@ -123,15 +140,52 @@ jobs:
           fi
           exit 0
 
-      - name: Deterministic fail-closed research ingest
+      - name: Run private portfolio-maintenance research
+        if: steps.maintenance_handoff.outputs.target_count != '0'
+        env:
+          COPILOT_GITHUB_TOKEN: ${{ secrets.COPILOT_GITHUB_TOKEN }}
+        run: |
+          set +e
+          MAINTENANCE_PROMPT="$(cat RESEARCH_AGENT_PROMPT_V3.md)
+
+          PORTFOLIO MAINTENANCE LANE: Research only the economic drivers in the handoff. Do not infer, request, mention, or guess any holdings. ACTIVE and INACTIVE conclusions must be source-backed. UNKNOWN is correct when evidence is insufficient. Return the same per-driver JSON research schema and exact research_run_id.
+
+          --- BEGIN PRIVATE EPHEMERAL MAINTENANCE HANDOFF ---
+          $(cat /tmp/portfolio_maintenance_handoff.json)
+          --- END PRIVATE EPHEMERAL MAINTENANCE HANDOFF ---"
+          copilot \
+            -p "$MAINTENANCE_PROMPT" \
+            -s \
+            --available-tools='web_search,web_fetch' \
+            --allow-all-urls \
+            --deny-tool='write,shell,memory' \
+            --no-ask-user \
+            --max-ai-credits=36 \
+            > /tmp/portfolio_maintenance_result.raw.txt \
+            2> /tmp/copilot_maintenance.err
+          code=$?
+          if [ "$code" -ne 0 ]; then
+            echo "Maintenance research exited with code $code; lane will fail closed."
+            echo '{}' > /tmp/portfolio_maintenance_result.raw.txt
+          fi
+          exit 0
+
+      - name: Deterministic fail-closed opportunity research ingest
         run: python research_ingest_v3.py
 
-      - name: Check first-pass research evidence quality
+      - name: Deterministic fail-closed maintenance research ingest
+        env:
+          ALPHA_HUNTER_PORTFOLIO_JSON: ${{ secrets.ALPHA_HUNTER_PORTFOLIO_JSON }}
+        run: |
+          if [ ! -f /tmp/portfolio_maintenance_result.raw.txt ]; then echo '{}' > /tmp/portfolio_maintenance_result.raw.txt; fi
+          python portfolio_maintenance_research.py ingest
+
+      - name: Check first-pass opportunity research evidence quality
         id: quality_first
         continue-on-error: true
         run: python research_quality_gate_v3.py
 
-      - name: Retry zero-source research once
+      - name: Retry zero-source opportunity research once
         if: steps.quality_first.outcome == 'failure'
         env:
           COPILOT_GITHUB_TOKEN: ${{ secrets.COPILOT_GITHUB_TOKEN }}
@@ -157,39 +211,46 @@ jobs:
           code=$?
           if [ "$code" -ne 0 ]; then
             echo "Copilot retry exited with code $code"
-            sed -n '1,100p' /tmp/copilot_research_retry.err || true
             echo '{}' > output/research_result_v3.raw.txt
           fi
           exit 0
 
-      - name: Re-ingest recovery research
+      - name: Re-ingest recovery opportunity research
         if: steps.quality_first.outcome == 'failure'
         run: python research_ingest_v3.py
 
-      - name: Enforce research or challenger decision-source quality
+      - name: Enforce opportunity research or challenger decision-source quality
         run: python research_decision_source_gate_v3.py
 
-      - name: Build same-snapshot v3 activation bridge
+      - name: Build same-snapshot v3 opportunity activation bridge
         run: python research_activation_bridge_v3.py
 
-      - name: Run downstream decision layer from validated causal source
+      - name: Run downstream decision layer with private maintenance lane
         env:
           ALPHA_HUNTER_ACTIVATION_SOURCE: V3_VALIDATED
           ALPHA_HUNTER_RISK_POLICY_JSON: ${{ secrets.ALPHA_HUNTER_RISK_POLICY_JSON }}
           ALPHA_HUNTER_PORTFOLIO_JSON: ${{ secrets.ALPHA_HUNTER_PORTFOLIO_JSON }}
           ALPHA_HUNTER_POSITION_THESIS_JSON: ${{ secrets.ALPHA_HUNTER_POSITION_THESIS_JSON }}
-        run: python decision_run.py
+          ALPHA_HUNTER_MAINTENANCE_RESEARCH_PATH: /tmp/portfolio_maintenance_result.json
+        run: python decision_run_with_maintenance.py
 
-      - name: Validate v3 contract and bridge tests
+      - name: Validate research, bridge, maintenance and existing-position tests
         env:
           PYTHONPATH: ${{ github.workspace }}
         run: |
-          python -m pytest -q tests/test_research_contract_v3.py tests/test_research_activation_bridge_v3.py tests/test_research_quality_gate_v3.py
+          python -m pytest -q \
+            tests/test_research_contract_v3.py \
+            tests/test_research_activation_bridge_v3.py \
+            tests/test_research_quality_gate_v3.py \
+            tests/test_portfolio_maintenance_research.py \
+            tests/test_existing_position.py
 
-      - name: Remove unvalidated raw model output
-        run: rm -f output/research_result_v3.raw.txt
+      - name: Remove unvalidated and private ephemeral model output
+        run: |
+          rm -f output/research_result_v3.raw.txt
+          rm -f /tmp/portfolio_maintenance_handoff.json /tmp/portfolio_maintenance_result.raw.txt /tmp/portfolio_maintenance_result.json
 
-      - name: Commit validated research and decision artifacts
+      - name: Commit validated public research and decision artifacts
         run: |
           git config user.name "alpha-hunter-bot"
           git config user.email "actions@users.noreply.github.com"
@@ -217,8 +278,13 @@ jobs:
           from pathlib import Path
           decision = json.loads(Path('output/decision_packet.json').read_text(encoding='utf-8'))
           activation = decision.get('activation_layer') or {}
+          positions = decision.get('existing_position_layer') or {}
+          maintenance = positions.get('maintenance_research') or {}
           source = activation.get('source')
-          print(f"decision activation source={source} same_snapshot_v3={activation.get('same_snapshot_v3')} accepted={activation.get('accepted_activation_rows')} active={activation.get('active_driver_ids')}")
+          print(f"decision activation source={source} same_snapshot_v3={activation.get('same_snapshot_v3')} accepted={activation.get('accepted_activation_rows')}")
+          print(f"maintenance status={maintenance.get('maintenance_lane_status')} targets={maintenance.get('maintenance_target_count')} validated={maintenance.get('maintenance_validated_count')}")
           if source not in {'V3_AUTONOMOUS_RESEARCH', 'CHATGPT_CHALLENGER_ADJUDICATION'} or not activation.get('same_snapshot_v3'):
               raise SystemExit(f'Decision layer did not consume a same-snapshot validated causal source: {activation}')
+          if maintenance.get('maintenance_private_artifact_committed') is not False:
+              raise SystemExit('Maintenance privacy invariant missing')
           PY
