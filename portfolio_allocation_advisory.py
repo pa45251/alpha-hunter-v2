@@ -99,9 +99,10 @@ def build_portfolio_allocation() -> dict[str, Any]:
         edge = _candidate_edge(r)
         if edge <= 0:
             continue
+        preferred = str(r.get("preferred_exposure", "")).upper()
         candidates.append({
-            "ticker": r.get("ticker") if str(r.get("preferred_exposure", "")).upper() == "STOCK" else r.get("etf_ticker"),
-            "name": r.get("name") if str(r.get("preferred_exposure", "")).upper() == "STOCK" else "Mapped ETF",
+            "ticker": r.get("ticker") if preferred == "STOCK" else r.get("etf_ticker"),
+            "name": r.get("name") if preferred == "STOCK" else "Mapped ETF",
             "preferred_exposure": r.get("preferred_exposure"),
             "advisory_action": r.get("advisory_action"),
             "edge_score": edge,
@@ -125,27 +126,31 @@ def build_portfolio_allocation() -> dict[str, Any]:
     sources.sort(key=lambda x: x["current_edge_score"])
 
     rotations = []
-    for source in sources:
-        if not candidates:
-            break
+    if candidates:
         best = candidates[0]
-        spread = round(best["edge_score"] - source["current_edge_score"], 4)
-        action, trim = _rotation_action(spread, regime_label, policy)
-        if action == "NO_ROTATION":
-            continue
-        rotations.append({
-            "source_alias": source["alias"],
-            "source_action": source["current_action"],
-            "destination_ticker": best["ticker"],
-            "destination_name": best["name"],
-            "destination_action": best["advisory_action"],
-            "destination_driver": best["driver_id"],
-            "destination_reaction_state": best["reaction_state"],
-            "rotation_action": action,
-            "edge_spread": spread,
-            "suggested_source_trim_pct": trim,
-            "reason": "DESTINATION_EDGE_EXCEEDS_SOURCE_BY_POLICY_THRESHOLD",
-        })
+        for source in sources:
+            spread = round(best["edge_score"] - source["current_edge_score"], 4)
+            action, trim = _rotation_action(spread, regime_label, policy)
+            if action == "NO_ROTATION":
+                continue
+            redeploy_pct = int(policy["rotation"]["redeploy_pct_of_trim"].get(regime_label, policy["rotation"]["redeploy_pct_of_trim"].get("UNKNOWN", 0)))
+            rotations.append({
+                "source_alias": source["alias"],
+                "source_action": source["current_action"],
+                "destination_ticker": best["ticker"],
+                "destination_name": best["name"],
+                "destination_action": best["advisory_action"],
+                "destination_driver": best["driver_id"],
+                "destination_reaction_state": best["reaction_state"],
+                "rotation_action": action,
+                "edge_spread": spread,
+                "suggested_source_trim_pct": trim,
+                "suggested_redeploy_pct_of_trim": redeploy_pct,
+                "suggested_risk_buffer_pct_of_trim": 100 - redeploy_pct,
+                "reason": "DESTINATION_EDGE_EXCEEDS_SOURCE_BY_POLICY_THRESHOLD",
+            })
+            # One primary rotation at a time avoids mechanically concentrating multiple holdings into one destination.
+            break
 
     return {
         "contract": "ALPHA_HUNTER_PORTFOLIO_ALLOCATION_ADVISORY",
@@ -167,7 +172,7 @@ def build_portfolio_allocation() -> dict[str, Any]:
             "financing_included": False
         },
         "auto_trade_allowed": False,
-        "method": "Compare normalized CIO edge for current holdings versus validated new opportunities, then size only partial rotations subject to the global cash regime.",
+        "method": "Compare normalized CIO edge for current holdings versus validated new opportunities, recommend at most one partial rotation, and reserve part of the trim as cash/risk buffer when the global regime is not fully risk-on.",
     }
 
 
