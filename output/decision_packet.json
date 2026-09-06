@@ -2,17 +2,71 @@
   "contract": "ALPHA_HUNTER_DECISION_PACKET",
   "decision_contract_version": "2.7.1",
   "run_id": "20260906T130002+0800-dd80dd63",
-  "generated_at": "2026-09-06T08:02:19.243237+00:00",
+  "generated_at": "2026-09-06T08:15:13.310965+00:00",
   "gate_first_score_second": true,
   "price_can_create_causality": false,
   "auto_trade_allowed": false,
   "current_capability": "V3_RESEARCH_CHALLENGER_TO_DECISION_PLUS_PRIVATE_RISK_EXIT_SHADOW_VALIDATION",
   "missing_downstream_modules": [],
   "action_counts": {
-    "WATCH_RESEARCH": 50,
-    "WATCH_ENTRY": 5
+    "WATCH_RESEARCH": 47,
+    "WATCH_ENTRY": 8
   },
   "decision_focus": [
+    {
+      "global_theme": "Shipping",
+      "driver_id": "CONTAINER_FREIGHT",
+      "taiwan_code": "2615",
+      "ticker": "2615.TW",
+      "name": "萬海",
+      "reaction_state": "PERSISTENT",
+      "previous_reaction_state": "PERSISTENT",
+      "entry_trigger_state": "NOT_TRIGGERED",
+      "etf_ticker": "BOAT",
+      "exposure_purity": "HIGH",
+      "stock_vs_etf_state": "ETF_CORE_PREFERRED",
+      "provenance_status": "SOURCE_BACKED",
+      "dynamic_driver_state": "ACTIVE_RESEARCH_VALIDATED",
+      "decision_stage": "GATE_4_REACTION",
+      "candidate_action": "WATCH_ENTRY",
+      "decision_blockers": "INFORMATION_MAY_BE_PRICED"
+    },
+    {
+      "global_theme": "Shipping",
+      "driver_id": "CONTAINER_FREIGHT",
+      "taiwan_code": "2603",
+      "ticker": "2603.TW",
+      "name": "長榮",
+      "reaction_state": "PERSISTENT",
+      "previous_reaction_state": "PERSISTENT",
+      "entry_trigger_state": "NOT_TRIGGERED",
+      "etf_ticker": "BOAT",
+      "exposure_purity": "HIGH",
+      "stock_vs_etf_state": "ETF_CORE_PREFERRED",
+      "provenance_status": "SOURCE_BACKED",
+      "dynamic_driver_state": "ACTIVE_RESEARCH_VALIDATED",
+      "decision_stage": "GATE_4_REACTION",
+      "candidate_action": "WATCH_ENTRY",
+      "decision_blockers": "INFORMATION_MAY_BE_PRICED"
+    },
+    {
+      "global_theme": "Shipping",
+      "driver_id": "CONTAINER_FREIGHT",
+      "taiwan_code": "2609",
+      "ticker": "2609.TW",
+      "name": "陽明",
+      "reaction_state": "PERSISTENT",
+      "previous_reaction_state": "PERSISTENT",
+      "entry_trigger_state": "NOT_TRIGGERED",
+      "etf_ticker": "BOAT",
+      "exposure_purity": "HIGH",
+      "stock_vs_etf_state": "ETF_CORE_PREFERRED",
+      "provenance_status": "SOURCE_BACKED",
+      "dynamic_driver_state": "ACTIVE_RESEARCH_VALIDATED",
+      "decision_stage": "GATE_4_REACTION",
+      "candidate_action": "WATCH_ENTRY",
+      "decision_blockers": "INFORMATION_MAY_BE_PRICED"
+    },
     {
       "global_theme": "Shipping",
       "driver_id": "DRY_BULK_FREIGHT",
@@ -152,8 +206,8 @@
     "threshold_tuning_allowed": false
   },
   "portfolio_action_counts": {
-    "WATCH_RESEARCH": 50,
-    "WATCH_ENTRY": 5
+    "WATCH_RESEARCH": 47,
+    "WATCH_ENTRY": 8
   },
   "auto_order_execution": false
 }
