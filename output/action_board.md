@@ -71,7 +71,7 @@ No validated BUY/ADD/REDUCE/EXIT/HOLD action is currently emitted by the frozen 
 |---|---|---|---|
 | 零碎部位 | REVIEW_RESEARCH | SYSTEM_EXPOSURE_MAPPING_MISSING | SYSTEM_MAPPING_MISSING |
 | 標的A | REVIEW_RESEARCH | SYSTEM_EXPOSURE_MAPPING_MISSING | SYSTEM_MAPPING_MISSING |
-| 標的B | REDUCE_RISK | PORTFOLIO_GROSS_EXPOSURE_ABOVE_POLICY | SYSTEM_RISK_GROUP |
+| 標的B | REVIEW_RESEARCH | SYSTEM_GROUP_RESEARCH_REQUIRES_POSITION_EXPOSURE_VALIDATION | SYSTEM_RISK_GROUP |
 | 標的C | REVIEW_RESEARCH | SYSTEM_GROUP_RESEARCH_REQUIRES_POSITION_EXPOSURE_VALIDATION | SYSTEM_RISK_GROUP |
 | 標的D | REVIEW_RESEARCH | SYSTEM_GROUP_RESEARCH_REQUIRES_POSITION_EXPOSURE_VALIDATION | SYSTEM_RISK_GROUP |
 
@@ -79,7 +79,7 @@ No validated BUY/ADD/REDUCE/EXIT/HOLD action is currently emitted by the frozen 
 - System thesis primary: `True`
 - System mapping readiness: `PARTIAL`
 - Position count: `5`
-- Position action counts: `{"REDUCE_RISK": 1, "REVIEW_RESEARCH": 4}`
+- Position action counts: `{"REVIEW_RESEARCH": 5}`
 - System mapping counts: `{"SYSTEM_MAPPING_MISSING": 2, "SYSTEM_RISK_GROUP": 3}`
 - Portfolio-maintenance research lane: `NOT_AVAILABLE`
 - Maintenance drivers researched/targeted: `0/0`
