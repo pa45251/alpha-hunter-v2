@@ -1,0 +1,130 @@
+{
+  "contract": "ALPHA_HUNTER_V2_6_DETERMINISTIC_GATE",
+  "gate_version": "1.0",
+  "gate_status": "PASS",
+  "failure_code": null,
+  "validated_at_taipei": "2026-09-06T08:23:26.130554+08:00",
+  "repository": "pa45251/alpha-hunter-v2",
+  "branch": "main",
+  "schema_version": "2.6",
+  "scanner_version": "2.6.0",
+  "run_id": "20260906T082100+0800-56ef1c2f",
+  "manifest_sha256": "013016d9a06b1215cd768715d7b2ce5125f99df99aa69d125a2298b049a44a94",
+  "checks": [
+    {
+      "name": "repository_identity",
+      "passed": true,
+      "detail": "expected=pa45251/alpha-hunter-v2; actual=pa45251/alpha-hunter-v2",
+      "severity": "HARD"
+    },
+    {
+      "name": "branch_identity",
+      "passed": true,
+      "detail": "expected=main; actual=main",
+      "severity": "HARD"
+    },
+    {
+      "name": "schema_version",
+      "passed": true,
+      "detail": "expected=2.6; actual=2.6",
+      "severity": "HARD"
+    },
+    {
+      "name": "scanner_version",
+      "passed": true,
+      "detail": "expected_prefix=2.6; actual=2.6.0",
+      "severity": "HARD"
+    },
+    {
+      "name": "manifest_status",
+      "passed": true,
+      "detail": "actual=PASS",
+      "severity": "HARD"
+    },
+    {
+      "name": "missing_required_files",
+      "passed": true,
+      "detail": "actual=[]",
+      "severity": "HARD"
+    },
+    {
+      "name": "pipeline_checks",
+      "passed": true,
+      "detail": "{\"causal_queue_rebuilt_this_run\": true, \"causal_taxonomy_snapshot_present\": true, \"global_outputs_generated\": true, \"graph_audit_rebuilt_this_run\": true, \"structural_graph_snapshot_present\": true, \"structural_matches_rebuilt_this_run\": true, \"taiwan_outputs_generated\": true}",
+      "severity": "HARD"
+    },
+    {
+      "name": "manifest_run_id",
+      "passed": true,
+      "detail": "run_id=20260906T082100+0800-56ef1c2f",
+      "severity": "HARD"
+    },
+    {
+      "name": "canonical_manifest_url",
+      "passed": true,
+      "detail": "expected=https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/manifest.json; actual=https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/manifest.json",
+      "severity": "HARD"
+    },
+    {
+      "name": "generation_freshness",
+      "passed": true,
+      "detail": "age_hours=0.00; max=96",
+      "severity": "HARD"
+    },
+    {
+      "name": "authoritative_file_hashes",
+      "passed": true,
+      "detail": "verified=14",
+      "severity": "HARD"
+    },
+    {
+      "name": "run_consistency",
+      "passed": true,
+      "detail": "all=20260906T082100+0800-56ef1c2f",
+      "severity": "HARD"
+    },
+    {
+      "name": "causal_driver_id_integrity",
+      "passed": true,
+      "detail": "taxonomy=25 graph_unknown=[] queue_unknown=[] match_unknown=[]",
+      "severity": "HARD"
+    },
+    {
+      "name": "graph_audit_completeness",
+      "passed": true,
+      "detail": "graph_rows=75 audit_rows=75",
+      "severity": "HARD"
+    },
+    {
+      "name": "price_does_not_activate_queue",
+      "passed": true,
+      "detail": "all queue rows unresolved",
+      "severity": "HARD"
+    },
+    {
+      "name": "scanner_cannot_make_trade_decision",
+      "passed": true,
+      "detail": "decision_eligible must never be true in scanner output",
+      "severity": "HARD"
+    },
+    {
+      "name": "candidate_uniqueness",
+      "passed": true,
+      "detail": "rows=150",
+      "severity": "HARD"
+    },
+    {
+      "name": "global_market_date_freshness",
+      "passed": true,
+      "detail": "latest=2026-09-04; age_days=2; max=10",
+      "severity": "HARD"
+    },
+    {
+      "name": "taiwan_market_date_freshness",
+      "passed": true,
+      "detail": "latest=2026-09-04; age_days=2; max=16",
+      "severity": "HARD"
+    }
+  ],
+  "hard_failure_count": 0
+}
