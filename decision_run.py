@@ -1,0 +1,54 @@
+from __future__ import annotations
+
+import json
+from pathlib import Path
+
+import pandas as pd
+
+from causal_engine import CausalConfig, apply_driver_activation, validate_driver_activation_file
+from decision_engine import write_decision_outputs
+
+
+OUT = Path("output")
+
+
+def main() -> None:
+    gate_path = OUT / "gate_report.json"
+    manifest_path = OUT / "manifest.json"
+    queue_path = OUT / "causal_research_queue.csv"
+    structural_path = OUT / "structural_matches.csv"
+
+    required = [gate_path, manifest_path, queue_path, structural_path]
+    missing = [str(p) for p in required if not p.exists()]
+    if missing:
+        raise RuntimeError(f"Decision bridge missing canonical inputs: {missing}")
+
+    gate = json.loads(gate_path.read_text(encoding="utf-8"))
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    if gate.get("gate_status") != "PASS":
+        raise RuntimeError(f"Decision bridge blocked by hard gate: {gate.get('failure_code')}")
+
+    run_id = str(manifest.get("run_id", ""))
+    if not run_id or str(gate.get("run_id", "")) != run_id:
+        raise RuntimeError("Decision bridge MIXED_SNAPSHOT_DATA: manifest/gate run_id mismatch")
+
+    queue = pd.read_csv(queue_path)
+    structural = pd.read_csv(structural_path, dtype={"taiwan_code": str})
+    for name, df in [("causal_research_queue", queue), ("structural_matches", structural)]:
+        if "run_id" not in df.columns or df.empty or not df["run_id"].astype(str).eq(run_id).all():
+            raise RuntimeError(f"Decision bridge MIXED_SNAPSHOT_DATA: {name} run_id mismatch")
+
+    # Research write-back is optional. If absent/empty/stale, no causal driver becomes ACTIVE.
+    activations = validate_driver_activation_file(Path("input/driver_activation.csv"), queue, CausalConfig())
+    structural = apply_driver_activation(structural, activations)
+
+    board, packet = write_decision_outputs(structural, run_id, "output")
+    print(f"Decision bridge run_id: {run_id}")
+    print(f"Research activations accepted: {int(activations.get('activation_valid', pd.Series(dtype=bool)).fillna(False).sum()) if not activations.empty else 0}")
+    print(f"Decision board rows: {len(board)}")
+    print(f"Action counts: {packet.get('action_counts', {})}")
+    print("Automatic trading remains disabled until ETF-vs-stock, entry, risk, and shadow-audit modules are validated.")
+
+
+if __name__ == "__main__":
+    main()
