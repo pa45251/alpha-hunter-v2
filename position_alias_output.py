@@ -19,7 +19,10 @@ PUBLIC_PACKET_PATH = OUT / "decision_packet.json"
 DECISION_BOARD_PATH = OUT / "decision_board.csv"
 ALIAS_OUTPUT_PATH = OUT / "position_alias_actions.json"
 ALIAS_ENV = "ALPHA_HUNTER_POSITION_ALIAS_JSON"
-ALIAS_RE = re.compile(r"^[A-Z][A-Z0-9_]{1,31}$")
+# Unicode word characters include CJK letters, ASCII letters/digits and underscore.
+# This intentionally allows privacy aliases such as 標的A / 零碎部位 while still
+# rejecting whitespace and punctuation that could make public artifacts ambiguous.
+ALIAS_RE = re.compile(r"^\w{1,32}$", re.UNICODE)
 
 
 def _i(v: Any, default: int = 0) -> int:
