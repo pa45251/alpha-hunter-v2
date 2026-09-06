@@ -2,12 +2,16 @@
   "contract": "ALPHA_HUNTER_DECISION_PACKET",
   "decision_contract_version": "2.7.1",
   "run_id": "20260906T130002+0800-dd80dd63",
-  "generated_at": "2026-09-06T09:14:00.415332+00:00",
+  "generated_at": "2026-09-06T09:33:14.031484+00:00",
   "gate_first_score_second": true,
   "price_can_create_causality": false,
   "auto_trade_allowed": false,
   "current_capability": "V3_RESEARCH_CHALLENGER_TO_DECISION_PLUS_PRIVATE_RISK_EXIT_SHADOW_VALIDATION",
-  "missing_downstream_modules": [],
+  "missing_downstream_modules": [
+    "EXACT_PORTFOLIO_EXPOSURE_COVERAGE",
+    "COST_ADJUSTED_OUT_OF_SAMPLE_VALIDATION",
+    "FORWARD_ACCEPTANCE_REVIEW"
+  ],
   "action_counts": {
     "WATCH_RESEARCH": 45,
     "WATCH_ENTRY": 10
@@ -209,6 +213,39 @@
       "POWER_ELECTRONICS_CAPEX"
     ],
     "lineage_overwrite_enforced": true
+  },
+  "launch_layer": {
+    "policy_version": "SHADOW_ACCEPTANCE_V1",
+    "strategy_version": "ALPHA_HUNTER_SHADOW_V1",
+    "mode": "SHADOW",
+    "live_execution_authorized": false,
+    "auto_order_execution": false,
+    "freeze_integrity_pass": true,
+    "blockers": [
+      "SHADOW_ONLY_NOT_APPROVED_FOR_LIVE_EXECUTION"
+    ],
+    "first_review_date": "2026-11-29",
+    "review_is_automatic_promotion": false,
+    "pilot_limits": {
+      "max_gross_pct_of_net_equity": 5.0,
+      "max_planned_loss_per_trade_pct": 0.1,
+      "max_aggregate_planned_loss_pct": 0.25,
+      "stop_new_entries_loss_pct_of_initial_net_equity": 0.5,
+      "leverage_allowed": false
+    },
+    "pilot_limits_active_on_existing_holdings": false,
+    "validation_evidence_required": [
+      "POINT_IN_TIME_DATA",
+      "EXACT_EXPOSURE_AND_PRICE_COVERAGE",
+      "FROZEN_ENTRY_EXIT_AND_SIZING",
+      "OUT_OF_SAMPLE_COMPARISON",
+      "COST_AND_DELAY_STRESS",
+      "FORWARD_SEALED_SIGNALS",
+      "EXECUTION_RECONCILIATION"
+    ],
+    "validation_evidence_status": "PENDING_ACCEPTANCE_REVIEW",
+    "current_shadow_statistics_are_strategy_validation": false,
+    "sealed_snapshot_id": "cf7bbab48e1f35ff40e198577fff4a03ec8c0ed0882aab764e56a4a7705128eb"
   },
   "risk_layer": {
     "risk_inputs_valid": true,
