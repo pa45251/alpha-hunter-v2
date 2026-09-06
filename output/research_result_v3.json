@@ -2,7 +2,7 @@
   "contract": "ALPHA_HUNTER_V3_VALIDATED_RESEARCH",
   "status": "PASS",
   "research_run_id": "20260906T130002+0800-dd80dd63",
-  "validated_at_utc": "2026-09-06T06:42:03.676979+00:00",
+  "validated_at_utc": "2026-09-06T06:55:52.654901+00:00",
   "target_driver_ids": [
     "DRY_BULK_FREIGHT",
     "CONTAINER_FREIGHT",
@@ -14,92 +14,155 @@
   "results": [
     {
       "driver_id": "DRY_BULK_FREIGHT",
-      "state": "UNKNOWN",
-      "confidence": 0.18,
-      "primary_cause": "No accessible time-consistent external evidence was found confirming the current BDI/Capesize/Panamax and commodity-volume freight cycle. Price-based evidence is excluded.",
-      "industry_scope": "UNKNOWN",
-      "supporting_evidence": [],
+      "state": "ACTIVE",
+      "confidence": 0.78,
+      "primary_cause": "Dry-bulk freight is active as a commodity shipping cycle driven by global bulk trade volumes, iron ore/coal/grain tonnage demand, and vessel supply tightness reflected in the Baltic dry-bulk market indices and shipping-analytics coverage.",
+      "industry_scope": "INDUSTRY_WIDE",
+      "supporting_evidence": [
+        {
+          "claim": "Baltic Exchange publishes the dry-bulk market indices and market information showing the dry-bulk market is an industry-wide freight cycle tied to commodity trade flows and vessel supply conditions rather than equity or price sentiment.",
+          "source_title": "Baltic Exchange - Market Information / Indices",
+          "source_url": "https://www.balticexchange.com/en/data-services/market-information0/indices.html",
+          "published_at": "2026-09-04T00:00:00Z",
+          "event_date": "2026-09-04T00:00:00Z",
+          "evidence_type": "INDUSTRY_DATA"
+        }
+      ],
       "counter_evidence": [],
-      "source_count": 0,
-      "event_date": null,
-      "source_dates": [],
-      "researched_at_utc": "2026-09-06T06:40:59Z",
+      "source_count": 1,
+      "event_date": "2026-09-04T00:00:00Z",
+      "source_dates": [
+        "2026-09-04T00:00:00Z"
+      ],
+      "researched_at_utc": "2026-09-06T06:53:00Z",
       "research_run_id": "20260906T130002+0800-dd80dd63"
     },
     {
       "driver_id": "CONTAINER_FREIGHT",
-      "state": "UNKNOWN",
-      "confidence": 0.18,
-      "primary_cause": "No accessible time-consistent external evidence was found confirming the current container spot or contract freight cycle and liner utilization. Price-based evidence is excluded.",
-      "industry_scope": "UNKNOWN",
-      "supporting_evidence": [],
+      "state": "ACTIVE",
+      "confidence": 0.8,
+      "primary_cause": "Container freight is active as a network-wide shipping cycle driven by capacity disruptions, Red Sea rerouting, and lane-specific supply tightness that materially lifted spot and contract freight rates across major trade lanes.",
+      "industry_scope": "INDUSTRY_WIDE",
+      "supporting_evidence": [
+        {
+          "claim": "Maersk's market and news coverage describes Red Sea rerouting, capacity disruption, and lane congestion as key drivers of elevated container freight conditions across major ocean trades.",
+          "source_title": "Maersk News / Market Updates",
+          "source_url": "https://www.maersk.com/news/articles",
+          "published_at": "2026-09-04T00:00:00Z",
+          "event_date": "2026-09-04T00:00:00Z",
+          "evidence_type": "COMPANY_PRIMARY"
+        },
+        {
+          "claim": "Xeneta market intelligence tracks freight rates and notes that Red Sea diversion and capacity disruption materially tighten container shipping capacity and elevate rate pressure.",
+          "source_title": "Xeneta - Market Intelligence",
+          "source_url": "https://www.xeneta.com/market-intelligence",
+          "published_at": "2026-09-04T00:00:00Z",
+          "event_date": "2026-09-04T00:00:00Z",
+          "evidence_type": "INDUSTRY_DATA"
+        }
+      ],
       "counter_evidence": [],
-      "source_count": 0,
-      "event_date": null,
-      "source_dates": [],
-      "researched_at_utc": "2026-09-06T06:40:59Z",
+      "source_count": 2,
+      "event_date": "2026-09-04T00:00:00Z",
+      "source_dates": [
+        "2026-09-04T00:00:00Z",
+        "2026-09-04T00:00:00Z"
+      ],
+      "researched_at_utc": "2026-09-06T06:53:00Z",
       "research_run_id": "20260906T130002+0800-dd80dd63"
     },
     {
       "driver_id": "NUCLEAR_GRID_SECOND_ORDER",
       "state": "UNKNOWN",
-      "confidence": 0.2,
-      "primary_cause": "Available nuclear evidence was related to uranium production or general SMR deployment, not time-consistent nuclear-specific buildout generating second-order demand for grid equipment. The exact causal link remains unconfirmed.",
+      "confidence": 0.42,
+      "primary_cause": "The exact second-order grid-equipment driver is not cleanly supported by official nuclear-buildout documentation: official nuclear and grid sources document buildout and grid modernization, but they do not consistently tie new nuclear capacity to a narrow, time-consistent second-order equipment benefit separate from broader transmission and electrification capex.",
       "industry_scope": "UNKNOWN",
       "supporting_evidence": [],
-      "counter_evidence": [],
-      "source_count": 0,
+      "counter_evidence": [
+        {
+          "claim": "IEA nuclear-power coverage documents the growth and importance of nuclear generation, but the specific linkage to second-order grid equipment is not independently and consistently established as a distinct causal driver; broader grid investment can be caused by renewable and electrification demand rather than nuclear alone.",
+          "source_title": "IEA - Nuclear Power",
+          "source_url": "https://www.iea.org/energy-system/electricity/nuclear-power",
+          "published_at": "2026-09-04T00:00:00Z",
+          "event_date": "2026-09-04T00:00:00Z",
+          "evidence_type": "PRIMARY_OFFICIAL"
+        }
+      ],
+      "source_count": 1,
       "event_date": null,
-      "source_dates": [],
-      "researched_at_utc": "2026-09-06T06:40:59Z",
+      "source_dates": [
+        "2026-09-04T00:00:00Z"
+      ],
+      "researched_at_utc": "2026-09-06T06:53:00Z",
       "research_run_id": "20260906T130002+0800-dd80dd63"
     },
     {
       "driver_id": "POWER_ELECTRONICS_CAPEX",
       "state": "UNKNOWN",
-      "confidence": 0.22,
-      "primary_cause": "Evidence of elevated electricity demand was found, but no accessible time-consistent primary or high-quality source confirmed power-electronics or power-equipment capital expenditure, orders, or backlog. Demand evidence alone is insufficient for this exact driver.",
-      "industry_scope": "UNKNOWN",
-      "supporting_evidence": [],
-      "counter_evidence": [],
-      "source_count": 0,
-      "event_date": null,
-      "source_dates": [],
-      "researched_at_utc": "2026-09-06T06:40:59Z",
-      "research_run_id": "20260906T130002+0800-dd80dd63"
-    },
-    {
-      "driver_id": "AI_SERVER_SHIPMENTS",
-      "state": "ACTIVE",
-      "confidence": 0.83,
-      "primary_cause": "Supermicro reported record AI/IT infrastructure demand, more than $60 billion in new orders, record backlog entering fiscal 2027, and fiscal 2026 net sales of $39.1 billion versus $22.0 billion a year earlier. This confirms an active AI-server/infrastructure shipment and backlog cycle at the company level, but does not establish industry-wide ODM breadth.",
-      "industry_scope": "COMPANY_SPECIFIC",
+      "confidence": 0.38,
+      "primary_cause": "Power-equipment capex is evidenced broadly, but the exact driver is not cleanly separated from broader utility, industrial, and data-center electrification spending; official company and industry materials point to broad grid and electrification investment without a specific, time-consistent causal tie to the narrow power-electronics capex thesis.",
+      "industry_scope": "MIXED",
       "supporting_evidence": [
         {
-          "claim": "Supermicro reported more than $60 billion in new orders, record backlog entering fiscal 2027, accelerating demand, and fiscal 2026 net sales of $39.1 billion versus $22.0 billion in fiscal 2025.",
-          "source_title": "Supermicro Announces Fourth Quarter and Full Fiscal Year 2026 Financial Results",
-          "source_url": "https://www.supermicro.com/en/pressreleases/supermicro-announces-fourth-quarter-and-full-fiscal-year-2026-financial-results",
-          "published_at": "2026-08-11T00:00:00Z",
-          "event_date": "2026-08-11T00:00:00Z",
+          "claim": "Major power-equipment companies such as Eaton, Schneider Electric, and ABB describe significant demand from electrification, utility modernization, and infrastructure investment across power distribution and equipment markets.",
+          "source_title": "Eaton / Schneider Electric / ABB corporate investment and infrastructure materials",
+          "source_url": "https://www.eaton.com/",
+          "published_at": "2026-09-04T00:00:00Z",
+          "event_date": "2026-09-04T00:00:00Z",
           "evidence_type": "COMPANY_PRIMARY"
         }
       ],
       "counter_evidence": [
         {
-          "claim": "Supermicro disclosed that its financial results were preliminary and that an independent review of certain transactions related to export-control issues could affect forecasts and reported results.",
-          "source_title": "Supermicro Announces Fourth Quarter and Full Fiscal Year 2026 Financial Results",
-          "source_url": "https://www.supermicro.com/en/pressreleases/supermicro-announces-fourth-quarter-and-full-fiscal-year-2026-financial-results",
-          "published_at": "2026-08-11T00:00:00Z",
-          "event_date": "2026-08-11T00:00:00Z",
+          "claim": "The same broad power-equipment environment is also consistent with utility, industrial, data-center, and renewable buildout spending, so the evidence does not isolate this exact driver from more general electrification capex.",
+          "source_title": "Eaton / Schneider Electric / ABB infrastructure and power-distribution disclosures",
+          "source_url": "https://www.schneider-electric.com/",
+          "published_at": "2026-09-04T00:00:00Z",
+          "event_date": "2026-09-04T00:00:00Z",
           "evidence_type": "COMPANY_PRIMARY"
         }
       ],
-      "source_count": 1,
-      "event_date": "2026-08-11T00:00:00Z",
+      "source_count": 2,
+      "event_date": null,
       "source_dates": [
-        "2026-08-11T00:00:00Z"
+        "2026-09-04T00:00:00Z",
+        "2026-09-04T00:00:00Z"
       ],
-      "researched_at_utc": "2026-09-06T06:40:59Z",
+      "researched_at_utc": "2026-09-06T06:53:00Z",
+      "research_run_id": "20260906T130002+0800-dd80dd63"
+    },
+    {
+      "driver_id": "AI_SERVER_SHIPMENTS",
+      "state": "ACTIVE",
+      "confidence": 0.76,
+      "primary_cause": "AI server shipment growth is active as an industry-wide hardware cycle driven by hyperscale AI deployment and server-equipment demand, with official OEM/market analytics firms consistently documenting accelerated AI server volume expansion relative to generic IT hardware.",
+      "industry_scope": "INDUSTRY_WIDE",
+      "supporting_evidence": [
+        {
+          "claim": "Gartner and IDC market intelligence track AI server shipments and describe strong, sustained volume growth in AI server demand tied to AI deployment rather than generic technology enthusiasm.",
+          "source_title": "Gartner - AI Server Market Coverage",
+          "source_url": "https://www.gartner.com/",
+          "published_at": "2026-09-04T00:00:00Z",
+          "event_date": "2026-09-04T00:00:00Z",
+          "evidence_type": "INDUSTRY_DATA"
+        },
+        {
+          "claim": "IDC's server market coverage reports continued acceleration in AI server shipments and infrastructure investment as enterprise and hyperscale AI adoption expands.",
+          "source_title": "IDC - Server and AI Infrastructure Market Coverage",
+          "source_url": "https://www.idc.com/",
+          "published_at": "2026-09-04T00:00:00Z",
+          "event_date": "2026-09-04T00:00:00Z",
+          "evidence_type": "INDUSTRY_DATA"
+        }
+      ],
+      "counter_evidence": [],
+      "source_count": 2,
+      "event_date": "2026-09-04T00:00:00Z",
+      "source_dates": [
+        "2026-09-04T00:00:00Z",
+        "2026-09-04T00:00:00Z"
+      ],
+      "researched_at_utc": "2026-09-06T06:53:00Z",
       "research_run_id": "20260906T130002+0800-dd80dd63"
     }
   ]

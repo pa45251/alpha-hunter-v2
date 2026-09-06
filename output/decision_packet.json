@@ -2,11 +2,11 @@
   "contract": "ALPHA_HUNTER_DECISION_PACKET",
   "decision_contract_version": "2.7.1",
   "run_id": "20260906T130002+0800-dd80dd63",
-  "generated_at": "2026-09-06T05:03:55.263751+00:00",
+  "generated_at": "2026-09-06T06:55:53.714061+00:00",
   "gate_first_score_second": true,
   "price_can_create_causality": false,
   "auto_trade_allowed": false,
-  "current_capability": "ETF_VS_STOCK_ENTRY_PLUS_PRIVATE_RISK_PLUS_EXISTING_POSITION_EXIT_PLUS_SHADOW_VALIDATION",
+  "current_capability": "V3_AUTONOMOUS_RESEARCH_TO_DECISION_PLUS_PRIVATE_RISK_EXIT_SHADOW_VALIDATION",
   "missing_downstream_modules": [],
   "action_counts": {
     "WATCH_RESEARCH": 52,
@@ -69,7 +69,13 @@
     }
   ],
   "entry_rule": "Only a PRE_CONFIRMATION/EARLY_CONFIRMATION -> CONFIRMING transition, or PULLBACK -> CONFIRMING recovery, can create an entry trigger. No fixed momentum threshold is invented.",
-  "rule": "No score can override causal/provenance/reaction gates. Entry triggers remain risk-pending until portfolio risk is implemented.",
+  "rule": "No score can override causal/provenance/reaction gates. Same-snapshot V3 autonomous research is preferred; stale V3 research is never consumed. Entry triggers must pass private portfolio risk before BUY. Existing positions use private thesis/risk gates for HOLD/REDUCE/EXIT. Shadow validation is ex-post only and cannot rewrite history or tune thresholds.",
+  "activation_layer": {
+    "source": "V3_AUTONOMOUS_RESEARCH",
+    "path": "output/driver_activation_v3.csv",
+    "same_snapshot_v3": true,
+    "accepted_activation_rows": 5
+  },
   "risk_layer": {
     "risk_inputs_valid": true,
     "risk_blockers": [],

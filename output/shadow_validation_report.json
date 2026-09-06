@@ -1,7 +1,7 @@
 {
   "contract": "ALPHA_HUNTER_SHADOW_VALIDATION",
   "validation_version": "1.0",
-  "generated_at_utc": "2026-09-06T05:04:07.973227+00:00",
+  "generated_at_utc": "2026-09-06T06:56:03.560360+00:00",
   "execution_assumption": "NEXT_TRADING_SESSION_OPEN_AFTER_DECISION_DATE",
   "benchmark": "^TWII",
   "threshold_tuning_allowed": false,
