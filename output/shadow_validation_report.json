@@ -1,0 +1,13 @@
+{
+  "contract": "ALPHA_HUNTER_SHADOW_VALIDATION",
+  "validation_version": "1.0",
+  "generated_at_utc": "2026-09-06T05:04:07.973227+00:00",
+  "execution_assumption": "NEXT_TRADING_SESSION_OPEN_AFTER_DECISION_DATE",
+  "benchmark": "^TWII",
+  "threshold_tuning_allowed": false,
+  "hindsight_rule": "Historical decisions are immutable. Outcomes are appended only after horizons mature; validation never rewrites past states or tunes gates.",
+  "matured_outcomes": 0,
+  "directional_scored_outcomes": 0,
+  "directional_hit_rate": null,
+  "by_horizon": {}
+}
