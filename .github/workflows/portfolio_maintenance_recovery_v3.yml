@@ -5,6 +5,11 @@ on:
   workflow_run:
     workflows: ["Alpha Hunter v3 Autonomous Research"]
     types: [completed]
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/portfolio_maintenance_recovery_v3.yml'
+      - 'PORTFOLIO_MAINTENANCE_RESEARCH_PROMPT.md'
 
 concurrency:
   group: alpha-hunter-v3-maintenance-main
@@ -118,13 +123,13 @@ jobs:
           PYTHONPATH: ${{ github.workspace }}
         run: python -m pytest -q tests/test_portfolio_maintenance_research.py tests/test_existing_position.py
 
-      - name: Commit only privacy-safe decision artifacts
+      - name: Commit privacy-safe maintenance aggregate only
         if: steps.need_recovery.outputs.needed == 'true'
         run: |
           rm -f /tmp/portfolio_maintenance_handoff.json /tmp/portfolio_maintenance_result.raw.txt /tmp/portfolio_maintenance_result.json
           git config user.name "alpha-hunter-bot"
           git config user.email "actions@users.noreply.github.com"
-          git add output/decision_board.csv output/decision_packet.json output/decision_history.csv output/shadow_audit.csv output/shadow_validation.csv output/shadow_validation_report.json
+          git add output/decision_packet.json
           if ! git diff --cached --quiet; then
             git commit -m "refresh private maintenance decision layer $(date -u +%F)"
             git fetch origin main
