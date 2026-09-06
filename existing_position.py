@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 from typing import Any
+import json
+import os
 import pandas as pd
 
 from portfolio_risk import load_portfolio_state, load_risk_policy, validate_risk_inputs
@@ -34,6 +36,54 @@ def _list(v: Any) -> list[str]:
     if isinstance(v, (list, tuple, set)):
         return [str(x) for x in v if str(x).strip()]
     return []
+
+
+def _ticker_key(v: Any) -> str:
+    return str(v or "").strip().upper().replace(".TW", "").replace(".TWO", "")
+
+
+def load_private_thesis_overlay() -> tuple[dict[str, dict[str, Any]], str]:
+    """Load optional thesis-only Secret. No values are logged or persisted."""
+    raw = os.getenv("ALPHA_HUNTER_POSITION_THESIS_JSON", "").strip()
+    if not raw:
+        return {}, "NOT_CONFIGURED"
+    try:
+        payload = json.loads(raw)
+    except Exception:
+        return {}, "INVALID_JSON"
+    items = payload.get("positions", []) if isinstance(payload, dict) else payload
+    if not isinstance(items, list):
+        return {}, "INVALID_SCHEMA"
+    out: dict[str, dict[str, Any]] = {}
+    for item in items:
+        if not isinstance(item, dict):
+            return {}, "INVALID_SCHEMA"
+        key = _ticker_key(item.get("ticker"))
+        if not key:
+            return {}, "INVALID_SCHEMA"
+        drivers = [x.upper() for x in _list(item.get("thesis_driver_ids"))]
+        status = str(item.get("thesis_status", "")).upper().strip()
+        if not drivers and not status:
+            return {}, "INVALID_SCHEMA"
+        out[key] = {"thesis_driver_ids": list(dict.fromkeys(drivers)), "thesis_status": status}
+    return out, "VALID"
+
+
+def apply_private_thesis_overlay(portfolio: dict[str, Any], overlay: dict[str, dict[str, Any]]) -> tuple[dict[str, Any], int]:
+    p = dict(portfolio or {})
+    positions = [dict(x) for x in (p.get("positions") or [])]
+    applied = 0
+    for pos in positions:
+        item = overlay.get(_ticker_key(pos.get("ticker")))
+        if not item:
+            continue
+        if item.get("thesis_driver_ids"):
+            pos["thesis_driver_ids"] = item["thesis_driver_ids"]
+        if item.get("thesis_status"):
+            pos["thesis_status"] = item["thesis_status"]
+        applied += 1
+    p["positions"] = positions
+    return p, applied
 
 
 def _position_drivers(pos: dict[str, Any]) -> tuple[list[str], str]:
@@ -145,11 +195,19 @@ def apply_existing_position_engine(board: pd.DataFrame) -> tuple[pd.DataFrame, d
     policy = load_risk_policy()
     raw_portfolio = load_portfolio_state()
     valid, blockers, portfolio = validate_risk_inputs(policy, raw_portfolio)
+    overlay, overlay_status = load_private_thesis_overlay()
+    if overlay_status in {"INVALID_JSON", "INVALID_SCHEMA"}:
+        valid = False
+        blockers = list(blockers) + [f"POSITION_THESIS_OVERLAY_{overlay_status}"]
+    applied = 0
+    if valid and overlay:
+        portfolio, applied = apply_private_thesis_overlay(portfolio, overlay)
     if not valid:
         return pd.DataFrame(), {
             "position_inputs_valid": False,
             "position_blockers": blockers,
             "position_action_counts": {},
+            "thesis_overlay_status": overlay_status,
             "privacy_rule": "Per-position actions and holdings stay in-memory and are never committed or logged.",
         }
     private_actions = evaluate_existing_positions(board, policy, portfolio)
@@ -160,6 +218,8 @@ def apply_existing_position_engine(board: pd.DataFrame) -> tuple[pd.DataFrame, d
         "position_blockers": [],
         "position_action_counts": {str(k): int(v) for k, v in counts.items()},
         "thesis_mapping_counts": {str(k): int(v) for k, v in mapping_counts.items()},
+        "thesis_overlay_status": overlay_status,
+        "thesis_overlay_applied_count": int(applied),
         "private_position_details_committed": False,
         "privacy_rule": "Per-position actions, tickers, balances, weights and P/L stay in-memory and are never committed or logged.",
     }
