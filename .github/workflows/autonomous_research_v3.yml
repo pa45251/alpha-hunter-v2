@@ -53,6 +53,36 @@ jobs:
             exit 1
           fi
 
+      - name: Build compact research handoff
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          packet = json.loads(Path('output/research_packet.json').read_text(encoding='utf-8'))
+          keep = (
+              'research_priority', 'global_theme', 'driver_id', 'driver_label',
+              'driver_scope', 'global_theme_strength_v2', 'global_latest_price_date',
+              'activation_evidence_required', 'counter_evidence_required',
+              'price_cannot_activate_driver'
+          )
+          compact = {
+              'contract': packet.get('contract'),
+              'run_id': packet.get('run_id'),
+              'causal_rule': packet.get('causal_rule'),
+              'research_targets': [
+                  {k: row.get(k) for k in keep if k in row}
+                  for row in (packet.get('research_queue_top30') or [])[:5]
+              ],
+          }
+          Path('/tmp/research_handoff.json').write_text(
+              json.dumps(compact, ensure_ascii=False, separators=(',', ':')),
+              encoding='utf-8'
+          )
+          print('compact handoff bytes:', Path('/tmp/research_handoff.json').stat().st_size)
+          print('target drivers:', [x.get('driver_id') for x in compact['research_targets']])
+          PY
+
       - name: Run bounded autonomous causal research
         id: copilot_research
         env:
@@ -61,9 +91,11 @@ jobs:
           set +e
           RESEARCH_PROMPT="$(cat RESEARCH_AGENT_PROMPT_V3.md)
 
-          --- BEGIN AUTHORITATIVE RESEARCH PACKET JSON ---
-          $(cat output/research_packet.json)
-          --- END AUTHORITATIVE RESEARCH PACKET JSON ---"
+          IMPORTANT INPUT OVERRIDE: The authoritative compact handoff is appended below. It contains exactly the first five targets from the canonical output/research_packet.json. Treat research_targets as the targets to research in order; the full packet is intentionally not attached because JSON attachments are unsupported by this CLI.
+
+          --- BEGIN AUTHORITATIVE COMPACT RESEARCH HANDOFF ---
+          $(cat /tmp/research_handoff.json)
+          --- END AUTHORITATIVE COMPACT RESEARCH HANDOFF ---"
 
           copilot \
             -p "$RESEARCH_PROMPT" \
@@ -101,6 +133,20 @@ jobs:
           git config user.name "alpha-hunter-bot"
           git config user.email "actions@users.noreply.github.com"
           git add output/research_result_v3.json
-          git diff --cached --quiet && exit 0
-          git commit -m "alpha hunter v3 autonomous research $(date -u +%F)"
-          git push
+          if ! git diff --cached --quiet; then
+            git commit -m "alpha hunter v3 autonomous research $(date -u +%F)"
+            git push
+          fi
+
+      - name: Assert validated research succeeded
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          data = json.loads(Path('output/research_result_v3.json').read_text(encoding='utf-8'))
+          status = data.get('status')
+          valid = sum(1 for x in data.get('results', []) if x.get('confidence', 0) > 0 or x.get('state') != 'UNKNOWN')
+          print(f'validated research status={status}; nontrivial_results={valid}/{len(data.get("results", []))}')
+          if status != 'PASS':
+              raise SystemExit(f'Validated research did not PASS: {status}; errors={data.get("errors")}')
+          PY
