@@ -43,10 +43,11 @@ jobs:
       - name: Build v2.6.1 research handoff
         run: python research_handoff.py
 
-      - name: Build v2.9 decision + private risk + exit + no-hindsight shadow validation
+      - name: Build v2.9 decision + private thesis/risk + exit + no-hindsight shadow validation
         env:
           ALPHA_HUNTER_RISK_POLICY_JSON: ${{ secrets.ALPHA_HUNTER_RISK_POLICY_JSON }}
           ALPHA_HUNTER_PORTFOLIO_JSON: ${{ secrets.ALPHA_HUNTER_PORTFOLIO_JSON }}
+          ALPHA_HUNTER_POSITION_THESIS_JSON: ${{ secrets.ALPHA_HUNTER_POSITION_THESIS_JSON }}
         run: python decision_run.py
 
       - name: Commit canonical outputs
