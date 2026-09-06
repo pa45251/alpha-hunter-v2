@@ -1,6 +1,7 @@
 # Private user portfolio state — never commit to this public repository
 input/positions.csv
 input/portfolio_state.json
+input/risk_policy.json
 input/position_thesis_ledger.csv
 
 # Local/private decision outputs
