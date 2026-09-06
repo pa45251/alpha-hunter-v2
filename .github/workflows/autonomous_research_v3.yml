@@ -150,7 +150,7 @@ jobs:
             --allow-all-urls \
             --deny-tool='write,shell,memory' \
             --no-ask-user \
-            --max-ai-credits=15 \
+            --max-ai-credits=30 \
             > output/research_result_v3.raw.txt \
             2> /tmp/copilot_research_retry.err
           code=$?
