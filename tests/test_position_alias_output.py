@@ -53,6 +53,14 @@ def test_alias_map_loaded_from_secret_without_suffix_leak(monkeypatch):
     assert load_alias_map({}) == {"1111": "CORE_A", "2222": "SAT_B"}
 
 
+def test_unicode_aliases_are_supported(monkeypatch):
+    monkeypatch.setenv(
+        "ALPHA_HUNTER_POSITION_ALIAS_JSON",
+        json.dumps({"aliases": {"1111": "標的A", "2222": "零碎部位"}}, ensure_ascii=False),
+    )
+    assert load_alias_map({}) == {"1111": "標的A", "2222": "零碎部位"}
+
+
 def test_alias_map_can_come_from_private_portfolio_fields(monkeypatch):
     monkeypatch.delenv("ALPHA_HUNTER_POSITION_ALIAS_JSON", raising=False)
     p = {"positions": [{"ticker": "1111.TW", "alias": "core_a"}]}
@@ -73,6 +81,12 @@ def test_incomplete_alias_mapping_fails_closed():
 def test_duplicate_alias_rejected(monkeypatch):
     monkeypatch.setenv("ALPHA_HUNTER_POSITION_ALIAS_JSON", json.dumps({"1111": "SAME", "2222": "SAME"}))
     with pytest.raises(RuntimeError, match="POSITION_ALIAS_DUPLICATE"):
+        load_alias_map({})
+
+
+def test_alias_with_whitespace_or_punctuation_rejected(monkeypatch):
+    monkeypatch.setenv("ALPHA_HUNTER_POSITION_ALIAS_JSON", json.dumps({"1111": "標的 A"}, ensure_ascii=False))
+    with pytest.raises(RuntimeError, match="POSITION_ALIAS_INVALID_FORMAT"):
         load_alias_map({})
 
 
