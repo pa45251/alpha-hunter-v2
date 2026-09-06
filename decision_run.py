@@ -81,6 +81,10 @@ def main() -> None:
     packet["portfolio_action_counts"] = {
         str(k): int(v) for k, v in board["portfolio_action"].value_counts(dropna=False).to_dict().items()
     } if "portfolio_action" in board.columns else {}
+    packet["rule"] = (
+        "No score can override causal/provenance/reaction gates. Entry triggers must pass private portfolio risk before BUY. "
+        "Existing positions use private thesis/risk gates for HOLD/REDUCE/EXIT. Shadow validation is ex-post only and cannot rewrite history or tune thresholds."
+    )
     packet["auto_order_execution"] = False
     (OUT / "decision_packet.json").write_text(json.dumps(packet, ensure_ascii=False, indent=2), encoding="utf-8")
 
