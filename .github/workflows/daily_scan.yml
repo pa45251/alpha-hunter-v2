@@ -28,11 +28,14 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
-      - name: Run Alpha Hunter v2.6
+      - name: Run Alpha Hunter v2.6 scanner
         run: python daily_scan.py
 
       - name: Build v2.6.1 research handoff
         run: python research_handoff.py
+
+      - name: Build v2.7 decision bridge
+        run: python decision_run.py
 
       - name: Commit canonical outputs
         run: |
@@ -43,6 +46,8 @@ jobs:
             output/gate_report.json \
             output/research_packet.json \
             output/research_handoff.json \
+            output/decision_board.csv \
+            output/decision_packet.json \
             output/market_snapshot.csv \
             output/market_snapshot.json \
             output/theme_breadth.csv \
@@ -58,5 +63,5 @@ jobs:
             output/causal_driver_taxonomy.csv \
             output/structural_exposure_graph.csv
           git diff --cached --quiet && exit 0
-          git commit -m "alpha hunter v2.6.1 snapshot $(date -u +%F)"
+          git commit -m "alpha hunter v2.7 decision snapshot $(date -u +%F)"
           git push
