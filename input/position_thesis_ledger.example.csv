@@ -1,0 +1,2 @@
+ticker,asset_type,original_driver_id,original_thesis_id,entry_date,current_status,notes
+EXAMPLE.TW,STOCK,EXAMPLE_DRIVER,THESIS-001,2026-01-01,HOLD,"Template only. Copy to input/position_thesis_ledger.csv locally or inject privately. Never commit real holdings to this public repo."
