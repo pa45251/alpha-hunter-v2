@@ -2,7 +2,7 @@
   "contract": "ALPHA_HUNTER_V3_VALIDATED_RESEARCH",
   "status": "RESEARCH_UNAVAILABLE",
   "research_run_id": "20260906T130002+0800-dd80dd63",
-  "validated_at_utc": "2026-09-06T06:14:21.819336+00:00",
+  "validated_at_utc": "2026-09-06T06:20:52.007129+00:00",
   "target_driver_ids": [
     "DRY_BULK_FREIGHT",
     "CONTAINER_FREIGHT",
@@ -25,7 +25,7 @@
       "source_count": 0,
       "event_date": null,
       "source_dates": [],
-      "researched_at_utc": "2026-09-06T06:14:21.819308+00:00",
+      "researched_at_utc": "2026-09-06T06:20:52.007103+00:00",
       "research_run_id": "20260906T130002+0800-dd80dd63"
     },
     {
@@ -39,7 +39,7 @@
       "source_count": 0,
       "event_date": null,
       "source_dates": [],
-      "researched_at_utc": "2026-09-06T06:14:21.819322+00:00",
+      "researched_at_utc": "2026-09-06T06:20:52.007115+00:00",
       "research_run_id": "20260906T130002+0800-dd80dd63"
     },
     {
@@ -53,7 +53,7 @@
       "source_count": 0,
       "event_date": null,
       "source_dates": [],
-      "researched_at_utc": "2026-09-06T06:14:21.819329+00:00",
+      "researched_at_utc": "2026-09-06T06:20:52.007122+00:00",
       "research_run_id": "20260906T130002+0800-dd80dd63"
     },
     {
@@ -67,7 +67,7 @@
       "source_count": 0,
       "event_date": null,
       "source_dates": [],
-      "researched_at_utc": "2026-09-06T06:14:21.819332+00:00",
+      "researched_at_utc": "2026-09-06T06:20:52.007125+00:00",
       "research_run_id": "20260906T130002+0800-dd80dd63"
     },
     {
@@ -81,7 +81,7 @@
       "source_count": 0,
       "event_date": null,
       "source_dates": [],
-      "researched_at_utc": "2026-09-06T06:14:21.819334+00:00",
+      "researched_at_utc": "2026-09-06T06:20:52.007127+00:00",
       "research_run_id": "20260906T130002+0800-dd80dd63"
     }
   ]
