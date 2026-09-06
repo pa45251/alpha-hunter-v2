@@ -6,10 +6,11 @@
 - For leveraged portfolios, a higher buffer should generally be implemented by reducing gross exposure before accumulating idle cash.
 - Best new opportunity: **2317.TW 鴻海** — `BUY_BIAS_STOCK` / edge `0.9888` / reaction `PRE_CONFIRMATION`
 
-| Source alias | Destination | Rotation | Edge spread | Trim source | Redeploy of trim | Keep as buffer |
-|---|---|---|---:|---:|---:|---:|
-| 標的D | 2317.TW 鴻海 | ROTATE_PARTIAL_STRONG | 0.5762 | 50% | 100% | 0% |
+| Source alias | Destination | Rotation state | Edge spread | Trim now | Trim on trigger | Entry trigger | Redeploy on trigger | Buffer on trigger |
+|---|---|---|---:|---:|---:|---|---:|---:|
+| 標的D | 2317.TW 鴻海 | PREPARE_ROTATION_STRONG | 0.5762 | 0% | 50% | DESTINATION_REACTION_CONFIRMING | 100% | 0% |
 
+PREPARE_ROTATION means the edge is strong enough to nominate the switch, but the destination has not reached the required entry-confirmation state; current trim remains zero.
 Rotation and cash outputs are CIO advisories only. They do not authorize brokerage orders.
 
 - Run: `20260906T130002+0800-dd80dd63`

@@ -1,7 +1,7 @@
 {
   "contract": "ALPHA_HUNTER_PORTFOLIO_ALLOCATION_ADVISORY",
-  "schema_version": "1.0",
-  "generated_at": "2026-09-06T13:50:14.883578+00:00",
+  "schema_version": "1.1",
+  "generated_at": "2026-09-06T13:55:15.472623+00:00",
   "status": "READY",
   "risk_regime": "RISK_ON",
   "risk_score": 11,
@@ -26,11 +26,13 @@
       "destination_action": "BUY_BIAS_STOCK",
       "destination_driver": "AI_SERVER_SHIPMENTS",
       "destination_reaction_state": "PRE_CONFIRMATION",
-      "rotation_action": "ROTATE_PARTIAL_STRONG",
+      "rotation_action": "PREPARE_ROTATION_STRONG",
       "edge_spread": 0.5762,
-      "suggested_source_trim_pct": 50,
-      "suggested_redeploy_pct_of_trim": 100,
-      "suggested_risk_buffer_pct_of_trim": 0,
+      "suggested_source_trim_pct_now": 0,
+      "suggested_source_trim_pct_on_trigger": 50,
+      "suggested_redeploy_pct_of_trim_on_trigger": 100,
+      "suggested_risk_buffer_pct_of_trim_on_trigger": 0,
+      "entry_trigger_required": "DESTINATION_REACTION_CONFIRMING",
       "reason": "DESTINATION_EDGE_EXCEEDS_SOURCE_BY_POLICY_THRESHOLD"
     }
   ],
@@ -173,5 +175,5 @@
     "financing_included": false
   },
   "auto_trade_allowed": false,
-  "method": "Compare normalized CIO edge for current holdings versus validated new opportunities, recommend at most one partial rotation, and reserve part of the trim as cash/risk buffer when the global regime is not fully risk-on."
+  "method": "Compare normalized CIO edge for current holdings versus validated new opportunities, nominate at most one primary rotation, but preserve entry discipline: PRE_CONFIRMATION only prepares a rotation and CONFIRMING is required before a current rotation bias is emitted. Risk regime controls trim/redeploy sizing."
 }
