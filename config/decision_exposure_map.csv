@@ -1,0 +1,26 @@
+driver_id,etf_ticker,etf_role,exposure_purity,comparison_policy,notes,enabled
+AI_SERVER_SHIPMENTS,QQQ,BROAD_CORE,LOW,STOCK_ALPHA_ALLOWED,"No clean server-shipment ETF in canonical universe; QQQ is only a broad technology opportunity-cost benchmark.",1
+AI_SERVER_RACK_BUILD,QQQ,BROAD_CORE,LOW,STOCK_ALPHA_ALLOWED,"No clean rack-build ETF in canonical universe; direct source-backed stock exposure may be more precise.",1
+AI_SERVER_THERMAL_DENSITY,QQQ,BROAD_CORE,LOW,STOCK_ALPHA_ALLOWED,"No clean liquid-cooling ETF in canonical universe.",1
+DATACENTER_POWER_INFRA,XLI,SECTOR_CORE,MEDIUM,STOCK_ALPHA_ALLOWED,"Industrials proxy; not a pure data-center power ETF.",1
+DATACENTER_COOLING_INFRA,XLI,SECTOR_CORE,MEDIUM,STOCK_ALPHA_ALLOWED,"Industrials proxy; not a pure data-center cooling ETF.",1
+AI_NETWORKING_UPGRADE,QQQ,BROAD_CORE,LOW,STOCK_ALPHA_ALLOWED,"Broad technology proxy; no clean networking-upgrade ETF in canonical universe.",1
+DRAM_PRICING,SOXX,THEME_CORE,MEDIUM,STOCK_ALPHA_ALLOWED,"Semiconductor ETF contains memory exposure but is not DRAM-pure.",1
+SPECIALTY_MEMORY_PRICING,SOXX,THEME_CORE,LOW,STOCK_ALPHA_ALLOWED,"Semiconductor ETF is a broad proxy; specialty memory exposure is diluted.",1
+MEMORY_IC_CYCLE,SOXX,THEME_CORE,MEDIUM,STOCK_ALPHA_ALLOWED,"Broad semiconductor proxy.",1
+NAND_STORAGE_CYCLE,SOXX,THEME_CORE,MEDIUM,STOCK_ALPHA_ALLOWED,"Broad semiconductor proxy; NAND/storage exposure is diluted.",1
+LEADING_EDGE_FOUNDRY_AI_DEMAND,SMH,THEME_CORE,HIGH,ETF_CORE_PREFERRED,"Semiconductor ETF provides diversified leading-edge AI/foundry exposure.",1
+MATURE_NODE_FOUNDRY_UTILIZATION,SOXX,THEME_CORE,LOW,STOCK_ALPHA_ALLOWED,"No clean mature-node ETF in canonical universe.",1
+WAFER_FAB_EQUIPMENT_CAPEX,SOXX,THEME_CORE,MEDIUM,STOCK_ALPHA_ALLOWED,"Semiconductor ETF is diversified; equipment exposure is diluted.",1
+ADVANCED_PACKAGING_TEST_CAPEX,SOXX,THEME_CORE,MEDIUM,STOCK_ALPHA_ALLOWED,"Semiconductor ETF is diversified; packaging/test exposure is diluted.",1
+GRID_CAPEX,XLI,SECTOR_CORE,MEDIUM,STOCK_ALPHA_ALLOWED,"Industrials ETF captures diversified grid-equipment exposure but is not pure.",1
+POWER_ELECTRONICS_CAPEX,XLI,SECTOR_CORE,MEDIUM,STOCK_ALPHA_ALLOWED,"Industrials proxy, not pure power electronics.",1
+NUCLEAR_GRID_SECOND_ORDER,URA,THEME_CORE,LOW,STOCK_ALPHA_ALLOWED,"URA is uranium/nuclear fuel exposure and is not a clean second-order grid-equipment proxy.",1
+CONTAINER_FREIGHT,BOAT,THEME_CORE,HIGH,ETF_CORE_PREFERRED,"Global shipping ETF is a diversified shipping-cycle proxy.",1
+DRY_BULK_FREIGHT,BOAT,THEME_CORE,MEDIUM,STOCK_ALPHA_ALLOWED,"BOAT includes shipping broadly and is not dry-bulk pure.",1
+COPPER_COMMODITY_TRADE_INVENTORY,COPX,THEME_CORE,MEDIUM,STOCK_ALPHA_ALLOWED,"Copper miners proxy physical copper economics but not regional inventory/tariff dislocation perfectly.",1
+ENTERPRISE_CYBER_SPEND,HACK,THEME_CORE,HIGH,ETF_CORE_PREFERRED,"Cybersecurity ETF provides diversified enterprise-security exposure.",1
+BIOPHARMA_RISK_APPETITE,XBI,THEME_CORE,HIGH,ETF_CORE_PREFERRED,"Broad biotech risk-appetite proxy.",1
+GENOMICS_RISK_APPETITE,GNOM,THEME_CORE,HIGH,ETF_CORE_PREFERRED,"Genomics-focused ETF in canonical universe.",1
+FINANCIALS_RATE_CREDIT_CYCLE,XLF,SECTOR_CORE,HIGH,ETF_CORE_PREFERRED,"Diversified financials exposure.",1
+CONSUMER_ELECTRONICS_CYCLE,QQQ,BROAD_CORE,LOW,STOCK_ALPHA_ALLOWED,"Broad technology benchmark only; not a pure consumer-device ETF.",1
