@@ -185,24 +185,12 @@ def _current_ticker_weight(portfolio: dict[str, Any], ticker: str) -> float:
     return total
 
 
-def private_position_risk_summary(policy: dict[str, Any], portfolio: dict[str, Any]) -> dict[str, Any]:
-    """Return non-identifying aggregate flags only; never ticker, value, weight or position names."""
-    over_single = 0
-    for pos in portfolio.get("positions", []) or []:
-        if _f(pos.get("weight_pct")) > _f(policy.get("max_single_position_pct"), 1e9):
-            over_single += 1
-    return {
-        "portfolio_over_gross_limit": _f(portfolio.get("gross_exposure_pct")) > _f(policy.get("max_gross_exposure_pct"), 1e9),
-        "positions_over_single_limit_count": int(over_single),
-    }
-
-
 def apply_portfolio_risk_gate(board: pd.DataFrame) -> tuple[pd.DataFrame, dict[str, Any]]:
     """Apply private portfolio constraints without exposing holdings to public outputs.
 
     This function never submits orders. It can only upgrade an already-triggered research candidate
-    when explicit private inputs are complete. Private holdings, balances, weights and risk groups are
-    never copied into the returned decision board or metadata.
+    when explicit private inputs are complete. Private holdings, balances, weights, risk groups and
+    derived portfolio metrics are never copied into public decision outputs or logs.
     """
     if board is None or board.empty:
         return board, {"risk_inputs_valid": False, "risk_blockers": ["EMPTY_DECISION_BOARD"]}
@@ -258,8 +246,6 @@ def apply_portfolio_risk_gate(board: pd.DataFrame) -> tuple[pd.DataFrame, dict[s
         "risk_blockers": global_blockers,
         "risk_policy_version": str(policy.get("policy_version", "")) if policy else "",
         "auto_order_execution": False,
-        "privacy_rule": "Private holdings/balances/weights are consumed in-memory only and must never be committed or printed.",
+        "privacy_rule": "Private holdings/balances/weights/risk groups and derived metrics are consumed in-memory only and never committed or printed.",
     }
-    if valid:
-        meta.update(private_position_risk_summary(policy, portfolio))
     return x, meta
