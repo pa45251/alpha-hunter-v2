@@ -13,8 +13,8 @@ on:
       - 'config/frozen_strategy_v1.json'
       - 'existing_position.py'
       - 'tests/test_existing_position.py'
-      - 'private_position_handoff.py'
-      - 'tests/test_private_position_handoff.py'
+      - 'position_alias_output.py'
+      - 'tests/test_position_alias_output.py'
       - 'action_board_summary.py'
       - '.github/workflows/decision_refresh.yml'
 
@@ -44,10 +44,10 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
-      - name: Regression-test existing-position and private-handoff contracts
+      - name: Regression-test existing-position and alias-output contracts
         env:
           PYTHONPATH: ${{ github.workspace }}
-        run: python -m pytest -q tests/test_launch_gate.py tests/test_existing_position.py tests/test_private_position_handoff.py
+        run: python -m pytest -q tests/test_launch_gate.py tests/test_existing_position.py tests/test_position_alias_output.py
 
       - name: Rebuild decision layer from latest validated causal source
         env:
@@ -72,14 +72,13 @@ jobs:
               raise SystemExit('Mixed/stale snapshot blocked')
           PY
 
-      - name: Deliver ticker-level position actions to private Google Drive
+      - name: Publish alias-only existing-position actions
         env:
           ALPHA_HUNTER_RISK_POLICY_JSON: ${{ secrets.ALPHA_HUNTER_RISK_POLICY_JSON }}
           ALPHA_HUNTER_PORTFOLIO_JSON: ${{ secrets.ALPHA_HUNTER_PORTFOLIO_JSON }}
           ALPHA_HUNTER_POSITION_THESIS_JSON: ${{ secrets.ALPHA_HUNTER_POSITION_THESIS_JSON }}
-          GDRIVE_SERVICE_ACCOUNT_JSON: ${{ secrets.GDRIVE_SERVICE_ACCOUNT_JSON }}
-          GDRIVE_FOLDER_ID: ${{ secrets.GDRIVE_FOLDER_ID }}
-        run: python private_position_handoff.py
+          ALPHA_HUNTER_POSITION_ALIAS_JSON: ${{ secrets.ALPHA_HUNTER_POSITION_ALIAS_JSON }}
+        run: python position_alias_output.py
 
       - name: Commit refreshed public decision artifacts
         run: |
@@ -93,6 +92,9 @@ jobs:
             output/shadow_audit.csv \
             output/shadow_validation.csv \
             output/shadow_validation_report.json
+          if [ -e output/position_alias_actions.json ] || git ls-files --error-unmatch output/position_alias_actions.json >/dev/null 2>&1; then
+            git add -A output/position_alias_actions.json
+          fi
           if ! git diff --cached --quiet; then
             git commit -m "refresh alpha hunter decision layer $(date -u +%F)"
             git fetch origin main
