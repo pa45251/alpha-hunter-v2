@@ -1,0 +1,78 @@
+name: Alpha Hunter Decision Refresh
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'input/edge_provenance.csv'
+      - 'output/driver_activation_adjudicated_v3.csv'
+      - 'decision_run.py'
+      - '.github/workflows/decision_refresh.yml'
+
+concurrency:
+  group: alpha-hunter-v3-research-main
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  decision-refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout latest main
+        uses: actions/checkout@v6
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Rebuild decision layer from latest validated causal source
+        env:
+          ALPHA_HUNTER_ACTIVATION_SOURCE: V3_VALIDATED
+          ALPHA_HUNTER_RISK_POLICY_JSON: ${{ secrets.ALPHA_HUNTER_RISK_POLICY_JSON }}
+          ALPHA_HUNTER_PORTFOLIO_JSON: ${{ secrets.ALPHA_HUNTER_PORTFOLIO_JSON }}
+          ALPHA_HUNTER_POSITION_THESIS_JSON: ${{ secrets.ALPHA_HUNTER_POSITION_THESIS_JSON }}
+        run: python decision_run.py
+
+      - name: Assert decision source is same-snapshot and validated
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p = json.loads(Path('output/decision_packet.json').read_text(encoding='utf-8'))
+          a = p.get('activation_layer') or {}
+          source = a.get('source')
+          print('decision source=', source, 'same_snapshot=', a.get('same_snapshot_v3'), 'active=', a.get('active_driver_ids'))
+          if source not in {'V3_AUTONOMOUS_RESEARCH', 'CHATGPT_CHALLENGER_ADJUDICATION'}:
+              raise SystemExit('No validated causal source')
+          if not a.get('same_snapshot_v3'):
+              raise SystemExit('Mixed/stale snapshot blocked')
+          PY
+
+      - name: Commit refreshed public decision artifacts
+        run: |
+          git config user.name "alpha-hunter-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add \
+            output/decision_board.csv \
+            output/decision_packet.json \
+            output/decision_history.csv \
+            output/shadow_audit.csv \
+            output/shadow_validation.csv \
+            output/shadow_validation_report.json
+          if ! git diff --cached --quiet; then
+            git commit -m "refresh alpha hunter decision layer $(date -u +%F)"
+            git fetch origin main
+            git rebase origin/main
+            git push origin HEAD:main
+          fi
