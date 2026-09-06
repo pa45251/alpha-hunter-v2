@@ -7,7 +7,14 @@
 - Private risk inputs valid: `True`
 - Auto order execution: `False`
 
-## 1. Actionable now
+## Deployment status
+- SHADOW ONLY: all BUY/SELL/HOLD signals are research outputs; no live order is authorized.
+- Frozen strategy: `NOT_VERIFIED`
+- Freeze integrity: `False`
+- First review: 2026-11-29. Review does not automatically enable trading.
+- Existing shadow statistics are gross signal outcomes, not validated strategy performance.
+
+## 1. Research signals (not executable orders)
 
 No validated BUY/ADD/REDUCE/EXIT/HOLD action is currently emitted by the public opportunity board.
 
