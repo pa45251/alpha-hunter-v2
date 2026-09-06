@@ -17,6 +17,19 @@ from shadow_validation import write_shadow_validation
 OUT = Path("output")
 
 
+_ACTIVATION_DERIVED_COLUMNS = {
+    "activation_state",
+    "activation_confidence",
+    "activation_valid",
+    "activation_age_hours",
+    "as_of_utc",
+    "source_count",
+    "primary_cause",
+    "counter_evidence",
+    "source_summary",
+}
+
+
 def _activation_source_for_run(run_id: str) -> tuple[Path, str]:
     """Prefer same-snapshot v3 autonomous research; otherwise use legacy manual activations.
 
@@ -55,6 +68,28 @@ def _activation_source_for_run(run_id: str) -> tuple[Path, str]:
     return legacy_path, "LEGACY_MANUAL_FALLBACK"
 
 
+def _apply_current_activation(structural: pd.DataFrame, activations: pd.DataFrame) -> pd.DataFrame:
+    """Replace any scanner-carried activation fields with the current validated activation set.
+
+    Canonical structural_matches may contain placeholder or stale activation columns from a
+    previous layer. Their mere presence must never suppress the same-snapshot V3 write-back.
+    This function strips activation-derived fields, resets causal decision state, and reapplies
+    only the activation artifact selected for the current run.
+    """
+    x = structural.copy()
+    stale_cols = [c for c in _ACTIVATION_DERIVED_COLUMNS if c in x.columns]
+    if stale_cols:
+        x = x.drop(columns=stale_cols)
+
+    # Reset any carried causal state before applying the selected same-run activation artifact.
+    x["dynamic_driver_state"] = "UNRESOLVED"
+    x["causal_status"] = "STRUCTURAL_MATCH_RESEARCH_REQUIRED"
+    x["decision_eligible"] = False
+    x["why_not_decision_eligible"] = "Dynamic causal driver has not been externally validated."
+
+    return apply_driver_activation(x, activations)
+
+
 def main() -> None:
     gate_path = OUT / "gate_report.json"
     manifest_path = OUT / "manifest.json"
@@ -83,8 +118,7 @@ def main() -> None:
 
     activation_path, activation_source = _activation_source_for_run(run_id)
     activations = validate_driver_activation_file(activation_path, queue, CausalConfig())
-    if "activation_valid" not in structural.columns:
-        structural = apply_driver_activation(structural, activations)
+    structural = _apply_current_activation(structural, activations)
 
     structural = apply_edge_provenance(structural, Path("input/edge_provenance.csv"))
     structural = apply_exposure_map(structural, Path("config/decision_exposure_map.csv"))
@@ -104,13 +138,22 @@ def main() -> None:
         "output/shadow_validation_report.json",
     )
 
+    accepted = int(activations.get("activation_valid", pd.Series(dtype=bool)).fillna(False).sum()) if not activations.empty else 0
+    activated_driver_ids = sorted(
+        activations.loc[
+            activations.get("activation_valid", pd.Series(False, index=activations.index)).fillna(False)
+            & activations.get("activation_state", pd.Series("UNKNOWN", index=activations.index)).astype(str).eq("ACTIVE"),
+            "driver_id",
+        ].astype(str).unique().tolist()
+    ) if not activations.empty else []
+
     packet["activation_layer"] = {
         "source": activation_source,
         "path": str(activation_path),
         "same_snapshot_v3": activation_source == "V3_AUTONOMOUS_RESEARCH",
-        "accepted_activation_rows": int(
-            activations.get("activation_valid", pd.Series(dtype=bool)).fillna(False).sum()
-        ) if not activations.empty else 0,
+        "accepted_activation_rows": accepted,
+        "active_driver_ids": activated_driver_ids,
+        "lineage_overwrite_enforced": True,
     }
     packet["risk_layer"] = risk_meta
     packet["existing_position_layer"] = position_meta
@@ -131,18 +174,19 @@ def main() -> None:
     } if "portfolio_action" in board.columns else {}
     packet["rule"] = (
         "No score can override causal/provenance/reaction gates. Same-snapshot V3 autonomous research is preferred; stale V3 research is never consumed. "
+        "Any scanner-carried activation fields are overwritten by the selected current-run activation artifact before decisioning. "
         "Entry triggers must pass private portfolio risk before BUY. Existing positions use private thesis/risk gates for HOLD/REDUCE/EXIT. "
         "Shadow validation is ex-post only and cannot rewrite history or tune thresholds."
     )
     packet["auto_order_execution"] = False
     (OUT / "decision_packet.json").write_text(json.dumps(packet, ensure_ascii=False, indent=2), encoding="utf-8")
 
-    accepted = int(activations.get("activation_valid", pd.Series(dtype=bool)).fillna(False).sum()) if not activations.empty else 0
     edge_backed = int(board.get("gate_edge_source_backed", pd.Series(dtype=bool)).fillna(False).sum()) if not board.empty else 0
     risk_pass = int(board.get("risk_gate_pass", pd.Series(dtype=bool)).fillna(False).sum()) if not board.empty else 0
     print(f"Decision bridge run_id: {run_id}")
     print(f"Activation source: {activation_source}")
     print(f"Research activations accepted: {accepted}")
+    print(f"Active driver ids: {activated_driver_ids}")
     print(f"Source-backed live structural rows: {edge_backed}")
     print(f"Decision board rows: {len(board)}")
     print(f"Risk-gate PASS rows: {risk_pass}")
