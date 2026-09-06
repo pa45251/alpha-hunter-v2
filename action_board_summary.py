@@ -14,6 +14,7 @@ run_id = packet.get("run_id", "UNKNOWN")
 activation = packet.get("activation_layer") or {}
 risk = packet.get("risk_layer") or {}
 pos = packet.get("existing_position_layer") or {}
+maintenance = pos.get("maintenance_research") or {}
 
 focus = [r for r in rows if r.get("candidate_action") != "WATCH_RESEARCH"]
 now = [r for r in focus if r.get("portfolio_action") in {"BUY", "ADD", "REDUCE", "EXIT", "HOLD"}]
@@ -50,7 +51,7 @@ lines = [
     f"- Run: `{run_id}`",
     f"- Causal source: `{activation.get('source', 'UNKNOWN')}`",
     f"- Same snapshot: `{activation.get('same_snapshot_v3', False)}`",
-    f"- Active drivers: {', '.join(activation.get('active_driver_ids') or []) or 'NONE'}",
+    f"- Active opportunity drivers: {', '.join(activation.get('active_driver_ids') or []) or 'NONE'}",
     f"- Private risk inputs valid: `{risk.get('risk_inputs_valid', False)}`",
     f"- Auto order execution: `{packet.get('auto_order_execution', False)}`", "",
     "## 1. Actionable now",
@@ -61,7 +62,7 @@ if now:
     for r in now[:12]:
         lines.append(f"| {r.get('ticker')} | {r.get('name')} | {r.get('portfolio_action')} | {r.get('driver_id')} | {r.get('decision_stage')} |")
 else:
-    lines.append("\nNo validated BUY/ADD/REDUCE/EXIT/HOLD action is currently emitted by the public decision board.")
+    lines.append("\nNo validated BUY/ADD/REDUCE/EXIT/HOLD action is currently emitted by the public opportunity board.")
 
 lines += ["", "## 2. Closest to action"]
 if near:
@@ -85,12 +86,17 @@ lines += [
     f"- Position count (aggregate only): `{position_count}`",
     f"- Position action counts: `{json.dumps(pos.get('position_action_counts') or {}, ensure_ascii=False, sort_keys=True)}`",
     f"- System mapping counts: `{json.dumps(mapping_counts, ensure_ascii=False, sort_keys=True)}`",
+    f"- Portfolio-maintenance research lane: `{maintenance.get('maintenance_lane_status', 'NOT_AVAILABLE')}`",
+    f"- Maintenance drivers researched/targeted: `{maintenance.get('maintenance_validated_count', 0)}/{maintenance.get('maintenance_target_count', 0)}`",
+    f"- Maintenance targets truncated by safety cap: `{maintenance.get('maintenance_target_truncated_count', 0)}`",
     f"- Optional user-thesis overlay: `{pos.get('user_thesis_overlay_status', 'NOT_CONFIGURED')}`",
     f"- User/system disagreement count (aggregate only): `{pos.get('user_thesis_disagreement_count', 0)}`",
-    "- Per-position holdings, balances, weights, P/L and actions are intentionally not written to this public artifact.",
+    "- Per-position holdings, maintenance driver identities, balances, weights, P/L and actions are intentionally not written to this public artifact.",
     "", "## 5. Interpretation",
-    "- Existing-position HOLD/REDUCE/EXIT is driven by the system-inferred economic exposure, not by the user's stated purchase reason.",
+    "- Opportunity discovery and portfolio maintenance are separate research lanes: the first finds new entries; the second re-tests the economic drivers behind existing positions.",
+    "- Existing-position HOLD/REDUCE/EXIT is driven by system-inferred economic exposure, not by the user's stated purchase reason.",
     "- `SYSTEM_TICKER_EXPOSURE` is preferred; risk-group mapping is a fallback. Missing system mapping fails closed to `REVIEW_RESEARCH`.",
+    "- Maintenance research is ephemeral and private. Only aggregate readiness/counts may reach this public Action Board.",
     "- User thesis is optional challenger metadata only; it cannot force HOLD or EXIT.",
     "- `GATE_5_ENTRY` is closest to an executable entry but still requires the defined state-transition trigger and private risk pass.",
     "- `GATE_4_REACTION` means causality and structural transmission passed, but price reaction is already persistent/extended or otherwise not an early entry state.",
@@ -98,4 +104,4 @@ lines += [
 ]
 
 (OUT / "action_board.md").write_text("\n".join(lines), encoding="utf-8")
-print(f"Wrote output/action_board.md: focus={len(focus)} near={len(near)} now={len(now)} system_readiness={system_readiness}")
+print(f"Wrote output/action_board.md: focus={len(focus)} near={len(near)} now={len(now)} system_readiness={system_readiness} maintenance={maintenance.get('maintenance_lane_status', 'NOT_AVAILABLE')}")
