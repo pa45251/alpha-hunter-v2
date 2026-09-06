@@ -12,13 +12,76 @@ import pandas as pd
 class DecisionConfig:
     contract_version: str = "2.7.0"
     source_backed_value: str = "SOURCE_BACKED"
+    edge_research_max_age_days: int = 120
 
 
 ENTRY_RESEARCH_STATES = {"PRE_CONFIRMATION", "EARLY_CONFIRMATION", "CONFIRMING", "PULLBACK"}
 
 
-def _bool_series(df: pd.DataFrame, value: bool = False) -> pd.Series:
-    return pd.Series(value, index=df.index, dtype=bool)
+def _normalize_code(v) -> str:
+    return str(v).strip().split(".")[0].zfill(4)
+
+
+def apply_edge_provenance(
+    structural_matches: pd.DataFrame,
+    path: Path,
+    cfg: DecisionConfig = DecisionConfig(),
+) -> pd.DataFrame:
+    """Apply a research overlay without mutating the canonical seed exposure graph.
+
+    Only existing (driver_id, taiwan_code) edges may be upgraded. The overlay cannot create a new
+    structural relationship. This keeps the slow-moving graph and time-stamped research evidence separate.
+    """
+    if structural_matches is None or structural_matches.empty or not path.exists():
+        return structural_matches
+    try:
+        e = pd.read_csv(path, dtype={"taiwan_code": str})
+    except Exception:
+        return structural_matches
+
+    req = {"driver_id", "taiwan_code", "provenance_status", "as_of_utc", "source_count", "source_summary"}
+    if e.empty or not req.issubset(e.columns):
+        return structural_matches
+
+    x = structural_matches.copy()
+    x["taiwan_code"] = x["taiwan_code"].map(_normalize_code)
+    e["taiwan_code"] = e["taiwan_code"].map(_normalize_code)
+    e["driver_id"] = e["driver_id"].astype(str)
+    e["provenance_status"] = e["provenance_status"].fillna("").astype(str).str.upper()
+    e["source_count"] = pd.to_numeric(e["source_count"], errors="coerce")
+    parsed = pd.to_datetime(e["as_of_utc"], utc=True, errors="coerce")
+    age_days = (pd.Timestamp.now(tz="UTC") - parsed).dt.total_seconds() / 86400
+    e["edge_research_valid"] = (
+        e["provenance_status"].eq(cfg.source_backed_value)
+        & e["source_count"].fillna(0).ge(1)
+        & age_days.between(0, cfg.edge_research_max_age_days, inclusive="both")
+        & e["source_summary"].fillna("").astype(str).str.len().gt(0)
+    )
+
+    valid_pairs = set(zip(x["driver_id"].astype(str), x["taiwan_code"]))
+    e = e[[pair in valid_pairs for pair in zip(e["driver_id"], e["taiwan_code"])]].copy()
+    e = e[e["edge_research_valid"]].drop_duplicates(["driver_id", "taiwan_code"], keep="last")
+    if e.empty:
+        return x
+
+    x["seed_provenance_status"] = x.get("provenance_status", "")
+    overlay_cols = [
+        "driver_id", "taiwan_code", "provenance_status", "as_of_utc", "source_count",
+        "source_summary", "counter_evidence", "source_urls", "edge_research_valid"
+    ]
+    overlay_cols = [c for c in overlay_cols if c in e.columns]
+    e = e[overlay_cols].rename(columns={
+        "provenance_status": "researched_provenance_status",
+        "as_of_utc": "edge_research_as_of_utc",
+        "source_count": "edge_source_count",
+        "source_summary": "edge_source_summary",
+        "counter_evidence": "edge_counter_evidence",
+        "source_urls": "edge_source_urls",
+    })
+    x = x.merge(e, on=["driver_id", "taiwan_code"], how="left")
+    valid = x.get("edge_research_valid", False).fillna(False)
+    x.loc[valid, "provenance_status"] = x.loc[valid, "researched_provenance_status"]
+    return x
 
 
 def build_decision_board(structural_matches: pd.DataFrame, cfg: DecisionConfig = DecisionConfig()) -> pd.DataFrame:
@@ -69,8 +132,6 @@ def build_decision_board(structural_matches: pd.DataFrame, cfg: DecisionConfig =
             b.append("EXPECTED_TRANSMISSION_BROKEN")
             action, stage = "AVOID_BROKEN", "GATE_4_REACTION"
         elif r.reaction_state in ENTRY_RESEARCH_STATES:
-            # Gates 1/2/4 passed. Gate 3 ETF-vs-stock and Gate 5 entry trigger are intentionally
-            # unresolved until their own versioned modules exist.
             b.extend(["ETF_VS_STOCK_NOT_YET_VALIDATED", "ENTRY_TRIGGER_NOT_YET_VALIDATED"])
             action, stage = "WATCH_ENTRY", "GATE_3_TO_5_PENDING"
         elif r.reaction_state == "PERSISTENT":
@@ -90,17 +151,16 @@ def build_decision_board(structural_matches: pd.DataFrame, cfg: DecisionConfig =
     x["decision_contract_version"] = cfg.contract_version
     x["auto_trade_allowed"] = False
 
-    # Research priority is useful only for workload ordering. It is NOT an expected-return score.
     sort_cols = [c for c in ["candidate_action", "research_priority_score"] if c in x.columns]
     if sort_cols:
-        ascending = [True, False][: len(sort_cols)]
-        x = x.sort_values(sort_cols, ascending=ascending)
+        x = x.sort_values(sort_cols, ascending=[True, False][: len(sort_cols)])
 
     preferred = [
         "run_id", "decision_contract_version", "global_theme", "driver_id", "driver_label",
         "taiwan_code", "ticker", "name", "industry", "economic_role", "linkage_tier",
-        "linkage_confidence", "provenance_status", "dynamic_driver_state", "reaction_state",
-        "rs_20d_vs_bench", "rs_60d_vs_bench", "acceleration", "keynes_v2",
+        "linkage_confidence", "seed_provenance_status", "provenance_status", "edge_research_as_of_utc",
+        "edge_source_count", "edge_source_summary", "edge_counter_evidence", "edge_source_urls",
+        "dynamic_driver_state", "reaction_state", "rs_20d_vs_bench", "rs_60d_vs_bench", "acceleration", "keynes_v2",
         "gate_driver_active", "gate_edge_source_backed", "gate_positive_long_edge",
         "gate_not_extended", "gate_not_broken", "gate_entry_research_state",
         "decision_stage", "candidate_action", "decision_blockers", "auto_trade_allowed",
