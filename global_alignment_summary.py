@@ -6,6 +6,7 @@ from pathlib import Path
 OUT = Path("output")
 BOARD = OUT / "action_board.md"
 ALIGN = OUT / "global_alignment.json"
+FRESH_ACTIONS = {"PREPARE", "ENTRY_READY", "ENTRY_READY_PULLBACK"}
 
 
 def _md(v) -> str:
@@ -19,6 +20,7 @@ def main() -> None:
         raise RuntimeError("GLOBAL_ALIGNMENT_OUTPUT_MISSING")
     packet = json.loads(ALIGN.read_text(encoding="utf-8"))
     top = packet.get("top_aligned") or []
+    fresh = [r for r in top if str(r.get("alignment_action", "")) in FRESH_ACTIONS]
     old = BOARD.read_text(encoding="utf-8")
 
     lines = [
@@ -29,10 +31,18 @@ def main() -> None:
     if top:
         best = top[0]
         lines.append(
-            f"- Highest alignment now: **{_md(best.get('ticker'))} {_md(best.get('name'))}** — "
+            f"- Strongest aligned trend now: **{_md(best.get('ticker'))} {_md(best.get('name'))}** — "
             f"score `{_md(best.get('alignment_score'))}` / `{_md(best.get('alignment_action'))}` / "
             f"global `{_md(best.get('international_theme'))}` / reaction `{_md(best.get('reaction_state'))}`"
         )
+        if fresh:
+            f = fresh[0]
+            lines.append(
+                f"- Best fresh aligned setup now: **{_md(f.get('ticker'))} {_md(f.get('name'))}** — "
+                f"score `{_md(f.get('alignment_score'))}` / `{_md(f.get('alignment_action'))}` / reaction `{_md(f.get('reaction_state'))}`"
+            )
+        else:
+            lines.append("- Best fresh aligned setup now: **NONE** — current alignment leaders are already persistent or no early/confirming setup passes every hard gate.")
         lines += [
             "",
             "| Rank | Taiwan stock | Global theme | Alignment | Global | Taiwan | Breadth | Keynes | State |",
@@ -47,7 +57,8 @@ def main() -> None:
                 f"{_md(r.get('alignment_action'))} |"
             )
     else:
-        lines.append("- No stock currently passes all Global Alignment hard gates.")
+        lines.append("- Strongest aligned trend now: **NONE** — no stock currently passes all Global Alignment hard gates.")
+        lines.append("- Best fresh aligned setup now: **NONE**.")
     lines += ["", "Global Alignment is advisory only; BROKEN/EXTENDED names cannot become fresh entries through this leaderboard.", ""]
     block = "\n".join(lines)
 
@@ -58,7 +69,7 @@ def main() -> None:
     else:
         new = block + "\n" + old
     BOARD.write_text(new, encoding="utf-8")
-    print(f"Prepended Global Alignment summary: eligible={len(top)}")
+    print(f"Prepended Global Alignment summary: eligible={len(top)} fresh={len(fresh)}")
 
 
 if __name__ == "__main__":
