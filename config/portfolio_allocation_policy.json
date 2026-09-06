@@ -21,6 +21,14 @@
       "DEFENSIVE": 15,
       "CRISIS": 0,
       "UNKNOWN": 0
+    },
+    "redeploy_pct_of_trim": {
+      "RISK_ON": 100,
+      "NORMAL": 75,
+      "CAUTION": 50,
+      "DEFENSIVE": 25,
+      "CRISIS": 0,
+      "UNKNOWN": 0
     }
   }
 }
