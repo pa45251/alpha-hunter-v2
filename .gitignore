@@ -1,0 +1,12 @@
+# Private user portfolio state — never commit to this public repository
+input/positions.csv
+input/portfolio_state.json
+input/position_thesis_ledger.csv
+
+# Local/private decision outputs
+output/private_*
+
+# Python/cache
+__pycache__/
+*.pyc
+.pytest_cache/
