@@ -2,6 +2,13 @@ name: Alpha Hunter v3 Autonomous Research
 
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/autonomous_research_v3.yml'
+      - 'RESEARCH_AGENT_PROMPT_V3.md'
+      - 'research_ingest_v3.py'
+      - 'research_contract_v3.py'
 
 concurrency:
   group: alpha-hunter-v3-research-main
