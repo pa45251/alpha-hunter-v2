@@ -67,7 +67,7 @@ No validated BUY/ADD/REDUCE/EXIT/HOLD action is currently emitted by the frozen 
 
 ## 5. Existing-position layer — privacy-safe alias view
 
-Alias output unavailable: `NOT_AVAILABLE`. No ticker identity is inferred or guessed.
+Alias output unavailable: `NOT_CONFIGURED`. No ticker identity is inferred or guessed.
 
 - Inputs valid: `True`
 - System thesis primary: `True`
