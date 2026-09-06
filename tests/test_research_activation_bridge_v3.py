@@ -3,6 +3,7 @@ import json
 import pandas as pd
 import pytest
 
+import decision_run
 import research_activation_bridge_v3 as bridge
 
 
@@ -78,3 +79,70 @@ def test_bridge_rejects_mixed_snapshot(monkeypatch, tmp_path):
     _patch_paths(monkeypatch, out)
     with pytest.raises(RuntimeError, match="MIXED_SNAPSHOT_DATA"):
         bridge.main()
+
+
+def test_decision_layer_overwrites_scanner_carried_activation_columns():
+    structural = pd.DataFrame([
+        {
+            "driver_id": "AI_SERVER_SHIPMENTS",
+            "activation_state": None,
+            "activation_confidence": None,
+            "activation_valid": None,
+            "dynamic_driver_state": "UNRESOLVED",
+            "causal_status": "STRUCTURAL_MATCH_RESEARCH_REQUIRED",
+            "decision_eligible": False,
+            "why_not_decision_eligible": "stale placeholder",
+        },
+        {
+            "driver_id": "CONTAINER_FREIGHT",
+            # Deliberately stale ACTIVE fields must be cleared by current UNKNOWN research.
+            "activation_state": "ACTIVE",
+            "activation_confidence": 0.99,
+            "activation_valid": True,
+            "dynamic_driver_state": "ACTIVE_RESEARCH_VALIDATED",
+            "causal_status": "ACTIVATED_HYPOTHESIS_REQUIRES_FINAL_AUDIT",
+            "decision_eligible": False,
+            "why_not_decision_eligible": "stale active state",
+        },
+    ])
+    activations = pd.DataFrame([
+        {
+            "driver_id": "AI_SERVER_SHIPMENTS",
+            "activation_state": "ACTIVE",
+            "activation_confidence": 0.83,
+            "activation_valid": True,
+            "as_of_utc": "2026-09-06T06:40:59Z",
+            "source_count": 2,
+            "primary_cause": "current run evidence",
+            "counter_evidence": "",
+            "source_summary": "current sources",
+        },
+        {
+            "driver_id": "CONTAINER_FREIGHT",
+            "activation_state": "UNKNOWN",
+            "activation_confidence": 0.18,
+            "activation_valid": True,
+            "as_of_utc": "2026-09-06T06:40:59Z",
+            "source_count": 1,
+            "primary_cause": "current uncertainty",
+            "counter_evidence": "mixed evidence",
+            "source_summary": "current sources",
+        },
+    ])
+
+    out = decision_run._apply_current_activation(structural, activations)
+
+    ai = out.loc[out["driver_id"].eq("AI_SERVER_SHIPMENTS")].iloc[0]
+    assert ai["activation_state"] == "ACTIVE"
+    assert ai["activation_confidence"] == pytest.approx(0.83)
+    assert bool(ai["activation_valid"])
+    assert ai["dynamic_driver_state"] == "ACTIVE_RESEARCH_VALIDATED"
+
+    container = out.loc[out["driver_id"].eq("CONTAINER_FREIGHT")].iloc[0]
+    assert container["activation_state"] == "UNKNOWN"
+    assert container["activation_confidence"] == pytest.approx(0.18)
+    assert container["dynamic_driver_state"] == "UNRESOLVED"
+    assert container["causal_status"] == "STRUCTURAL_MATCH_RESEARCH_REQUIRED"
+    assert container["why_not_decision_eligible"] == "Dynamic causal driver has not been externally validated."
+
+    assert not any(c.endswith("_x") or c.endswith("_y") for c in out.columns)
