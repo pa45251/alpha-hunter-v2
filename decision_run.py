@@ -6,7 +6,7 @@ from pathlib import Path
 import pandas as pd
 
 from causal_engine import CausalConfig, apply_driver_activation, validate_driver_activation_file
-from decision_engine import apply_edge_provenance, write_decision_outputs
+from decision_engine import apply_edge_provenance, apply_exposure_map, write_decision_outputs
 
 
 OUT = Path("output")
@@ -38,14 +38,12 @@ def main() -> None:
         if "run_id" not in df.columns or df.empty or not df["run_id"].astype(str).eq(run_id).all():
             raise RuntimeError(f"Decision bridge MIXED_SNAPSHOT_DATA: {name} run_id mismatch")
 
-    # daily_scan normally applies the driver write-back before structural_matches.csv is written.
-    # The fallback below supports older snapshots without double-merging activation columns.
     activations = validate_driver_activation_file(Path("input/driver_activation.csv"), queue, CausalConfig())
     if "activation_valid" not in structural.columns:
         structural = apply_driver_activation(structural, activations)
 
-    # Edge research is an overlay only: it may validate an existing canonical graph pair, never create one.
     structural = apply_edge_provenance(structural, Path("input/edge_provenance.csv"))
+    structural = apply_exposure_map(structural, Path("config/decision_exposure_map.csv"))
 
     board, packet = write_decision_outputs(structural, run_id, "output")
     accepted = int(activations.get("activation_valid", pd.Series(dtype=bool)).fillna(False).sum()) if not activations.empty else 0
@@ -55,7 +53,7 @@ def main() -> None:
     print(f"Source-backed live structural rows: {edge_backed}")
     print(f"Decision board rows: {len(board)}")
     print(f"Action counts: {packet.get('action_counts', {})}")
-    print("Automatic trading remains disabled until ETF-vs-stock, entry, risk, and shadow-audit modules are validated.")
+    print("v2.7.1: ETF-vs-stock mapping and state-transition entry trigger are active; automatic trading remains disabled pending portfolio risk and shadow audit.")
 
 
 if __name__ == "__main__":
