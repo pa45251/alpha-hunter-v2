@@ -6,7 +6,7 @@ from pathlib import Path
 import pandas as pd
 
 from causal_engine import CausalConfig, apply_driver_activation, validate_driver_activation_file
-from decision_engine import write_decision_outputs
+from decision_engine import apply_edge_provenance, write_decision_outputs
 
 
 OUT = Path("output")
@@ -38,13 +38,18 @@ def main() -> None:
         if "run_id" not in df.columns or df.empty or not df["run_id"].astype(str).eq(run_id).all():
             raise RuntimeError(f"Decision bridge MIXED_SNAPSHOT_DATA: {name} run_id mismatch")
 
-    # Research write-back is optional. If absent/empty/stale, no causal driver becomes ACTIVE.
+    # Research overlays cannot create drivers or edges. They may only validate canonical driver IDs
+    # and existing graph pairs with time-stamped evidence.
     activations = validate_driver_activation_file(Path("input/driver_activation.csv"), queue, CausalConfig())
     structural = apply_driver_activation(structural, activations)
+    structural = apply_edge_provenance(structural, Path("input/edge_provenance.csv"))
 
     board, packet = write_decision_outputs(structural, run_id, "output")
+    accepted = int(activations.get("activation_valid", pd.Series(dtype=bool)).fillna(False).sum()) if not activations.empty else 0
+    edge_backed = int(board.get("gate_edge_source_backed", pd.Series(dtype=bool)).fillna(False).sum()) if not board.empty else 0
     print(f"Decision bridge run_id: {run_id}")
-    print(f"Research activations accepted: {int(activations.get('activation_valid', pd.Series(dtype=bool)).fillna(False).sum()) if not activations.empty else 0}")
+    print(f"Research activations accepted: {accepted}")
+    print(f"Source-backed live structural rows: {edge_backed}")
     print(f"Decision board rows: {len(board)}")
     print(f"Action counts: {packet.get('action_counts', {})}")
     print("Automatic trading remains disabled until ETF-vs-stock, entry, risk, and shadow-audit modules are validated.")
