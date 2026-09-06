@@ -18,7 +18,6 @@ pos = packet.get("existing_position_layer") or {}
 focus = [r for r in rows if r.get("candidate_action") != "WATCH_RESEARCH"]
 now = [r for r in focus if r.get("portfolio_action") in {"BUY", "ADD", "REDUCE", "EXIT", "HOLD"}]
 near = [r for r in focus if r.get("candidate_action") == "WATCH_ENTRY"]
-
 stage_rank = {"GATE_5_ENTRY": 0, "GATE_4_REACTION": 1, "GATE_3_POSITIVE_EDGE": 2, "GATE_2_TRANSMISSION": 3}
 near.sort(key=lambda r: (stage_rank.get(r.get("decision_stage", ""), 9), -float(r.get("research_priority_score") or 0)))
 
@@ -30,33 +29,30 @@ for r in rows:
             if item:
                 blockers[item] += 1
 
-mapping_counts = pos.get("thesis_mapping_counts") or {}
-explicit_count = int(mapping_counts.get("EXPLICIT", 0) or 0)
-inferred_count = int(mapping_counts.get("RISK_GROUP_INFERRED", 0) or 0)
-missing_count = int(mapping_counts.get("MISSING", 0) or 0)
-mapped_count = explicit_count + inferred_count
-position_count = mapped_count + missing_count
+mapping_counts = pos.get("system_mapping_counts") or {}
+ticker_count = int(mapping_counts.get("SYSTEM_TICKER_EXPOSURE", 0) or 0)
+risk_group_count = int(mapping_counts.get("SYSTEM_RISK_GROUP", 0) or 0)
+missing_count = int(mapping_counts.get("SYSTEM_MAPPING_MISSING", 0) or 0)
+position_count = ticker_count + risk_group_count + missing_count
 if not pos.get("position_inputs_valid", False):
-    thesis_readiness = "BLOCKED_PRIVATE_INPUTS"
+    system_readiness = "BLOCKED_PRIVATE_INPUTS"
 elif missing_count > 0:
-    thesis_readiness = "PARTIAL"
+    system_readiness = "PARTIAL"
 elif position_count == 0:
-    thesis_readiness = "NO_POSITIONS"
-elif inferred_count > 0:
-    thesis_readiness = "COMPLETE_WITH_INFERENCE"
+    system_readiness = "NO_POSITIONS"
+elif risk_group_count > 0:
+    system_readiness = "COMPLETE_WITH_SYSTEM_INFERENCE"
 else:
-    thesis_readiness = "COMPLETE_EXPLICIT"
+    system_readiness = "COMPLETE_EXACT_EXPOSURE"
 
 lines = [
-    "# Alpha Hunter — Action Board",
-    "",
+    "# Alpha Hunter — Action Board", "",
     f"- Run: `{run_id}`",
     f"- Causal source: `{activation.get('source', 'UNKNOWN')}`",
     f"- Same snapshot: `{activation.get('same_snapshot_v3', False)}`",
     f"- Active drivers: {', '.join(activation.get('active_driver_ids') or []) or 'NONE'}",
     f"- Private risk inputs valid: `{risk.get('risk_inputs_valid', False)}`",
-    f"- Auto order execution: `{packet.get('auto_order_execution', False)}`",
-    "",
+    f"- Auto order execution: `{packet.get('auto_order_execution', False)}`", "",
     "## 1. Actionable now",
 ]
 
@@ -71,10 +67,7 @@ lines += ["", "## 2. Closest to action"]
 if near:
     lines += ["", "| Ticker | Name | Driver | Reaction | Stage | Blocker |", "|---|---|---|---|---|---|"]
     for r in near[:15]:
-        lines.append(
-            f"| {r.get('ticker')} | {r.get('name')} | {r.get('driver_id')} | {r.get('reaction_state')} | "
-            f"{r.get('decision_stage')} | {r.get('decision_blockers')} |"
-        )
+        lines.append(f"| {r.get('ticker')} | {r.get('name')} | {r.get('driver_id')} | {r.get('reaction_state')} | {r.get('decision_stage')} | {r.get('decision_blockers')} |")
 else:
     lines.append("\nNo WATCH_ENTRY candidates.")
 
@@ -85,24 +78,24 @@ if not blockers:
     lines.append("- None")
 
 lines += [
-    "",
-    "## 4. Existing-position layer (privacy-safe aggregate)",
+    "", "## 4. Existing-position layer (privacy-safe aggregate)",
     f"- Inputs valid: `{pos.get('position_inputs_valid', False)}`",
-    f"- Thesis overlay: `{pos.get('thesis_overlay_status', 'UNKNOWN')}`",
-    f"- Thesis mapping readiness: `{thesis_readiness}`",
+    f"- System thesis primary: `{pos.get('system_thesis_primary', False)}`",
+    f"- System mapping readiness: `{system_readiness}`",
     f"- Position count (aggregate only): `{position_count}`",
     f"- Position action counts: `{json.dumps(pos.get('position_action_counts') or {}, ensure_ascii=False, sort_keys=True)}`",
-    f"- Thesis mapping counts: `{json.dumps(mapping_counts, ensure_ascii=False, sort_keys=True)}`",
+    f"- System mapping counts: `{json.dumps(mapping_counts, ensure_ascii=False, sort_keys=True)}`",
+    f"- Optional user-thesis overlay: `{pos.get('user_thesis_overlay_status', 'NOT_CONFIGURED')}`",
+    f"- User/system disagreement count (aggregate only): `{pos.get('user_thesis_disagreement_count', 0)}`",
     "- Per-position holdings, balances, weights, P/L and actions are intentionally not written to this public artifact.",
-    "",
-    "## 5. Interpretation",
+    "", "## 5. Interpretation",
+    "- Existing-position HOLD/REDUCE/EXIT is driven by the system-inferred economic exposure, not by the user's stated purchase reason.",
+    "- `SYSTEM_TICKER_EXPOSURE` is preferred; risk-group mapping is a fallback. Missing system mapping fails closed to `REVIEW_RESEARCH`.",
+    "- User thesis is optional challenger metadata only; it cannot force HOLD or EXIT.",
     "- `GATE_5_ENTRY` is closest to an executable entry but still requires the defined state-transition trigger and private risk pass.",
     "- `GATE_4_REACTION` means causality and structural transmission passed, but price reaction is already persistent/extended or otherwise not an early entry state.",
-    "- `WATCH_RESEARCH` means an earlier causal/provenance/reaction gate blocked the candidate.",
-    "- Existing-position `PARTIAL` means at least one private holding has no thesis-driver mapping; missing mapping fails closed to REVIEW_THESIS rather than inventing HOLD/EXIT.",
-    "- This board is decision support only; automatic brokerage execution remains disabled.",
-    "",
+    "- This board is decision support only; automatic brokerage execution remains disabled.", "",
 ]
 
 (OUT / "action_board.md").write_text("\n".join(lines), encoding="utf-8")
-print(f"Wrote output/action_board.md: focus={len(focus)} near={len(near)} now={len(now)} thesis_readiness={thesis_readiness}")
+print(f"Wrote output/action_board.md: focus={len(focus)} near={len(near)} now={len(now)} system_readiness={system_readiness}")
