@@ -1,5 +1,17 @@
 # Alpha Hunter — Action Board
 
+## 0. Portfolio allocation / cash regime
+- Global risk regime: `RISK_ON` / score `11`
+- Target cash / dry-powder buffer: **0.0%**
+- For leveraged portfolios, a higher buffer should generally be implemented by reducing gross exposure before accumulating idle cash.
+- Best new opportunity: **2317.TW 鴻海** — `BUY_BIAS_STOCK` / edge `0.9888` / reaction `PRE_CONFIRMATION`
+
+| Source alias | Destination | Rotation | Edge spread | Trim source | Redeploy of trim | Keep as buffer |
+|---|---|---|---:|---:|---:|---:|
+| 標的D | 2317.TW 鴻海 | ROTATE_PARTIAL_STRONG | 0.5762 | 50% | 100% | 0% |
+
+Rotation and cash outputs are CIO advisories only. They do not authorize brokerage orders.
+
 - Run: `20260906T130002+0800-dd80dd63`
 - Causal source: `CHATGPT_CHALLENGER_ADJUDICATION`
 - Same snapshot: `True`

@@ -1,0 +1,57 @@
+{
+  "contract": "ALPHA_HUNTER_RISK_REGIME",
+  "schema_version": "1.0",
+  "generated_at": "2026-09-06T13:50:14.747606+00:00",
+  "status": "READY",
+  "risk_snapshot_date": "2026-09-04",
+  "regime": "RISK_ON",
+  "risk_score": 11,
+  "target_cash_pct": 0.0,
+  "gross_multiplier": 1.0,
+  "components": {
+    "VIX_VXN": 0,
+    "US_TREND": 0,
+    "US_BREADTH": 11,
+    "CREDIT": 0,
+    "GLOBAL_BREADTH": 0
+  },
+  "signals": {
+    "vix": {
+      "price": 14.529999732971191,
+      "ma20": 15.099500036239624,
+      "ret5": 0.006929967129629455,
+      "last_date": "2026-09-04"
+    },
+    "vxn": {
+      "price": 20.040000915527344,
+      "ma20": 21.457999992370606,
+      "ret5": 0.006024138492660258,
+      "last_date": "2026-09-04"
+    },
+    "spy": {
+      "price": 770.1900024414062,
+      "ma20": 769.0529937744141,
+      "ma60": 754.1861114501953,
+      "ret20": -0.003970213492805907,
+      "last_date": "2026-09-04"
+    },
+    "qqq": {
+      "price": 718.9600219726562,
+      "ma20": 717.5105010986329,
+      "ma60": 713.3916147867839,
+      "ret20": -0.005629098597988658,
+      "last_date": "2026-09-04"
+    },
+    "credit_hyg_lqd": {
+      "price": 0.750474034346017,
+      "ma20": 0.7494856924199516,
+      "ma60": 0.7418197616610386,
+      "ret20": 0.005716889325801722,
+      "above_ma20": true,
+      "above_ma60": true
+    },
+    "global_above_ma60_pct": 1.0
+  },
+  "method": "Unfitted heuristic combining volatility, US trend, breadth, credit and global breadth. It is an advisory risk budget, not an order trigger.",
+  "auto_trade_allowed": false
+}

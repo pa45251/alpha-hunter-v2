@@ -1,0 +1,177 @@
+{
+  "contract": "ALPHA_HUNTER_PORTFOLIO_ALLOCATION_ADVISORY",
+  "schema_version": "1.0",
+  "generated_at": "2026-09-06T13:50:14.883578+00:00",
+  "status": "READY",
+  "risk_regime": "RISK_ON",
+  "risk_score": 11,
+  "target_cash_pct": 0.0,
+  "cash_rule": "Target cash is a risk-budget buffer. In leveraged accounts, implementation should generally reduce financing/gross exposure before holding idle cash; private balances are not published here.",
+  "best_new_opportunity": {
+    "ticker": "2317.TW",
+    "name": "鴻海",
+    "preferred_exposure": "STOCK",
+    "advisory_action": "BUY_BIAS_STOCK",
+    "edge_score": 0.9888,
+    "driver_id": "AI_SERVER_SHIPMENTS",
+    "reaction_state": "PRE_CONFIRMATION",
+    "confidence": "MEDIUM"
+  },
+  "rotations": [
+    {
+      "source_alias": "標的D",
+      "source_action": "REVIEW_HOLD",
+      "destination_ticker": "2317.TW",
+      "destination_name": "鴻海",
+      "destination_action": "BUY_BIAS_STOCK",
+      "destination_driver": "AI_SERVER_SHIPMENTS",
+      "destination_reaction_state": "PRE_CONFIRMATION",
+      "rotation_action": "ROTATE_PARTIAL_STRONG",
+      "edge_spread": 0.5762,
+      "suggested_source_trim_pct": 50,
+      "suggested_redeploy_pct_of_trim": 100,
+      "suggested_risk_buffer_pct_of_trim": 0,
+      "reason": "DESTINATION_EDGE_EXCEEDS_SOURCE_BY_POLICY_THRESHOLD"
+    }
+  ],
+  "source_ranking": [
+    {
+      "alias": "標的D",
+      "current_action": "REVIEW_HOLD",
+      "current_edge_score": 0.4126,
+      "confidence": "MEDIUM",
+      "signal_state": "MIXED"
+    },
+    {
+      "alias": "標的A",
+      "current_action": "HOLD_BIAS",
+      "current_edge_score": 0.5858,
+      "confidence": "HIGH",
+      "signal_state": "POSITIVE"
+    },
+    {
+      "alias": "標的C",
+      "current_action": "HOLD_BIAS",
+      "current_edge_score": 0.7444,
+      "confidence": "HIGH",
+      "signal_state": "STRONG"
+    },
+    {
+      "alias": "標的B",
+      "current_action": "HOLD_BIAS",
+      "current_edge_score": 0.9461,
+      "confidence": "MEDIUM",
+      "signal_state": "STRONG"
+    }
+  ],
+  "candidate_ranking": [
+    {
+      "ticker": "2317.TW",
+      "name": "鴻海",
+      "preferred_exposure": "STOCK",
+      "advisory_action": "BUY_BIAS_STOCK",
+      "edge_score": 0.9888,
+      "driver_id": "AI_SERVER_SHIPMENTS",
+      "reaction_state": "PRE_CONFIRMATION",
+      "confidence": "MEDIUM"
+    },
+    {
+      "ticker": "BOAT",
+      "name": "Mapped ETF",
+      "preferred_exposure": "ETF",
+      "advisory_action": "PREFER_ETF",
+      "edge_score": 0.795,
+      "driver_id": "CONTAINER_FREIGHT",
+      "reaction_state": "PERSISTENT",
+      "confidence": "HIGH"
+    },
+    {
+      "ticker": "XLI",
+      "name": "Mapped ETF",
+      "preferred_exposure": "ETF",
+      "advisory_action": "PREFER_ETF",
+      "edge_score": 0.7864,
+      "driver_id": "POWER_ELECTRONICS_CAPEX",
+      "reaction_state": "UNKNOWN",
+      "confidence": "MEDIUM"
+    },
+    {
+      "ticker": "QQQ",
+      "name": "Mapped ETF",
+      "preferred_exposure": "ETF",
+      "advisory_action": "PREFER_ETF",
+      "edge_score": 0.7405,
+      "driver_id": "AI_SERVER_SHIPMENTS",
+      "reaction_state": "CONFIRMING",
+      "confidence": "MEDIUM"
+    },
+    {
+      "ticker": "2606.TW",
+      "name": "裕民",
+      "preferred_exposure": "STOCK",
+      "advisory_action": "HOLD_BIAS",
+      "edge_score": 0.6366,
+      "driver_id": "DRY_BULK_FREIGHT",
+      "reaction_state": "PERSISTENT",
+      "confidence": "MEDIUM"
+    },
+    {
+      "ticker": "2637.TW",
+      "name": "慧洋-KY",
+      "preferred_exposure": "STOCK",
+      "advisory_action": "HOLD_BIAS",
+      "edge_score": 0.6366,
+      "driver_id": "DRY_BULK_FREIGHT",
+      "reaction_state": "PERSISTENT",
+      "confidence": "MEDIUM"
+    },
+    {
+      "ticker": "2605.TW",
+      "name": "新興",
+      "preferred_exposure": "STOCK",
+      "advisory_action": "HOLD_BIAS",
+      "edge_score": 0.6362,
+      "driver_id": "DRY_BULK_FREIGHT",
+      "reaction_state": "PERSISTENT",
+      "confidence": "MEDIUM"
+    },
+    {
+      "ticker": "2617.TW",
+      "name": "台航",
+      "preferred_exposure": "STOCK",
+      "advisory_action": "HOLD_BIAS",
+      "edge_score": 0.6362,
+      "driver_id": "DRY_BULK_FREIGHT",
+      "reaction_state": "PERSISTENT",
+      "confidence": "MEDIUM"
+    },
+    {
+      "ticker": "6669.TW",
+      "name": "緯穎",
+      "preferred_exposure": "STOCK",
+      "advisory_action": "HOLD_BIAS",
+      "edge_score": 0.6358,
+      "driver_id": "AI_SERVER_SHIPMENTS",
+      "reaction_state": "PERSISTENT",
+      "confidence": "MEDIUM"
+    },
+    {
+      "ticker": "3231.TW",
+      "name": "緯創",
+      "preferred_exposure": "STOCK",
+      "advisory_action": "HOLD_BIAS",
+      "edge_score": 0.6353,
+      "driver_id": "AI_SERVER_SHIPMENTS",
+      "reaction_state": "PERSISTENT",
+      "confidence": "MEDIUM"
+    }
+  ],
+  "privacy": {
+    "source_positions_alias_only": true,
+    "portfolio_balances_included": false,
+    "position_weights_included": false,
+    "financing_included": false
+  },
+  "auto_trade_allowed": false,
+  "method": "Compare normalized CIO edge for current holdings versus validated new opportunities, recommend at most one partial rotation, and reserve part of the trim as cash/risk buffer when the global regime is not fully risk-on."
+}
