@@ -16,7 +16,6 @@ concurrency:
 
 permissions:
   contents: write
-  copilot-requests: write
 
 jobs:
   research:
@@ -34,6 +33,9 @@ jobs:
         with:
           python-version: '3.12'
 
+      - name: Install Python dependencies
+        run: pip install -r requirements.txt
+
       - name: Set up Node.js
         uses: actions/setup-node@v6
         with:
@@ -42,10 +44,19 @@ jobs:
       - name: Install Copilot CLI
         run: npm install -g @github/copilot
 
+      - name: Verify personal Copilot credential
+        env:
+          COPILOT_GITHUB_TOKEN: ${{ secrets.COPILOT_GITHUB_TOKEN }}
+        run: |
+          if [ -z "$COPILOT_GITHUB_TOKEN" ]; then
+            echo "::error::Missing repository secret COPILOT_GITHUB_TOKEN. Personal repositories require a user-owned fine-grained PAT with the Copilot Requests account permission."
+            exit 1
+          fi
+
       - name: Run bounded autonomous causal research
         id: copilot_research
         env:
-          GITHUB_TOKEN: ${{ github.token }}
+          COPILOT_GITHUB_TOKEN: ${{ secrets.COPILOT_GITHUB_TOKEN }}
         run: |
           set +e
           copilot \
@@ -62,6 +73,8 @@ jobs:
           code=$?
           echo "exit_code=$code" >> "$GITHUB_OUTPUT"
           if [ "$code" -ne 0 ]; then
+            echo "Copilot CLI exited with code $code"
+            sed -n '1,120p' /tmp/copilot_research.err || true
             echo '{}' > output/research_result_v3.raw.txt
             echo "Copilot research unavailable; deterministic ingest will fail closed to UNKNOWN."
           fi
