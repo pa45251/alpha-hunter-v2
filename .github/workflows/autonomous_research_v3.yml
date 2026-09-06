@@ -257,6 +257,7 @@ jobs:
           git add \
             output/research_result_v3.json \
             output/driver_activation_v3.csv \
+            output/shadow_journal.jsonl \
             output/decision_board.csv \
             output/decision_packet.json \
             output/decision_history.csv \

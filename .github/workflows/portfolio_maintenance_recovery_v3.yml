@@ -129,7 +129,7 @@ jobs:
           rm -f /tmp/portfolio_maintenance_handoff.json /tmp/portfolio_maintenance_result.raw.txt /tmp/portfolio_maintenance_result.json
           git config user.name "alpha-hunter-bot"
           git config user.email "actions@users.noreply.github.com"
-          git add output/decision_packet.json
+          git add output/shadow_journal.jsonl output/decision_packet.json output/decision_board.csv output/decision_history.csv output/shadow_audit.csv output/shadow_validation.csv output/shadow_validation_report.json
           if ! git diff --cached --quiet; then
             git commit -m "refresh private maintenance decision layer $(date -u +%F)"
             git fetch origin main

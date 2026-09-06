@@ -10,7 +10,8 @@ from causal_engine import CausalConfig, apply_driver_activation, validate_driver
 from decision_engine import apply_edge_provenance, apply_exposure_map, write_decision_outputs
 from existing_position import apply_existing_position_engine
 from portfolio_risk import apply_portfolio_risk_gate
-from shadow_audit import append_shadow_audit
+from launch_gate import apply_launch_gate
+from shadow_audit import append_shadow_audit, seal_public_snapshot
 from shadow_validation import write_shadow_validation
 
 
@@ -132,9 +133,13 @@ def main() -> None:
     board, packet = write_decision_outputs(structural, run_id, "output")
 
     board, risk_meta = apply_portfolio_risk_gate(board)
+    board, launch_meta = apply_launch_gate(board)
     board.to_csv(OUT / "decision_board.csv", index=False)
     _private_position_actions, position_meta = apply_existing_position_engine(board)
 
+    evidence_paths = [manifest_path, activation_path, Path("input/edge_provenance.csv"), Path("config/launch_policy.json"), Path("config/frozen_strategy_v1.json")]
+    sealed = seal_public_snapshot(board, run_id, launch_meta, evidence_paths)
+    launch_meta["sealed_snapshot_id"] = sealed
     audit = append_shadow_audit(board, "output/shadow_audit.csv")
     validation, validation_report = write_shadow_validation(
         "output/shadow_audit.csv",
@@ -161,6 +166,7 @@ def main() -> None:
         "active_driver_ids": activated_driver_ids,
         "lineage_overwrite_enforced": True,
     }
+    packet["launch_layer"] = launch_meta
     packet["risk_layer"] = risk_meta
     packet["existing_position_layer"] = position_meta
     packet["shadow_validation_layer"] = {
@@ -172,9 +178,9 @@ def main() -> None:
         "threshold_tuning_allowed": False,
     }
     packet["current_capability"] = "V3_RESEARCH_CHALLENGER_TO_DECISION_PLUS_PRIVATE_RISK_EXIT_SHADOW_VALIDATION"
-    packet["missing_downstream_modules"] = []
+    packet["missing_downstream_modules"] = ["EXACT_PORTFOLIO_EXPOSURE_COVERAGE", "COST_ADJUSTED_OUT_OF_SAMPLE_VALIDATION", "FORWARD_ACCEPTANCE_REVIEW"]
     if not risk_meta.get("risk_inputs_valid") or not position_meta.get("position_inputs_valid"):
-        packet["missing_downstream_modules"] = ["PRIVATE_RISK_INPUTS_IF_NOT_CONFIGURED"]
+        packet["missing_downstream_modules"].append("PRIVATE_RISK_INPUTS_IF_NOT_CONFIGURED")
     packet["portfolio_action_counts"] = {
         str(k): int(v) for k, v in board["portfolio_action"].value_counts(dropna=False).to_dict().items()
     } if "portfolio_action" in board.columns else {}

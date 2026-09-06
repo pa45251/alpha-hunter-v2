@@ -1,0 +1,65 @@
+{
+  "policy_version": "SHADOW_ACCEPTANCE_V1",
+  "mode": "SHADOW",
+  "authorized_at": "2026-09-06",
+  "first_review_date": "2026-11-29",
+  "review_is_automatic_promotion": false,
+  "objective": "REDUCE_MAJOR_DRAWDOWN_WITHOUT_EXCESSIVE_RETURN_SACRIFICE",
+  "architecture": {
+    "global_first": true,
+    "etf_preferred": true,
+    "max_taiwan_alpha_stocks": 1,
+    "primary_holding_horizon_sessions": [
+      20,
+      60
+    ],
+    "decision_clock": "RELEVANT_MARKET_CLOSE",
+    "intraday": "PREDEFINED_RISK_EVENTS_ONLY"
+  },
+  "pilot_limits": {
+    "max_gross_pct_of_net_equity": 5.0,
+    "max_planned_loss_per_trade_pct": 0.1,
+    "max_aggregate_planned_loss_pct": 0.25,
+    "stop_new_entries_loss_pct_of_initial_net_equity": 0.5,
+    "leverage_allowed": false
+  },
+  "pilot_budget_basis": "INVESTMENT_ASSETS_MINUS_RELATED_FINANCING_EXCLUDING_LIVING_RESERVE",
+  "validation": {
+    "stages": [
+      "SHADOW",
+      "LIMITED_PILOT",
+      "EXPANSION_REVIEW"
+    ],
+    "comparisons": [
+      "SIMPLE_ETF_HOLD",
+      "PRICE_AND_RISK_ONLY",
+      "PRICE_RISK_PLUS_AI_RESEARCH"
+    ],
+    "costs_required": [
+      "FEES",
+      "SLIPPAGE",
+      "FX",
+      "FINANCING_IF_APPLICABLE"
+    ],
+    "required_evidence": [
+      "POINT_IN_TIME_DATA",
+      "EXACT_EXPOSURE_AND_PRICE_COVERAGE",
+      "FROZEN_ENTRY_EXIT_AND_SIZING",
+      "OUT_OF_SAMPLE_COMPARISON",
+      "COST_AND_DELAY_STRESS",
+      "FORWARD_SEALED_SIGNALS",
+      "EXECUTION_RECONCILIATION"
+    ],
+    "minimum_days_auto_pass": null,
+    "minimum_trades_auto_pass": null,
+    "win_rate_auto_pass": null
+  },
+  "controls": {
+    "missing_data": "BLOCK_RELATED_NEW_EXPOSURE_KEEP_RISK_MONITORING",
+    "system_anomaly": "BLOCK_NEW_ENTRIES",
+    "unknown_is_hold_or_exit": false,
+    "ai_may_change_rules": false,
+    "existing_holdings_reallocated_by_pilot_limits": false,
+    "broker_order_execution": false
+  }
+}

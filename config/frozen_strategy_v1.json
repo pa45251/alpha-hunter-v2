@@ -1,0 +1,22 @@
+{
+  "strategy_version": "ALPHA_HUNTER_SHADOW_V1",
+  "frozen_at": "2026-09-06",
+  "baseline_commit": "62b7361",
+  "file_hashes": {
+    "config/launch_policy.json": "ad3e90714981a584ebc25e82042afadfd71c371ef3e763d8df697bbbf42ebcbb",
+    "launch_gate.py": "d19986d47ef5f3faa026c65d193e05d20b18e60bc523035e2c6dd0e79a899339",
+    "decision_run.py": "0ef95667f160969f48721665bce8f3f7ceb52f54116dc3b999286d14bcb38b95",
+    "decision_engine.py": "b45c70a2d8e11d4f0130d89f688c59d9a84f0fd4fbb4cf6be0dfb5d0c5df0c4c",
+    "existing_position.py": "efcdb136f4f04d85bf21dfc90b3ae4c8af03887d402b3ad0c7235a65f6f08eb8",
+    "portfolio_risk.py": "e2b732c28df793bd10b4153c6b7ca68e82537691801d6399fe39fcad72f83193",
+    "portfolio_maintenance_research.py": "97edf8118c6a3bd469c96803656aab31a573b8a3b58b0ffe2a429a2c70d9e9e1",
+    "decision_run_with_maintenance.py": "66ef8c61c6944e950861c70df9f39bbb68ae5441c2a64629ab43b1d7441d4634",
+    "causal_engine.py": "f2665f02043a356711d0d00b3b59491fb65bc8ec547fdd303d46bb890d160cc8",
+    "shadow_audit.py": "c780a36f88fd4fd6ee99b5b32e14d98dee457aa3f6ae9e0b8c9eb88a7c5deaa9",
+    "shadow_validation.py": "65517febb3a4e68bd13a0cbc78de3a57e7733ce837b57edd6717dd7e135d5a6a",
+    "config/decision_exposure_map.csv": "5196b14d0e5b68d52cc2720d01a0495feb357a03901254b27006e3305e27d433",
+    "config/structural_exposure_graph.csv": "8411a08e9e102c3c4c3af4b589ce32d8c174b04302a4389289b5d5b730210ee7",
+    "config/causal_driver_taxonomy.csv": "3d4ad98662faa50a09182a0f968519d52747c313df6928a92a229fcf9836e5e8"
+  },
+  "rule": "Any changed rule requires a new version and acceptance review. Never rewrite this baseline to hide drift."
+}

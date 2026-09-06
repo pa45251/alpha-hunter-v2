@@ -54,7 +54,13 @@ lines = [
     f"- Active opportunity drivers: {', '.join(activation.get('active_driver_ids') or []) or 'NONE'}",
     f"- Private risk inputs valid: `{risk.get('risk_inputs_valid', False)}`",
     f"- Auto order execution: `{packet.get('auto_order_execution', False)}`", "",
-    "## 1. Actionable now",
+    "## Deployment status",
+    "- SHADOW ONLY: all BUY/SELL/HOLD signals are research outputs; no live order is authorized.",
+    f"- Frozen strategy: `{(packet.get('launch_layer') or {}).get('strategy_version', 'NOT_VERIFIED')}`",
+    f"- Freeze integrity: `{(packet.get('launch_layer') or {}).get('freeze_integrity_pass', False)}`",
+    "- First review: 2026-11-29. Review does not automatically enable trading.",
+    "- Existing shadow statistics are gross signal outcomes, not validated strategy performance.",
+    "", "## 1. Research signals (not executable orders)",
 ]
 
 if now:

@@ -103,6 +103,9 @@ with tabs[0]:
                 "This board is deliberately conservative. Until ETF-vs-stock, entry trigger, portfolio risk and shadow-audit modules are validated, "
                 "automatic BUY/SELL is disabled. WATCH_ENTRY means the causal/provenance/reaction gates passed far enough to justify final-entry research."
             )
+            st.warning("影子驗證模式：BUY／SELL 為研究訊號，尚未取得實盤資格。")
+            release = packet.get("launch_layer") or {}
+            st.caption(f"規則版本：{release.get('strategy_version', '未驗證')}｜首次審查：2026-11-29；不自動升級")
             a, b, c = st.columns(3)
             a.metric("Decision contract", packet.get("decision_contract_version", "?"))
             b.metric("Auto trade", "DISABLED" if not packet.get("auto_trade_allowed", False) else "ENABLED")
@@ -116,7 +119,7 @@ with tabs[0]:
     if db.exists():
         d = pd.read_csv(db, dtype={"taiwan_code": str})
         pref = [c for c in [
-            "candidate_action", "decision_stage", "global_theme", "driver_id", "taiwan_code", "ticker", "name",
+            "execution_action", "deployment_mode", "candidate_action", "decision_stage", "global_theme", "driver_id", "taiwan_code", "ticker", "name",
             "reaction_state", "dynamic_driver_state", "provenance_status", "linkage_tier", "linkage_confidence",
             "rs_20d_vs_bench", "rs_60d_vs_bench", "acceleration", "decision_blockers", "research_priority_score"
         ] if c in d.columns]

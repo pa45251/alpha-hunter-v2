@@ -59,6 +59,7 @@ jobs:
             output/gate_report.json \
             output/research_packet.json \
             output/research_handoff.json \
+            output/shadow_journal.jsonl \
             output/decision_board.csv \
             output/decision_packet.json \
             output/decision_history.csv \

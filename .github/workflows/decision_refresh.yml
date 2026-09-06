@@ -8,6 +8,9 @@ on:
       - 'input/edge_provenance.csv'
       - 'output/driver_activation_adjudicated_v3.csv'
       - 'decision_run.py'
+      - 'launch_gate.py'
+      - 'config/launch_policy.json'
+      - 'config/frozen_strategy_v1.json'
       - 'existing_position.py'
       - 'tests/test_existing_position.py'
       - 'action_board_summary.py'
@@ -42,7 +45,7 @@ jobs:
       - name: Regression-test existing-position HOLD REDUCE EXIT rules
         env:
           PYTHONPATH: ${{ github.workspace }}
-        run: python -m pytest -q tests/test_existing_position.py
+        run: python -m pytest -q tests/test_launch_gate.py tests/test_existing_position.py
 
       - name: Rebuild decision layer from latest validated causal source
         env:
@@ -72,6 +75,7 @@ jobs:
           git config user.name "alpha-hunter-bot"
           git config user.email "actions@users.noreply.github.com"
           git add \
+            output/shadow_journal.jsonl \
             output/decision_board.csv \
             output/decision_packet.json \
             output/decision_history.csv \
