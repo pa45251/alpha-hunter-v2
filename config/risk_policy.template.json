@@ -1,0 +1,10 @@
+{
+  "policy_version": "1.0",
+  "max_single_position_pct": null,
+  "max_theme_exposure_pct": null,
+  "max_gross_exposure_pct": null,
+  "max_new_position_pct": null,
+  "min_avg_turnover_twd": null,
+  "max_position_loss_pct": null,
+  "notes": "Copy this to input/risk_policy.json locally or inject equivalent JSON through a private workflow secret. Do not commit personal risk settings to the public repository. All null fields are hard blockers for final portfolio actions."
+}
