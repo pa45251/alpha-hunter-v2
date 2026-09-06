@@ -38,10 +38,13 @@ def main() -> None:
         if "run_id" not in df.columns or df.empty or not df["run_id"].astype(str).eq(run_id).all():
             raise RuntimeError(f"Decision bridge MIXED_SNAPSHOT_DATA: {name} run_id mismatch")
 
-    # Research overlays cannot create drivers or edges. They may only validate canonical driver IDs
-    # and existing graph pairs with time-stamped evidence.
+    # daily_scan normally applies the driver write-back before structural_matches.csv is written.
+    # The fallback below supports older snapshots without double-merging activation columns.
     activations = validate_driver_activation_file(Path("input/driver_activation.csv"), queue, CausalConfig())
-    structural = apply_driver_activation(structural, activations)
+    if "activation_valid" not in structural.columns:
+        structural = apply_driver_activation(structural, activations)
+
+    # Edge research is an overlay only: it may validate an existing canonical graph pair, never create one.
     structural = apply_edge_provenance(structural, Path("input/edge_provenance.csv"))
 
     board, packet = write_decision_outputs(structural, run_id, "output")
