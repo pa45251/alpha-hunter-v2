@@ -50,20 +50,22 @@ def main() -> None:
     if rotations:
         lines += [
             "",
-            "| Source alias | Destination | Rotation | Edge spread | Trim source | Redeploy of trim | Keep as buffer |",
-            "|---|---|---|---:|---:|---:|---:|",
+            "| Source alias | Destination | Rotation state | Edge spread | Trim now | Trim on trigger | Entry trigger | Redeploy on trigger | Buffer on trigger |",
+            "|---|---|---|---:|---:|---:|---|---:|---:|",
         ]
         for r in rotations[:5]:
             lines.append(
                 f"| {_md(r.get('source_alias'))} | {_md(r.get('destination_ticker'))} {_md(r.get('destination_name'))} | "
-                f"{_md(r.get('rotation_action'))} | {_md(r.get('edge_spread'))} | {_md(r.get('suggested_source_trim_pct'))}% | "
-                f"{_md(r.get('suggested_redeploy_pct_of_trim'))}% | {_md(r.get('suggested_risk_buffer_pct_of_trim'))}% |"
+                f"{_md(r.get('rotation_action'))} | {_md(r.get('edge_spread'))} | {_md(r.get('suggested_source_trim_pct_now'))}% | "
+                f"{_md(r.get('suggested_source_trim_pct_on_trigger'))}% | {_md(r.get('entry_trigger_required') or 'READY')} | "
+                f"{_md(r.get('suggested_redeploy_pct_of_trim_on_trigger'))}% | {_md(r.get('suggested_risk_buffer_pct_of_trim_on_trigger'))}% |"
             )
     else:
         lines.append("- Rotation: no source/destination pair currently clears the policy threshold, or the risk regime blocks redeployment.")
 
     lines += [
         "",
+        "PREPARE_ROTATION means the edge is strong enough to nominate the switch, but the destination has not reached the required entry-confirmation state; current trim remains zero.",
         "Rotation and cash outputs are CIO advisories only. They do not authorize brokerage orders.",
         "",
     ]

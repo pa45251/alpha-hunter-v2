@@ -5,8 +5,8 @@ import json
 import portfolio_allocation_advisory as paa
 
 
-def test_rotation_prefers_strong_new_edge(tmp_path, monkeypatch):
-    policy = {
+def _policy():
+    return {
         "rotation": {
             "min_edge_spread": 0.18,
             "strong_edge_spread": 0.35,
@@ -14,6 +14,10 @@ def test_rotation_prefers_strong_new_edge(tmp_path, monkeypatch):
             "redeploy_pct_of_trim": {"RISK_ON": 100, "NORMAL": 75, "CAUTION": 50, "DEFENSIVE": 25, "CRISIS": 0, "UNKNOWN": 0},
         }
     }
+
+
+def _run_case(tmp_path, monkeypatch, reaction_state: str):
+    policy = _policy()
     pos = {
         "positions": [
             {"alias": "標的D", "advisory_action": "REVIEW_HOLD", "signal_score": 0.41, "confidence": "MEDIUM", "signal_state": "MIXED"},
@@ -25,7 +29,7 @@ def test_rotation_prefers_strong_new_edge(tmp_path, monkeypatch):
             {
                 "ticker": "2317.TW", "name": "鴻海", "preferred_exposure": "STOCK",
                 "advisory_action": "BUY_BIAS_STOCK", "advisory_confidence": "MEDIUM",
-                "reaction_state": "PRE_CONFIRMATION", "provenance_status": "SOURCE_BACKED",
+                "reaction_state": reaction_state, "provenance_status": "SOURCE_BACKED",
                 "research_priority_score": 0.67, "driver_id": "AI_SERVER_SHIPMENTS",
                 "advisory_missing_evidence": "",
             }
@@ -43,27 +47,35 @@ def test_rotation_prefers_strong_new_edge(tmp_path, monkeypatch):
     monkeypatch.setattr(paa, "POSITION_PATH", files["pos.json"])
     monkeypatch.setattr(paa, "CANDIDATE_PATH", files["cand.json"])
     monkeypatch.setattr(paa, "REGIME_PATH", files["regime.json"])
+    return paa.build_portfolio_allocation()
 
-    out = paa.build_portfolio_allocation()
+
+def test_preconfirmation_prepares_but_does_not_trim_now(tmp_path, monkeypatch):
+    out = _run_case(tmp_path, monkeypatch, "PRE_CONFIRMATION")
     assert out["status"] == "READY"
     assert out["best_new_opportunity"]["ticker"] == "2317.TW"
     assert len(out["rotations"]) == 1
     r = out["rotations"][0]
     assert r["source_alias"] == "標的D"
     assert r["destination_ticker"] == "2317.TW"
+    assert r["rotation_action"] == "PREPARE_ROTATION_STRONG"
+    assert r["suggested_source_trim_pct_now"] == 0
+    assert r["suggested_source_trim_pct_on_trigger"] == 40
+    assert r["suggested_redeploy_pct_of_trim_on_trigger"] == 75
+    assert r["suggested_risk_buffer_pct_of_trim_on_trigger"] == 25
+    assert r["entry_trigger_required"] == "DESTINATION_REACTION_CONFIRMING"
+
+
+def test_confirming_allows_partial_rotation_bias(tmp_path, monkeypatch):
+    out = _run_case(tmp_path, monkeypatch, "CONFIRMING")
+    r = out["rotations"][0]
     assert r["rotation_action"] == "ROTATE_PARTIAL_STRONG"
-    assert r["suggested_source_trim_pct"] == 40
-    assert r["suggested_redeploy_pct_of_trim"] == 75
-    assert r["suggested_risk_buffer_pct_of_trim"] == 25
+    assert r["suggested_source_trim_pct_now"] == 40
+    assert r["suggested_source_trim_pct_on_trigger"] == 40
+    assert r["entry_trigger_required"] == ""
 
 
 def test_crisis_blocks_rotation():
-    policy = {
-        "rotation": {
-            "min_edge_spread": 0.18, "strong_edge_spread": 0.35,
-            "max_source_trim_pct": {"CRISIS": 0, "UNKNOWN": 0},
-        }
-    }
-    action, trim = paa._rotation_action(0.60, "CRISIS", policy)
-    assert action == "NO_ROTATION"
+    size_state, trim = paa._rotation_size(0.60, "CRISIS", _policy())
+    assert size_state == "NO_ROTATION"
     assert trim == 0

@@ -62,7 +62,7 @@ def _position_edge(row: dict[str, Any]) -> float:
     return round(val, 4)
 
 
-def _rotation_action(spread: float, regime: str, policy: dict[str, Any]) -> tuple[str, int]:
+def _rotation_size(spread: float, regime: str, policy: dict[str, Any]) -> tuple[str, int]:
     rot = policy["rotation"]
     min_edge = float(rot["min_edge_spread"])
     strong = float(rot["strong_edge_spread"])
@@ -70,8 +70,27 @@ def _rotation_action(spread: float, regime: str, policy: dict[str, Any]) -> tupl
     if trim_cap <= 0 or spread < min_edge:
         return "NO_ROTATION", 0
     if spread >= strong:
-        return "ROTATE_PARTIAL_STRONG", trim_cap
-    return "ROTATE_PARTIAL", max(10, int(round(trim_cap * 0.6)))
+        return "STRONG", trim_cap
+    return "NORMAL", max(10, int(round(trim_cap * 0.6)))
+
+
+def _entry_gated_rotation(size_state: str, planned_trim: int, reaction_state: str) -> tuple[str, int, int, str]:
+    """Do not let portfolio rotation bypass the existing entry-state discipline.
+
+    PRE_CONFIRMATION can nominate and size a future rotation, but no source trim is recommended now.
+    CONFIRMING is the only state that upgrades the rotation to a current action bias.
+    Persistent/extended/unknown states do not create a fresh rotation entry.
+    """
+    if size_state == "NO_ROTATION" or planned_trim <= 0:
+        return "NO_ROTATION", 0, 0, ""
+    reaction = str(reaction_state or "UNKNOWN").upper()
+    if reaction == "PRE_CONFIRMATION":
+        action = "PREPARE_ROTATION_STRONG" if size_state == "STRONG" else "PREPARE_ROTATION"
+        return action, 0, planned_trim, "DESTINATION_REACTION_CONFIRMING"
+    if reaction == "CONFIRMING":
+        action = "ROTATE_PARTIAL_STRONG" if size_state == "STRONG" else "ROTATE_PARTIAL"
+        return action, planned_trim, planned_trim, ""
+    return "WAIT_BETTER_ENTRY", 0, planned_trim, "DESTINATION_ENTRY_STATE_NOT_CONFIRMING"
 
 
 def build_portfolio_allocation() -> dict[str, Any]:
@@ -130,9 +149,12 @@ def build_portfolio_allocation() -> dict[str, Any]:
         best = candidates[0]
         for source in sources:
             spread = round(best["edge_score"] - source["current_edge_score"], 4)
-            action, trim = _rotation_action(spread, regime_label, policy)
-            if action == "NO_ROTATION":
+            size_state, planned_trim = _rotation_size(spread, regime_label, policy)
+            if size_state == "NO_ROTATION":
                 continue
+            action, trim_now, trim_on_trigger, entry_trigger = _entry_gated_rotation(
+                size_state, planned_trim, str(best.get("reaction_state", "UNKNOWN"))
+            )
             redeploy_pct = int(policy["rotation"]["redeploy_pct_of_trim"].get(regime_label, policy["rotation"]["redeploy_pct_of_trim"].get("UNKNOWN", 0)))
             rotations.append({
                 "source_alias": source["alias"],
@@ -144,9 +166,11 @@ def build_portfolio_allocation() -> dict[str, Any]:
                 "destination_reaction_state": best["reaction_state"],
                 "rotation_action": action,
                 "edge_spread": spread,
-                "suggested_source_trim_pct": trim,
-                "suggested_redeploy_pct_of_trim": redeploy_pct,
-                "suggested_risk_buffer_pct_of_trim": 100 - redeploy_pct,
+                "suggested_source_trim_pct_now": trim_now,
+                "suggested_source_trim_pct_on_trigger": trim_on_trigger,
+                "suggested_redeploy_pct_of_trim_on_trigger": redeploy_pct,
+                "suggested_risk_buffer_pct_of_trim_on_trigger": 100 - redeploy_pct,
+                "entry_trigger_required": entry_trigger,
                 "reason": "DESTINATION_EDGE_EXCEEDS_SOURCE_BY_POLICY_THRESHOLD",
             })
             # One primary rotation at a time avoids mechanically concentrating multiple holdings into one destination.
@@ -154,7 +178,7 @@ def build_portfolio_allocation() -> dict[str, Any]:
 
     return {
         "contract": "ALPHA_HUNTER_PORTFOLIO_ALLOCATION_ADVISORY",
-        "schema_version": "1.0",
+        "schema_version": "1.1",
         "generated_at": datetime.now().astimezone().isoformat(),
         "status": "READY",
         "risk_regime": regime_label,
@@ -172,7 +196,7 @@ def build_portfolio_allocation() -> dict[str, Any]:
             "financing_included": False
         },
         "auto_trade_allowed": False,
-        "method": "Compare normalized CIO edge for current holdings versus validated new opportunities, recommend at most one partial rotation, and reserve part of the trim as cash/risk buffer when the global regime is not fully risk-on.",
+        "method": "Compare normalized CIO edge for current holdings versus validated new opportunities, nominate at most one primary rotation, but preserve entry discipline: PRE_CONFIRMATION only prepares a rotation and CONFIRMING is required before a current rotation bias is emitted. Risk regime controls trim/redeploy sizing.",
     }
 
 
