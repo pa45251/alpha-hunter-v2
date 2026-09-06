@@ -21,7 +21,9 @@ def base_row(**overrides):
         "provenance_status": "NEEDS_SOURCE_BACKFILL",
         "dynamic_driver_state": "ACTIVE_RESEARCH_VALIDATED",
         "reaction_state": "PRE_CONFIRMATION",
+        "previous_reaction_state": "",
         "polarity": "POSITIVE",
+        "stock_vs_etf_state": "STOCK_ALPHA_RESEARCH",
         "research_priority_score": 0.8,
     }
     row.update(overrides)
@@ -42,12 +44,34 @@ def test_extended_blocks_new_buy_even_when_driver_and_edge_pass():
     assert board.iloc[0]["candidate_action"] == "NO_BUY_EXTENDED"
 
 
-def test_passed_research_gates_stop_at_watch_entry_not_buy():
+def test_preconfirmation_waits_for_transition():
     board = build_decision_board(pd.DataFrame([base_row(provenance_status="SOURCE_BACKED")]))
     assert board.iloc[0]["candidate_action"] == "WATCH_ENTRY"
+    assert board.iloc[0]["entry_trigger_state"] == "NOT_TRIGGERED"
+    assert "WAIT_FOR_STATE_TRANSITION_ENTRY_TRIGGER" in board.iloc[0]["decision_blockers"]
     assert board.iloc[0]["auto_trade_allowed"] == False
-    assert "ETF_VS_STOCK_NOT_YET_VALIDATED" in board.iloc[0]["decision_blockers"]
-    assert "ENTRY_TRIGGER_NOT_YET_VALIDATED" in board.iloc[0]["decision_blockers"]
+
+
+def test_preconfirmation_to_confirming_triggers_stock_entry_but_risk_blocks_trade():
+    board = build_decision_board(pd.DataFrame([base_row(
+        provenance_status="SOURCE_BACKED",
+        previous_reaction_state="PRE_CONFIRMATION",
+        reaction_state="CONFIRMING",
+    )]))
+    assert board.iloc[0]["entry_trigger_state"] == "BREAKOUT_CONFIRMATION_TRIGGER"
+    assert board.iloc[0]["candidate_action"] == "ENTRY_TRIGGERED_STOCK_RISK_PENDING"
+    assert "PORTFOLIO_RISK_NOT_YET_VALIDATED" in board.iloc[0]["decision_blockers"]
+    assert board.iloc[0]["auto_trade_allowed"] == False
+
+
+def test_high_purity_etf_route_is_preserved():
+    board = build_decision_board(pd.DataFrame([base_row(
+        provenance_status="SOURCE_BACKED",
+        stock_vs_etf_state="ETF_CORE_PREFERRED",
+        previous_reaction_state="PRE_CONFIRMATION",
+        reaction_state="CONFIRMING",
+    )]))
+    assert board.iloc[0]["candidate_action"] == "ENTRY_TRIGGERED_ETF_RISK_PENDING"
 
 
 def test_edge_overlay_cannot_create_noncanonical_pair(tmp_path: Path):
