@@ -16,7 +16,8 @@ Rotation and cash outputs are CIO advisories only. They do not authorize brokera
 ## 0.5 Global Alignment Leaderboard
 - Purpose: find Taiwan stocks whose own trend quality is supported by the corresponding international market and an ACTIVE causal driver.
 - Alignment score is a relative opportunity/evidence score, **not a calibrated win probability**.
-- Highest alignment now: **2606.TW 裕民** — score `0.9027` / `HOLD_DONT_CHASE` / global `Shipping` / reaction `PERSISTENT`
+- Strongest aligned trend now: **2606.TW 裕民** — score `0.9027` / `HOLD_DONT_CHASE` / global `Shipping` / reaction `PERSISTENT`
+- Best fresh aligned setup now: **NONE** — current alignment leaders are already persistent or no early/confirming setup passes every hard gate.
 
 | Rank | Taiwan stock | Global theme | Alignment | Global | Taiwan | Breadth | Keynes | State |
 |---:|---|---|---:|---:|---:|---:|---:|---|
