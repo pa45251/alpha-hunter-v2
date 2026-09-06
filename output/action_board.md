@@ -3,13 +3,13 @@
 - Run: `20260906T130002+0800-dd80dd63`
 - Causal source: `CHATGPT_CHALLENGER_ADJUDICATION`
 - Same snapshot: `True`
-- Active drivers: AI_SERVER_SHIPMENTS, CONTAINER_FREIGHT, DRY_BULK_FREIGHT, POWER_ELECTRONICS_CAPEX
+- Active opportunity drivers: AI_SERVER_SHIPMENTS, CONTAINER_FREIGHT, DRY_BULK_FREIGHT, POWER_ELECTRONICS_CAPEX
 - Private risk inputs valid: `True`
 - Auto order execution: `False`
 
 ## 1. Actionable now
 
-No validated BUY/ADD/REDUCE/EXIT/HOLD action is currently emitted by the public decision board.
+No validated BUY/ADD/REDUCE/EXIT/HOLD action is currently emitted by the public opportunity board.
 
 ## 2. Closest to action
 
@@ -41,13 +41,18 @@ No validated BUY/ADD/REDUCE/EXIT/HOLD action is currently emitted by the public 
 - Position count (aggregate only): `5`
 - Position action counts: `{"REDUCE_RISK": 1, "REVIEW_RESEARCH": 4}`
 - System mapping counts: `{"SYSTEM_MAPPING_MISSING": 2, "SYSTEM_RISK_GROUP": 3}`
+- Portfolio-maintenance research lane: `PASS`
+- Maintenance drivers researched/targeted: `4/4`
+- Maintenance targets truncated by safety cap: `0`
 - Optional user-thesis overlay: `NOT_CONFIGURED`
 - User/system disagreement count (aggregate only): `0`
-- Per-position holdings, balances, weights, P/L and actions are intentionally not written to this public artifact.
+- Per-position holdings, maintenance driver identities, balances, weights, P/L and actions are intentionally not written to this public artifact.
 
 ## 5. Interpretation
-- Existing-position HOLD/REDUCE/EXIT is driven by the system-inferred economic exposure, not by the user's stated purchase reason.
+- Opportunity discovery and portfolio maintenance are separate research lanes: the first finds new entries; the second re-tests the economic drivers behind existing positions.
+- Existing-position HOLD/REDUCE/EXIT is driven by system-inferred economic exposure, not by the user's stated purchase reason.
 - `SYSTEM_TICKER_EXPOSURE` is preferred; risk-group mapping is a fallback. Missing system mapping fails closed to `REVIEW_RESEARCH`.
+- Maintenance research is ephemeral and private. Only aggregate readiness/counts may reach this public Action Board.
 - User thesis is optional challenger metadata only; it cannot force HOLD or EXIT.
 - `GATE_5_ENTRY` is closest to an executable entry but still requires the defined state-transition trigger and private risk pass.
 - `GATE_4_REACTION` means causality and structural transmission passed, but price reaction is already persistent/extended or otherwise not an early entry state.
