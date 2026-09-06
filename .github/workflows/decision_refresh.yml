@@ -8,6 +8,7 @@ on:
       - 'input/edge_provenance.csv'
       - 'output/driver_activation_adjudicated_v3.csv'
       - 'decision_run.py'
+      - 'action_board_summary.py'
       - '.github/workflows/decision_refresh.yml'
 
 concurrency:
