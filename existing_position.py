@@ -43,7 +43,7 @@ def _ticker_key(v: Any) -> str:
 
 
 def load_private_thesis_overlay() -> tuple[dict[str, dict[str, Any]], str]:
-    """Load optional thesis-only Secret. No values are logged or persisted."""
+    """Optional user thesis challenger. It never becomes the primary market thesis."""
     raw = os.getenv("ALPHA_HUNTER_POSITION_THESIS_JSON", "").strip()
     if not raw:
         return {}, "NOT_CONFIGURED"
@@ -65,7 +65,7 @@ def load_private_thesis_overlay() -> tuple[dict[str, dict[str, Any]], str]:
         status = str(item.get("thesis_status", "")).upper().strip()
         if not drivers and not status:
             return {}, "INVALID_SCHEMA"
-        out[key] = {"thesis_driver_ids": list(dict.fromkeys(drivers)), "thesis_status": status}
+        out[key] = {"user_thesis_driver_ids": list(dict.fromkeys(drivers)), "user_thesis_status": status}
     return out, "VALID"
 
 
@@ -77,23 +77,39 @@ def apply_private_thesis_overlay(portfolio: dict[str, Any], overlay: dict[str, d
         item = overlay.get(_ticker_key(pos.get("ticker")))
         if not item:
             continue
-        if item.get("thesis_driver_ids"):
-            pos["thesis_driver_ids"] = item["thesis_driver_ids"]
-        if item.get("thesis_status"):
-            pos["thesis_status"] = item["thesis_status"]
+        pos.update(item)
         applied += 1
     p["positions"] = positions
     return p, applied
 
 
-def _position_drivers(pos: dict[str, Any]) -> tuple[list[str], str]:
-    explicit = _list(pos.get("thesis_driver_ids") or pos.get("thesis_drivers"))
-    if explicit:
-        return list(dict.fromkeys(x.upper() for x in explicit)), "EXPLICIT"
+def _prepare_board(board: pd.DataFrame) -> pd.DataFrame:
+    b = board.copy() if board is not None else pd.DataFrame()
+    if b.empty:
+        return b
+    for c in ["driver_id", "dynamic_driver_state", "provenance_status", "polarity", "reaction_state", "ticker"]:
+        if c not in b.columns:
+            b[c] = ""
+        b[c] = b[c].fillna("").astype(str).str.upper()
+    b["ticker_key"] = b["ticker"].map(_ticker_key)
+    return b
+
+
+def _system_position_drivers(pos: dict[str, Any], board: pd.DataFrame) -> tuple[list[str], str]:
+    """Infer the position thesis independently of the user's stated reason for owning it."""
+    ticker = _ticker_key(pos.get("ticker"))
+    if ticker and not board.empty and "ticker_key" in board.columns:
+        exact = board[board["ticker_key"].eq(ticker)]
+        drivers = [x for x in exact.get("driver_id", pd.Series(dtype=str)).astype(str).tolist() if x]
+        if drivers:
+            return list(dict.fromkeys(drivers)), "SYSTEM_TICKER_EXPOSURE"
+
     inferred: list[str] = []
     for group in _list(pos.get("risk_groups")):
         inferred.extend(RISK_GROUP_DRIVERS.get(group.upper(), []))
-    return list(dict.fromkeys(inferred)), "RISK_GROUP_INFERRED" if inferred else "MISSING"
+    if inferred:
+        return list(dict.fromkeys(inferred)), "SYSTEM_RISK_GROUP"
+    return [], "SYSTEM_MAPPING_MISSING"
 
 
 def _pnl_pct(pos: dict[str, Any]) -> float | None:
@@ -107,22 +123,17 @@ def _pnl_pct(pos: dict[str, Any]) -> float | None:
 
 
 def evaluate_existing_positions(board: pd.DataFrame, policy: dict[str, Any], portfolio: dict[str, Any]) -> pd.DataFrame:
-    """Evaluate private holdings in-memory. Returned rows are private and must never be committed/logged."""
+    """Independent system-thesis evaluation. User thesis is challenger metadata only."""
     positions = portfolio.get("positions") or []
     if not positions:
         return pd.DataFrame(columns=["position_index", "action", "reason", "thesis_mapping"])
 
-    b = board.copy() if board is not None else pd.DataFrame()
-    if not b.empty:
-        for c in ["driver_id", "dynamic_driver_state", "provenance_status", "polarity", "reaction_state"]:
-            if c not in b.columns:
-                b[c] = ""
-            b[c] = b[c].fillna("").astype(str).str.upper()
-
+    b = _prepare_board(board)
     rows: list[dict[str, Any]] = []
     max_loss = _f(policy.get("max_position_loss_pct"), 0)
+
     for i, pos in enumerate(positions):
-        drivers, mapping = _position_drivers(pos)
+        drivers, mapping = _system_position_drivers(pos, b)
         matched = b[b["driver_id"].isin(drivers)] if drivers and not b.empty else pd.DataFrame()
         healthy = matched[
             matched["dynamic_driver_state"].eq("ACTIVE_RESEARCH_VALIDATED")
@@ -136,32 +147,29 @@ def evaluate_existing_positions(board: pd.DataFrame, policy: dict[str, Any], por
             & matched["reaction_state"].eq("BROKEN")
         ] if not matched.empty else pd.DataFrame()
 
-        explicit_status = str(pos.get("thesis_status", "")).upper()
         pnl = _pnl_pct(pos)
-        if explicit_status in {"INVALIDATED", "BROKEN"}:
-            action, reason = "EXIT_THESIS", "PRIVATE_THESIS_EXPLICITLY_INVALIDATED"
-            strength = 0
-        elif pnl is not None and max_loss > 0 and pnl <= -max_loss:
-            action, reason = "EXIT_RISK", "MAX_POSITION_LOSS_BREACHED"
-            strength = 0
+        if pnl is not None and max_loss > 0 and pnl <= -max_loss:
+            action, reason, strength = "EXIT_RISK", "MAX_POSITION_LOSS_BREACHED", 0
         elif not broken.empty and healthy.empty:
-            action, reason = "EXIT_THESIS", "SOURCE_BACKED_TRANSMISSION_BROKEN"
-            strength = 0
+            action, reason, strength = "EXIT_THESIS", "SYSTEM_THESIS_SOURCE_BACKED_TRANSMISSION_BROKEN", 0
         elif not broken.empty and not healthy.empty:
-            action, reason = "REDUCE_REVIEW", "MIXED_THESIS_SIGNALS"
-            strength = 1
+            action, reason, strength = "REDUCE_REVIEW", "SYSTEM_THESIS_MIXED_SIGNALS", 1
         elif not healthy.empty:
-            action, reason = "HOLD", "THESIS_ACTIVE_SOURCE_BACKED"
-            strength = 3
-        elif mapping == "MISSING":
-            action, reason = "REVIEW_THESIS", "THESIS_MAPPING_MISSING"
-            strength = 1
+            action, reason, strength = "HOLD", "SYSTEM_THESIS_ACTIVE_SOURCE_BACKED", 3
+        elif mapping == "SYSTEM_MAPPING_MISSING":
+            action, reason, strength = "REVIEW_RESEARCH", "SYSTEM_EXPOSURE_MAPPING_MISSING", 1
         elif matched.empty:
-            action, reason = "REVIEW_THESIS", "THESIS_DRIVER_NOT_ON_DECISION_BOARD"
-            strength = 1
+            action, reason, strength = "REVIEW_RESEARCH", "SYSTEM_DRIVER_NOT_ON_DECISION_BOARD", 1
         else:
-            action, reason = "REVIEW_THESIS", "THESIS_NOT_RESEARCH_VALIDATED"
-            strength = 2
+            action, reason, strength = "REVIEW_RESEARCH", "SYSTEM_THESIS_NOT_RESEARCH_VALIDATED", 2
+
+        user_drivers = {x.upper() for x in _list(pos.get("user_thesis_driver_ids"))}
+        system_drivers = set(drivers)
+        user_status = str(pos.get("user_thesis_status", "")).upper().strip()
+        user_disagrees = bool(
+            (user_drivers and system_drivers and user_drivers != system_drivers)
+            or (user_status in {"INVALIDATED", "BROKEN"} and action == "HOLD")
+        )
 
         rows.append({
             "position_index": i,
@@ -169,6 +177,7 @@ def evaluate_existing_positions(board: pd.DataFrame, policy: dict[str, Any], por
             "reason": reason,
             "thesis_mapping": mapping,
             "thesis_strength": strength,
+            "user_thesis_disagrees": user_disagrees,
             "weight_pct": _f(pos.get("weight_pct"), 0),
         })
 
@@ -191,7 +200,6 @@ def evaluate_existing_positions(board: pd.DataFrame, policy: dict[str, Any], por
 
 
 def apply_existing_position_engine(board: pd.DataFrame) -> tuple[pd.DataFrame, dict[str, Any]]:
-    """Run private exit/hold logic and expose only aggregate, non-identifying metadata."""
     policy = load_risk_policy()
     raw_portfolio = load_portfolio_state()
     valid, blockers, portfolio = validate_risk_inputs(policy, raw_portfolio)
@@ -207,19 +215,24 @@ def apply_existing_position_engine(board: pd.DataFrame) -> tuple[pd.DataFrame, d
             "position_inputs_valid": False,
             "position_blockers": blockers,
             "position_action_counts": {},
-            "thesis_overlay_status": overlay_status,
+            "system_mapping_counts": {},
+            "user_thesis_overlay_status": overlay_status,
             "privacy_rule": "Per-position actions and holdings stay in-memory and are never committed or logged.",
         }
+
     private_actions = evaluate_existing_positions(board, policy, portfolio)
     counts = private_actions["action"].value_counts(dropna=False).to_dict() if not private_actions.empty else {}
     mapping_counts = private_actions["thesis_mapping"].value_counts(dropna=False).to_dict() if not private_actions.empty else {}
+    disagreement_count = int(private_actions.get("user_thesis_disagrees", pd.Series(dtype=bool)).fillna(False).sum()) if not private_actions.empty else 0
     return private_actions, {
         "position_inputs_valid": True,
         "position_blockers": [],
         "position_action_counts": {str(k): int(v) for k, v in counts.items()},
-        "thesis_mapping_counts": {str(k): int(v) for k, v in mapping_counts.items()},
-        "thesis_overlay_status": overlay_status,
-        "thesis_overlay_applied_count": int(applied),
+        "system_mapping_counts": {str(k): int(v) for k, v in mapping_counts.items()},
+        "user_thesis_overlay_status": overlay_status,
+        "user_thesis_overlay_applied_count": int(applied),
+        "user_thesis_disagreement_count": disagreement_count,
+        "system_thesis_primary": True,
         "private_position_details_committed": False,
         "privacy_rule": "Per-position actions, tickers, balances, weights and P/L stay in-memory and are never committed or logged.",
     }
