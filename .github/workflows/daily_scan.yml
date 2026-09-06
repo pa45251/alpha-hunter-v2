@@ -50,6 +50,15 @@ jobs:
           ALPHA_HUNTER_POSITION_THESIS_JSON: ${{ secrets.ALPHA_HUNTER_POSITION_THESIS_JSON }}
         run: python decision_run.py
 
+      - name: Deliver ticker-level position actions to private Google Drive
+        env:
+          ALPHA_HUNTER_RISK_POLICY_JSON: ${{ secrets.ALPHA_HUNTER_RISK_POLICY_JSON }}
+          ALPHA_HUNTER_PORTFOLIO_JSON: ${{ secrets.ALPHA_HUNTER_PORTFOLIO_JSON }}
+          ALPHA_HUNTER_POSITION_THESIS_JSON: ${{ secrets.ALPHA_HUNTER_POSITION_THESIS_JSON }}
+          GDRIVE_SERVICE_ACCOUNT_JSON: ${{ secrets.GDRIVE_SERVICE_ACCOUNT_JSON }}
+          GDRIVE_FOLDER_ID: ${{ secrets.GDRIVE_FOLDER_ID }}
+        run: python private_position_handoff.py
+
       - name: Commit canonical outputs
         run: |
           git config user.name "alpha-hunter-bot"
