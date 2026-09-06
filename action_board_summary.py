@@ -42,6 +42,16 @@ if alias_meta.get("status") == "READY" and alias_path.exists():
     except Exception:
         alias_rows = []
 
+position_cio_rows = []
+position_cio_path = OUT / "position_cio_advisory.json"
+if position_cio_path.exists():
+    try:
+        position_cio_payload = json.loads(position_cio_path.read_text(encoding="utf-8"))
+        if position_cio_payload.get("contract") == "ALPHA_HUNTER_EXISTING_POSITION_CIO_ADVISORY":
+            position_cio_rows = [r for r in (position_cio_payload.get("positions") or []) if isinstance(r, dict)]
+    except Exception:
+        position_cio_rows = []
+
 focus = [r for r in rows if r.get("candidate_action") != "WATCH_RESEARCH"]
 now = [r for r in focus if r.get("portfolio_action") in {"BUY", "BUY_STOCK", "ADD", "REDUCE", "EXIT", "HOLD"}]
 near = [r for r in focus if r.get("candidate_action") == "WATCH_ENTRY"]
@@ -94,7 +104,7 @@ lines = [
     "- Existing-position identities are published only as user-defined aliases; ticker-to-alias mapping remains private.",
     "- First review: 2026-11-29. Review does not automatically enable trading.",
     "- Existing shadow statistics are gross signal outcomes, not validated strategy performance.",
-    "", "## 1. CIO advisory — directional decision, not an order",
+    "", "## 1. CIO advisory — new opportunities, directional decision not an order",
 ]
 
 if advisory_rows:
@@ -116,7 +126,19 @@ if advisory_rows:
 else:
     lines.append("\nCIO advisory artifact is not available for this run.")
 
-lines += ["", "## 2. Execution-lane research signals (not executable orders)"]
+lines += ["", "## 2. Existing-position CIO advisory — alias only"]
+if position_cio_rows:
+    lines += ["", "| Alias | CIO bias | Confidence | State | Lane | Strict lane | Why |", "|---|---|---|---|---|---|---|"]
+    for r in position_cio_rows:
+        lines.append(
+            f"| {_md(r.get('alias'))} | {_md(r.get('advisory_action'))} | {_md(r.get('confidence'))} | "
+            f"{_md(r.get('signal_state'))} | {_md(r.get('lane'))} | {_md(r.get('execution_lane_action'))} | {_md(r.get('reason'))} |"
+        )
+    lines += ["", "ETF holdings use global theme breadth; stocks use a theme proxy until company-level transmission is exact. This is advisory, not execution authorization."]
+else:
+    lines.append("\nExisting-position CIO advisory artifact is not available for this run.")
+
+lines += ["", "## 3. Execution-lane research signals (not executable orders)"]
 if now:
     lines += ["", "| Ticker | Name | Action | Driver | Stage |", "|---|---|---|---|---|"]
     for r in now[:12]:
@@ -124,7 +146,7 @@ if now:
 else:
     lines.append("\nNo validated BUY/ADD/REDUCE/EXIT/HOLD action is currently emitted by the frozen execution lane.")
 
-lines += ["", "## 3. Closest to execution action"]
+lines += ["", "## 4. Closest to execution action"]
 if near:
     lines += ["", "| Ticker | Name | Driver | Reaction | Stage | Blocker |", "|---|---|---|---|---|---|"]
     for r in near[:15]:
@@ -132,13 +154,13 @@ if near:
 else:
     lines.append("\nNo WATCH_ENTRY candidates.")
 
-lines += ["", "## 4. Main execution blockers"]
+lines += ["", "## 5. Main execution blockers"]
 for blocker, count in blockers.most_common(8):
     lines.append(f"- `{blocker}`: {count}")
 if not blockers:
     lines.append("- None")
 
-lines += ["", "## 5. Existing-position layer — privacy-safe alias view"]
+lines += ["", "## 6. Existing-position strict layer — privacy-safe alias view"]
 if alias_rows:
     lines += ["", "| Alias | Action | Reason | Thesis mapping |", "|---|---|---|---|"]
     for r in alias_rows:
@@ -162,24 +184,22 @@ lines += [
     f"- Maintenance targets truncated by safety cap: `{maintenance.get('maintenance_target_truncated_count', 0)}`",
     f"- Optional user-thesis overlay: `{pos.get('user_thesis_overlay_status', 'NOT_CONFIGURED')}`",
     f"- User/system disagreement count: `{pos.get('user_thesis_disagreement_count', 0)}`",
-    "- Public alias output contains no ticker, company name, market value, weight, cost, P/L, cash or financing data.",
+    "- Public alias outputs contain no ticker, company name, market value, weight, cost, P/L, cash or financing data.",
     "- The ticker-to-alias map remains inside GitHub Secrets/private runtime and is never committed.",
-    "", "## 6. Interpretation",
-    "- Opportunity discovery, CIO advisory, execution permission, and portfolio maintenance are separate layers.",
-    "- CIO advisory answers the decision question under uncertainty; it does not authorize a brokerage order.",
-    "- Weak or unverified Taiwan stock alpha should fall back to a mapped ETF or cash instead of forcing endless research. Company provenance is a stock gate, not an ETF-advisory gate.",
-    "- Existing-position HOLD/REDUCE/EXIT is driven by system-inferred economic exposure, not by the user's stated purchase reason.",
+    "", "## 7. Interpretation",
+    "- Opportunity discovery, existing-position advisory, execution permission, and portfolio maintenance are separate layers.",
+    "- Existing-position CIO advisory is forced to express a directional bias from market evidence even when the frozen strict lane remains REVIEW_RESEARCH.",
+    "- ETF holdings are judged by global theme breadth; single stocks require more company-specific transmission before strict HOLD/EXIT can be validated.",
+    "- Weak or unverified Taiwan stock alpha should fall back to a mapped ETF or cash instead of forcing endless research.",
+    "- Existing-position strict HOLD/REDUCE/EXIT is driven by system-inferred economic exposure, not by the user's stated purchase reason.",
     "- `SYSTEM_TICKER_EXPOSURE` is preferred; risk-group mapping is a fallback. Missing system mapping fails closed to `REVIEW_RESEARCH`.",
     "- Alias-level existing-position actions may be public, but the underlying instrument mapping stays private.",
-    "- User thesis is optional challenger metadata only; it cannot force HOLD or EXIT.",
-    "- `GATE_5_ENTRY` is closest to an executable entry but still requires the defined state-transition trigger and private risk pass.",
-    "- `GATE_4_REACTION` means causality and structural transmission passed, but price reaction is already persistent/extended or otherwise not an early entry state.",
     "- Automatic brokerage execution remains disabled.", "",
 ]
 
 (OUT / "action_board.md").write_text("\n".join(lines), encoding="utf-8")
 print(
-    f"Wrote output/action_board.md: advisory={len(advisory_rows)} alias_positions={len(alias_rows)} "
-    f"focus={len(focus)} near={len(near)} now={len(now)} system_readiness={system_readiness} "
-    f"maintenance={maintenance.get('maintenance_lane_status', 'NOT_AVAILABLE')}"
+    f"Wrote output/action_board.md: advisory={len(advisory_rows)} position_cio={len(position_cio_rows)} "
+    f"alias_positions={len(alias_rows)} focus={len(focus)} near={len(near)} now={len(now)} "
+    f"system_readiness={system_readiness} maintenance={maintenance.get('maintenance_lane_status', 'NOT_AVAILABLE')}"
 )
