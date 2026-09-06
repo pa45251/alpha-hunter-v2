@@ -2,7 +2,7 @@
   "contract": "ALPHA_HUNTER_V3_VALIDATED_RESEARCH",
   "status": "PASS",
   "research_run_id": "20260906T130002+0800-dd80dd63",
-  "validated_at_utc": "2026-09-06T07:06:26.130502+00:00",
+  "validated_at_utc": "2026-09-06T07:24:43.471603+00:00",
   "target_driver_ids": [
     "DRY_BULK_FREIGHT",
     "CONTAINER_FREIGHT",
@@ -14,72 +14,104 @@
   "results": [
     {
       "driver_id": "DRY_BULK_FREIGHT",
-      "state": "UNKNOWN",
-      "confidence": 0.08,
-      "primary_cause": "Live web access did not provide verifiable, time-consistent external evidence for the exact BDI/Capesize/Panamax and commodity-volume freight cycle, nor sufficiently specific counter-evidence to resolve its current state.",
-      "industry_scope": "UNKNOWN",
-      "supporting_evidence": [],
+      "state": "ACTIVE",
+      "confidence": 0.84,
+      "primary_cause": "Capesize vessel availability tightened while Pacific and Atlantic commodity demand increased, with Australian exports ramping and Guinea iron-ore flows improving; the resulting BDI and Capesize rate surge directly confirms the dry-bulk freight cycle.",
+      "industry_scope": "INDUSTRY_WIDE",
+      "supporting_evidence": [
+        {
+          "claim": "The Baltic Dry Index rose 5.5% to 3,331 points, its highest level since December 2023, while Capesize rates surged more than 8%. The article attributes the move to tighter vessel supply, stronger demand in both basins, increased Australian exports, and rising Guinea iron-ore flows.",
+          "source_title": "Dry Bulk Shipping Rates Surge on Tight Capesize Vessel Supply",
+          "source_url": "https://gcaptain.com/dry-bulk-shipping-rates-surge-on-tight-capesize-vessel-supply/",
+          "published_at": "2026-09-03T16:31:08Z",
+          "event_date": null,
+          "evidence_type": "HIGH_QUALITY_REPORTING"
+        }
+      ],
       "counter_evidence": [],
-      "source_count": 0,
+      "source_count": 1,
       "event_date": null,
-      "source_dates": [],
-      "researched_at_utc": "2026-09-06T07:05:35Z",
+      "source_dates": [
+        "2026-09-03T16:31:08Z"
+      ],
+      "researched_at_utc": "2026-09-06T07:25:00Z",
       "research_run_id": "20260906T130002+0800-dd80dd63"
     },
     {
       "driver_id": "CONTAINER_FREIGHT",
-      "state": "UNKNOWN",
-      "confidence": 0.08,
-      "primary_cause": "Live web access did not provide verifiable, time-consistent external evidence for the exact container spot/contract freight and liner-utilization cycle, nor sufficiently specific counter-evidence to resolve its current state.",
-      "industry_scope": "UNKNOWN",
-      "supporting_evidence": [],
-      "counter_evidence": [],
-      "source_count": 0,
+      "state": "ACTIVE",
+      "confidence": 0.72,
+      "primary_cause": "Current reporting indicates spot container rates and liner profits were still rising in August 2026, consistent with an active container freight and liner utilization cycle; the available counter result described soft demand and lower rates in January 2026 and is not sufficiently current to reverse the classification.",
+      "industry_scope": "INDUSTRY_WIDE",
+      "supporting_evidence": [
+        {
+          "claim": "Liner profits continued to mount as spot rates rose again, indicating ongoing strength in container freight pricing and liner conditions.",
+          "source_title": "No peak yet: Liner profits mount as spot rates rise again",
+          "source_url": "https://news.google.com/rss/articles/CBMimAFBVV95cUxPYmQ2d2ZrQUlUai1wdEJzb2ZMWFA0Uldaakt6ajg0cU01anNNWFU2MGhDSkx1S3MtU2pKUDlGaFZCUXZWSkR1T2N0dTVYT0x5TWlvdUszbWhORzl0cng5TXotWlBaOTN6ekU2d2xyUGNtSTZrelExaDBYT1pCQngzV0ZiZDhXLTJhaWk5cndteVVMV1ZNOGowXw?oc=5",
+          "published_at": "2026-08-14T07:00:00Z",
+          "event_date": null,
+          "evidence_type": "HIGH_QUALITY_REPORTING"
+        }
+      ],
+      "counter_evidence": [
+        {
+          "claim": "Earlier reporting described soft demand and lower ocean freight rates ahead of Lunar New Year, but this evidence predates the later August rate-strength reports and does not establish that the current cycle has weakened.",
+          "source_title": "Soft Demand Sends Ocean Freight Rates Lower Ahead of Lunar New Year",
+          "source_url": "https://news.google.com/rss/articles/CBMi8AFBVV95cUxOcVZSamlnc2pSQS1aY25JM1BaS1dmV3l0d1hPUmtOM09zaG5SdER5M1BtNVNtZllPQmlYcGFjenJLaVowMkhvRkZwemFjcHdzaTNrbGhkVlhlTU1UdFBBTFJIRnNEbVhlYzI5V0s5TDBXRHVkc2tIY1l3SEZLMmRFT2xISWRoQWNrRExGdkc2aG41ZTlvdGt5TS1PT2JEcndzb2lSZ1VTYVJuVmFtdGpFd1gycU1qTWVSX0RDV0NaWlBaVzZaZjJUcnZ5eHN4RHNZbU50b2h1N05scjJueGtEbHZOWUNvRmdLb2VGd3B3Um8?oc=5",
+          "published_at": "2026-01-28T08:00:00Z",
+          "event_date": null,
+          "evidence_type": "HIGH_QUALITY_REPORTING"
+        }
+      ],
+      "source_count": 2,
       "event_date": null,
-      "source_dates": [],
-      "researched_at_utc": "2026-09-06T07:05:35Z",
+      "source_dates": [
+        "2026-08-14T07:00:00Z",
+        "2026-01-28T08:00:00Z"
+      ],
+      "researched_at_utc": "2026-09-06T07:25:00Z",
       "research_run_id": "20260906T130002+0800-dd80dd63"
     },
     {
       "driver_id": "NUCLEAR_GRID_SECOND_ORDER",
       "state": "UNKNOWN",
-      "confidence": 0.06,
-      "primary_cause": "Available web access did not yield verifiable evidence connecting nuclear-specific buildout to second-order grid-equipment demand. Broad nuclear or electricity-demand themes would not establish this narrower driver.",
+      "confidence": 0.34,
+      "primary_cause": "Searches found current nuclear-power activity and broad grid-equipment shortage reporting, but no sufficiently verified source directly linking nuclear-specific buildout to second-order transformer, switchgear, or transmission-equipment demand; the evidence remains broad-theme rather than driver-specific.",
       "industry_scope": "UNKNOWN",
       "supporting_evidence": [],
       "counter_evidence": [],
       "source_count": 0,
       "event_date": null,
       "source_dates": [],
-      "researched_at_utc": "2026-09-06T07:05:35Z",
+      "researched_at_utc": "2026-09-06T07:25:00Z",
       "research_run_id": "20260906T130002+0800-dd80dd63"
     },
     {
       "driver_id": "POWER_ELECTRONICS_CAPEX",
       "state": "UNKNOWN",
-      "confidence": 0.07,
-      "primary_cause": "Live web access did not provide verifiable, time-consistent evidence for power-electronics or power-equipment capital expenditure specifically. General electricity-demand or nuclear evidence would not establish this driver.",
+      "confidence": 0.36,
+      "primary_cause": "Searches found reports about transformer shortages and strategic grid-equipment manufacturing, but no sufficiently verified current evidence isolating power-electronics or equipment capex across UPS, switchgear, transformers, and related industrial demand; broad electrification evidence is insufficient.",
       "industry_scope": "UNKNOWN",
       "supporting_evidence": [],
       "counter_evidence": [],
       "source_count": 0,
       "event_date": null,
       "source_dates": [],
-      "researched_at_utc": "2026-09-06T07:05:35Z",
+      "researched_at_utc": "2026-09-06T07:25:00Z",
       "research_run_id": "20260906T130002+0800-dd80dd63"
     },
     {
       "driver_id": "AI_SERVER_SHIPMENTS",
       "state": "UNKNOWN",
-      "confidence": 0.07,
-      "primary_cause": "Live web access did not provide verifiable, time-consistent evidence for AI-server units, rack shipments, or ODM backlog specifically. Generic AI enthusiasm or price-related information would not establish this driver.",
+      "confidence": 0.42,
+      "primary_cause": "Searches found reporting that an AI-server boom was increasing related component demand and forecasts, but no sufficiently verified current source directly confirming AI-server unit or rack shipments, ODM backlog, and deployment breadth; the available evidence does not cleanly establish the exact shipment cycle.",
       "industry_scope": "UNKNOWN",
       "supporting_evidence": [],
       "counter_evidence": [],
       "source_count": 0,
       "event_date": null,
       "source_dates": [],
-      "researched_at_utc": "2026-09-06T07:05:35Z",
+      "researched_at_utc": "2026-09-06T07:25:00Z",
       "research_run_id": "20260906T130002+0800-dd80dd63"
     }
   ]
