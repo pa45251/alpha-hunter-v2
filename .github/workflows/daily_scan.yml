@@ -2,6 +2,10 @@ name: Alpha Hunter Daily Scan
 
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/daily_scan.yml'
   schedule:
     # 22:55 UTC = 06:55 Asia/Taipei next day. Sun-Thu UTC = Mon-Fri Taiwan.
     - cron: '55 22 * * 0-4'
@@ -39,7 +43,7 @@ jobs:
       - name: Build v2.6.1 research handoff
         run: python research_handoff.py
 
-      - name: Build v2.8 decision + private risk + existing-position exit + shadow audit
+      - name: Build v2.9 decision + private risk + exit + no-hindsight shadow validation
         env:
           ALPHA_HUNTER_RISK_POLICY_JSON: ${{ secrets.ALPHA_HUNTER_RISK_POLICY_JSON }}
           ALPHA_HUNTER_PORTFOLIO_JSON: ${{ secrets.ALPHA_HUNTER_PORTFOLIO_JSON }}
@@ -58,6 +62,8 @@ jobs:
             output/decision_packet.json \
             output/decision_history.csv \
             output/shadow_audit.csv \
+            output/shadow_validation.csv \
+            output/shadow_validation_report.json \
             output/market_snapshot.csv \
             output/market_snapshot.json \
             output/theme_breadth.csv \
@@ -73,5 +79,5 @@ jobs:
             output/causal_driver_taxonomy.csv \
             output/structural_exposure_graph.csv
           git diff --cached --quiet && exit 0
-          git commit -m "alpha hunter v2.8 decision snapshot $(date -u +%F)"
+          git commit -m "alpha hunter v2.9 decision snapshot $(date -u +%F)"
           git push
