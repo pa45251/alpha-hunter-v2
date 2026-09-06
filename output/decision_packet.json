@@ -2,7 +2,7 @@
   "contract": "ALPHA_HUNTER_DECISION_PACKET",
   "decision_contract_version": "2.7.1",
   "run_id": "20260906T130002+0800-dd80dd63",
-  "generated_at": "2026-09-06T09:39:19.574747+00:00",
+  "generated_at": "2026-09-06T10:55:00.260298+00:00",
   "gate_first_score_second": true,
   "price_can_create_causality": false,
   "auto_trade_allowed": false,
@@ -262,27 +262,15 @@
       "REDUCE_RISK": 1
     },
     "system_mapping_counts": {
-      "SYSTEM_MAPPING_MISSING": 2,
-      "SYSTEM_RISK_GROUP": 2,
-      "SYSTEM_TICKER_EXPOSURE": 1
+      "SYSTEM_RISK_GROUP": 3,
+      "SYSTEM_MAPPING_MISSING": 2
     },
     "user_thesis_overlay_status": "NOT_CONFIGURED",
     "user_thesis_overlay_applied_count": 0,
     "user_thesis_disagreement_count": 0,
     "system_thesis_primary": true,
     "private_position_details_committed": false,
-    "privacy_rule": "Per-position actions, tickers, balances, weights and P/L stay in-memory and are never committed or logged.",
-    "maintenance_research": {
-      "maintenance_lane_status": "PARTIAL_FAIL_CLOSED",
-      "maintenance_target_count": 4,
-      "maintenance_validated_count": 3,
-      "maintenance_target_truncated_count": 0,
-      "maintenance_private_artifact_committed": false,
-      "maintenance_privacy_rule": "Maintenance target/result artifacts remain ephemeral; only aggregate metadata may enter public decision_packet.json.",
-      "maintenance_state_counts": {
-        "UNKNOWN": 4
-      }
-    }
+    "privacy_rule": "Per-position actions, tickers, balances, weights and P/L stay in-memory and are never committed or logged."
   },
   "shadow_validation_layer": {
     "validation_version": "1.0",
