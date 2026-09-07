@@ -50,13 +50,13 @@ jobs:
           ALPHA_HUNTER_POSITION_THESIS_JSON: ${{ secrets.ALPHA_HUNTER_POSITION_THESIS_JSON }}
         run: python decision_run.py
 
-      - name: Publish alias-only existing-position actions
+      - name: Publish alias-only existing-position actions with V2 contract guard
         env:
           ALPHA_HUNTER_RISK_POLICY_JSON: ${{ secrets.ALPHA_HUNTER_RISK_POLICY_JSON }}
           ALPHA_HUNTER_PORTFOLIO_JSON: ${{ secrets.ALPHA_HUNTER_PORTFOLIO_JSON }}
           ALPHA_HUNTER_POSITION_THESIS_JSON: ${{ secrets.ALPHA_HUNTER_POSITION_THESIS_JSON }}
           ALPHA_HUNTER_POSITION_ALIAS_JSON: ${{ secrets.ALPHA_HUNTER_POSITION_ALIAS_JSON }}
-        run: python position_alias_output.py
+        run: python position_alias_output_v2.py
 
       - name: Publish existing-position CIO advisory
         env:
