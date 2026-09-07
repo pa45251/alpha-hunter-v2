@@ -7,6 +7,7 @@ from typing import Any
 
 import pandas as pd
 import yfinance as yf
+from market_sessions import clip_closed_bars
 
 OUT = Path("output")
 POLICY_PATH = Path("config/portfolio_allocation_policy.json")
@@ -40,7 +41,7 @@ def _download(period: str = "1y") -> dict[str, pd.DataFrame]:
             else:
                 frame = raw.copy() if len(RISK_TICKERS) == 1 else pd.DataFrame()
             if not frame.empty:
-                out[ticker] = frame.dropna(how="all")
+                out[ticker] = clip_closed_bars(frame.dropna(how="all"), ticker)
         except Exception:
             continue
     return out
