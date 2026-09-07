@@ -15,9 +15,27 @@ def _research_source_count() -> tuple[str, int]:
     path = OUT / "research_result_v3.json"
     if not path.exists():
         return "MISSING", 0
-    payload = json.loads(path.read_text(encoding="utf-8"))
-    total_sources = sum(int(x.get("source_count", 0) or 0) for x in payload.get("results", []))
-    return str(payload.get("status", "")), total_sources
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+        manifest = json.loads((OUT / "manifest.json").read_text(encoding="utf-8"))
+        run_id = manifest.get("run_id")
+        results = payload.get("results")
+        if (not isinstance(run_id, str) or not run_id.strip()
+                or payload.get("contract") != "ALPHA_HUNTER_V3_VALIDATED_RESEARCH"
+                or payload.get("research_run_id") != run_id
+                or not isinstance(results, list) or not results
+                or any(not isinstance(row, dict) or row.get("research_run_id") != run_id
+                       for row in results)):
+            return "INVALID_LINEAGE", 0
+        ids = [row.get("driver_id") for row in results]
+        if any(not isinstance(x, str) or not x.strip() for x in ids) or len(set(ids)) != len(ids):
+            return "INVALID_DRIVERS", 0
+        counts = [row.get("source_count", 0) for row in results]
+        if any(type(x) is not int or x < 0 for x in counts):
+            return "INVALID_SOURCE_COUNT", 0
+        return str(payload.get("status", "")), sum(counts)
+    except (OSError, ValueError, TypeError, AttributeError):
+        return "INVALID_INPUT", 0
 
 
 def _challenger_is_valid() -> tuple[bool, int, int, str]:
