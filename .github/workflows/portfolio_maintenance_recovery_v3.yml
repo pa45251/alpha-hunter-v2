@@ -11,7 +11,9 @@ on:
       - '.github/workflows/portfolio_maintenance_recovery_v3.yml'
       - 'PORTFOLIO_MAINTENANCE_RESEARCH_PROMPT.md'
       - 'position_alias_output.py'
+      - 'position_alias_output_v2.py'
       - 'tests/test_position_alias_output.py'
+      - 'tests/test_existing_position_v2.py'
       - 'position_cio_advisory.py'
       - 'tests/test_position_cio_advisory.py'
 
@@ -121,7 +123,7 @@ jobs:
           ALPHA_HUNTER_MAINTENANCE_RESEARCH_PATH: /tmp/portfolio_maintenance_result.json
         run: python decision_run_with_maintenance.py
 
-      - name: Publish alias-only existing-position actions
+      - name: Publish alias-only existing-position actions with V2 contract guard
         if: steps.need_recovery.outputs.needed == 'true'
         env:
           ALPHA_HUNTER_RISK_POLICY_JSON: ${{ secrets.ALPHA_HUNTER_RISK_POLICY_JSON }}
@@ -129,7 +131,7 @@ jobs:
           ALPHA_HUNTER_POSITION_THESIS_JSON: ${{ secrets.ALPHA_HUNTER_POSITION_THESIS_JSON }}
           ALPHA_HUNTER_POSITION_ALIAS_JSON: ${{ secrets.ALPHA_HUNTER_POSITION_ALIAS_JSON }}
           ALPHA_HUNTER_MAINTENANCE_RESEARCH_PATH: /tmp/portfolio_maintenance_result.json
-        run: python position_alias_output.py
+        run: python position_alias_output_v2.py
 
       - name: Publish existing-position CIO advisory
         if: steps.need_recovery.outputs.needed == 'true'
@@ -143,7 +145,7 @@ jobs:
         if: steps.need_recovery.outputs.needed == 'true'
         env:
           PYTHONPATH: ${{ github.workspace }}
-        run: python -m pytest -q tests/test_portfolio_maintenance_research.py tests/test_existing_position.py tests/test_position_alias_output.py tests/test_position_cio_advisory.py
+        run: python -m pytest -q tests/test_portfolio_maintenance_research.py tests/test_existing_position.py tests/test_existing_position_v2.py tests/test_position_alias_output.py tests/test_position_cio_advisory.py
 
       - name: Commit privacy-safe maintenance outputs
         if: steps.need_recovery.outputs.needed == 'true'
