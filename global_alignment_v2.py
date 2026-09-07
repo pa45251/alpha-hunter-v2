@@ -14,10 +14,6 @@ BREADTH_PATH = OUT / "theme_breadth.csv"
 CSV_OUT = OUT / "global_alignment_v2.csv"
 JSON_OUT = OUT / "global_alignment_v2.json"
 
-# V2 keeps the current scoring philosophy but fixes three contract bugs:
-# 1) price ranks are computed once per ticker before driver rows are considered;
-# 2) breadth_eligible / n coverage is a hard validation gate;
-# 3) driver->basket mappings are explicit and economically scoped.
 DRIVER_THEME_MAP = {
     "AI_SERVER_SHIPMENTS": "AI_Server",
     "AI_SERVER_RACK_BUILD": "AI_Server",
@@ -89,21 +85,18 @@ def _breadth_score(row: pd.Series) -> tuple[float, float]:
 
 
 def _ticker_price_ranks(board: pd.DataFrame) -> pd.DataFrame:
-    # A duplicated driver row must never change another stock's price-quality rank.
-    cols = [
-        "ticker", "rs_20d_vs_bench", "rs_60d_vs_bench", "acceleration", "keynes_v2"
-    ]
+    """Compute price-quality ranks once per ticker, independent of driver-row count."""
+    cols = ["ticker", "rs_20d_vs_bench", "rs_60d_vs_bench", "acceleration", "keynes_v2"]
     x = board[[c for c in cols if c in board.columns]].copy()
     if "ticker" not in x.columns:
         return pd.DataFrame()
-    x = x.drop_duplicates("ticker", keep="first").set_index("ticker", drop=False)
+    # Keep ticker as a normal column. Pandas 3 rejects a merge key that is both index and column.
+    x = x.drop_duplicates("ticker", keep="first").reset_index(drop=True)
     x["r_rs20_v2"] = _rank01(x.get("rs_20d_vs_bench", pd.Series(index=x.index, dtype=float)))
     x["r_rs60_v2"] = _rank01(x.get("rs_60d_vs_bench", pd.Series(index=x.index, dtype=float)))
     x["r_accel_v2"] = _rank01(x.get("acceleration", pd.Series(index=x.index, dtype=float)))
     x["r_keynes_v2"] = _rank01(x.get("keynes_v2", pd.Series(index=x.index, dtype=float)))
-    x["taiwan_trend_score_v2"] = (
-        0.40 * x["r_rs20_v2"] + 0.30 * x["r_rs60_v2"] + 0.30 * x["r_accel_v2"]
-    )
+    x["taiwan_trend_score_v2"] = 0.40 * x["r_rs20_v2"] + 0.30 * x["r_rs60_v2"] + 0.30 * x["r_accel_v2"]
     return x[["ticker", "r_rs20_v2", "r_rs60_v2", "r_accel_v2", "r_keynes_v2", "taiwan_trend_score_v2"]]
 
 
@@ -125,8 +118,8 @@ def build_global_alignment_v2(board: pd.DataFrame, breadth: pd.DataFrame) -> pd.
         return pd.DataFrame()
     b["theme"] = b["theme"].astype(str)
     bidx = b.set_index("theme", drop=False)
-
     rows: list[dict[str, Any]] = []
+
     for _, r in x.iterrows():
         driver = str(r.get("driver_id", "")).upper()
         theme = DRIVER_THEME_MAP.get(driver, "")
