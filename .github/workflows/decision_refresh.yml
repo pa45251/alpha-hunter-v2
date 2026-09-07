@@ -15,6 +15,9 @@ on:
       - 'launch_gate.py'
       - 'config/launch_policy.json'
       - 'config/frozen_strategy_v1.json'
+      - 'config/frozen_strategy_v2.json'
+      - 'v2_freeze_guard.py'
+      - 'tests/test_v2_freeze_guard.py'
       - 'config/portfolio_allocation_policy.json'
       - 'existing_position.py'
       - 'existing_position_v2.py'
@@ -59,6 +62,9 @@ jobs:
         env:
           PYTHONPATH: ${{ github.workspace }}
         run: python -m pytest -q
+
+      - name: Enforce accepted frozen V2 prospective baseline
+        run: python v2_freeze_guard.py
 
       - name: Rebuild guarded V2 decision layer from latest validated causal source
         env:
