@@ -1,0 +1,39 @@
+{
+  "strategy_version": "ALPHA_HUNTER_ADVISORY_V2_FROZEN",
+  "frozen_at": "2026-09-07",
+  "baseline_commit": "33b7d5e310f12d4e3d854c73515572e576e44d5c",
+  "baseline_run_id": "20260907T083423+0800-0e24be27",
+  "baseline_closed_price_date": "2026-09-04",
+  "deployment_mode": "SHADOW_ADVISORY_ONLY",
+  "live_execution_authorized": false,
+  "hash_algorithm": "git_blob_sha1",
+  "inherits_frozen_v1": "ALPHA_HUNTER_SHADOW_V1",
+  "file_hashes": {
+    "config/frozen_strategy_v1.json": "3b4dcba38645a67e427a06769b7cefbbdeaee560",
+    "config/portfolio_allocation_policy.json": "39babc369f70c5da09def8c7f105eb0b23a164b5",
+    "global_alignment_v2.py": "9daf29c949ae034e7f7fa69f8380f56b1343e410",
+    "causal_activation_v2.py": "37c552f344dad9372b58b777041ab48e571f56e9",
+    "entry_structure_v2.py": "af3b8370b7f09ad34d040c8dde2cacc747068fcf",
+    "entry_plan_run_v2.py": "4e62ad7dfccdfaa772ad0476937a8b774a4c8d3a",
+    "entry_plan_trace_v2.py": "1e704855009ee3f61b2876d448ad85e203f032c3",
+    "portfolio_risk_v2.py": "e1abb09c09f730d614d37ac28897a8870cea127d",
+    "portfolio_allocation_v2.py": "be835fea4995be77a16366ab3d2bc1d32ad09afe",
+    "entry_action_board_v2.py": "11aa4ff780141fc4b8ffb520173be4c71735763c",
+    "decision_run_v2.py": "3d15ae3b54ebbb9d7f7f9d1f83f755208b134414",
+    "decision_run_with_maintenance_v2.py": "0a6908871e1c98dacb15dd94dbd0e9d91b37c50d",
+    "decision_state_v2.py": "98c497e685fc99e1b64b68df26c437e2193f024b",
+    "snapshot_lineage_v2.py": "a85251d0f54e04863f425740d8bfd98d13c91d3b",
+    "shadow_audit_v2.py": "028bcb7275723e3fff4cdd6da32cb777102ea704",
+    "shadow_validation_v2.py": "2e60a646f6505fce14e8833532b6098a73020f28",
+    "existing_position_v2.py": "608d1b08e6dbaff26e489b17746df395a5c1d03b"
+  },
+  "prospective_validation": {
+    "horizons_trading_days": [5, 20, 60],
+    "entry_families": ["FRESH_BREAKOUT", "PULLBACK_RECOVERY", "CONTINUATION_BASE"],
+    "same_session_duplicate_samples_allowed": false,
+    "open_or_future_daily_bar_samples_allowed": false,
+    "score_is_probability": false,
+    "threshold_tuning_before_acceptance_review": false
+  },
+  "rule": "This is the accepted prospective V2 baseline. Any change to a frozen file requires a new strategy version, explicit acceptance review, and a new frozen registry. Never rewrite this baseline to hide drift or tune thresholds from early prospective outcomes."
+}
