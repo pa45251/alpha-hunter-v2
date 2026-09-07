@@ -46,7 +46,6 @@ jobs:
       - name: Build global risk regime and cash target
         run: python risk_regime.py
 
-      # Preserve current public V1 advisory artifacts during V2 shadow rollout.
       - name: Build legacy portfolio allocation advisory
         run: python portfolio_allocation_advisory.py
 
@@ -61,6 +60,9 @@ jobs:
           ALPHA_HUNTER_RISK_POLICY_JSON: ${{ secrets.ALPHA_HUNTER_RISK_POLICY_JSON }}
           ALPHA_HUNTER_PORTFOLIO_JSON: ${{ secrets.ALPHA_HUNTER_PORTFOLIO_JSON }}
         run: python entry_plan_run_v2.py
+
+      - name: Append prospective Exact Entry V2 trace
+        run: python entry_plan_trace_v2.py
 
       - name: Build Rotation V2 using the same canonical entry plans
         run: python portfolio_allocation_v2.py
@@ -77,7 +79,7 @@ jobs:
       - name: Prepend V2 A-E Global Alignment and Exact Entry summary
         run: python entry_action_board_v2.py
 
-      - name: Commit advisory and action board
+      - name: Commit advisory, trace and action board
         run: |
           git config user.name "alpha-hunter-bot"
           git config user.email "actions@users.noreply.github.com"
@@ -91,13 +93,14 @@ jobs:
             output/global_alignment_v2.csv \
             output/global_alignment_v2.json \
             output/entry_plans_v2.json \
+            output/entry_plan_trace_v2.csv \
             output/portfolio_allocation_v2.json \
             output/action_board.md
           if [ -e output/entry_plans_v2.csv ] || git ls-files --error-unmatch output/entry_plans_v2.csv >/dev/null 2>&1; then
             git add -A output/entry_plans_v2.csv
           fi
           if ! git diff --cached --quiet; then
-            git commit -m "publish alpha hunter v2 exact-entry advisory $(date -u +%F)"
+            git commit -m "publish alpha hunter frozen v2 exact-entry trace $(date -u +%F)"
             git fetch origin main
             git rebase origin/main
             git push origin HEAD:main
