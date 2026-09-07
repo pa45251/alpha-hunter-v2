@@ -74,7 +74,7 @@ jobs:
         env:
           ALPHA_HUNTER_RISK_POLICY_JSON: ${{ secrets.ALPHA_HUNTER_RISK_POLICY_JSON }}
           ALPHA_HUNTER_PORTFOLIO_JSON: ${{ secrets.ALPHA_HUNTER_PORTFOLIO_JSON }}
-        run: python entry_plan_run_v2.py
+        run: python runtime_input_guard.py entry_plan_run_v2
 
       - name: Append prospective Exact Entry V2 trace
         run: python entry_plan_trace_v2.py

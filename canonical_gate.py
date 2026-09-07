@@ -21,6 +21,14 @@ REQUIRED_RUN_ID_FILES = (
     "causal_graph_audit.csv",
 )
 
+REQUIRED_AUTHORITATIVE_FILES = {
+    "market_snapshot.csv", "theme_breadth.csv", "leader_registry.csv", "feature_history.csv",
+    "market_snapshot.json", "taiwan_candidates.csv", "taiwan_candidate_history.csv",
+    "taiwan_industry_breadth.csv", "taiwan_universe.csv", "causal_research_queue.csv",
+    "structural_matches.csv", "causal_graph_audit.csv", "causal_driver_taxonomy.csv",
+    "structural_exposure_graph.csv",
+}
+
 
 @dataclass
 class GateCheck:
@@ -121,6 +129,10 @@ def validate_canonical_snapshot(out_dir: str | Path = "output") -> dict[str, Any
     hash_details: list[str] = []
     for item in declared:
         name = str(item.get("name", ""))
+        if Path(name).name != name or name in declared_names:
+            hashes_ok = False
+            hash_details.append("INVALID_OR_DUPLICATE_ARTIFACT_NAME")
+            continue
         declared_names.add(name)
         p = out / name
         expected_hash = str(item.get("sha256", ""))
@@ -132,6 +144,10 @@ def validate_canonical_snapshot(out_dir: str | Path = "output") -> dict[str, Any
         if not expected_hash or actual_hash != expected_hash:
             hashes_ok = False
             hash_details.append(f"{name}:HASH_MISMATCH")
+    missing_names = REQUIRED_AUTHORITATIVE_FILES - declared_names
+    if missing_names:
+        hashes_ok = False
+        hash_details.append("UNDECLARED_REQUIRED_FILES:" + ",".join(sorted(missing_names)))
     add("authoritative_file_hashes", hashes_ok and bool(declared),
         "; ".join(hash_details) if hash_details else f"verified={len(declared)}")
 
@@ -147,7 +163,7 @@ def validate_canonical_snapshot(out_dir: str | Path = "output") -> dict[str, Any
         try:
             d = pd.read_csv(p, usecols=["run_id"])
             values = set(d["run_id"].dropna().astype(str).unique())
-            if values != {run_id}:
+            if d.empty or d["run_id"].isna().any() or values != {run_id}:
                 run_consistency_ok = False
                 run_details.append(f"{name}:{sorted(values)}")
         except Exception as exc:

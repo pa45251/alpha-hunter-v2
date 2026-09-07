@@ -243,7 +243,7 @@ jobs:
           ALPHA_HUNTER_PORTFOLIO_JSON: ${{ secrets.ALPHA_HUNTER_PORTFOLIO_JSON }}
           ALPHA_HUNTER_POSITION_THESIS_JSON: ${{ secrets.ALPHA_HUNTER_POSITION_THESIS_JSON }}
           ALPHA_HUNTER_MAINTENANCE_RESEARCH_PATH: /tmp/portfolio_maintenance_result.json
-        run: python decision_run_with_maintenance_v2.py
+        run: python runtime_input_guard.py decision_run_with_maintenance_v2
 
       - name: Publish alias-only existing-position actions with V2 contract guard
         env:
@@ -252,14 +252,14 @@ jobs:
           ALPHA_HUNTER_POSITION_THESIS_JSON: ${{ secrets.ALPHA_HUNTER_POSITION_THESIS_JSON }}
           ALPHA_HUNTER_POSITION_ALIAS_JSON: ${{ secrets.ALPHA_HUNTER_POSITION_ALIAS_JSON }}
           ALPHA_HUNTER_MAINTENANCE_RESEARCH_PATH: /tmp/portfolio_maintenance_result.json
-        run: python position_alias_output_v2.py
+        run: python runtime_input_guard.py position_alias_output_v2
 
       - name: Publish existing-position CIO advisory
         env:
           ALPHA_HUNTER_RISK_POLICY_JSON: ${{ secrets.ALPHA_HUNTER_RISK_POLICY_JSON }}
           ALPHA_HUNTER_PORTFOLIO_JSON: ${{ secrets.ALPHA_HUNTER_PORTFOLIO_JSON }}
           ALPHA_HUNTER_POSITION_ALIAS_JSON: ${{ secrets.ALPHA_HUNTER_POSITION_ALIAS_JSON }}
-        run: python position_cio_advisory.py
+        run: python runtime_input_guard.py position_cio_advisory
 
       - name: Validate research, bridge, trace, maintenance and existing-position contracts
         env:

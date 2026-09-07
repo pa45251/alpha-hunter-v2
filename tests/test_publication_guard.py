@@ -63,7 +63,9 @@ def test_frozen_rotation_driver_bypass_is_blocked_by_publication(tmp_path):
     # Reproduction against unchanged frozen implementation: ticker-only join borrows wrong driver.
     bad=build_portfolio_allocation_v2(_policy(),_positions(),_candidates(),_regime(),_entries(wrong))
     assert len(bad['rotations'])==1
-    bad['rotations'][0]['destination_driver']='OTHER'
+    dump(tmp_path,'entry_plans_v2.json',dict(_entries(wrong),source_run_id='R'))
+    for name in ('global_alignment_v2.csv','decision_board.csv'):
+        frame=pd.read_csv(tmp_path/name);frame['driver_id']='OTHER';frame.to_csv(tmp_path/name,index=False)
     dump(tmp_path,'portfolio_allocation_v2.json',bad)
     with pytest.raises(ValueError,match='ROTATION_DRIVER_MISMATCH'):
         pg.check_plan_links(tmp_path)
