@@ -42,3 +42,6 @@ jobs:
           assert p.get('file_hashes')
           print('Frozen V1 registry preserved:', len(p['file_hashes']), 'files')
           PY
+
+      - name: Enforce accepted frozen V2 prospective baseline
+        run: python v2_freeze_guard.py
