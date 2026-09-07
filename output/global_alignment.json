@@ -1,7 +1,7 @@
 {
   "contract": "ALPHA_HUNTER_GLOBAL_ALIGNMENT",
   "schema_version": "1.0",
-  "generated_at": "2026-09-07T02:32:51.390152+00:00",
+  "generated_at": "2026-09-07T02:35:30.485209+00:00",
   "purpose": "Rank Taiwan stocks whose own trend quality is supported by the corresponding international market trend and a validated causal driver.",
   "score_is_probability": false,
   "score_interpretation": "Relative opportunity / alignment strength only; higher scores may imply a better opportunity set but are not calibrated win probabilities.",
