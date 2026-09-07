@@ -1,6 +1,11 @@
 import pandas as pd
+import pytest
 
-from entry_plan_run_v2 import build_canonical_plans
+from entry_plan_run_v2 import (
+    _assert_plans_use_closed_sessions,
+    _clip_histories_to_closed_date,
+    build_canonical_plans,
+)
 
 
 def _hist():
@@ -50,3 +55,20 @@ def test_missing_alignment_driver_row_fails_closed():
     out = build_canonical_plans(board, alignment, {"2317.TW": _hist()})
     assert out.iloc[0]["entry_status"] == "DRIVER_LINEAGE_MISMATCH"
     assert not bool(out.iloc[0]["entry_structure_valid"])
+
+
+def test_runtime_history_cutoff_excludes_still_forming_daily_bar():
+    idx = pd.to_datetime(["2026-09-03", "2026-09-04", "2026-09-07"])
+    h = pd.DataFrame({
+        "Open": [100, 101, 110], "High": [102, 103, 130], "Low": [99, 100, 109],
+        "Close": [101, 102, 125], "Volume": [1_000_000, 1_100_000, 500_000],
+    }, index=idx)
+    clipped = _clip_histories_to_closed_date({"2317.TW": h}, "2026-09-04")
+    assert clipped["2317.TW"].index.max().date().isoformat() == "2026-09-04"
+    assert 125 not in clipped["2317.TW"]["Close"].tolist()
+
+
+def test_plan_newer_than_canonical_closed_session_is_blocked():
+    plans = pd.DataFrame([{"ticker": "2317.TW", "price_as_of_utc": "2026-09-07T00:00:00"}])
+    with pytest.raises(RuntimeError, match="OPEN_OR_FUTURE_DAILY_BAR_BLOCKED"):
+        _assert_plans_use_closed_sessions(plans, "2026-09-04")

@@ -24,6 +24,53 @@ CSV_OUT = OUT / "entry_plans_v2.csv"
 JSON_OUT = OUT / "entry_plans_v2.json"
 
 
+def _canonical_closed_price_date(path: Path = MANIFEST_PATH) -> str:
+    """Return the scanner's canonical latest *closed* Taiwan price session.
+
+    Exact Entry is an EOD contract. yfinance daily downloads can expose today's still-forming
+    daily candle during Taiwan market hours; the canonical scanner manifest already records the
+    latest completed Taiwan price date, so it is the authoritative cutoff for entry construction.
+    """
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+        value = ((payload.get("taiwan") or {}).get("latest_price_date"))
+        ts = pd.to_datetime(value, errors="coerce")
+    except Exception as exc:
+        raise RuntimeError("ENTRY_PLAN_V2_CANONICAL_CLOSED_DATE_MISSING") from exc
+    if pd.isna(ts):
+        raise RuntimeError("ENTRY_PLAN_V2_CANONICAL_CLOSED_DATE_MISSING")
+    return pd.Timestamp(ts).date().isoformat()
+
+
+def _clip_histories_to_closed_date(
+    histories: dict[str, pd.DataFrame],
+    canonical_closed_date: str,
+) -> dict[str, pd.DataFrame]:
+    cutoff = pd.Timestamp(canonical_closed_date).date()
+    out: dict[str, pd.DataFrame] = {}
+    for ticker, hist in (histories or {}).items():
+        if hist is None or hist.empty:
+            continue
+        x = hist.copy()
+        parsed = pd.to_datetime(x.index, errors="coerce")
+        keep = [bool(not pd.isna(ts) and pd.Timestamp(ts).date() <= cutoff) for ts in parsed]
+        x = x.loc[keep]
+        if not x.empty:
+            out[str(ticker)] = x
+    return out
+
+
+def _assert_plans_use_closed_sessions(plans: pd.DataFrame, canonical_closed_date: str) -> None:
+    if plans is None or plans.empty or "price_as_of_utc" not in plans.columns:
+        return
+    cutoff = pd.Timestamp(canonical_closed_date).date()
+    parsed = pd.to_datetime(plans["price_as_of_utc"], errors="coerce")
+    bad = parsed.notna() & parsed.map(lambda ts: pd.Timestamp(ts).date() > cutoff)
+    if bool(bad.any()):
+        tickers = plans.loc[bad, "ticker"].astype(str).head(5).tolist() if "ticker" in plans.columns else []
+        raise RuntimeError(f"ENTRY_PLAN_V2_OPEN_OR_FUTURE_DAILY_BAR_BLOCKED:{tickers}")
+
+
 def build_canonical_plans(
     board: pd.DataFrame,
     alignment: pd.DataFrame,
@@ -80,7 +127,7 @@ def build_canonical_plans(
         return plans
     risked, meta = apply_entry_risk_gate_v2(plans)
     risked["risk_v2_contract"] = meta.get("contract")
-    # EOD pipeline has no live executable quote; never emit BUY_NOW from yesterday's close.
+    # EOD pipeline has no live executable quote; never emit BUY_NOW from a closed daily bar.
     risked["entry_executable"] = False
     risked["buy_now_blocker"] = "LIVE_EXECUTABLE_QUOTE_REQUIRED"
     return risked
@@ -109,9 +156,11 @@ def write_outputs() -> tuple[pd.DataFrame, dict]:
         raise RuntimeError("ENTRY_PLAN_V2_INPUT_MISSING")
     board = pd.read_csv(BOARD_PATH, dtype={"taiwan_code": str})
     alignment = pd.read_csv(ALIGN_CSV_PATH)
+    canonical_closed_date = _canonical_closed_price_date()
     tickers = alignment["ticker"].dropna().astype(str).drop_duplicates().tolist()
-    histories = _download_histories(tickers)
+    histories = _clip_histories_to_closed_date(_download_histories(tickers), canonical_closed_date)
     plans = build_canonical_plans(board, alignment, histories)
+    _assert_plans_use_closed_sessions(plans, canonical_closed_date)
     CSV_OUT.parent.mkdir(parents=True, exist_ok=True)
     plans.to_csv(CSV_OUT, index=False)
 
@@ -123,12 +172,14 @@ def write_outputs() -> tuple[pd.DataFrame, dict]:
             pass
     payload = {
         "contract": CONTRACT,
-        "schema_version": "2.1",
+        "schema_version": "2.2",
         "strategy_version": STRATEGY_VERSION,
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "source_run_id": run_id,
         "status": "READY" if not plans.empty else "DATA_UNAVAILABLE",
         "canonical_driver_source": "GLOBAL_ALIGNMENT_V2",
+        "canonical_closed_price_date": canonical_closed_date,
+        "intraday_daily_bar_excluded": True,
         "score_is_probability": False,
         "buy_now_requires_live_executable_quote": True,
         "fresh": _style_records(plans, "FRESH_BREAKOUT"),
@@ -144,11 +195,14 @@ def write_outputs() -> tuple[pd.DataFrame, dict]:
 def main() -> None:
     try:
         plans, payload = write_outputs()
-        print(f"Canonical Entry Plan V2 status={payload.get('status')} plans={len(plans)}")
+        print(
+            f"Canonical Entry Plan V2 status={payload.get('status')} plans={len(plans)} "
+            f"closed_session={payload.get('canonical_closed_price_date')}"
+        )
     except Exception as exc:
         payload = {
             "contract": CONTRACT,
-            "schema_version": "2.1",
+            "schema_version": "2.2",
             "strategy_version": STRATEGY_VERSION,
             "generated_at": datetime.now(timezone.utc).isoformat(),
             "status": "DATA_UNAVAILABLE",
