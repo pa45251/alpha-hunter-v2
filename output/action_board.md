@@ -6,16 +6,16 @@
 - Rule: EOD output never claims BUY_NOW without a fresh executable quote inside the buy zone.
 
 ### A. Strongest Global-Aligned Trend
-- **6669.TW 緯穎** — alignment `0.8179` / global `AI_Server` / reaction `PERSISTENT` / action `HOLD_DONT_CHASE`
+- **2606.TW 裕民** — alignment `0.9107` / global `Shipping` / reaction `PERSISTENT` / action `HOLD_DONT_CHASE`
 
 ### B. Best Fresh Entry
-- **2376.TW 技嘉** — `WAIT_BREAKOUT` / `WAITING_FOR_TRIGGER`
+- **4938.TW 和碩** — `AVOID` / `WATCHLIST`
 - Entry style: `FRESH_BREAKOUT`
-- Trigger: **405.00**
-- Buy zone: **405.00 – 410.00**
-- Invalidation: **332.50**
+- Trigger: **—**
+- Buy zone: **— – —**
+- Invalidation: **—**
 - Why now: 
-- Why not now: CLOSE_BELOW_FROZEN_BREAKOUT_TRIGGER
+- Why not now: CAUSAL_DRIVER_NOT_ACTIVE;COMPANY_EDGE_NOT_SOURCE_BACKED;GLOBAL_ALIGNMENT_NOT_ELIGIBLE
 
 ### C. Best Pullback Entry
 - **6446.TW 藥華藥** — `PREPARE` / `WATCHLIST`
@@ -36,9 +36,9 @@
 - Why not now: VALID_CONTINUATION_BASE_EXISTS_BUT_BREAKOUT_NOT_CONFIRMED
 
 ### E. Rotation / Exact Execution
-- Source: **標的D** → Destination: **4967.TW 十銓**
-- State: `PREPARE_ROTATION_STRONG`; trim now **0%**
-- Trigger: **294.50**; Buy zone **294.50 – 299.00**; Invalidation **245.00**
+- Source: **標的D** → Destination: **3231.TW 緯創**
+- State: `PREPARE_ROTATION`; trim now **0%**
+- Trigger: **208.00**; Buy zone **208.00 – 211.50**; Invalidation **170.50**
 - Required before rotation: `ENTRY_PLAN_TRIGGER_AND_LIVE_QUOTE`
 
 V2 is shadow/advisory only. Exact levels are structure-derived conditional plans, not brokerage orders.
@@ -48,11 +48,11 @@ V2 is shadow/advisory only. Exact levels are structure-derived conditional plans
 - Global risk regime: `RISK_ON` / score `11`
 - Target cash / dry-powder buffer: **0.0%**
 - For leveraged portfolios, a higher buffer should generally be implemented by reducing gross exposure before accumulating idle cash.
-- Best new opportunity: **4967.TW 十銓** — `BUY_BIAS_STOCK` / edge `0.9905` / reaction `PRE_CONFIRMATION`
+- Best new opportunity: **2317.TW 鴻海** — `BUY_BIAS_STOCK` / edge `0.9888` / reaction `PRE_CONFIRMATION`
 
 | Source alias | Destination | Rotation state | Edge spread | Trim now | Trim on trigger | Entry trigger | Redeploy on trigger | Buffer on trigger |
 |---|---|---|---:|---:|---:|---|---:|---:|
-| 標的D | 4967.TW 十銓 | PREPARE_ROTATION_STRONG | 0.5779 | 0% | 50% | DESTINATION_REACTION_CONFIRMING | 100% | 0% |
+| 標的D | 2317.TW 鴻海 | PREPARE_ROTATION_STRONG | 0.5762 | 0% | 50% | DESTINATION_REACTION_CONFIRMING | 100% | 0% |
 
 PREPARE_ROTATION means the edge is strong enough to nominate the switch, but the destination has not reached the required entry-confirmation state; current trim remains zero.
 Rotation and cash outputs are CIO advisories only. They do not authorize brokerage orders.
@@ -60,22 +60,27 @@ Rotation and cash outputs are CIO advisories only. They do not authorize brokera
 ## 0.5 Global Alignment Leaderboard
 - Purpose: find Taiwan stocks whose own trend quality is supported by the corresponding international market and an ACTIVE causal driver.
 - Alignment score is a relative opportunity/evidence score, **not a calibrated win probability**.
-- Strongest aligned trend now: **6669.TW 緯穎** — score `0.8138` / `HOLD_DONT_CHASE` / global `AI_Server` / reaction `PERSISTENT`
-- Best fresh aligned setup now: **2376.TW 技嘉** — score `0.663` / `PREPARE` / reaction `PRE_CONFIRMATION`
+- Strongest aligned trend now: **2606.TW 裕民** — score `0.9027` / `HOLD_DONT_CHASE` / global `Shipping` / reaction `PERSISTENT`
+- Best fresh aligned setup now: **NONE** — current alignment leaders are already persistent or no early/confirming setup passes every hard gate.
 
 | Rank | Taiwan stock | Global theme | Alignment | Global | Taiwan | Breadth | Keynes | State |
 |---:|---|---|---:|---:|---:|---:|---:|---|
-| 1 | 6669.TW 緯穎 | AI_Server | 0.8138 | 0.8765 | 0.8418 | 0.55 | 0.8727 | HOLD_DONT_CHASE |
-| 2 | 3231.TW 緯創 | AI_Server | 0.7435 | 0.8765 | 0.7273 | 0.55 | 0.6 | HOLD_DONT_CHASE |
-| 3 | 2376.TW 技嘉 | AI_Server | 0.663 | 0.8765 | 0.56 | 0.55 | 0.3636 | PREPARE |
-| 4 | 4967.TW 十銓 | Memory | 0.589 | 0.7124 | 0.4455 | 0.6167 | 0.2909 | PREPARE |
+| 1 | 2606.TW 裕民 | Shipping | 0.9027 | 0.9656 | 0.7909 | 1.0 | 0.7818 | HOLD_DONT_CHASE |
+| 2 | 2615.TW 萬海 | Shipping | 0.9002 | 0.9656 | 0.68 | 1.0 | 0.9455 | HOLD_DONT_CHASE |
+| 3 | 2637.TW 慧洋-KY | Shipping | 0.8949 | 0.9656 | 0.7927 | 1.0 | 0.7273 | HOLD_DONT_CHASE |
+| 4 | 2617.TW 台航 | Shipping | 0.8922 | 0.9656 | 0.7073 | 1.0 | 0.8545 | HOLD_DONT_CHASE |
+| 5 | 2609.TW 陽明 | Shipping | 0.8666 | 0.9656 | 0.6873 | 1.0 | 0.7091 | HOLD_DONT_CHASE |
+| 6 | 2603.TW 長榮 | Shipping | 0.8489 | 0.9656 | 0.5836 | 1.0 | 0.7636 | HOLD_DONT_CHASE |
+| 7 | 2605.TW 新興 | Shipping | 0.8408 | 0.9656 | 0.6327 | 1.0 | 0.6364 | HOLD_DONT_CHASE |
+| 8 | 6669.TW 緯穎 | AI_Server | 0.8138 | 0.8765 | 0.8418 | 0.55 | 0.8727 | HOLD_DONT_CHASE |
+| 9 | 3231.TW 緯創 | AI_Server | 0.7435 | 0.8765 | 0.7273 | 0.55 | 0.6 | HOLD_DONT_CHASE |
 
 Global Alignment is advisory only; BROKEN/EXTENDED names cannot become fresh entries through this leaderboard.
 
 - Run: `20260907T083423+0800-0e24be27`
-- Causal source: `LEGACY_MANUAL_FALLBACK`
-- Same snapshot: `False`
-- Active opportunity drivers: AI_SERVER_RACK_BUILD, AI_SERVER_SHIPMENTS, NAND_STORAGE_CYCLE
+- Causal source: `CHATGPT_CHALLENGER_ADJUDICATION`
+- Same snapshot: `True`
+- Active opportunity drivers: AI_SERVER_SHIPMENTS, CONTAINER_FREIGHT, DRY_BULK_FREIGHT, POWER_ELECTRONICS_CAPEX
 - Private risk inputs valid: `True`
 - Auto order execution: `False`
 
@@ -92,23 +97,23 @@ Global Alignment is advisory only; BROKEN/EXTENDED names cannot become fresh ent
 
 | Rank | Exposure | Name | Advisory | Confidence | Driver | Why |
 |---:|---|---|---|---|---|---|
-| 1 | 4967.TW | 十銓 | BUY_BIAS_STOCK | MEDIUM | NAND_STORAGE_CYCLE | Active driver, source-backed company edge, and a non-extended reaction state support a positive stock bias. |
-| 2 | 2317.TW | 鴻海 | BUY_BIAS_STOCK | MEDIUM | AI_SERVER_SHIPMENTS | Active driver, source-backed company edge, and a non-extended reaction state support a positive stock bias. |
-| 3 | 2376.TW | 技嘉 | BUY_BIAS_STOCK | MEDIUM | AI_SERVER_RACK_BUILD | Active driver, source-backed company edge, and a non-extended reaction state support a positive stock bias. |
-| 4 | QQQ | Mapped ETF | PREFER_ETF | MEDIUM | AI_SERVER_SHIPMENTS | Global driver is active; ETF is the cleaner exposure because stock alpha is not clearly superior or is not source-backed. |
-| 5 | QQQ | Mapped ETF | PREFER_ETF | MEDIUM | AI_SERVER_RACK_BUILD | Global driver is active; ETF is the cleaner exposure because stock alpha is not clearly superior or is not source-backed. |
-| 6 | 6669.TW | 緯穎 | HOLD_BIAS | MEDIUM | AI_SERVER_SHIPMENTS | The thesis is confirmed, but more information may already be priced; prefer hold or a better entry over chasing. |
-| 7 | 3231.TW | 緯創 | HOLD_BIAS | MEDIUM | AI_SERVER_SHIPMENTS | The thesis is confirmed, but more information may already be priced; prefer hold or a better entry over chasing. |
-| 8 | 2615.TW | 萬海 | RESEARCH_FIRST | INSUFFICIENT | CONTAINER_FREIGHT | The causal driver is not validated active; price strength cannot substitute for causality. |
-| 9 | 2603.TW | 長榮 | RESEARCH_FIRST | INSUFFICIENT | CONTAINER_FREIGHT | The causal driver is not validated active; price strength cannot substitute for causality. |
-| 10 | 2609.TW | 陽明 | RESEARCH_FIRST | INSUFFICIENT | CONTAINER_FREIGHT | The causal driver is not validated active; price strength cannot substitute for causality. |
-| 11 | 2606.TW | 裕民 | RESEARCH_FIRST | INSUFFICIENT | DRY_BULK_FREIGHT | The causal driver is not validated active; price strength cannot substitute for causality. |
-| 12 | 2637.TW | 慧洋-KY | RESEARCH_FIRST | INSUFFICIENT | DRY_BULK_FREIGHT | The causal driver is not validated active; price strength cannot substitute for causality. |
-| 13 | 2605.TW | 新興 | RESEARCH_FIRST | INSUFFICIENT | DRY_BULK_FREIGHT | The causal driver is not validated active; price strength cannot substitute for causality. |
-| 14 | 2617.TW | 台航 | RESEARCH_FIRST | INSUFFICIENT | DRY_BULK_FREIGHT | The causal driver is not validated active; price strength cannot substitute for causality. |
-| 15 | 3006.TW | 晶豪科 | RESEARCH_FIRST | INSUFFICIENT | MEMORY_IC_CYCLE | The causal driver is not validated active; price strength cannot substitute for causality. |
+| 1 | 2317.TW | 鴻海 | BUY_BIAS_STOCK | MEDIUM | AI_SERVER_SHIPMENTS | Active driver, source-backed company edge, and a non-extended reaction state support a positive stock bias. |
+| 2 | BOAT | Mapped ETF | PREFER_ETF | HIGH | CONTAINER_FREIGHT | Global driver is active; ETF is the cleaner exposure because stock alpha is not clearly superior or is not source-backed. |
+| 3 | QQQ | Mapped ETF | PREFER_ETF | MEDIUM | AI_SERVER_SHIPMENTS | Global driver is active; ETF is the cleaner exposure because stock alpha is not clearly superior or is not source-backed. |
+| 4 | XLI | Mapped ETF | PREFER_ETF | MEDIUM | POWER_ELECTRONICS_CAPEX | The global driver is active but the stock case is not sufficiently verified; prefer the mapped ETF exposure. |
+| 5 | 2606.TW | 裕民 | HOLD_BIAS | MEDIUM | DRY_BULK_FREIGHT | The thesis is confirmed, but more information may already be priced; prefer hold or a better entry over chasing. |
+| 6 | 2637.TW | 慧洋-KY | HOLD_BIAS | MEDIUM | DRY_BULK_FREIGHT | The thesis is confirmed, but more information may already be priced; prefer hold or a better entry over chasing. |
+| 7 | 2605.TW | 新興 | HOLD_BIAS | MEDIUM | DRY_BULK_FREIGHT | The thesis is confirmed, but more information may already be priced; prefer hold or a better entry over chasing. |
+| 8 | 2617.TW | 台航 | HOLD_BIAS | MEDIUM | DRY_BULK_FREIGHT | The thesis is confirmed, but more information may already be priced; prefer hold or a better entry over chasing. |
+| 9 | 6669.TW | 緯穎 | HOLD_BIAS | MEDIUM | AI_SERVER_SHIPMENTS | The thesis is confirmed, but more information may already be priced; prefer hold or a better entry over chasing. |
+| 10 | 3231.TW | 緯創 | HOLD_BIAS | MEDIUM | AI_SERVER_SHIPMENTS | The thesis is confirmed, but more information may already be priced; prefer hold or a better entry over chasing. |
+| 11 | 3006.TW | 晶豪科 | RESEARCH_FIRST | INSUFFICIENT | MEMORY_IC_CYCLE | The causal driver is not validated active; price strength cannot substitute for causality. |
+| 12 | 2882.TW | 國泰金 | RESEARCH_FIRST | INSUFFICIENT | FINANCIALS_RATE_CREDIT_CYCLE | The causal driver is not validated active; price strength cannot substitute for causality. |
+| 13 | 2881.TW | 富邦金 | RESEARCH_FIRST | INSUFFICIENT | FINANCIALS_RATE_CREDIT_CYCLE | The causal driver is not validated active; price strength cannot substitute for causality. |
+| 14 | 2408.TW | 南亞科 | RESEARCH_FIRST | INSUFFICIENT | DRAM_PRICING | The causal driver is not validated active; price strength cannot substitute for causality. |
+| 15 | 3017.TW | 奇鋐 | RESEARCH_FIRST | INSUFFICIENT | AI_SERVER_THERMAL_DENSITY | The causal driver is not validated active; price strength cannot substitute for causality. |
 
-Advisory counts: `{"AVOID": 3, "BUY_BIAS_STOCK": 3, "HOLD_BIAS": 2, "PREFER_ETF": 2, "RESEARCH_FIRST": 44}`
+Advisory counts: `{"BUY_BIAS_STOCK": 1, "HOLD_BIAS": 6, "PREFER_ETF": 3, "RESEARCH_FIRST": 40}`
 The advisory lane may say BUY_BIAS/PREFER_ETF/WAIT_PULLBACK/AVOID even when execution remains blocked. That is intentional.
 
 ## 2. Existing-position CIO advisory — alias only
@@ -131,17 +136,23 @@ No validated BUY/ADD/REDUCE/EXIT/HOLD action is currently emitted by the frozen 
 
 | Ticker | Name | Driver | Reaction | Stage | Blocker |
 |---|---|---|---|---|---|
-| 4967.TW | 十銓 | NAND_STORAGE_CYCLE | PRE_CONFIRMATION | GATE_5_ENTRY | WAIT_FOR_STATE_TRANSITION_ENTRY_TRIGGER |
 | 2317.TW | 鴻海 | AI_SERVER_SHIPMENTS | PRE_CONFIRMATION | GATE_5_ENTRY | WAIT_FOR_STATE_TRANSITION_ENTRY_TRIGGER |
-| 2376.TW | 技嘉 | AI_SERVER_RACK_BUILD | PRE_CONFIRMATION | GATE_5_ENTRY | WAIT_FOR_STATE_TRANSITION_ENTRY_TRIGGER |
+| 2615.TW | 萬海 | CONTAINER_FREIGHT | PERSISTENT | GATE_4_REACTION | INFORMATION_MAY_BE_PRICED |
+| 2603.TW | 長榮 | CONTAINER_FREIGHT | PERSISTENT | GATE_4_REACTION | INFORMATION_MAY_BE_PRICED |
+| 2609.TW | 陽明 | CONTAINER_FREIGHT | PERSISTENT | GATE_4_REACTION | INFORMATION_MAY_BE_PRICED |
+| 2606.TW | 裕民 | DRY_BULK_FREIGHT | PERSISTENT | GATE_4_REACTION | INFORMATION_MAY_BE_PRICED |
+| 2637.TW | 慧洋-KY | DRY_BULK_FREIGHT | PERSISTENT | GATE_4_REACTION | INFORMATION_MAY_BE_PRICED |
+| 2605.TW | 新興 | DRY_BULK_FREIGHT | PERSISTENT | GATE_4_REACTION | INFORMATION_MAY_BE_PRICED |
+| 2617.TW | 台航 | DRY_BULK_FREIGHT | PERSISTENT | GATE_4_REACTION | INFORMATION_MAY_BE_PRICED |
 | 6669.TW | 緯穎 | AI_SERVER_SHIPMENTS | PERSISTENT | GATE_4_REACTION | INFORMATION_MAY_BE_PRICED |
 | 3231.TW | 緯創 | AI_SERVER_SHIPMENTS | PERSISTENT | GATE_4_REACTION | INFORMATION_MAY_BE_PRICED |
 
 ## 5. Main execution blockers
-- `DRIVER_NOT_ACTIVE_RESEARCH_VALIDATED`: 44
+- `DRIVER_NOT_ACTIVE_RESEARCH_VALIDATED`: 40
 - `EDGE_PROVENANCE_NOT_SOURCE_BACKED`: 40
-- `WAIT_FOR_STATE_TRANSITION_ENTRY_TRIGGER`: 3
-- `INFORMATION_MAY_BE_PRICED`: 2
+- `INFORMATION_MAY_BE_PRICED`: 9
+- `REACTION_STATE_NOT_ENTRY_READY`: 3
+- `WAIT_FOR_STATE_TRANSITION_ENTRY_TRIGGER`: 1
 
 ## 6. Existing-position strict layer — privacy-safe alias view
 

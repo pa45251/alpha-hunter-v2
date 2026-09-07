@@ -1,19 +1,19 @@
 {
   "contract": "ALPHA_HUNTER_PORTFOLIO_ALLOCATION_ADVISORY",
   "schema_version": "1.1",
-  "generated_at": "2026-09-07T01:25:24.950872+00:00",
+  "generated_at": "2026-09-07T02:23:49.029124+00:00",
   "status": "READY",
   "risk_regime": "RISK_ON",
   "risk_score": 11,
   "target_cash_pct": 0.0,
   "cash_rule": "Target cash is a risk-budget buffer. In leveraged accounts, implementation should generally reduce financing/gross exposure before holding idle cash; private balances are not published here.",
   "best_new_opportunity": {
-    "ticker": "4967.TW",
-    "name": "十銓",
+    "ticker": "2317.TW",
+    "name": "鴻海",
     "preferred_exposure": "STOCK",
     "advisory_action": "BUY_BIAS_STOCK",
-    "edge_score": 0.9905,
-    "driver_id": "NAND_STORAGE_CYCLE",
+    "edge_score": 0.9888,
+    "driver_id": "AI_SERVER_SHIPMENTS",
     "reaction_state": "PRE_CONFIRMATION",
     "confidence": "MEDIUM"
   },
@@ -21,13 +21,13 @@
     {
       "source_alias": "標的D",
       "source_action": "REVIEW_HOLD",
-      "destination_ticker": "4967.TW",
-      "destination_name": "十銓",
+      "destination_ticker": "2317.TW",
+      "destination_name": "鴻海",
       "destination_action": "BUY_BIAS_STOCK",
-      "destination_driver": "NAND_STORAGE_CYCLE",
+      "destination_driver": "AI_SERVER_SHIPMENTS",
       "destination_reaction_state": "PRE_CONFIRMATION",
       "rotation_action": "PREPARE_ROTATION_STRONG",
-      "edge_spread": 0.5779,
+      "edge_spread": 0.5762,
       "suggested_source_trim_pct_now": 0,
       "suggested_source_trim_pct_on_trigger": 50,
       "suggested_redeploy_pct_of_trim_on_trigger": 100,
@@ -68,16 +68,6 @@
   ],
   "candidate_ranking": [
     {
-      "ticker": "4967.TW",
-      "name": "十銓",
-      "preferred_exposure": "STOCK",
-      "advisory_action": "BUY_BIAS_STOCK",
-      "edge_score": 0.9905,
-      "driver_id": "NAND_STORAGE_CYCLE",
-      "reaction_state": "PRE_CONFIRMATION",
-      "confidence": "MEDIUM"
-    },
-    {
       "ticker": "2317.TW",
       "name": "鴻海",
       "preferred_exposure": "STOCK",
@@ -88,13 +78,23 @@
       "confidence": "MEDIUM"
     },
     {
-      "ticker": "2376.TW",
-      "name": "技嘉",
-      "preferred_exposure": "STOCK",
-      "advisory_action": "BUY_BIAS_STOCK",
-      "edge_score": 0.9879,
-      "driver_id": "AI_SERVER_RACK_BUILD",
-      "reaction_state": "PRE_CONFIRMATION",
+      "ticker": "BOAT",
+      "name": "Mapped ETF",
+      "preferred_exposure": "ETF",
+      "advisory_action": "PREFER_ETF",
+      "edge_score": 0.795,
+      "driver_id": "CONTAINER_FREIGHT",
+      "reaction_state": "PERSISTENT",
+      "confidence": "HIGH"
+    },
+    {
+      "ticker": "XLI",
+      "name": "Mapped ETF",
+      "preferred_exposure": "ETF",
+      "advisory_action": "PREFER_ETF",
+      "edge_score": 0.7864,
+      "driver_id": "POWER_ELECTRONICS_CAPEX",
+      "reaction_state": "UNKNOWN",
       "confidence": "MEDIUM"
     },
     {
@@ -105,6 +105,46 @@
       "edge_score": 0.7404,
       "driver_id": "AI_SERVER_SHIPMENTS",
       "reaction_state": "CONFIRMING",
+      "confidence": "MEDIUM"
+    },
+    {
+      "ticker": "2606.TW",
+      "name": "裕民",
+      "preferred_exposure": "STOCK",
+      "advisory_action": "HOLD_BIAS",
+      "edge_score": 0.6365,
+      "driver_id": "DRY_BULK_FREIGHT",
+      "reaction_state": "PERSISTENT",
+      "confidence": "MEDIUM"
+    },
+    {
+      "ticker": "2637.TW",
+      "name": "慧洋-KY",
+      "preferred_exposure": "STOCK",
+      "advisory_action": "HOLD_BIAS",
+      "edge_score": 0.6365,
+      "driver_id": "DRY_BULK_FREIGHT",
+      "reaction_state": "PERSISTENT",
+      "confidence": "MEDIUM"
+    },
+    {
+      "ticker": "2605.TW",
+      "name": "新興",
+      "preferred_exposure": "STOCK",
+      "advisory_action": "HOLD_BIAS",
+      "edge_score": 0.6362,
+      "driver_id": "DRY_BULK_FREIGHT",
+      "reaction_state": "PERSISTENT",
+      "confidence": "MEDIUM"
+    },
+    {
+      "ticker": "2617.TW",
+      "name": "台航",
+      "preferred_exposure": "STOCK",
+      "advisory_action": "HOLD_BIAS",
+      "edge_score": 0.6362,
+      "driver_id": "DRY_BULK_FREIGHT",
+      "reaction_state": "PERSISTENT",
       "confidence": "MEDIUM"
     },
     {
@@ -125,16 +165,6 @@
       "edge_score": 0.6353,
       "driver_id": "AI_SERVER_SHIPMENTS",
       "reaction_state": "PERSISTENT",
-      "confidence": "MEDIUM"
-    },
-    {
-      "ticker": "QQQ",
-      "name": "Mapped ETF",
-      "preferred_exposure": "ETF",
-      "advisory_action": "PREFER_ETF",
-      "edge_score": 0.5508,
-      "driver_id": "AI_SERVER_RACK_BUILD",
-      "reaction_state": "EXTENDED",
       "confidence": "MEDIUM"
     }
   ],
