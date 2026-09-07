@@ -10,8 +10,15 @@ on:
     paths:
       - '.github/workflows/portfolio_maintenance_recovery_v3.yml'
       - 'PORTFOLIO_MAINTENANCE_RESEARCH_PROMPT.md'
+      - 'decision_run_with_maintenance_v2.py'
+      - 'decision_run_v2.py'
+      - 'snapshot_lineage_v2.py'
+      - 'decision_state_v2.py'
+      - 'shadow_validation_v2.py'
       - 'position_alias_output.py'
+      - 'position_alias_output_v2.py'
       - 'tests/test_position_alias_output.py'
+      - 'tests/test_existing_position_v2.py'
       - 'position_cio_advisory.py'
       - 'tests/test_position_cio_advisory.py'
 
@@ -111,7 +118,7 @@ jobs:
           ALPHA_HUNTER_PORTFOLIO_JSON: ${{ secrets.ALPHA_HUNTER_PORTFOLIO_JSON }}
         run: python portfolio_maintenance_research.py ingest
 
-      - name: Rebuild decision layer with recovered maintenance evidence
+      - name: Rebuild guarded V2 decision layer with recovered maintenance evidence
         if: steps.need_recovery.outputs.needed == 'true'
         env:
           ALPHA_HUNTER_ACTIVATION_SOURCE: V3_VALIDATED
@@ -119,9 +126,9 @@ jobs:
           ALPHA_HUNTER_PORTFOLIO_JSON: ${{ secrets.ALPHA_HUNTER_PORTFOLIO_JSON }}
           ALPHA_HUNTER_POSITION_THESIS_JSON: ${{ secrets.ALPHA_HUNTER_POSITION_THESIS_JSON }}
           ALPHA_HUNTER_MAINTENANCE_RESEARCH_PATH: /tmp/portfolio_maintenance_result.json
-        run: python decision_run_with_maintenance.py
+        run: python decision_run_with_maintenance_v2.py
 
-      - name: Publish alias-only existing-position actions
+      - name: Publish alias-only existing-position actions with V2 contract guard
         if: steps.need_recovery.outputs.needed == 'true'
         env:
           ALPHA_HUNTER_RISK_POLICY_JSON: ${{ secrets.ALPHA_HUNTER_RISK_POLICY_JSON }}
@@ -129,7 +136,7 @@ jobs:
           ALPHA_HUNTER_POSITION_THESIS_JSON: ${{ secrets.ALPHA_HUNTER_POSITION_THESIS_JSON }}
           ALPHA_HUNTER_POSITION_ALIAS_JSON: ${{ secrets.ALPHA_HUNTER_POSITION_ALIAS_JSON }}
           ALPHA_HUNTER_MAINTENANCE_RESEARCH_PATH: /tmp/portfolio_maintenance_result.json
-        run: python position_alias_output.py
+        run: python position_alias_output_v2.py
 
       - name: Publish existing-position CIO advisory
         if: steps.need_recovery.outputs.needed == 'true'
@@ -143,7 +150,7 @@ jobs:
         if: steps.need_recovery.outputs.needed == 'true'
         env:
           PYTHONPATH: ${{ github.workspace }}
-        run: python -m pytest -q tests/test_portfolio_maintenance_research.py tests/test_existing_position.py tests/test_position_alias_output.py tests/test_position_cio_advisory.py
+        run: python -m pytest -q tests/test_portfolio_maintenance_research.py tests/test_existing_position.py tests/test_existing_position_v2.py tests/test_position_alias_output.py tests/test_position_cio_advisory.py tests/test_snapshot_lineage_v2.py tests/test_decision_state_v2.py tests/test_shadow_validation_v2.py
 
       - name: Commit privacy-safe maintenance outputs
         if: steps.need_recovery.outputs.needed == 'true'
@@ -159,7 +166,7 @@ jobs:
             git add -A output/position_cio_advisory.json
           fi
           if ! git diff --cached --quiet; then
-            git commit -m "refresh private maintenance decision layer $(date -u +%F)"
+            git commit -m "refresh guarded v2 maintenance decision layer $(date -u +%F)"
             git fetch origin main
             git rebase origin/main
             git push origin HEAD:main

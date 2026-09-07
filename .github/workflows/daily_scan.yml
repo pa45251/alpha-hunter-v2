@@ -43,20 +43,20 @@ jobs:
       - name: Build v2.6.1 research handoff
         run: python research_handoff.py
 
-      - name: Build v2.9 decision + private thesis/risk + exit + no-hindsight shadow validation
+      - name: Build guarded V2 decision + private thesis/risk + prospective shadow validation
         env:
           ALPHA_HUNTER_RISK_POLICY_JSON: ${{ secrets.ALPHA_HUNTER_RISK_POLICY_JSON }}
           ALPHA_HUNTER_PORTFOLIO_JSON: ${{ secrets.ALPHA_HUNTER_PORTFOLIO_JSON }}
           ALPHA_HUNTER_POSITION_THESIS_JSON: ${{ secrets.ALPHA_HUNTER_POSITION_THESIS_JSON }}
-        run: python decision_run.py
+        run: python decision_run_v2.py
 
-      - name: Publish alias-only existing-position actions
+      - name: Publish alias-only existing-position actions with V2 contract guard
         env:
           ALPHA_HUNTER_RISK_POLICY_JSON: ${{ secrets.ALPHA_HUNTER_RISK_POLICY_JSON }}
           ALPHA_HUNTER_PORTFOLIO_JSON: ${{ secrets.ALPHA_HUNTER_PORTFOLIO_JSON }}
           ALPHA_HUNTER_POSITION_THESIS_JSON: ${{ secrets.ALPHA_HUNTER_POSITION_THESIS_JSON }}
           ALPHA_HUNTER_POSITION_ALIAS_JSON: ${{ secrets.ALPHA_HUNTER_POSITION_ALIAS_JSON }}
-        run: python position_alias_output.py
+        run: python position_alias_output_v2.py
 
       - name: Publish existing-position CIO advisory
         env:
@@ -102,5 +102,5 @@ jobs:
             git add -A output/position_cio_advisory.json
           fi
           git diff --cached --quiet && exit 0
-          git commit -m "alpha hunter v2.9 decision snapshot $(date -u +%F)"
+          git commit -m "alpha hunter guarded v2 decision snapshot $(date -u +%F)"
           git push
