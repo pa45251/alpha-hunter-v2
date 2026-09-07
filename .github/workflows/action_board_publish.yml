@@ -15,6 +15,7 @@ on:
       - '.github/workflows/action_board_publish.yml'
   workflow_run:
     workflows:
+      - "Alpha Hunter v3 Autonomous Research"
       - "Alpha Hunter Portfolio Maintenance Recovery"
       - "Alpha Hunter Decision Refresh"
     types: [completed]
@@ -28,7 +29,7 @@ permissions:
 
 jobs:
   publish:
-    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
+    if: ${{ github.event_name != 'workflow_run' || (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'main' && github.event.workflow_run.head_repository.full_name == github.repository) }}
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -113,6 +114,6 @@ jobs:
           if ! git diff --cached --quiet; then
             git commit -m "publish alpha hunter frozen v2 exact-entry trace $(date -u +%F)"
             git fetch origin main
-            git rebase origin/main
+            # Fail closed if main advanced after inputs were read; never rebase computed artifacts.
             git push origin HEAD:main
           fi
