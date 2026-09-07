@@ -1,0 +1,44 @@
+name: Alpha Hunter V2 Pull Request CI
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  v2-contracts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout PR commit
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run legacy and V2 regression tests
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+        run: python -m pytest -q
+
+      - name: Verify frozen V1 contract file is still present
+        run: |
+          test -f config/frozen_strategy_v1.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p = json.loads(Path('config/frozen_strategy_v1.json').read_text(encoding='utf-8'))
+          assert p.get('strategy_version') == 'ALPHA_HUNTER_SHADOW_V1'
+          assert p.get('file_hashes')
+          print('Frozen V1 registry preserved:', len(p['file_hashes']), 'files')
+          PY
