@@ -3,8 +3,8 @@ name: Alpha Hunter Daily Scan
 on:
   workflow_dispatch:
   schedule:
-    # 22:17 UTC = 06:17 Asia/Taipei. Budget 40m scan + 45m research + 15m board; 43m slack to 08:40.
-    - cron: '17 22 * * 0-4'
+    # 21:17 UTC = 05:17 Asia/Taipei. Budget 40m scan + 45m research + 15m board; 103m slack to 08:40.
+    - cron: '17 21 * * 0-4'
 
 concurrency:
   group: alpha-hunter-daily-main

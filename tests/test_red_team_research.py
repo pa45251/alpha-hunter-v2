@@ -33,3 +33,12 @@ def test_source_gate_rejects_stale_pass(tmp_path, monkeypatch, mutation):
     p.write_text(json.dumps(research))
     with pytest.raises(SystemExit):
         source.main()
+
+from test_research_contract_v3 import research as research_fixture
+from research_contract_v3 import validate_research_result, ResearchContractError
+
+def test_future_publication_cannot_support_research():
+    r=research_fixture()
+    r['supporting_evidence'][0]['published_at']='2099-01-01T00:00:00Z'
+    with pytest.raises(ResearchContractError,match='future'):
+        validate_research_result(r,{'AI_SERVER_SHIPMENTS'})

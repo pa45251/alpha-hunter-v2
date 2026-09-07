@@ -65,7 +65,9 @@ def validate_research_result(result: dict[str, Any], allowed_driver_ids: Iterabl
     confidence = result.get("confidence")
     if not isinstance(confidence, (int, float)) or isinstance(confidence, bool) or not 0 <= confidence <= 1:
         raise ResearchContractError("confidence must be numeric 0..1")
-    _parse_iso(result.get("researched_at_utc"))
+    researched = _parse_iso(result.get("researched_at_utc"))
+    if researched.tzinfo is None:
+        raise ResearchContractError("research timestamp requires timezone")
     if not _nonempty(result.get("research_run_id")):
         raise ResearchContractError("missing research_run_id")
 
@@ -77,6 +79,11 @@ def validate_research_result(result: dict[str, Any], allowed_driver_ids: Iterabl
         if not isinstance(item, dict):
             raise ResearchContractError("evidence item must be object")
         validate_evidence_item(item)
+        published = _parse_iso(item["published_at"])
+        if published.tzinfo is None:
+            published = published.replace(tzinfo=timezone.utc)
+        if published > researched:
+            raise ResearchContractError("future publication cannot support past research")
 
     if result["state"] == "ACTIVE":
         if len(supporting) < 1:
