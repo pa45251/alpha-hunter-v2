@@ -2,23 +2,12 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from datetime import datetime, timezone
-import json
 import math
-from pathlib import Path
 from typing import Any
 
 import numpy as np
 import pandas as pd
 import yfinance as yf
-
-from portfolio_risk_v2 import apply_entry_risk_gate_v2
-
-OUT = Path("output")
-BOARD_PATH = OUT / "decision_board.csv"
-ALIGN_PATH = OUT / "global_alignment_v2.json"
-MANIFEST_PATH = OUT / "manifest.json"
-CSV_OUT = OUT / "entry_plans_v2.csv"
-JSON_OUT = OUT / "entry_plans_v2.json"
 
 CONTRACT = "ALPHA_HUNTER_ENTRY_STRUCTURE_V2"
 STRATEGY_VERSION = "ALPHA_HUNTER_ADVISORY_V2"
@@ -55,7 +44,6 @@ def _f(v: Any, default: float = np.nan) -> float:
 
 
 def tw_stock_tick(price: float) -> float:
-    """TWSE/TPEX common-share price increment schedule used by the V2 stock lane."""
     p = float(price)
     if p < 10:
         return 0.01
@@ -90,8 +78,7 @@ def _normalize_history(hist: pd.DataFrame) -> pd.DataFrame:
     h = h[req].copy()
     for c in req:
         h[c] = pd.to_numeric(h[c], errors="coerce")
-    h = h.dropna(subset=["Open", "High", "Low", "Close"]).sort_index()
-    return h
+    return h.dropna(subset=["Open", "High", "Low", "Close"]).sort_index()
 
 
 def simple_atr(hist: pd.DataFrame, n: int = 14) -> float:
@@ -117,7 +104,8 @@ def _median_true_range(hist: pd.DataFrame) -> float:
         (h["High"] - prev).abs(),
         (h["Low"] - prev).abs(),
     ], axis=1).max(axis=1)
-    return float(tr.dropna().median()) if tr.notna().any() else np.nan
+    tr = tr.dropna()
+    return float(tr.median()) if not tr.empty else np.nan
 
 
 def _avg_turnover20(hist: pd.DataFrame) -> float:
@@ -169,8 +157,12 @@ def _price_structure(pivot: float, support: float, atr: float, policy: EntryPoli
     buffer = max(tick, policy.breakout_buffer_atr * atr)
     trigger = _round_up_tick(pivot + buffer, tick)
     invalidation = _round_down_tick(support - policy.stop_noise_atr * atr, tick)
-    zone_high = _round_down_tick(pivot + policy.chase_allowance_atr * atr, tick)
-    if invalidation <= 0 or invalidation >= trigger or zone_high < trigger:
+    zone_high_raw = _round_down_tick(pivot + policy.chase_allowance_atr * atr, tick)
+    # Tick-quantisation can otherwise create an impossible buy zone at prices where
+    # one Taiwan tick is wider than the incremental ATR band. A valid zone must at
+    # minimum include the trigger tick itself; this does not widen it beyond one tick.
+    zone_high = max(trigger, zone_high_raw)
+    if invalidation <= 0 or invalidation >= trigger:
         return None
     return {
         "tick_size": tick,
@@ -217,8 +209,6 @@ def _plan_base(row: dict[str, Any], alignment: dict[str, Any], hist: pd.DataFram
     last = h.iloc[-1] if not h.empty else pd.Series(dtype=float)
     last_idx = h.index[-1] if not h.empty else None
     current_price = _f(last.get("Close")) if not h.empty else np.nan
-    ma20 = _ma(h, 20)
-    ma60 = _ma(h, 60)
     atr_now = simple_atr(h.iloc[:-1], policy.atr_lookback) if len(h) > policy.atr_lookback + 1 else np.nan
     return {
         "contract": CONTRACT,
@@ -240,9 +230,9 @@ def _plan_base(row: dict[str, Any], alignment: dict[str, Any], hist: pd.DataFram
         "instrument_type": "TAIWAN_COMMON_STOCK",
         "is_closed_bar": True,
         "atr14": atr_now,
-        "atr_pct": (atr_now / current_price) if _finite(atr_now) and _finite(current_price) and current_price > 0 else np.nan,
-        "ma20": ma20,
-        "ma60": ma60,
+        "atr_pct": atr_now / current_price if _finite(atr_now) and _finite(current_price) and current_price > 0 else np.nan,
+        "ma20": _ma(h, 20),
+        "ma60": _ma(h, 60),
         "rs20": _f(row.get("rs_20d_vs_bench")),
         "rs60": _f(row.get("rs_60d_vs_bench")),
         "keynes_v2": _f(row.get("keynes_v2")),
@@ -302,10 +292,12 @@ def build_fresh_plan(row: dict[str, Any], alignment: dict[str, Any], hist: pd.Da
     atr = simple_atr(pre, policy.atr_lookback)
     pivot = float(base["High"].max())
     support = float(base["Low"].min())
-    plan["base_start"] = pd.Timestamp(base.index[0]).isoformat()
-    plan["base_end"] = pd.Timestamp(base.index[-1]).isoformat()
-    plan["base_high"] = pivot
-    plan["base_low"] = support
+    plan.update({
+        "base_start": pd.Timestamp(base.index[0]).isoformat(),
+        "base_end": pd.Timestamp(base.index[-1]).isoformat(),
+        "base_high": pivot,
+        "base_low": support,
+    })
     if not _apply_structure(plan, pivot, support, atr, policy):
         plan["blockers"] = "INVALID_FRESH_PRICE_STRUCTURE"
         plan["why_not_now"] = plan["blockers"]
@@ -362,15 +354,13 @@ def build_pullback_plan(row: dict[str, Any], alignment: dict[str, Any], hist: pd
     after_low = pb.iloc[low_pos + 1:]
     pivot = float(after_low["High"].max())
     atr = simple_atr(pre, policy.atr_lookback)
-    plan["support_zone"] = {
-        "low": support,
-        "ma20": _ma(pre, 20),
-        "ma60": _ma(pre, 60),
-    }
-    plan["base_start"] = pd.Timestamp(pb.index[low_pos]).isoformat()
-    plan["base_end"] = pd.Timestamp(pb.index[-1]).isoformat()
-    plan["base_low"] = support
-    plan["base_high"] = pivot
+    plan.update({
+        "support_zone": {"low": support, "ma20": _ma(pre, 20), "ma60": _ma(pre, 60)},
+        "base_start": pd.Timestamp(pb.index[low_pos]).isoformat(),
+        "base_end": pd.Timestamp(pb.index[-1]).isoformat(),
+        "base_low": support,
+        "base_high": pivot,
+    })
     if not _apply_structure(plan, pivot, support, atr, policy):
         plan["blockers"] = "INVALID_PULLBACK_RECOVERY_STRUCTURE"
         plan["why_not_now"] = plan["blockers"]
@@ -402,8 +392,7 @@ def build_continuation_plan(row: dict[str, Any], alignment: dict[str, Any], hist
     plan = _plan_base(row, alignment, hist, ENTRY_STYLE_CONTINUATION, policy)
     h = _normalize_history(hist)
     blockers = _common_gate_blockers(row, alignment)
-    reaction = str(row.get("reaction_state", "UNKNOWN")).upper()
-    if reaction != "PERSISTENT":
+    if str(row.get("reaction_state", "UNKNOWN")).upper() != "PERSISTENT":
         blockers.append("REACTION_NOT_PERSISTENT")
     if len(h) < max(policy.min_history, policy.continuation_window + policy.continuation_prior_window + 25):
         blockers.append("INSUFFICIENT_OHLCV_HISTORY")
@@ -437,7 +426,7 @@ def build_continuation_plan(row: dict[str, Any], alignment: dict[str, Any], hist
     ma20_start = _f(ma20_series.iloc[start_i]) if start_i < len(ma20_series) else np.nan
     dist_start = abs(float(base["Close"].iloc[0]) - ma20_start) / atr if _finite(ma20_start) and _finite(atr) and atr > 0 else np.nan
     dist_end = abs(float(base["Close"].iloc[-1]) - ma20_pre) / atr if _finite(ma20_pre) and _finite(atr) and atr > 0 else np.nan
-    catchup_ok = _finite(dist_end) and (_finite(dist_start) and dist_end <= dist_start or dist_end <= 1.5)
+    catchup_ok = _finite(dist_end) and ((_finite(dist_start) and dist_end <= dist_start) or dist_end <= 1.5)
 
     quality_flags = {
         "volatility_contracted": bool(contraction),
@@ -452,15 +441,17 @@ def build_continuation_plan(row: dict[str, Any], alignment: dict[str, Any], hist
         plan["current_action"] = "WAIT_BREAKOUT"
         plan["entry_status"] = "NO_VALID_CONTINUATION_BASE"
         plan["why_not_now"] = "CONTINUATION_BASE_QUALITY_NOT_COMPLETE"
-        plan["blockers"] = ";".join([k.upper() for k, v in quality_flags.items() if not v])
+        plan["blockers"] = ";".join(k.upper() for k, v in quality_flags.items() if not v)
         return plan
 
     pivot = float(base["High"].max())
     support = float(base["Low"].min())
-    plan["base_start"] = pd.Timestamp(base.index[0]).isoformat()
-    plan["base_end"] = pd.Timestamp(base.index[-1]).isoformat()
-    plan["base_high"] = pivot
-    plan["base_low"] = support
+    plan.update({
+        "base_start": pd.Timestamp(base.index[0]).isoformat(),
+        "base_end": pd.Timestamp(base.index[-1]).isoformat(),
+        "base_high": pivot,
+        "base_low": support,
+    })
     if not _apply_structure(plan, pivot, support, atr, policy):
         plan["blockers"] = "INVALID_CONTINUATION_STRUCTURE"
         plan["why_not_now"] = plan["blockers"]
@@ -496,18 +487,13 @@ def choose_plan(row: dict[str, Any], alignment: dict[str, Any], hist: pd.DataFra
     if reaction == "PULLBACK":
         return build_pullback_plan(row, alignment, hist, policy)
     if reaction == "PERSISTENT":
-        cont = build_continuation_plan(row, alignment, hist, policy)
-        if bool(cont.get("entry_structure_valid")) or cont.get("entry_status") == "NO_VALID_CONTINUATION_BASE":
-            return cont
-        return build_pullback_plan(row, alignment, hist, policy)
+        return build_continuation_plan(row, alignment, hist, policy)
     plan = _plan_base(row, alignment, hist, "NONE", policy)
     blockers = _common_gate_blockers(row, alignment)
     if reaction == "BROKEN":
         plan["current_action"] = "AVOID"
     elif reaction == "EXTENDED":
         plan["current_action"] = "DONT_CHASE"
-    else:
-        plan["current_action"] = "PREPARE"
     plan["blockers"] = ";".join(dict.fromkeys(blockers + ["NO_ENTRY_STYLE_FOR_CURRENT_REACTION"]))
     plan["why_not_now"] = plan["blockers"]
     return plan
@@ -523,133 +509,11 @@ def _download_histories(tickers: list[str], period: str = "6mo") -> dict[str, pd
         if raw is not None and not raw.empty:
             result[tickers[0]] = raw.copy()
         return result
-    for t in tickers:
+    for ticker in tickers:
         try:
-            d = raw[t].copy()
-            if not d.empty:
-                result[t] = d
+            df = raw[ticker].copy()
+            if not df.empty:
+                result[ticker] = df
         except Exception:
             continue
     return result
-
-
-def _load_alignment_map() -> dict[str, dict[str, Any]]:
-    if not ALIGN_PATH.exists():
-        return {}
-    try:
-        payload = json.loads(ALIGN_PATH.read_text(encoding="utf-8"))
-    except Exception:
-        return {}
-    return {str(r.get("ticker")): r for r in (payload.get("top_aligned") or []) if r.get("ticker")}
-
-
-def _load_all_alignment_rows() -> dict[str, dict[str, Any]]:
-    csv_path = OUT / "global_alignment_v2.csv"
-    if not csv_path.exists():
-        return _load_alignment_map()
-    try:
-        df = pd.read_csv(csv_path)
-    except Exception:
-        return _load_alignment_map()
-    return {str(r.get("ticker")): r for r in df.to_dict(orient="records") if r.get("ticker")}
-
-
-def build_entry_plans_from_inputs(board: pd.DataFrame, alignment_rows: dict[str, dict[str, Any]], histories: dict[str, pd.DataFrame], policy: EntryPolicyV2 = EntryPolicyV2()) -> pd.DataFrame:
-    if board is None or board.empty:
-        return pd.DataFrame()
-    rows: list[dict[str, Any]] = []
-    # One price episode per ticker. Pick the highest research-priority driver row after alignment gating.
-    x = board.copy()
-    if "research_priority_score" in x.columns:
-        x = x.sort_values("research_priority_score", ascending=False)
-    x = x.drop_duplicates("ticker", keep="first")
-    for r in x.to_dict(orient="records"):
-        ticker = str(r.get("ticker", ""))
-        align = alignment_rows.get(ticker, {})
-        hist = histories.get(ticker, pd.DataFrame())
-        plan = choose_plan(r, align, hist, policy)
-        rows.append(plan)
-    out = pd.DataFrame(rows)
-    if out.empty:
-        return out
-    risked, meta = apply_entry_risk_gate_v2(out)
-    risked["risk_v2_contract"] = meta.get("contract")
-    # End-of-day plans can be confirmed, but without a live executable quote BUY_NOW remains false.
-    risked["entry_executable"] = False
-    risked["buy_now_blocker"] = "LIVE_EXECUTABLE_QUOTE_REQUIRED"
-    return risked
-
-
-def write_outputs() -> tuple[pd.DataFrame, dict[str, Any]]:
-    if not BOARD_PATH.exists() or not ALIGN_PATH.exists():
-        raise RuntimeError("ENTRY_STRUCTURE_V2_INPUT_MISSING")
-    board = pd.read_csv(BOARD_PATH, dtype={"taiwan_code": str})
-    alignment_rows = _load_all_alignment_rows()
-    tickers = [str(t) for t in board.get("ticker", pd.Series(dtype=str)).dropna().unique().tolist()]
-    histories = _download_histories(tickers)
-    plans = build_entry_plans_from_inputs(board, alignment_rows, histories)
-    CSV_OUT.parent.mkdir(parents=True, exist_ok=True)
-    plans.to_csv(CSV_OUT, index=False)
-
-    run_id = None
-    if MANIFEST_PATH.exists():
-        try:
-            run_id = json.loads(MANIFEST_PATH.read_text(encoding="utf-8")).get("run_id")
-        except Exception:
-            run_id = None
-
-    def records_for(style: str) -> list[dict[str, Any]]:
-        if plans.empty:
-            return []
-        p = plans[plans["entry_style"].eq(style)].copy()
-        order = {"CONFIRMED_NEXT_SESSION_CONDITIONAL": 0, "WAITING_FOR_TRIGGER": 1, "CONTINUATION_BASE_WAITING_FOR_TRIGGER": 1, "WAITING_FOR_RECOVERY_TRIGGER": 1}
-        p["_order"] = p["entry_status"].map(order).fillna(9)
-        score = pd.to_numeric(p.get("global_alignment_score"), errors="coerce").fillna(-1)
-        p["_score"] = score
-        p = p.sort_values(["_order", "_score"], ascending=[True, False]).drop(columns=["_order", "_score"])
-        return p.head(10).replace({np.nan: None}).to_dict(orient="records")
-
-    payload = {
-        "contract": CONTRACT,
-        "schema_version": "2.0",
-        "strategy_version": STRATEGY_VERSION,
-        "generated_at": datetime.now(timezone.utc).isoformat(),
-        "source_run_id": run_id,
-        "status": "READY" if not plans.empty else "DATA_UNAVAILABLE",
-        "score_is_probability": False,
-        "buy_now_requires_live_executable_quote": True,
-        "fresh": records_for(ENTRY_STYLE_FRESH),
-        "pullback": records_for(ENTRY_STYLE_PULLBACK),
-        "continuation": records_for(ENTRY_STYLE_CONTINUATION),
-        "all_plans": plans.head(100).replace({np.nan: None}).to_dict(orient="records") if not plans.empty else [],
-        "auto_trade_allowed": False,
-    }
-    JSON_OUT.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
-    return plans, payload
-
-
-def main() -> None:
-    try:
-        plans, payload = write_outputs()
-        print(f"Entry Structure V2 status={payload.get('status')} plans={len(plans)}")
-    except Exception as exc:
-        # Market-data outages must fail closed and leave a machine-readable artifact.
-        payload = {
-            "contract": CONTRACT,
-            "schema_version": "2.0",
-            "strategy_version": STRATEGY_VERSION,
-            "generated_at": datetime.now(timezone.utc).isoformat(),
-            "status": "DATA_UNAVAILABLE",
-            "failure": type(exc).__name__,
-            "entry_executable": False,
-            "auto_trade_allowed": False,
-        }
-        JSON_OUT.parent.mkdir(parents=True, exist_ok=True)
-        JSON_OUT.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
-        if CSV_OUT.exists():
-            CSV_OUT.unlink()
-        print(f"Entry Structure V2 status=DATA_UNAVAILABLE failure={type(exc).__name__}")
-
-
-if __name__ == "__main__":
-    main()
