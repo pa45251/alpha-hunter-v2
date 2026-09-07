@@ -1,7 +1,7 @@
 {
   "contract": "ALPHA_HUNTER_GLOBAL_ALIGNMENT_V2",
   "schema_version": "2.0",
-  "generated_at": "2026-09-07T02:23:49.758036+00:00",
+  "generated_at": "2026-09-07T02:32:51.874076+00:00",
   "score_is_probability": false,
   "score_interpretation": "Relative alignment/evidence strength only; not a calibrated win probability.",
   "hard_rules": [
