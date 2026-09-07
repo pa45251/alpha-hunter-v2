@@ -2,6 +2,17 @@ name: Alpha Hunter Action Board Publish
 
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'global_alignment_v2.py'
+      - 'entry_structure_v2.py'
+      - 'entry_plan_run_v2.py'
+      - 'entry_plan_trace_v2.py'
+      - 'portfolio_risk_v2.py'
+      - 'portfolio_allocation_v2.py'
+      - 'entry_action_board_v2.py'
+      - '.github/workflows/action_board_publish.yml'
   workflow_run:
     workflows:
       - "Alpha Hunter Portfolio Maintenance Recovery"
