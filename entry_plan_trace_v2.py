@@ -31,12 +31,30 @@ def _date_from_price_as_of(v) -> str:
         return ""
 
 
+def _existing_or_empty_trace() -> pd.DataFrame:
+    TRACE.parent.mkdir(parents=True, exist_ok=True)
+    if TRACE.exists():
+        try:
+            x = pd.read_csv(TRACE)
+            for c in TRACE_COLUMNS:
+                if c not in x.columns:
+                    x[c] = ""
+            return x[TRACE_COLUMNS]
+        except Exception:
+            pass
+    x = pd.DataFrame(columns=TRACE_COLUMNS)
+    x.to_csv(TRACE, index=False)
+    return x
+
+
 def append_entry_plan_trace() -> pd.DataFrame:
+    # Data-unavailable is itself a valid non-signal state. Keep the ledger file present so the
+    # publication workflow never confuses an upstream data outage with a successful empty trace.
     if not PLANS.exists():
-        return pd.DataFrame(columns=TRACE_COLUMNS)
+        return _existing_or_empty_trace()
     plans = pd.read_csv(PLANS)
     if plans.empty:
-        return pd.DataFrame(columns=TRACE_COLUMNS)
+        return _existing_or_empty_trace()
 
     run_id = ""
     if MANIFEST.exists():
@@ -55,13 +73,13 @@ def append_entry_plan_trace() -> pd.DataFrame:
             x[c] = ""
     x = x[TRACE_COLUMNS]
 
-    TRACE.parent.mkdir(parents=True, exist_ok=True)
-    if TRACE.exists():
-        old = pd.read_csv(TRACE)
-        x = pd.concat([old, x], ignore_index=True)
+    old = _existing_or_empty_trace()
+    x = pd.concat([old, x], ignore_index=True)
 
-    # Re-running the exact same source snapshot must not create extra prospective samples.
-    key = ["source_run_id", "ticker", "driver_id", "entry_style", "current_action", "entry_status"]
+    # Market-session idempotence: repeated scanner/decision runs on the same closed bar do not
+    # create extra prospective samples when the resulting plan state is identical. source_run_id
+    # remains stored for lineage but is intentionally not part of the dedupe key.
+    key = ["decision_session", "ticker", "driver_id", "entry_style", "current_action", "entry_status"]
     for c in key:
         x[c] = x[c].fillna("").astype(str)
     x = x.drop_duplicates(key, keep="first")
