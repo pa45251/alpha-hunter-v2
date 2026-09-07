@@ -12,7 +12,8 @@ from decision_state_v2 import write_decision_outputs_v2
 from existing_position_v2 import apply_existing_position_engine
 from launch_gate import apply_launch_gate
 from portfolio_risk import apply_portfolio_risk_gate
-from shadow_audit import append_shadow_audit, seal_public_snapshot
+from shadow_audit import seal_public_snapshot
+from shadow_audit_v2 import append_shadow_audit_v2
 from shadow_validation_v2 import write_shadow_validation_v2
 from snapshot_lineage_v2 import assert_decision_snapshot_current, build_public_lineage_id
 
@@ -56,7 +57,6 @@ def main() -> None:
     board, packet = write_decision_outputs_v2(structural, run_id, "output")
     board, risk_meta = apply_portfolio_risk_gate(board)
     board, launch_meta = apply_launch_gate(board)
-    board.to_csv(OUT / "decision_board.csv", index=False)
 
     _private_position_actions, position_meta = apply_existing_position_engine(board)
 
@@ -70,10 +70,13 @@ def main() -> None:
         Path("config/frozen_strategy_v1.json"),
     ]
     public_lineage_id, public_hashes = build_public_lineage_id(run_id, evidence_paths)
+    board["public_lineage_id"] = public_lineage_id
+    board.to_csv(OUT / "decision_board.csv", index=False)
+
     sealed = seal_public_snapshot(board, run_id, launch_meta, evidence_paths)
     launch_meta["sealed_snapshot_id"] = sealed
 
-    audit = append_shadow_audit(board, "output/shadow_audit.csv")
+    audit = append_shadow_audit_v2(board, "output/shadow_audit.csv")
     validation, validation_report = write_shadow_validation_v2(
         "output/shadow_audit.csv",
         "output/shadow_validation.csv",
@@ -133,7 +136,8 @@ def main() -> None:
     packet["rule"] = (
         "No score can override causal/provenance/reaction gates. Canonical hashes/freshness are revalidated immediately before decisioning. "
         "Previous state must come from a strictly earlier Taiwan market session, so same-session reruns cannot consume triggers. "
-        "Existing positions use the V2 BROKEN persistence guard. Shadow outcomes can mature only from fully closed market sessions available by the evaluation cutoff. "
+        "Identical same-session shadow decisions are one prospective observation. Existing positions use the V2 BROKEN persistence guard. "
+        "Shadow outcomes can mature only from fully closed market sessions available by the evaluation cutoff. "
         "No brokerage/order execution exists and threshold tuning from prospective outcomes is forbidden."
     )
     packet["auto_order_execution"] = False
