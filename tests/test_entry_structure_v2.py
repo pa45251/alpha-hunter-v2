@@ -4,6 +4,7 @@ import pandas as pd
 from entry_structure_v2 import (
     EntryPolicyV2,
     ENTRY_STYLE_CONTINUATION,
+    _price_structure,
     build_continuation_plan,
     build_fresh_plan,
     build_pullback_plan,
@@ -44,11 +45,20 @@ def _hist(closes, highs=None, lows=None, volumes=None):
     return pd.DataFrame({"Open": opens, "High": highs, "Low": lows, "Close": closes, "Volume": volumes}, index=idx)
 
 
+def test_tick_quantization_never_makes_buy_zone_end_below_trigger():
+    # Around TWD 100 the stock tick expands to 0.5. ATR bands narrower than a tick
+    # must still yield a valid one-tick trigger zone rather than an impossible zone.
+    levels = _price_structure(100.6, 98.0, 0.9, EntryPolicyV2())
+    assert levels is not None
+    assert levels["buy_zone_high"] >= levels["trigger_price"]
+    assert levels["buy_zone_low"] == levels["trigger_price"]
+    assert levels["invalidation_price"] < levels["trigger_price"]
+
+
 def test_fresh_breakout_pivot_excludes_trigger_bar_high():
     closes = np.concatenate([np.linspace(90, 98, 79), [100.0]])
     highs = closes + 0.5
     lows = closes - 0.5
-    # Current bar makes a huge high. It must NOT be used to define the pivot it is testing.
     highs[-1] = 120.0
     volumes = np.full(80, 1_000_000.0)
     volumes[-1] = 2_000_000.0
