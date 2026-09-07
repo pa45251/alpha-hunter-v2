@@ -1,0 +1,153 @@
+{
+  "contract": "ALPHA_HUNTER_PORTFOLIO_ALLOCATION_V2",
+  "schema_version": "2.0",
+  "generated_at": "2026-09-07T01:25:30.270375+00:00",
+  "status": "READY",
+  "risk_regime": "RISK_ON",
+  "risk_score": 11,
+  "target_cash_pct": 0.0,
+  "best_research_opportunity": {
+    "ticker": "4967.TW",
+    "name": "十銓",
+    "driver_id": "NAND_STORAGE_CYCLE",
+    "advisory_action": "BUY_BIAS_STOCK",
+    "edge_score": 0.9905,
+    "score_is_probability": false,
+    "entry_plan_present": true,
+    "entry_style": "FRESH_BREAKOUT",
+    "entry_status": "WAITING_FOR_TRIGGER",
+    "trigger_price": 294.5,
+    "buy_zone_low": 294.5,
+    "buy_zone_high": 299.0,
+    "invalidation_price": 245.0
+  },
+  "best_entry_plan_destination": {
+    "ticker": "4967.TW",
+    "name": "十銓",
+    "driver_id": "NAND_STORAGE_CYCLE",
+    "advisory_action": "BUY_BIAS_STOCK",
+    "edge_score": 0.9905,
+    "score_is_probability": false,
+    "entry_plan_present": true,
+    "entry_style": "FRESH_BREAKOUT",
+    "entry_status": "WAITING_FOR_TRIGGER",
+    "trigger_price": 294.5,
+    "buy_zone_low": 294.5,
+    "buy_zone_high": 299.0,
+    "invalidation_price": 245.0,
+    "entry_permission": "PREPARE",
+    "entry_permission_reason": "WAITING_FOR_TRIGGER"
+  },
+  "rotations": [
+    {
+      "source_alias": "標的D",
+      "destination_ticker": "4967.TW",
+      "destination_name": "十銓",
+      "destination_driver": "NAND_STORAGE_CYCLE",
+      "destination_entry_style": "FRESH_BREAKOUT",
+      "rotation_action": "PREPARE_ROTATION_STRONG",
+      "relative_evidence_spread": 0.5779,
+      "score_is_probability": false,
+      "suggested_source_trim_pct_now": 0,
+      "suggested_source_trim_pct_if_live_trigger_valid": 50,
+      "suggested_redeploy_pct_of_trim": 100,
+      "trigger_price": 294.5,
+      "buy_zone_low": 294.5,
+      "buy_zone_high": 299.0,
+      "invalidation_price": 245.0,
+      "entry_trigger_required": "ENTRY_PLAN_TRIGGER_AND_LIVE_QUOTE",
+      "reason": "DESTINATION_EDGE_EXCEEDS_SOURCE_AND_CANONICAL_ENTRY_PLAN_EXISTS"
+    }
+  ],
+  "source_ranking": [
+    {
+      "alias": "標的D",
+      "current_action": "REVIEW_HOLD",
+      "current_edge_score": 0.4126,
+      "confidence": "MEDIUM",
+      "signal_state": "MIXED"
+    },
+    {
+      "alias": "標的A",
+      "current_action": "HOLD_BIAS",
+      "current_edge_score": 0.5858,
+      "confidence": "HIGH",
+      "signal_state": "POSITIVE"
+    },
+    {
+      "alias": "標的C",
+      "current_action": "HOLD_BIAS",
+      "current_edge_score": 0.7444,
+      "confidence": "HIGH",
+      "signal_state": "STRONG"
+    },
+    {
+      "alias": "標的B",
+      "current_action": "HOLD_BIAS",
+      "current_edge_score": 0.9461,
+      "confidence": "MEDIUM",
+      "signal_state": "STRONG"
+    }
+  ],
+  "candidate_ranking": [
+    {
+      "ticker": "4967.TW",
+      "name": "十銓",
+      "driver_id": "NAND_STORAGE_CYCLE",
+      "advisory_action": "BUY_BIAS_STOCK",
+      "edge_score": 0.9905,
+      "score_is_probability": false,
+      "entry_plan_present": true,
+      "entry_style": "FRESH_BREAKOUT",
+      "entry_status": "WAITING_FOR_TRIGGER",
+      "trigger_price": 294.5,
+      "buy_zone_low": 294.5,
+      "buy_zone_high": 299.0,
+      "invalidation_price": 245.0,
+      "entry_permission": "PREPARE",
+      "entry_permission_reason": "WAITING_FOR_TRIGGER"
+    },
+    {
+      "ticker": "2376.TW",
+      "name": "技嘉",
+      "driver_id": "AI_SERVER_RACK_BUILD",
+      "advisory_action": "BUY_BIAS_STOCK",
+      "edge_score": 0.9879,
+      "score_is_probability": false,
+      "entry_plan_present": true,
+      "entry_style": "FRESH_BREAKOUT",
+      "entry_status": "WAITING_FOR_TRIGGER",
+      "trigger_price": 405.0,
+      "buy_zone_low": 405.0,
+      "buy_zone_high": 410.0,
+      "invalidation_price": 332.5,
+      "entry_permission": "PREPARE",
+      "entry_permission_reason": "WAITING_FOR_TRIGGER"
+    },
+    {
+      "ticker": "3231.TW",
+      "name": "緯創",
+      "driver_id": "AI_SERVER_SHIPMENTS",
+      "advisory_action": "HOLD_BIAS",
+      "edge_score": 0.6353,
+      "score_is_probability": false,
+      "entry_plan_present": true,
+      "entry_style": "CONTINUATION_BASE",
+      "entry_status": "CONTINUATION_BASE_WAITING_FOR_TRIGGER",
+      "trigger_price": 208.0,
+      "buy_zone_low": 208.0,
+      "buy_zone_high": 211.5,
+      "invalidation_price": 170.5,
+      "entry_permission": "PREPARE",
+      "entry_permission_reason": "CONTINUATION_BASE_WAITING_FOR_TRIGGER"
+    }
+  ],
+  "rules": [
+    "ROTATION_MUST_USE_CANONICAL_ENTRY_PLAN_V2",
+    "GLOBAL_ALIGNMENT_AND_EXACT_ENTRY_CANNOT_BE_BYPASSED",
+    "END_OF_DAY_PIPELINE_NEVER_SELLS_SOURCE_NOW_WITHOUT_LIVE_EXECUTABLE_DESTINATION_QUOTE",
+    "CRISIS_REGIME_CANNOT_CREATE_RISK_ON_ROTATION",
+    "SCORES_ARE_RELATIVE_EVIDENCE_NOT_WIN_PROBABILITIES"
+  ],
+  "auto_trade_allowed": false
+}
