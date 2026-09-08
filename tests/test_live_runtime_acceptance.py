@@ -43,3 +43,12 @@ def test_seal_failure_exposes_only_guard_code(tmp_path,monkeypatch):
     report=live.REPORT.read_text()
     assert 'SYNTHETIC_PRIVATE_SENTINEL' not in report
     assert json.loads(report)['publication_guard_code']=='DUPLICATE_SESSION_TRACE'
+
+
+def test_standalone_runner_resolves_diagnostic_without_pythonpath(tmp_path):
+    import subprocess,sys
+    script=Path(live.__file__).resolve()
+    p=subprocess.run([sys.executable,'-I','-c',
+        'import runpy,sys; runpy.run_path(sys.argv[1],run_name="import_probe"); assert "research_runtime_diagnostic" in sys.modules',str(script)],
+        cwd=tmp_path,capture_output=True,text=True)
+    assert p.returncode==0,p.stderr

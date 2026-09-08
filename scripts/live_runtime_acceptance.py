@@ -9,11 +9,14 @@ import re
 from pathlib import Path
 import shutil
 import subprocess
+import sys
 import tempfile
 import time
 import yaml
 
 ROOT=Path(__file__).resolve().parents[1]
+sys.path.insert(0,str(ROOT))
+from research_runtime_diagnostic import summarize
 REPORT=ROOT/'live_runtime_acceptance.json'
 
 
@@ -49,7 +52,6 @@ def run():
             phases.append({'name':name,'exit_code':code,'duration_seconds':elapsed})
             print(f'{name}: exit={code} seconds={elapsed}',flush=True)
             if name in {'Deterministic fail-closed opportunity research ingest','Re-ingest recovery opportunity research'}:
-                from research_runtime_diagnostic import summarize
                 diagnostic=summarize(work/'output')
                 result.setdefault('research_diagnostics',[]).append(diagnostic)
                 print('Research diagnostic: '+json.dumps(diagnostic),flush=True)
