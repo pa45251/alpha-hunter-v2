@@ -48,6 +48,11 @@ def run():
             elapsed=round(time.monotonic()-start,1)
             phases.append({'name':name,'exit_code':code,'duration_seconds':elapsed})
             print(f'{name}: exit={code} seconds={elapsed}',flush=True)
+            if name in {'Deterministic fail-closed opportunity research ingest','Re-ingest recovery opportunity research'}:
+                from research_runtime_diagnostic import summarize
+                diagnostic=summarize(work/'output')
+                result.setdefault('research_diagnostics',[]).append(diagnostic)
+                print('Research diagnostic: '+json.dumps(diagnostic),flush=True)
             if ident:
                 outputs[ident]=dict(line.split('=',1) for line in output_file.read_text().splitlines() if '=' in line)
                 outcomes[ident]='success' if code==0 else 'failure'
