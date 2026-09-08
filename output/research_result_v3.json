@@ -1,86 +1,97 @@
 {
   "contract": "ALPHA_HUNTER_V3_VALIDATED_RESEARCH",
   "status": "PASS",
-  "research_run_id": "20260906T130002+0800-dd80dd63",
-  "validated_at_utc": "2026-09-06T09:36:44.083921+00:00",
+  "research_run_id": "20260908T080641+0800-3df4fce0",
+  "validated_at_utc": "2026-09-08T00:11:14.915775+00:00",
   "target_driver_ids": [
     "DRY_BULK_FREIGHT",
     "CONTAINER_FREIGHT",
     "NUCLEAR_GRID_SECOND_ORDER",
-    "POWER_ELECTRONICS_CAPEX",
-    "AI_SERVER_SHIPMENTS"
+    "DRAM_PRICING",
+    "MEMORY_IC_CYCLE"
   ],
   "errors": [],
   "results": [
     {
       "driver_id": "DRY_BULK_FREIGHT",
-      "state": "UNKNOWN",
-      "confidence": 0.12,
-      "primary_cause": "Fresh exact-driver searches for BDI, Capesize, Panamax, commodity volumes, fleet supply, and counter-evidence terms did not yield a verifiable current source confirming or contradicting the exact dry-bulk freight cycle.",
-      "industry_scope": "UNKNOWN",
-      "supporting_evidence": [],
+      "state": "ACTIVE",
+      "confidence": 0.82,
+      "primary_cause": "Broad dry-bulk freight conditions are active, led by materially stronger Baltic Dry Index and Capesize rates.",
+      "industry_scope": "INDUSTRY_WIDE",
+      "supporting_evidence": [
+        {
+          "claim": "The Baltic Dry Index reached 3,628 on 2026-09-04, its highest level since October 2021, with the index up 13.9% for the week; the Capesize index reached 6,427 and Capesize earnings rose to $54,791 per day.",
+          "source_title": "Baltic dry bulk index posts weekly gain, touches nearly five-year high",
+          "source_url": "https://www.bairdmaritime.com/shipping/dry-bulk/baltic-dry-bulk-index-posts-weekly-gain-touches-nearly-five-year-high",
+          "published_at": "2026-09-04T17:46:56Z",
+          "event_date": "2026-09-04T00:00:00Z",
+          "evidence_type": "HIGH_QUALITY_REPORTING"
+        }
+      ],
       "counter_evidence": [],
-      "source_count": 0,
-      "event_date": null,
-      "source_dates": [],
-      "researched_at_utc": "2026-09-06T09:36:17Z",
-      "research_run_id": "20260906T130002+0800-dd80dd63"
+      "source_count": 1,
+      "event_date": "2026-09-04T00:00:00Z",
+      "source_dates": [
+        "2026-09-04T17:46:56Z"
+      ],
+      "researched_at_utc": "2026-09-08T00:10:30Z",
+      "research_run_id": "20260908T080641+0800-3df4fce0"
     },
     {
       "driver_id": "CONTAINER_FREIGHT",
       "state": "UNKNOWN",
-      "confidence": 0.12,
-      "primary_cause": "Fresh exact-driver searches for SCFI, Drewry WCI, container utilization, capacity, and counter-evidence terms did not yield a verifiable current source confirming or contradicting the exact container freight cycle.",
+      "confidence": 0.24,
+      "primary_cause": "Searches found reports of rising spot rates and port congestion, but no directly verifiable source establishing the complete container freight and liner utilization cycle, nor resolving capacity and demand counter-evidence, within the available evidence.",
       "industry_scope": "UNKNOWN",
       "supporting_evidence": [],
       "counter_evidence": [],
       "source_count": 0,
       "event_date": null,
       "source_dates": [],
-      "researched_at_utc": "2026-09-06T09:36:17Z",
-      "research_run_id": "20260906T130002+0800-dd80dd63"
+      "researched_at_utc": "2026-09-08T00:10:30Z",
+      "research_run_id": "20260908T080641+0800-3df4fce0"
     },
     {
       "driver_id": "NUCLEAR_GRID_SECOND_ORDER",
       "state": "UNKNOWN",
-      "confidence": 0.12,
-      "primary_cause": "Fresh exact-driver searches for nuclear buildout, transmission, transformers, switchgear, grid interconnection, and counter-evidence terms did not yield a verifiable current source establishing nuclear-specific second-order grid-equipment causality or contradicting it.",
+      "confidence": 0.18,
+      "primary_cause": "Current grid-equipment evidence confirms broad electrification, data-center, and grid-modernization demand but does not establish a nuclear-specific buildout transmission, transformer, or switchgear causal chain; contradictory project timing and capex evidence remains unresolved.",
       "industry_scope": "UNKNOWN",
       "supporting_evidence": [],
       "counter_evidence": [],
       "source_count": 0,
       "event_date": null,
       "source_dates": [],
-      "researched_at_utc": "2026-09-06T09:36:17Z",
-      "research_run_id": "20260906T130002+0800-dd80dd63"
+      "researched_at_utc": "2026-09-08T00:10:30Z",
+      "research_run_id": "20260908T080641+0800-3df4fce0"
     },
     {
-      "driver_id": "POWER_ELECTRONICS_CAPEX",
+      "driver_id": "DRAM_PRICING",
       "state": "UNKNOWN",
-      "confidence": 0.12,
-      "primary_cause": "Fresh exact-driver searches for power distribution, UPS, switchgear, transformers, data-center electrical equipment, utility and industrial capex, and counter-evidence terms did not yield a verifiable current source confirming or contradicting the exact power-equipment and electronics capex driver.",
+      "confidence": 0.32,
+      "primary_cause": "Searches identified current reports of higher DRAM industry revenue and supply lagging demand, but no directly verifiable primary or high-quality source was obtained that fully confirms commodity DRAM ASP, bit-demand, and inventory conditions together or resolves counter-evidence.",
       "industry_scope": "UNKNOWN",
       "supporting_evidence": [],
       "counter_evidence": [],
       "source_count": 0,
       "event_date": null,
       "source_dates": [],
-      "researched_at_utc": "2026-09-06T09:36:17Z",
-      "research_run_id": "20260906T130002+0800-dd80dd63"
+      "researched_at_utc": "2026-09-08T00:10:30Z",
+      "research_run_id": "20260908T080641+0800-3df4fce0"
     },
     {
-      "driver_id": "AI_SERVER_SHIPMENTS",
+      "driver_id": "MEMORY_IC_CYCLE",
       "state": "UNKNOWN",
-      "confidence": 0.12,
-      "primary_cause": "Fresh exact-driver searches for AI server units, rack shipments, ODM shipments, backlog, hyperscaler deployment, server-market data, and counter-evidence terms did not yield a verifiable current source confirming or contradicting the exact AI-server shipment and ODM cycle.",
+      "confidence": 0.22,
+      "primary_cause": "Searches produced memory-market and DRAM pricing reports, but no directly verifiable evidence specifically confirming a memory-IC design-demand and ASP cycle independent of broader DRAM or HBM themes; counter-evidence remains unresolved.",
       "industry_scope": "UNKNOWN",
       "supporting_evidence": [],
       "counter_evidence": [],
       "source_count": 0,
       "event_date": null,
       "source_dates": [],
-      "researched_at_utc": "2026-09-06T09:36:17Z",
-      "research_run_id": "20260906T130002+0800-dd80dd63"
+      "researched_at_utc": "2026-09-08T00:10:30Z",
+      "research_run_id": "20260908T080641+0800-3df4fce0"
     }
   ]
 }

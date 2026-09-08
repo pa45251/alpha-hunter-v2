@@ -1,8 +1,8 @@
 {
   "contract": "ALPHA_HUNTER_DECISION_PACKET",
   "decision_contract_version": "2.7.1",
-  "run_id": "20260907T083423+0800-0e24be27",
-  "generated_at": "2026-09-07T03:04:27.788415+00:00",
+  "run_id": "20260908T080641+0800-3df4fce0",
+  "generated_at": "2026-09-08T00:11:17.184348+00:00",
   "gate_first_score_second": true,
   "price_can_create_causality": false,
   "auto_trade_allowed": false,
@@ -12,64 +12,10 @@
     "FORWARD_ACCEPTANCE_REVIEW"
   ],
   "action_counts": {
-    "WATCH_RESEARCH": 45,
-    "WATCH_ENTRY": 10
+    "WATCH_RESEARCH": 51,
+    "WATCH_ENTRY": 4
   },
   "decision_focus": [
-    {
-      "global_theme": "Shipping",
-      "driver_id": "CONTAINER_FREIGHT",
-      "taiwan_code": "2615",
-      "ticker": "2615.TW",
-      "name": "萬海",
-      "reaction_state": "PERSISTENT",
-      "previous_reaction_state": "",
-      "entry_trigger_state": "NOT_TRIGGERED",
-      "etf_ticker": "BOAT",
-      "exposure_purity": "HIGH",
-      "stock_vs_etf_state": "ETF_CORE_PREFERRED",
-      "provenance_status": "SOURCE_BACKED",
-      "dynamic_driver_state": "ACTIVE_RESEARCH_VALIDATED",
-      "decision_stage": "GATE_4_REACTION",
-      "candidate_action": "WATCH_ENTRY",
-      "decision_blockers": "INFORMATION_MAY_BE_PRICED"
-    },
-    {
-      "global_theme": "Shipping",
-      "driver_id": "CONTAINER_FREIGHT",
-      "taiwan_code": "2603",
-      "ticker": "2603.TW",
-      "name": "長榮",
-      "reaction_state": "PERSISTENT",
-      "previous_reaction_state": "",
-      "entry_trigger_state": "NOT_TRIGGERED",
-      "etf_ticker": "BOAT",
-      "exposure_purity": "HIGH",
-      "stock_vs_etf_state": "ETF_CORE_PREFERRED",
-      "provenance_status": "SOURCE_BACKED",
-      "dynamic_driver_state": "ACTIVE_RESEARCH_VALIDATED",
-      "decision_stage": "GATE_4_REACTION",
-      "candidate_action": "WATCH_ENTRY",
-      "decision_blockers": "INFORMATION_MAY_BE_PRICED"
-    },
-    {
-      "global_theme": "Shipping",
-      "driver_id": "CONTAINER_FREIGHT",
-      "taiwan_code": "2609",
-      "ticker": "2609.TW",
-      "name": "陽明",
-      "reaction_state": "PERSISTENT",
-      "previous_reaction_state": "",
-      "entry_trigger_state": "NOT_TRIGGERED",
-      "etf_ticker": "BOAT",
-      "exposure_purity": "HIGH",
-      "stock_vs_etf_state": "ETF_CORE_PREFERRED",
-      "provenance_status": "SOURCE_BACKED",
-      "dynamic_driver_state": "ACTIVE_RESEARCH_VALIDATED",
-      "decision_stage": "GATE_4_REACTION",
-      "candidate_action": "WATCH_ENTRY",
-      "decision_blockers": "INFORMATION_MAY_BE_PRICED"
-    },
     {
       "global_theme": "Shipping",
       "driver_id": "DRY_BULK_FREIGHT",
@@ -77,7 +23,7 @@
       "ticker": "2606.TW",
       "name": "裕民",
       "reaction_state": "PERSISTENT",
-      "previous_reaction_state": "",
+      "previous_reaction_state": "PERSISTENT",
       "entry_trigger_state": "NOT_TRIGGERED",
       "etf_ticker": "BOAT",
       "exposure_purity": "MEDIUM",
@@ -95,7 +41,7 @@
       "ticker": "2637.TW",
       "name": "慧洋-KY",
       "reaction_state": "PERSISTENT",
-      "previous_reaction_state": "",
+      "previous_reaction_state": "PERSISTENT",
       "entry_trigger_state": "NOT_TRIGGERED",
       "etf_ticker": "BOAT",
       "exposure_purity": "MEDIUM",
@@ -113,7 +59,7 @@
       "ticker": "2605.TW",
       "name": "新興",
       "reaction_state": "PERSISTENT",
-      "previous_reaction_state": "",
+      "previous_reaction_state": "PERSISTENT",
       "entry_trigger_state": "NOT_TRIGGERED",
       "etf_ticker": "BOAT",
       "exposure_purity": "MEDIUM",
@@ -131,7 +77,7 @@
       "ticker": "2617.TW",
       "name": "台航",
       "reaction_state": "PERSISTENT",
-      "previous_reaction_state": "",
+      "previous_reaction_state": "PERSISTENT",
       "entry_trigger_state": "NOT_TRIGGERED",
       "etf_ticker": "BOAT",
       "exposure_purity": "MEDIUM",
@@ -141,60 +87,6 @@
       "decision_stage": "GATE_4_REACTION",
       "candidate_action": "WATCH_ENTRY",
       "decision_blockers": "INFORMATION_MAY_BE_PRICED"
-    },
-    {
-      "global_theme": "AI_Server",
-      "driver_id": "AI_SERVER_SHIPMENTS",
-      "taiwan_code": "6669",
-      "ticker": "6669.TW",
-      "name": "緯穎",
-      "reaction_state": "PERSISTENT",
-      "previous_reaction_state": "",
-      "entry_trigger_state": "NOT_TRIGGERED",
-      "etf_ticker": "QQQ",
-      "exposure_purity": "LOW",
-      "stock_vs_etf_state": "STOCK_ALPHA_RESEARCH",
-      "provenance_status": "SOURCE_BACKED",
-      "dynamic_driver_state": "ACTIVE_RESEARCH_VALIDATED",
-      "decision_stage": "GATE_4_REACTION",
-      "candidate_action": "WATCH_ENTRY",
-      "decision_blockers": "INFORMATION_MAY_BE_PRICED"
-    },
-    {
-      "global_theme": "AI_Server",
-      "driver_id": "AI_SERVER_SHIPMENTS",
-      "taiwan_code": "3231",
-      "ticker": "3231.TW",
-      "name": "緯創",
-      "reaction_state": "PERSISTENT",
-      "previous_reaction_state": "",
-      "entry_trigger_state": "NOT_TRIGGERED",
-      "etf_ticker": "QQQ",
-      "exposure_purity": "LOW",
-      "stock_vs_etf_state": "STOCK_ALPHA_RESEARCH",
-      "provenance_status": "SOURCE_BACKED",
-      "dynamic_driver_state": "ACTIVE_RESEARCH_VALIDATED",
-      "decision_stage": "GATE_4_REACTION",
-      "candidate_action": "WATCH_ENTRY",
-      "decision_blockers": "INFORMATION_MAY_BE_PRICED"
-    },
-    {
-      "global_theme": "AI_Server",
-      "driver_id": "AI_SERVER_SHIPMENTS",
-      "taiwan_code": "2317",
-      "ticker": "2317.TW",
-      "name": "鴻海",
-      "reaction_state": "PRE_CONFIRMATION",
-      "previous_reaction_state": "",
-      "entry_trigger_state": "NOT_TRIGGERED",
-      "etf_ticker": "QQQ",
-      "exposure_purity": "LOW",
-      "stock_vs_etf_state": "STOCK_ALPHA_RESEARCH",
-      "provenance_status": "SOURCE_BACKED",
-      "dynamic_driver_state": "ACTIVE_RESEARCH_VALIDATED",
-      "decision_stage": "GATE_5_ENTRY",
-      "candidate_action": "WATCH_ENTRY",
-      "decision_blockers": "WAIT_FOR_STATE_TRANSITION_ENTRY_TRIGGER"
     }
   ],
   "entry_rule": "Only a PRE_CONFIRMATION/EARLY_CONFIRMATION -> CONFIRMING transition, or PULLBACK -> CONFIRMING recovery, can create an entry trigger. No fixed momentum threshold is invented.",
@@ -207,7 +99,7 @@
   },
   "decision_bridge": {
     "contract": "ALPHA_HUNTER_DECISION_BRIDGE_V2",
-    "public_lineage_id": "f19f1e9833d73f83c81d3aa2db3363faa1425443fb4c6091d6c1652d86e280cb",
+    "public_lineage_id": "3b0e77caf3d524e63771033ef8ad0ed59d6fe196a2a53342c96b2297b726817f",
     "canonical_snapshot_revalidated_immediately_before_decision": true,
     "persisted_gate_reused_without_revalidation": false,
     "mixed_snapshot_allowed": false,
@@ -215,23 +107,20 @@
   },
   "snapshot_lineage_layer": {
     "contract": "ALPHA_HUNTER_SNAPSHOT_LINEAGE_V2",
-    "run_id": "20260907T083423+0800-0e24be27",
-    "manifest_sha256": "77fd4452b8678be18619c2aeb7f6fb0ca622000f5f50fad036a1baa14c83ecfd",
+    "run_id": "20260908T080641+0800-3df4fce0",
+    "manifest_sha256": "fc537407a9b9af5b70cc080b2fafb84217a66cfce8e5b4e02a92eaba87258888",
     "fresh_gate_status": "PASS",
     "persisted_gate_matches_current_files": true,
     "mixed_snapshot_allowed": false
   },
   "activation_layer": {
-    "source": "CHATGPT_CHALLENGER_ADJUDICATION",
-    "path": "output/driver_activation_adjudicated_v3.csv",
+    "source": "V3_AUTONOMOUS_RESEARCH",
+    "path": "output/driver_activation_v3.csv",
     "same_snapshot_v3": true,
-    "challenger_adjudicated": true,
-    "accepted_activation_rows": 5,
+    "challenger_adjudicated": false,
+    "accepted_activation_rows": 1,
     "active_driver_ids": [
-      "AI_SERVER_SHIPMENTS",
-      "CONTAINER_FREIGHT",
-      "DRY_BULK_FREIGHT",
-      "POWER_ELECTRONICS_CAPEX"
+      "DRY_BULK_FREIGHT"
     ],
     "lineage_overwrite_enforced": true
   },
@@ -266,7 +155,7 @@
     ],
     "validation_evidence_status": "PENDING_ACCEPTANCE_REVIEW",
     "current_shadow_statistics_are_strategy_validation": false,
-    "sealed_snapshot_id": "ff8ab7f39b40441960b6cf6cea335d5313843f91377d66a9fb11bf2fc5e9963c"
+    "sealed_snapshot_id": "6863f2f9d2478e0873152c316c1673b97edc6dcf079d634cc384cc8b9bce58c7"
   },
   "risk_layer": {
     "risk_inputs_valid": true,
@@ -283,7 +172,8 @@
     },
     "system_mapping_counts": {
       "SYSTEM_MAPPING_MISSING": 2,
-      "SYSTEM_RISK_GROUP": 3
+      "SYSTEM_RISK_GROUP": 2,
+      "SYSTEM_TICKER_EXPOSURE": 1
     },
     "user_thesis_overlay_status": "NOT_CONFIGURED",
     "user_thesis_overlay_applied_count": 0,
@@ -293,6 +183,17 @@
     "broken_requires_persistence_confirmation": true,
     "private_position_details_committed": false,
     "privacy_rule": "Per-position actions, tickers, balances, weights and P/L stay in-memory and are never committed or logged.",
+    "maintenance_research": {
+      "maintenance_lane_status": "PASS",
+      "maintenance_target_count": 4,
+      "maintenance_validated_count": 4,
+      "maintenance_target_truncated_count": 0,
+      "maintenance_private_artifact_committed": false,
+      "maintenance_privacy_rule": "Maintenance target/result artifacts remain ephemeral; only aggregate metadata may enter public decision_packet.json.",
+      "maintenance_state_counts": {
+        "UNKNOWN": 4
+      }
+    },
     "legacy_frozen_v1_position_action_counts": {
       "REVIEW_RESEARCH": 5
     },
@@ -317,8 +218,8 @@
     "threshold_tuning_allowed": false
   },
   "portfolio_action_counts": {
-    "WATCH_RESEARCH": 45,
-    "WATCH_ENTRY": 10
+    "WATCH_RESEARCH": 51,
+    "WATCH_ENTRY": 4
   },
   "auto_order_execution": false
 }
