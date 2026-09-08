@@ -117,3 +117,10 @@ def test_seal_refuses_historical_trace_deletion(tmp_path):
     context.write_text(json.dumps(state))
     with pytest.raises(ValueError,match='HISTORICAL_TRACE_REWRITE'):
         pg.seal(tmp_path,context,NOW)
+
+
+def test_publication_cannot_seal_old_board_with_current_other_outputs(tmp_path):
+    context=seal_fixture(tmp_path)
+    (tmp_path/'action_board.md').write_text('- Run: `YESTERDAY`')
+    with pytest.raises(ValueError,match='ACTION_BOARD_RUN_MISMATCH'):
+        pg.seal(tmp_path,context,NOW)
