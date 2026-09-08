@@ -3,13 +3,13 @@
   "gate_version": "1.0",
   "gate_status": "PASS",
   "failure_code": null,
-  "validated_at_taipei": "2026-09-07T08:36:59.977111+08:00",
+  "validated_at_taipei": "2026-09-08T08:08:58.346519+08:00",
   "repository": "pa45251/alpha-hunter-v2",
   "branch": "main",
   "schema_version": "2.6",
   "scanner_version": "2.6.0",
-  "run_id": "20260907T083423+0800-0e24be27",
-  "manifest_sha256": "77fd4452b8678be18619c2aeb7f6fb0ca622000f5f50fad036a1baa14c83ecfd",
+  "run_id": "20260908T080641+0800-3df4fce0",
+  "manifest_sha256": "fc537407a9b9af5b70cc080b2fafb84217a66cfce8e5b4e02a92eaba87258888",
   "checks": [
     {
       "name": "repository_identity",
@@ -56,7 +56,7 @@
     {
       "name": "manifest_run_id",
       "passed": true,
-      "detail": "run_id=20260907T083423+0800-0e24be27",
+      "detail": "run_id=20260908T080641+0800-3df4fce0",
       "severity": "HARD"
     },
     {
@@ -80,7 +80,7 @@
     {
       "name": "run_consistency",
       "passed": true,
-      "detail": "all=20260907T083423+0800-0e24be27",
+      "detail": "all=20260908T080641+0800-3df4fce0",
       "severity": "HARD"
     },
     {
@@ -116,13 +116,13 @@
     {
       "name": "global_market_date_freshness",
       "passed": true,
-      "detail": "latest=2026-09-07; age_days=0; max=10",
+      "detail": "latest=2026-09-07; age_days=1; max=10",
       "severity": "HARD"
     },
     {
       "name": "taiwan_market_date_freshness",
       "passed": true,
-      "detail": "latest=2026-09-04; age_days=3; max=16",
+      "detail": "latest=2026-09-07; age_days=1; max=16",
       "severity": "HARD"
     }
   ],
