@@ -5,6 +5,7 @@ This runner never executes Git commit/push steps and never uploads private files
 """
 import json
 import os
+import re
 from pathlib import Path
 import shutil
 import subprocess
@@ -54,6 +55,11 @@ def run():
                 if name in {'daily_scan','canonical_price_inputs','research_handoff'}:
                     # These phases consume only public market data, never private handoffs.
                     result['public_data_diagnostic']=(Path(td)/'step.log').read_text()[-4000:]
+                if name == 'Seal fully verified publication':
+                    codes=re.findall(r'^ValueError: ([A-Z][A-Z_]+)(?::.*)?$', (Path(td)/'step.log').read_text(), re.MULTILINE)
+                    if codes:
+                        result['publication_guard_code']=codes[-1]
+                        print('Publication guard: '+codes[-1],flush=True)
                 raise RuntimeError(name)
         try:
             for mod in ['daily_scan','canonical_price_inputs','research_handoff']:

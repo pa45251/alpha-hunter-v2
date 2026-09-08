@@ -26,3 +26,20 @@ def test_live_runner_stops_on_failed_scan_without_running_research_or_publish(tm
     assert 'SYNTHETIC_PRIVATE_SENTINEL' not in report
     assert json.loads(report)['blocker']=='daily_scan'
     assert 'git push' not in str(calls)
+
+
+def test_seal_failure_exposes_only_guard_code(tmp_path,monkeypatch):
+    monkeypatch.setattr(live,'REPORT',tmp_path/'result.json')
+    monkeypatch.setenv('GITHUB_ACTIONS','true')
+    for name in ['COPILOT_GITHUB_TOKEN','ALPHA_HUNTER_RISK_POLICY_JSON','ALPHA_HUNTER_PORTFOLIO_JSON']:
+        monkeypatch.setenv(name,'SYNTHETIC_PRIVATE_SENTINEL')
+    def execute(args,**kwargs):
+        if 'publication_guard.py seal' in args[-1]:
+            kwargs['stdout'].write('private details SYNTHETIC_PRIVATE_SENTINEL\nValueError: DUPLICATE_SESSION_TRACE\n')
+            return SimpleNamespace(returncode=1)
+        return SimpleNamespace(returncode=0)
+    monkeypatch.setattr(live.subprocess,'run',execute)
+    assert live.run()==1
+    report=live.REPORT.read_text()
+    assert 'SYNTHETIC_PRIVATE_SENTINEL' not in report
+    assert json.loads(report)['publication_guard_code']=='DUPLICATE_SESSION_TRACE'
