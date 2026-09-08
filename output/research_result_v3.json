@@ -1,8 +1,8 @@
 {
   "contract": "ALPHA_HUNTER_V3_VALIDATED_RESEARCH",
   "status": "PASS",
-  "research_run_id": "20260908T080641+0800-3df4fce0",
-  "validated_at_utc": "2026-09-08T00:11:14.915775+00:00",
+  "research_run_id": "20260908T085056+0800-7bed948e",
+  "validated_at_utc": "2026-09-08T00:57:23.182834+00:00",
   "target_driver_ids": [
     "DRY_BULK_FREIGHT",
     "CONTAINER_FREIGHT",
@@ -14,84 +14,95 @@
   "results": [
     {
       "driver_id": "DRY_BULK_FREIGHT",
-      "state": "ACTIVE",
-      "confidence": 0.82,
-      "primary_cause": "Broad dry-bulk freight conditions are active, led by materially stronger Baltic Dry Index and Capesize rates.",
+      "state": "UNKNOWN",
+      "confidence": 0.36,
+      "primary_cause": "No time-consistent source was found that directly confirms or refutes the BDI/Capesize/Panamax commodity-volume freight cycle as of the research date. UNCTAD provides broad maritime context and notes pressure on coal volumes, but does not establish the current dry-bulk freight-rate cycle across the specified segments.",
       "industry_scope": "INDUSTRY_WIDE",
-      "supporting_evidence": [
+      "supporting_evidence": [],
+      "counter_evidence": [
         {
-          "claim": "The Baltic Dry Index reached 3,628 on 2026-09-04, its highest level since October 2021, with the index up 13.9% for the week; the Capesize index reached 6,427 and Capesize earnings rose to $54,791 per day.",
-          "source_title": "Baltic dry bulk index posts weekly gain, touches nearly five-year high",
-          "source_url": "https://www.bairdmaritime.com/shipping/dry-bulk/baltic-dry-bulk-index-posts-weekly-gain-touches-nearly-five-year-high",
-          "published_at": "2026-09-04T17:46:56Z",
-          "event_date": "2026-09-04T00:00:00Z",
-          "evidence_type": "HIGH_QUALITY_REPORTING"
+          "claim": "UNCTAD reported that seaborne trade was expected to stall in 2025, with volumes barely rising, and that coal and oil volumes were under pressure from decarbonization. This is relevant counter-context for dry-bulk commodity demand but does not directly measure BDI, Capesize, or Panamax rates.",
+          "source_title": "Stormy seas for global shipping: UNCTAD warns of uncertainty, volatility and rising costs",
+          "source_url": "https://unctad.org/press-material/stormy-seas-global-shipping-unctad-warns-uncertainty-volatility-and-rising-costs",
+          "published_at": "2025-09-24T00:00:00Z",
+          "event_date": "2025-09-24T00:00:00Z",
+          "evidence_type": "PRIMARY_OFFICIAL"
         }
       ],
-      "counter_evidence": [],
       "source_count": 1,
-      "event_date": "2026-09-04T00:00:00Z",
+      "event_date": "2025-09-24T00:00:00Z",
       "source_dates": [
-        "2026-09-04T17:46:56Z"
+        "2025-09-24T00:00:00Z"
       ],
-      "researched_at_utc": "2026-09-08T00:10:30Z",
-      "research_run_id": "20260908T080641+0800-3df4fce0"
+      "researched_at_utc": "2026-09-08T00:56:35.823Z",
+      "research_run_id": "20260908T085056+0800-7bed948e"
     },
     {
       "driver_id": "CONTAINER_FREIGHT",
       "state": "UNKNOWN",
-      "confidence": 0.24,
-      "primary_cause": "Searches found reports of rising spot rates and port congestion, but no directly verifiable source establishing the complete container freight and liner utilization cycle, nor resolving capacity and demand counter-evidence, within the available evidence.",
-      "industry_scope": "UNKNOWN",
+      "confidence": 0.32,
+      "primary_cause": "No time-consistent container-specific source was found that confirms or refutes the current SCFI, contract-freight, or liner-utilization cycle. UNCTAD reports global freight volatility and route disruption, but the cited evidence is not container-specific and cannot establish the exact driver.",
+      "industry_scope": "INDUSTRY_WIDE",
       "supporting_evidence": [],
-      "counter_evidence": [],
-      "source_count": 0,
-      "event_date": null,
-      "source_dates": [],
-      "researched_at_utc": "2026-09-08T00:10:30Z",
-      "research_run_id": "20260908T080641+0800-3df4fce0"
+      "counter_evidence": [
+        {
+          "claim": "UNCTAD reported volatile and high freight rates, route rerouting, skipped port calls, longer journeys, and increased costs in global shipping. The source does not isolate container spot or contract rates, SCFI, or liner utilization, so it is insufficient to classify the exact container-freight driver.",
+          "source_title": "Stormy seas for global shipping: UNCTAD warns of uncertainty, volatility and rising costs",
+          "source_url": "https://unctad.org/press-material/stormy-seas-global-shipping-unctad-warns-uncertainty-volatility-and-rising-costs",
+          "published_at": "2025-09-24T00:00:00Z",
+          "event_date": "2025-09-24T00:00:00Z",
+          "evidence_type": "PRIMARY_OFFICIAL"
+        }
+      ],
+      "source_count": 1,
+      "event_date": "2025-09-24T00:00:00Z",
+      "source_dates": [
+        "2025-09-24T00:00:00Z"
+      ],
+      "researched_at_utc": "2026-09-08T00:56:35.823Z",
+      "research_run_id": "20260908T085056+0800-7bed948e"
     },
     {
       "driver_id": "NUCLEAR_GRID_SECOND_ORDER",
       "state": "UNKNOWN",
       "confidence": 0.18,
-      "primary_cause": "Current grid-equipment evidence confirms broad electrification, data-center, and grid-modernization demand but does not establish a nuclear-specific buildout transmission, transformer, or switchgear causal chain; contradictory project timing and capex evidence remains unresolved.",
+      "primary_cause": "Searches found no verifiable source directly linking current nuclear-specific buildout to second-order transmission, transformer, switchgear, or grid-interconnection demand. Broad nuclear and electrification references were insufficient to establish the exact causal chain.",
       "industry_scope": "UNKNOWN",
       "supporting_evidence": [],
       "counter_evidence": [],
       "source_count": 0,
       "event_date": null,
       "source_dates": [],
-      "researched_at_utc": "2026-09-08T00:10:30Z",
-      "research_run_id": "20260908T080641+0800-3df4fce0"
+      "researched_at_utc": "2026-09-08T00:56:35.823Z",
+      "research_run_id": "20260908T085056+0800-7bed948e"
     },
     {
       "driver_id": "DRAM_PRICING",
       "state": "UNKNOWN",
-      "confidence": 0.32,
-      "primary_cause": "Searches identified current reports of higher DRAM industry revenue and supply lagging demand, but no directly verifiable primary or high-quality source was obtained that fully confirms commodity DRAM ASP, bit-demand, and inventory conditions together or resolves counter-evidence.",
+      "confidence": 0.17,
+      "primary_cause": "Searches found no verifiable, time-consistent source directly confirming or contradicting commodity DRAM ASPs, bit demand, and inventory conditions. No HBM evidence was used as a proxy for commodity DRAM.",
       "industry_scope": "UNKNOWN",
       "supporting_evidence": [],
       "counter_evidence": [],
       "source_count": 0,
       "event_date": null,
       "source_dates": [],
-      "researched_at_utc": "2026-09-08T00:10:30Z",
-      "research_run_id": "20260908T080641+0800-3df4fce0"
+      "researched_at_utc": "2026-09-08T00:56:35.823Z",
+      "research_run_id": "20260908T085056+0800-7bed948e"
     },
     {
       "driver_id": "MEMORY_IC_CYCLE",
       "state": "UNKNOWN",
-      "confidence": 0.22,
-      "primary_cause": "Searches produced memory-market and DRAM pricing reports, but no directly verifiable evidence specifically confirming a memory-IC design-demand and ASP cycle independent of broader DRAM or HBM themes; counter-evidence remains unresolved.",
+      "confidence": 0.17,
+      "primary_cause": "Searches found no verifiable, time-consistent source directly confirming or contradicting the memory-IC design-demand, revenue, and ASP cycle. HBM, semiconductor-wide, and company price-action evidence were not treated as substitutes for the exact driver.",
       "industry_scope": "UNKNOWN",
       "supporting_evidence": [],
       "counter_evidence": [],
       "source_count": 0,
       "event_date": null,
       "source_dates": [],
-      "researched_at_utc": "2026-09-08T00:10:30Z",
-      "research_run_id": "20260908T080641+0800-3df4fce0"
+      "researched_at_utc": "2026-09-08T00:56:35.823Z",
+      "research_run_id": "20260908T085056+0800-7bed948e"
     }
   ]
 }
