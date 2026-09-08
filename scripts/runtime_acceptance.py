@@ -105,6 +105,8 @@ def worker():
                    'action_board_summary','global_alignment_summary','portfolio_allocation_summary','entry_action_board_v2']:
         run(module,module=='entry_plan_run_v2')
     seal(out,context)
+    from external_consumer import validate
+    assert validate(out)['status']=='READY_CURRENT_SNAPSHOT'
     assert readiness(out)['status']=='READY_CURRENT_SNAPSHOT'
     before=(out/'entry_plan_trace_v2.csv').read_bytes()
     run('entry_plan_trace_v2')

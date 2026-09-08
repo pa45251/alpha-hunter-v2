@@ -121,9 +121,12 @@ def seal(out,context,now=None):
         old=pd.read_csv(StringIO(state['old_trace']),dtype=str).fillna('')
         new=pd.read_csv(out/'entry_plan_trace_v2.csv',dtype=str).fillna('')
         require(len(new)>=len(old) and new.iloc[:len(old)].reset_index(drop=True).equals(old.reset_index(drop=True)),'HISTORICAL_TRACE_REWRITE')
+    require(f"- Run: `{state['run_id']}`" in (out/'action_board.md').read_text(),'ACTION_BOARD_RUN_MISMATCH')
     files=files_for_seal(out)
     result={'contract':CONTRACT,'status':'READY_CURRENT_SNAPSHOT','source_run_id':state['run_id'],
             'generated_at':clock(now).isoformat(),'hashes':{n:digest(out/n) for n in files},'auto_trade_allowed':False}
+    from external_consumer import lineage
+    result['external_lineage']=lineage(out)
     (out/SEAL).write_text(json.dumps(result,indent=2))
     return result
 

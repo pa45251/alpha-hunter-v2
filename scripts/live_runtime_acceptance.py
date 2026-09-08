@@ -92,6 +92,8 @@ def run():
                 if name=='Commit advisory, trace and action board':break
                 if active:command(name,step['run'])
             command('Read-time freshness and integrity acceptance','python publication_guard.py check')
+            command('External 08:40 consumer acceptance','python external_consumer.py --output output')
+            result['external_consumer']='PASS_ON_LIVE_ARTIFACT_BYTES'
             result['status']='PASS'
         except Exception as exc:
             result['blocker']=str(exc)

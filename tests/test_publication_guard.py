@@ -31,7 +31,7 @@ def fixture(out):
         dump(out,n,{'generated_at':NOW})
     pd.DataFrame([plan]).to_csv(out/'entry_plans_v2.csv',index=False)
     pd.DataFrame([{'decision_session':'2026-09-04','ticker':'2317.TW','driver_id':'AI_SERVER_SHIPMENTS','entry_style':'FRESH_BREAKOUT'}]).to_csv(out/'entry_plan_trace_v2.csv',index=False)
-    (out/'action_board.md').write_text('fixture board')
+    (out/'action_board.md').write_text('fixture board\n- Run: `R`')
     return plan
 
 def seal_fixture(out):
