@@ -31,6 +31,9 @@ jobs:
           PYTHONPATH: ${{ github.workspace }}
         run: python -m pytest -q
 
+      - name: Run isolated full production-entrypoint acceptance
+        run: python scripts/runtime_acceptance.py
+
       - name: Verify frozen V1 contract file is still present
         run: |
           test -f config/frozen_strategy_v1.json

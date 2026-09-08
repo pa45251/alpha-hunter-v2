@@ -122,7 +122,9 @@ def _band_for(score: int, policy: dict[str, Any]) -> dict[str, Any]:
 def build_risk_regime(histories: dict[str, pd.DataFrame] | None = None) -> dict[str, Any]:
     policy = json.loads(POLICY_PATH.read_text(encoding="utf-8"))
     live_download = histories is None
-    histories = histories or _download()
+    if histories is None:
+        from canonical_price_inputs import load
+        histories = load()
     f = {t: _features(histories.get(t, pd.DataFrame())) for t in RISK_TICKERS}
     missing_core = [t for t in CORE_TICKERS if not f.get(t)]
     if missing_core:

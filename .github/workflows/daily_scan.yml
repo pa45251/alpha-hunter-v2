@@ -40,6 +40,9 @@ jobs:
       - name: Run Alpha Hunter v2.6 scanner
         run: python daily_scan.py
 
+      - name: Bind public risk and entry histories to canonical snapshot
+        run: python canonical_price_inputs.py
+
       - name: Build v2.6.1 research handoff
         run: python research_handoff.py
 
@@ -50,6 +53,7 @@ jobs:
           # The scanner intentionally does NOT build or publish a decision here. A new scanner
           # run_id has no same-snapshot V3 research yet. Alpha Hunter v3 Autonomous Research is
           # triggered by this workflow's successful completion and owns the causal decision step.
+          git add output/canonical_price_inputs.json
           git add \
             output/manifest.json \
             output/gate_report.json \

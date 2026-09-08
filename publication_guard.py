@@ -94,6 +94,8 @@ def check_plan_links(out):
 
 def begin(out, context, now=None):
     assert_decision_snapshot_current(out)
+    from canonical_price_inputs import load
+    load(out)
     rid=check_current(out,now)
     state={'run_id':rid,'started_at':clock(now).isoformat(),
            'inputs':{n:digest(out/n) for n in INPUTS}}

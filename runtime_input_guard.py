@@ -41,6 +41,17 @@ def main():
     if len(sys.argv)!=2 or sys.argv[1] not in allowed:
         raise SystemExit('UNSUPPORTED_RUNTIME_ENTRYPOINT')
     validate()
-    runpy.run_module(sys.argv[1],run_name='__main__')
+    if sys.argv[1]=='entry_plan_run_v2':
+        from canonical_price_inputs import load
+        import entry_structure_v2
+        frames=load()
+        previous=entry_structure_v2._download_histories
+        entry_structure_v2._download_histories=lambda tickers: {t:frames[t] for t in tickers if t in frames}
+        try:
+            runpy.run_module(sys.argv[1],run_name='__main__')
+        finally:
+            entry_structure_v2._download_histories=previous
+    else:
+        runpy.run_module(sys.argv[1],run_name='__main__')
 
 if __name__=='__main__':main()
