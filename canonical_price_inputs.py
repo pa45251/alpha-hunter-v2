@@ -30,6 +30,8 @@ def capture(out=Path('output')):
             h=clip_closed_bars(h,ticker,m['generated_at_utc'])
             if h.empty or pd.Timestamp(h.index[-1]).date().isoformat()!=latest_closed_session(ticker,m['generated_at_utc']):
                 raise ValueError('STALE')
+            if 'Close' not in h or not np.isfinite(float(h['Close'].iloc[-1])) or float(h['Close'].iloc[-1])<=0:
+                raise ValueError('LATEST_CLOSE_MISSING')
             # JSON nulls preserve missing data; never impute a valid quote or turn missing into zero.
             h=h.tail(500)
             frames[ticker]={'dates':[pd.Timestamp(d).isoformat() for d in h.index],

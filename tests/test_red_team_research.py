@@ -42,3 +42,10 @@ def test_future_publication_cannot_support_research():
     r['supporting_evidence'][0]['published_at']='2099-01-01T00:00:00Z'
     with pytest.raises(ResearchContractError,match='future'):
         validate_research_result(r,{'AI_SERVER_SHIPMENTS'})
+
+def test_future_research_clock_cannot_launder_future_publication():
+    r=research_fixture()
+    r['researched_at_utc']='2099-01-02T00:00:00Z'
+    r['supporting_evidence'][0]['published_at']='2099-01-01T00:00:00Z'
+    with pytest.raises(ResearchContractError,match='future'):
+        validate_research_result(r,{'AI_SERVER_SHIPMENTS'})

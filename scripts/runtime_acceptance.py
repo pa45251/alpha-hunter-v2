@@ -24,6 +24,9 @@ def worker():
     import market_sessions as ms
     import runtime_input_guard
     now=ms.clock()
+    # Simulate the production identity only inside a non-publishing synthetic sandbox.
+    os.environ['GITHUB_REPOSITORY']='pa45251/alpha-hunter-v2'
+    os.environ['GITHUB_REF_NAME']='main'
     os.environ['ALPHA_HUNTER_ACTIVATION_SOURCE']='V3_VALIDATED'
     policy={'policy_version':'SYNTHETIC_RUNTIME_ACCEPTANCE','max_single_position_pct':50,
             'max_theme_exposure_pct':70,'max_gross_exposure_pct':100,'max_new_position_pct':3,

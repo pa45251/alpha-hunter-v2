@@ -19,7 +19,8 @@ REPORT=ROOT/'live_runtime_acceptance.json'
 def run():
     phases=[]
     result={'mode':'LIVE_EXTERNAL_PROVIDERS','remote_publication_performed':False,
-            'private_artifacts_uploaded':False,'status':'FAILED','phases':phases}
+            'private_artifacts_uploaded':False,'source_commit':os.getenv('GITHUB_SHA'),
+            'production_branch_identity_simulated_in_isolation':True,'status':'FAILED','phases':phases}
     if os.getenv('GITHUB_ACTIONS')!='true':
         result['blocker']='TRUSTED_ACTIONS_ENVIRONMENT_REQUIRED';REPORT.write_text(json.dumps(result,indent=2));return 1
     required=['COPILOT_GITHUB_TOKEN','ALPHA_HUNTER_RISK_POLICY_JSON','ALPHA_HUNTER_PORTFOLIO_JSON']
@@ -29,6 +30,9 @@ def run():
         work=Path(td)/'repo'
         shutil.copytree(ROOT,work,ignore=shutil.ignore_patterns('.git','__pycache__','.pytest_cache'))
         env=os.environ.copy();env['PYTHONPATH']=str(work)
+        # Test the post-merge runtime contract in an isolated, non-publishing directory.
+        # The report retains the actual PR source SHA; no artifact can be published as main.
+        env['GITHUB_REF_NAME']='main'
         outputs={};outcomes={}
         def command(name,cmd,ident=None,allow_failure=False):
             output_file=Path(td)/'step-output';output_file.write_text('');env['GITHUB_OUTPUT']=str(output_file)
@@ -46,7 +50,11 @@ def run():
             if ident:
                 outputs[ident]=dict(line.split('=',1) for line in output_file.read_text().splitlines() if '=' in line)
                 outcomes[ident]='success' if code==0 else 'failure'
-            if code and not allow_failure:raise RuntimeError(name)
+            if code and not allow_failure:
+                if name in {'daily_scan','canonical_price_inputs','research_handoff'}:
+                    # These phases consume only public market data, never private handoffs.
+                    result['public_data_diagnostic']=(Path(td)/'step.log').read_text()[-4000:]
+                raise RuntimeError(name)
         try:
             for mod in ['daily_scan','canonical_price_inputs','research_handoff']:
                 command(mod,'python '+mod+'.py')

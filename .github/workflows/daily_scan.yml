@@ -2,6 +2,14 @@ name: Alpha Hunter Daily Scan
 
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "canonical_price_inputs.py"
+      - "market_sessions.py"
+      - "scanner_core.py"
+      - "taiwan_sensor.py"
+      - ".github/workflows/daily_scan.yml"
   schedule:
     # 21:17 UTC = 05:17 Asia/Taipei. Budget 40m scan + 45m research + 15m board; 103m slack to 08:40.
     - cron: '17 21 * * 0-4'

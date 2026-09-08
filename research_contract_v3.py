@@ -68,6 +68,8 @@ def validate_research_result(result: dict[str, Any], allowed_driver_ids: Iterabl
     researched = _parse_iso(result.get("researched_at_utc"))
     if researched.tzinfo is None:
         raise ResearchContractError("research timestamp requires timezone")
+    if researched > datetime.now(timezone.utc):
+        raise ResearchContractError("future research timestamp is not available evidence")
     if not _nonempty(result.get("research_run_id")):
         raise ResearchContractError("missing research_run_id")
 
