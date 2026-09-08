@@ -117,3 +117,32 @@ At read time:
 
 Merge recommendation: require both current-head contract/runtime CI and live acceptance to pass;
 resolve any reported blocking failure first. Do not auto-merge or promote live execution.
+
+## Resumed-session terminal acceptance evidence
+
+Code revision `9dca7ceec61b129e881ea83d5d56427d0f97800c`:
+
+- Local: 206 tests passed; isolated full runtime acceptance PASS, including same-session decision
+  equality, trace equality, and missing-output fail-closed. Frozen V1 and V2 integrity passed.
+- GitHub run `34287907610`, job `102267635664`: v2-contracts SUCCESS (all tests, complete deterministic
+  production-entrypoint chain, frozen integrity).
+- Earlier live run `34210452277`, job `102010048997`: real scanner/capture/research/guarded decision/
+  positions/alignment/entry/trace/rotation/board stages succeeded; final publication seal FAILED.
+  The original runner discarded that step's private raw log and retained only its phase. Its precise
+  guard reason cannot be recovered. Do not infer that the historical ledger is corrupt or repair it
+  speculatively. The runner now exposes only a sanitized publication guard code on such failures.
+- Latest live run `34287907610`, job `102267635574`: FAILED. Real scan took 230.6s and canonical capture
+  4.8s. Opportunity research took 173.4s; private maintenance research took 27.3s. First-pass evidence
+  quality exited 2. The existing bounded retry ran (29.2s), but the final opportunity/challenger
+  decision-source quality gate exited 1. The pipeline stopped before causal activation/decision/
+  publication. No private logs or artifacts, Git publication, or fake substitute research were used.
+- Consequently, a successful live end-to-end acceptance is NOT established. The earlier seal failure
+  remains unresolved, and this latest run cannot establish whether it recurs because an upstream
+  evidence gate correctly stopped the chain. A subsequent run with valid current research must pass
+  every stage and the seal before promotion. Do not weaken gates or call this a successful acceptance.
+- Existing public trace was also checked in a temporary directory: an exact rerun preserved its 50
+  original rows and values. This does not prove changed-session live trace acceptance.
+
+Disposition: PR remains DRAFT; DO NOT MERGE. External 08:40 radar consumer integration also remains
+unverified. All completed code units are pushed. This documentation-only checkpoint skips redundant
+provider execution; acceptance references above identify the exact tested code revision.
