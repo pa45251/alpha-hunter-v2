@@ -2,13 +2,13 @@
   "contract": "ALPHA_HUNTER_CANONICAL_DATA_CONTRACT",
   "schema_version": "2.6",
   "scanner_version": "2.6.0",
-  "run_id": "20260908T080641+0800-3df4fce0",
+  "run_id": "20260908T085056+0800-7bed948e",
   "repository": "pa45251/alpha-hunter-v2",
   "branch": "main",
   "canonical_output_directory": "https://github.com/pa45251/alpha-hunter-v2/tree/main/output",
   "canonical_manifest_raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/manifest.json",
-  "generated_at_utc": "2026-09-08T00:08:58.321367+00:00",
-  "generated_at_taipei": "2026-09-08T08:08:58.321380+08:00",
+  "generated_at_utc": "2026-09-08T00:54:51.050878+00:00",
+  "generated_at_taipei": "2026-09-08T08:54:51.050890+08:00",
   "status": "PASS",
   "missing_required_files": [],
   "pipeline_checks": {
@@ -23,11 +23,11 @@
   "global": {
     "scanned_count": 98,
     "theme_count": 40,
-    "latest_price_date": "2026-09-07",
+    "latest_price_date": "2026-09-08",
     "earliest_price_date": "2026-09-04"
   },
   "taiwan": {
-    "universe_source_status": "CACHED_FALLBACK: ValueError",
+    "universe_source_status": "LIVE_OFFICIAL",
     "universe_count": 1974,
     "scanned_count": 1969,
     "coverage_pct": 0.997467071935157,
@@ -60,57 +60,57 @@
       "name": "market_snapshot.csv",
       "relative_path": "output/market_snapshot.csv",
       "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/market_snapshot.csv",
-      "sha256": "e7e910f7da591138de853791389fdbb25049b9f1861c022f1f10a779c57f0022",
-      "bytes": 68957
+      "sha256": "e0293be7116c6e976ccaec319a977017e23dd5e2800b9ea0de30a0125fe04921",
+      "bytes": 68980
     },
     {
       "name": "theme_breadth.csv",
       "relative_path": "output/theme_breadth.csv",
       "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/theme_breadth.csv",
-      "sha256": "d411ed34bcebc7460bf86ee131cf2fe4da089a0a790930897ebf9062940e8b3e",
-      "bytes": 5073
+      "sha256": "557691d8cd224abce224547e7abb44aa16cd4759a0895df986f2f51fbe2f64ca",
+      "bytes": 5100
     },
     {
       "name": "leader_registry.csv",
       "relative_path": "output/leader_registry.csv",
       "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/leader_registry.csv",
-      "sha256": "e82e7681e18479705b4ba443e8bb7a856997584a06ce8e43c07153484ef2a8ab",
-      "bytes": 19311
+      "sha256": "e4a2baddbe8e5381a247de54f51dab620403cd75939432c5c1feb9139ba01bf8",
+      "bytes": 19300
     },
     {
       "name": "feature_history.csv",
       "relative_path": "output/feature_history.csv",
       "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/feature_history.csv",
-      "sha256": "f77371a82e66a78b0715b7f5228e68558f2ba9338dc3b4ac477cf652d8d7e62e",
-      "bytes": 165029
+      "sha256": "bde36130ce62f9551bafff0c4a6c2bf5940a24b4491c8a97e1c3828ee652e7b1",
+      "bytes": 165017
     },
     {
       "name": "market_snapshot.json",
       "relative_path": "output/market_snapshot.json",
       "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/market_snapshot.json",
-      "sha256": "d921f5f21a65772100bccd5a8ed05ece6895724c97d127da7bf86baa493edf19",
-      "bytes": 31947
+      "sha256": "b6d3113038348c189e01a86bfd4f717a8b7797986d9106f0dc280e544b2327cd",
+      "bytes": 33025
     },
     {
       "name": "taiwan_candidates.csv",
       "relative_path": "output/taiwan_candidates.csv",
       "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/taiwan_candidates.csv",
-      "sha256": "dc2f9a22be697198ca19943afe1c0b6e63687cc49098a715b3fb886a4f12200b",
-      "bytes": 130802
+      "sha256": "e0282374ef6e165cfb5bf4ac023ebe3be4fd70279b51447a6fd8b9a9637d2720",
+      "bytes": 130934
     },
     {
       "name": "taiwan_candidate_history.csv",
       "relative_path": "output/taiwan_candidate_history.csv",
       "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/taiwan_candidate_history.csv",
-      "sha256": "5f384a0637fccf2f76aabf29d6222ce85def4eaad4d4f53f05c2490aba4ee684",
-      "bytes": 186060
+      "sha256": "696127445d71378d2fc68c196b96385fe193ebe859f6ebf9ce3fc9b114dd94af",
+      "bytes": 191122
     },
     {
       "name": "taiwan_industry_breadth.csv",
       "relative_path": "output/taiwan_industry_breadth.csv",
       "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/taiwan_industry_breadth.csv",
-      "sha256": "a0fbd44379016c97fc3b42dd423bda6c9bead83f7528431b7d279615e5c091d2",
-      "bytes": 6662
+      "sha256": "650483941ccd1520205785492b30fe189a17fc6a877a235f805adcfd0ff63fd3",
+      "bytes": 6592
     },
     {
       "name": "taiwan_universe.csv",
@@ -123,21 +123,21 @@
       "name": "causal_research_queue.csv",
       "relative_path": "output/causal_research_queue.csv",
       "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/causal_research_queue.csv",
-      "sha256": "1caecc4c400cc7983a8bb0933088615a9dae3f89d10ab48a560dad7e98ce0fff",
-      "bytes": 12709
+      "sha256": "a0d09f216ded9b59a91467fb96b3e3bf1e9c9d19804f0415dc6162feb9a3f1f1",
+      "bytes": 12692
     },
     {
       "name": "structural_matches.csv",
       "relative_path": "output/structural_matches.csv",
       "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/structural_matches.csv",
-      "sha256": "29dc5ac9338a644cce38f5e7ed719ee5abc64469c870db7cfe8d73d470873547",
-      "bytes": 42906
+      "sha256": "1696ebb8b2d45a9ab3d4228df3189b745fcedce8106f9915f5a90d8690480503",
+      "bytes": 42988
     },
     {
       "name": "causal_graph_audit.csv",
       "relative_path": "output/causal_graph_audit.csv",
       "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/causal_graph_audit.csv",
-      "sha256": "a9dabc645cf76fed6e5124456021946d243ccf8381ca601b8a59e4f5f9e65c4e",
+      "sha256": "b4a2c39168e0a44e44970613b4d8d944617efd795b99dfb94dca72e6944486b1",
       "bytes": 23551
     },
     {

@@ -1,11 +1,11 @@
 {
-  "generated_at_utc": "2026-09-08T00:06:47.406327+00:00",
+  "generated_at_utc": "2026-09-08T00:51:02.409336+00:00",
   "schema_version": "2.6",
-  "generated_at_taipei": "2026-09-08T08:06:47.415095+08:00",
+  "generated_at_taipei": "2026-09-08T08:51:02.417848+08:00",
   "scan_quality": {
     "scanned_count": 98,
     "theme_count": 40,
-    "latest_price_date": "2026-09-07",
+    "latest_price_date": "2026-09-08",
     "earliest_price_date": "2026-09-04"
   },
   "notes": {
@@ -15,6 +15,22 @@
   },
   "top_leaders": [
     {
+      "ticker": "VRT",
+      "theme": "AI_Infrastructure",
+      "name": "Vertiv",
+      "state": "EMERGING",
+      "raw_state": "EMERGING",
+      "observation_date": "2026-09-04",
+      "confirmation_streak": 1,
+      "weakening_streak": 0,
+      "leader_score_v1": 0.5551020408163265,
+      "rs20": 0.03381604706467445,
+      "rs60": -0.06583042066526412,
+      "keynes_legacy": 0.06506670255393895,
+      "keynes_v2": 0.013457970245625065,
+      "updated_at_utc": "2026-09-08T00:51:02.395998+00:00"
+    },
+    {
       "ticker": "NVDA",
       "theme": "AI_Semiconductor",
       "name": "NVIDIA",
@@ -23,12 +39,12 @@
       "observation_date": "2026-09-04",
       "confirmation_streak": 1,
       "weakening_streak": 0,
-      "leader_score_v1": 0.7056122448979592,
+      "leader_score_v1": 0.713265306122449,
       "rs20": 0.03254671690692246,
       "rs60": 0.08494976198484494,
       "keynes_legacy": 0.1548924893148553,
       "keynes_v2": 0.016334122647548997,
-      "updated_at_utc": "2026-09-08T00:06:47.392205+00:00"
+      "updated_at_utc": "2026-09-08T00:51:02.395998+00:00"
     },
     {
       "ticker": "DELL",
@@ -39,12 +55,12 @@
       "observation_date": "2026-09-04",
       "confirmation_streak": 1,
       "weakening_streak": 0,
-      "leader_score_v1": 0.926530612244898,
+      "leader_score_v1": 0.9275510204081633,
       "rs20": 0.15904883777054635,
       "rs60": 0.3551512019262466,
       "keynes_legacy": 0.9112099174647448,
       "keynes_v2": 0.13794130991666967,
-      "updated_at_utc": "2026-09-08T00:06:47.392205+00:00"
+      "updated_at_utc": "2026-09-08T00:51:02.395998+00:00"
     },
     {
       "ticker": "SMCI",
@@ -55,12 +71,12 @@
       "observation_date": "2026-09-04",
       "confirmation_streak": 1,
       "weakening_streak": 0,
-      "leader_score_v1": 0.7704081632653061,
+      "leader_score_v1": 0.7729591836734695,
       "rs20": 0.2757338247968337,
       "rs60": 0.28814287657112825,
       "keynes_legacy": 1.9125074694779125,
       "keynes_v2": 0.3762101428671822,
-      "updated_at_utc": "2026-09-08T00:06:47.392205+00:00"
+      "updated_at_utc": "2026-09-08T00:51:02.395998+00:00"
     },
     {
       "ticker": "F",
@@ -71,12 +87,12 @@
       "observation_date": "2026-09-04",
       "confirmation_streak": 1,
       "weakening_streak": 0,
-      "leader_score_v1": 0.5877551020408164,
+      "leader_score_v1": 0.5943877551020408,
       "rs20": 0.06107608074035675,
       "rs60": -0.030986245828459325,
       "keynes_legacy": 0.2541215435957096,
       "keynes_v2": 0.11265158040515348,
-      "updated_at_utc": "2026-09-08T00:06:47.392205+00:00"
+      "updated_at_utc": "2026-09-08T00:51:02.395998+00:00"
     },
     {
       "ticker": "GM",
@@ -87,12 +103,12 @@
       "observation_date": "2026-09-04",
       "confirmation_streak": 1,
       "weakening_streak": 0,
-      "leader_score_v1": 0.5596938775510204,
+      "leader_score_v1": 0.5653061224489795,
       "rs20": 0.008097715894252344,
       "rs60": 0.043138929965176764,
       "keynes_legacy": -0.06897402270777264,
       "keynes_v2": 0.001140028533043381,
-      "updated_at_utc": "2026-09-08T00:06:47.392205+00:00"
+      "updated_at_utc": "2026-09-08T00:51:02.395998+00:00"
     },
     {
       "ticker": "REGN",
@@ -103,12 +119,12 @@
       "observation_date": "2026-09-04",
       "confirmation_streak": 1,
       "weakening_streak": 0,
-      "leader_score_v1": 0.7540816326530613,
+      "leader_score_v1": 0.764795918367347,
       "rs20": 0.060483222058971275,
       "rs60": 0.31291982501688276,
       "keynes_legacy": 0.28412270232289016,
       "keynes_v2": 0.1275302308308493,
-      "updated_at_utc": "2026-09-08T00:06:47.392205+00:00"
+      "updated_at_utc": "2026-09-08T00:51:02.395998+00:00"
     },
     {
       "ticker": "AMGN",
@@ -119,12 +135,12 @@
       "observation_date": "2026-09-04",
       "confirmation_streak": 1,
       "weakening_streak": 0,
-      "leader_score_v1": 0.7076530612244897,
+      "leader_score_v1": 0.7137755102040816,
       "rs20": 0.07413738321807228,
       "rs60": 0.2377433037850536,
       "keynes_legacy": 0.36413422313080335,
       "keynes_v2": 0.32155216998963343,
-      "updated_at_utc": "2026-09-08T00:06:47.392205+00:00"
+      "updated_at_utc": "2026-09-08T00:51:02.395998+00:00"
     },
     {
       "ticker": "ORCL",
@@ -135,12 +151,12 @@
       "observation_date": "2026-09-04",
       "confirmation_streak": 1,
       "weakening_streak": 0,
-      "leader_score_v1": 0.553061224489796,
+      "leader_score_v1": 0.5576530612244898,
       "rs20": 0.08395929093183274,
       "rs60": -0.2727621040112529,
       "keynes_legacy": 0.33808245900951117,
       "keynes_v2": 0.0802864787983921,
-      "updated_at_utc": "2026-09-08T00:06:47.392205+00:00"
+      "updated_at_utc": "2026-09-08T00:51:02.395998+00:00"
     },
     {
       "ticker": "XLE",
@@ -151,12 +167,12 @@
       "observation_date": "2026-09-04",
       "confirmation_streak": 1,
       "weakening_streak": 0,
-      "leader_score_v1": 0.711734693877551,
+      "leader_score_v1": 0.7127551020408162,
       "rs20": 0.11805712755530595,
       "rs60": 0.043236965507703395,
       "keynes_legacy": 0.8342279877651573,
       "keynes_v2": 0.9841326241004273,
-      "updated_at_utc": "2026-09-08T00:06:47.392205+00:00"
+      "updated_at_utc": "2026-09-08T00:51:02.395998+00:00"
     },
     {
       "ticker": "CVX",
@@ -167,12 +183,12 @@
       "observation_date": "2026-09-04",
       "confirmation_streak": 1,
       "weakening_streak": 0,
-      "leader_score_v1": 0.6892857142857142,
+      "leader_score_v1": 0.696938775510204,
       "rs20": 0.13186741542567781,
       "rs60": 0.04420673989290269,
       "keynes_legacy": 0.8604896220355212,
       "keynes_v2": 1.138252188568948,
-      "updated_at_utc": "2026-09-08T00:06:47.392205+00:00"
+      "updated_at_utc": "2026-09-08T00:51:02.395998+00:00"
     },
     {
       "ticker": "XOM",
@@ -183,12 +199,12 @@
       "observation_date": "2026-09-04",
       "confirmation_streak": 1,
       "weakening_streak": 0,
-      "leader_score_v1": 0.6438775510204082,
+      "leader_score_v1": 0.6443877551020409,
       "rs20": 0.052732574628224116,
       "rs60": 0.0011762282869356433,
       "keynes_legacy": 0.25410095359507917,
       "keynes_v2": 0.11654606940725441,
-      "updated_at_utc": "2026-09-08T00:06:47.392205+00:00"
+      "updated_at_utc": "2026-09-08T00:51:02.395998+00:00"
     },
     {
       "ticker": "JPM",
@@ -199,12 +215,28 @@
       "observation_date": "2026-09-04",
       "confirmation_streak": 1,
       "weakening_streak": 0,
-      "leader_score_v1": 0.5622448979591838,
+      "leader_score_v1": 0.5683673469387754,
       "rs20": 0.007102977168077729,
       "rs60": 0.10091136588107918,
       "keynes_legacy": -0.07499540931704059,
       "keynes_v2": 0.0017619907929842078,
-      "updated_at_utc": "2026-09-08T00:06:47.392205+00:00"
+      "updated_at_utc": "2026-09-08T00:51:02.395998+00:00"
+    },
+    {
+      "ticker": "BAC",
+      "theme": "Financials",
+      "name": "Bank of America",
+      "state": "EMERGING",
+      "raw_state": "EMERGING",
+      "observation_date": "2026-09-04",
+      "confirmation_streak": 0,
+      "weakening_streak": 0,
+      "leader_score_v1": 0.5566326530612244,
+      "rs20": 0.0012759222583142993,
+      "rs60": 0.09067527244355733,
+      "keynes_legacy": -0.1814743270223695,
+      "keynes_v2": -0.0008694812148710519,
+      "updated_at_utc": "2026-09-08T00:51:02.395998+00:00"
     },
     {
       "ticker": "TSM",
@@ -220,7 +252,7 @@
       "rs60": -0.012658098885314883,
       "keynes_legacy": 0.10436251659046786,
       "keynes_v2": 0.025073340739102716,
-      "updated_at_utc": "2026-09-08T00:06:47.392205+00:00"
+      "updated_at_utc": "2026-09-08T00:51:02.395998+00:00"
     },
     {
       "ticker": "GNOM",
@@ -231,12 +263,12 @@
       "observation_date": "2026-09-04",
       "confirmation_streak": 1,
       "weakening_streak": 0,
-      "leader_score_v1": 0.7678571428571428,
+      "leader_score_v1": 0.7688775510204081,
       "rs20": 0.10858743720446684,
       "rs60": 0.2779882082279097,
       "keynes_legacy": 0.6587872328152434,
       "keynes_v2": 0.14997353555701637,
-      "updated_at_utc": "2026-09-08T00:06:47.392205+00:00"
+      "updated_at_utc": "2026-09-08T00:51:02.395998+00:00"
     },
     {
       "ticker": "IDNA",
@@ -247,12 +279,12 @@
       "observation_date": "2026-09-04",
       "confirmation_streak": 1,
       "weakening_streak": 0,
-      "leader_score_v1": 0.7357142857142858,
+      "leader_score_v1": 0.7448979591836735,
       "rs20": 0.14744352728248722,
       "rs60": 0.3295492386854084,
       "keynes_legacy": 0.986583554608689,
       "keynes_v2": 0.3134438137650255,
-      "updated_at_utc": "2026-09-08T00:06:47.392205+00:00"
+      "updated_at_utc": "2026-09-08T00:51:02.395998+00:00"
     },
     {
       "ticker": "NEM",
@@ -263,12 +295,12 @@
       "observation_date": "2026-09-04",
       "confirmation_streak": 1,
       "weakening_streak": 0,
-      "leader_score_v1": 0.7311224489795919,
+      "leader_score_v1": 0.7403061224489796,
       "rs20": 0.14007067477403057,
       "rs60": 0.3191642622961208,
       "keynes_legacy": 0.9012541270083684,
       "keynes_v2": 0.2439849571159079,
-      "updated_at_utc": "2026-09-08T00:06:47.392205+00:00"
+      "updated_at_utc": "2026-09-08T00:51:02.395998+00:00"
     },
     {
       "ticker": "META",
@@ -279,12 +311,12 @@
       "observation_date": "2026-09-04",
       "confirmation_streak": 1,
       "weakening_streak": 0,
-      "leader_score_v1": 0.6158163265306122,
+      "leader_score_v1": 0.6234693877551021,
       "rs20": 0.04563554867695152,
       "rs60": 0.016760094796132163,
       "keynes_legacy": 0.25539497860934546,
       "keynes_v2": 0.058688496316566176,
-      "updated_at_utc": "2026-09-08T00:06:47.392205+00:00"
+      "updated_at_utc": "2026-09-08T00:51:02.395998+00:00"
     },
     {
       "ticker": "MU",
@@ -295,12 +327,12 @@
       "observation_date": "2026-09-04",
       "confirmation_streak": 1,
       "weakening_streak": 0,
-      "leader_score_v1": 0.7933673469387756,
+      "leader_score_v1": 0.7948979591836736,
       "rs20": 0.16238494778293178,
       "rs60": 0.07556701192986193,
       "keynes_legacy": 1.0163385199983117,
       "keynes_v2": 0.28305632489459215,
-      "updated_at_utc": "2026-09-08T00:06:47.392205+00:00"
+      "updated_at_utc": "2026-09-08T00:51:02.395998+00:00"
     },
     {
       "ticker": "CEG",
@@ -311,12 +343,12 @@
       "observation_date": "2026-09-04",
       "confirmation_streak": 1,
       "weakening_streak": 0,
-      "leader_score_v1": 0.770918367346939,
+      "leader_score_v1": 0.7714285714285716,
       "rs20": 0.11338347360454537,
       "rs60": 0.17130246942115068,
       "keynes_legacy": 0.759367955157855,
       "keynes_v2": 0.39430793325613805,
-      "updated_at_utc": "2026-09-08T00:06:47.392205+00:00"
+      "updated_at_utc": "2026-09-08T00:51:02.395998+00:00"
     },
     {
       "ticker": "VST",
@@ -327,12 +359,12 @@
       "observation_date": "2026-09-04",
       "confirmation_streak": 1,
       "weakening_streak": 0,
-      "leader_score_v1": 0.623469387755102,
+      "leader_score_v1": 0.6265306122448979,
       "rs20": 0.06592346010171668,
       "rs60": 0.014739804627661446,
       "keynes_legacy": 0.40625250709351257,
       "keynes_v2": 0.13745519961332162,
-      "updated_at_utc": "2026-09-08T00:06:47.392205+00:00"
+      "updated_at_utc": "2026-09-08T00:51:02.395998+00:00"
     },
     {
       "ticker": "6857.T",
@@ -340,15 +372,15 @@
       "name": "Advantest",
       "state": "EMERGING",
       "raw_state": "EMERGING",
-      "observation_date": "2026-09-07",
-      "confirmation_streak": 0,
+      "observation_date": "2026-09-08",
+      "confirmation_streak": 1,
       "weakening_streak": 0,
-      "leader_score_v1": 0.6683673469387755,
+      "leader_score_v1": 0.6183673469387756,
       "rs20": 0.002737935635052091,
       "rs60": 0.2666942643696326,
-      "keynes_legacy": 0.40693061094034966,
-      "keynes_v2": 0.060147857296455935,
-      "updated_at_utc": "2026-09-08T00:06:47.392205+00:00"
+      "keynes_legacy": 0.030354150000509783,
+      "keynes_v2": 0.008897466498477134,
+      "updated_at_utc": "2026-09-08T00:51:02.395998+00:00"
     },
     {
       "ticker": "SBLK",
@@ -359,12 +391,12 @@
       "observation_date": "2026-09-04",
       "confirmation_streak": 1,
       "weakening_streak": 0,
-      "leader_score_v1": 0.8525510204081632,
+      "leader_score_v1": 0.8566326530612245,
       "rs20": 0.16039295488716854,
       "rs60": 0.21699533519337422,
       "keynes_legacy": 0.875574297396759,
       "keynes_v2": 0.7045664440042542,
-      "updated_at_utc": "2026-09-08T00:06:47.392205+00:00"
+      "updated_at_utc": "2026-09-08T00:51:02.395998+00:00"
     },
     {
       "ticker": "BOAT",
@@ -375,12 +407,12 @@
       "observation_date": "2026-09-04",
       "confirmation_streak": 1,
       "weakening_streak": 0,
-      "leader_score_v1": 0.841326530612245,
+      "leader_score_v1": 0.838265306122449,
       "rs20": 0.14949846700251657,
       "rs60": 0.20905915369858485,
       "keynes_legacy": 1.0577525536752521,
       "keynes_v2": 0.8865759765024875,
-      "updated_at_utc": "2026-09-08T00:06:47.392205+00:00"
+      "updated_at_utc": "2026-09-08T00:51:02.395998+00:00"
     },
     {
       "ticker": "DAC",
@@ -391,12 +423,12 @@
       "observation_date": "2026-09-04",
       "confirmation_streak": 1,
       "weakening_streak": 0,
-      "leader_score_v1": 0.75,
+      "leader_score_v1": 0.753061224489796,
       "rs20": 0.1072959181545654,
       "rs60": 0.15143734100188722,
       "keynes_legacy": 0.7239675909294028,
       "keynes_v2": 0.5154550335869414,
-      "updated_at_utc": "2026-09-08T00:06:47.392205+00:00"
+      "updated_at_utc": "2026-09-08T00:51:02.395998+00:00"
     },
     {
       "ticker": "ZIM",
@@ -407,12 +439,12 @@
       "observation_date": "2026-09-04",
       "confirmation_streak": 1,
       "weakening_streak": 0,
-      "leader_score_v1": 0.6642857142857144,
+      "leader_score_v1": 0.6770408163265307,
       "rs20": 0.06642375732179917,
       "rs60": 0.06386981613100029,
       "keynes_legacy": 0.4227053411507504,
       "keynes_v2": 0.053108843263650514,
-      "updated_at_utc": "2026-09-08T00:06:47.392205+00:00"
+      "updated_at_utc": "2026-09-08T00:51:02.395998+00:00"
     }
   ],
   "theme_breadth": [
@@ -504,7 +536,7 @@
       "breadth_eligible": true,
       "median_rs20": 0.10633901410756308,
       "median_keynes_v2": 0.28305632489459215,
-      "median_keynes_legacy": 1.1239438548059097
+      "median_keynes_legacy": 1.2718450699110981
     },
     {
       "theme": "EV",
@@ -779,7 +811,7 @@
     {
       "theme": "MLCC",
       "n": 3,
-      "above_ma20_pct": 1.0,
+      "above_ma20_pct": 0.3333333333333333,
       "above_ma60_pct": 0.0,
       "positive_rs5_pct": 0.3333333333333333,
       "positive_rs20_pct": 0.3333333333333333,
@@ -788,8 +820,8 @@
       "breadth_confidence": "MEDIUM",
       "breadth_eligible": true,
       "median_rs20": -0.033113983351427345,
-      "median_keynes_v2": 0.023365719566299684,
-      "median_keynes_legacy": 0.029686710854981202
+      "median_keynes_v2": -0.0006825112145212607,
+      "median_keynes_legacy": -0.4287075923635333
     },
     {
       "theme": "Semiconductor",
@@ -824,7 +856,7 @@
     {
       "theme": "Semiconductor_Equipment",
       "n": 7,
-      "above_ma20_pct": 0.0,
+      "above_ma20_pct": 0.2857142857142857,
       "above_ma60_pct": 0.14285714285714285,
       "positive_rs5_pct": 0.42857142857142855,
       "positive_rs20_pct": 0.14285714285714285,
@@ -834,7 +866,7 @@
       "breadth_eligible": true,
       "median_rs20": -0.038448345348400914,
       "median_keynes_v2": -0.007662717612106382,
-      "median_keynes_legacy": -0.2760017484310575
+      "median_keynes_legacy": -0.3566903827146618
     },
     {
       "theme": "Market_US",
@@ -953,8 +985,8 @@
       "breadth_confidence": "LOW",
       "breadth_eligible": false,
       "median_rs20": -0.037135791021044584,
-      "median_keynes_v2": -0.0001521715842766792,
-      "median_keynes_legacy": -0.21096356819455575
+      "median_keynes_v2": -0.0600694012281322,
+      "median_keynes_legacy": -0.5945364504123777
     },
     {
       "theme": "Industrials",
