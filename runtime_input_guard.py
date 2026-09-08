@@ -29,8 +29,13 @@ def validate():
     try:
         policy,portfolio=load_risk_policy(),load_portfolio_state()
         check_numbers(policy);check_numbers(portfolio)
-        valid,_,_=validate_risk_inputs_v2(policy,portfolio)
+        valid,_,normalized=validate_risk_inputs_v2(policy,portfolio)
         if not valid:raise ValueError('invalid')
+        for pos in normalized["positions"]:
+            weight=pos.get("weight_pct")
+            if (not isinstance(pos.get("ticker"),str) or not pos["ticker"].strip()
+                    or type(weight) not in (int,float) or not math.isfinite(weight) or weight<0):
+                raise ValueError("position exposure unavailable")
     except Exception:
         raise ValueError('PRIVATE_RISK_INPUTS_NOT_READY') from None
 

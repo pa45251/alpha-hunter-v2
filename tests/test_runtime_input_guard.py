@@ -30,3 +30,9 @@ def test_missing_private_risk_blocks_before_entrypoint(monkeypatch):
     called=[];monkeypatch.setattr(guard.runpy,'run_module',lambda *a,**k:called.append(1))
     with pytest.raises(ValueError):guard.main()
     assert called==[]
+
+def test_position_without_exposure_cannot_be_treated_as_zero(monkeypatch):
+    monkeypatch.setenv('ALPHA_HUNTER_RISK_POLICY_JSON',json.dumps(base_policy()))
+    monkeypatch.setenv('ALPHA_HUNTER_PORTFOLIO_JSON',json.dumps({'gross_exposure_pct':50,'positions':[{'ticker':'2317.TW'}]}))
+    with pytest.raises(ValueError,match='PRIVATE_RISK_INPUTS_NOT_READY'):
+        guard.validate()
