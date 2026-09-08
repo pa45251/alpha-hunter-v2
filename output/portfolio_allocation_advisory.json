@@ -1,41 +1,14 @@
 {
   "contract": "ALPHA_HUNTER_PORTFOLIO_ALLOCATION_ADVISORY",
   "schema_version": "1.1",
-  "generated_at": "2026-09-08T00:14:33.736060+00:00",
+  "generated_at": "2026-09-08T01:00:29.071639+00:00",
   "status": "READY",
   "risk_regime": "RISK_ON",
   "risk_score": 16,
   "target_cash_pct": 0.0,
   "cash_rule": "Target cash is a risk-budget buffer. In leveraged accounts, implementation should generally reduce financing/gross exposure before holding idle cash; private balances are not published here.",
-  "best_new_opportunity": {
-    "ticker": "2606.TW",
-    "name": "裕民",
-    "preferred_exposure": "STOCK",
-    "advisory_action": "HOLD_BIAS",
-    "edge_score": 0.6363,
-    "driver_id": "DRY_BULK_FREIGHT",
-    "reaction_state": "PERSISTENT",
-    "confidence": "MEDIUM"
-  },
-  "rotations": [
-    {
-      "source_alias": "標的D",
-      "source_action": "REVIEW_HOLD",
-      "destination_ticker": "2606.TW",
-      "destination_name": "裕民",
-      "destination_action": "HOLD_BIAS",
-      "destination_driver": "DRY_BULK_FREIGHT",
-      "destination_reaction_state": "PERSISTENT",
-      "rotation_action": "WAIT_BETTER_ENTRY",
-      "edge_spread": 0.2237,
-      "suggested_source_trim_pct_now": 0,
-      "suggested_source_trim_pct_on_trigger": 30,
-      "suggested_redeploy_pct_of_trim_on_trigger": 100,
-      "suggested_risk_buffer_pct_of_trim_on_trigger": 0,
-      "entry_trigger_required": "DESTINATION_ENTRY_STATE_NOT_CONFIRMING",
-      "reason": "DESTINATION_EDGE_EXCEEDS_SOURCE_BY_POLICY_THRESHOLD"
-    }
-  ],
+  "best_new_opportunity": null,
+  "rotations": [],
   "source_ranking": [
     {
       "alias": "標的D",
@@ -66,48 +39,7 @@
       "signal_state": "STRONG"
     }
   ],
-  "candidate_ranking": [
-    {
-      "ticker": "2606.TW",
-      "name": "裕民",
-      "preferred_exposure": "STOCK",
-      "advisory_action": "HOLD_BIAS",
-      "edge_score": 0.6363,
-      "driver_id": "DRY_BULK_FREIGHT",
-      "reaction_state": "PERSISTENT",
-      "confidence": "MEDIUM"
-    },
-    {
-      "ticker": "2637.TW",
-      "name": "慧洋-KY",
-      "preferred_exposure": "STOCK",
-      "advisory_action": "HOLD_BIAS",
-      "edge_score": 0.6363,
-      "driver_id": "DRY_BULK_FREIGHT",
-      "reaction_state": "PERSISTENT",
-      "confidence": "MEDIUM"
-    },
-    {
-      "ticker": "2605.TW",
-      "name": "新興",
-      "preferred_exposure": "STOCK",
-      "advisory_action": "HOLD_BIAS",
-      "edge_score": 0.636,
-      "driver_id": "DRY_BULK_FREIGHT",
-      "reaction_state": "PERSISTENT",
-      "confidence": "MEDIUM"
-    },
-    {
-      "ticker": "2617.TW",
-      "name": "台航",
-      "preferred_exposure": "STOCK",
-      "advisory_action": "HOLD_BIAS",
-      "edge_score": 0.636,
-      "driver_id": "DRY_BULK_FREIGHT",
-      "reaction_state": "PERSISTENT",
-      "confidence": "MEDIUM"
-    }
-  ],
+  "candidate_ranking": [],
   "privacy": {
     "source_positions_alias_only": true,
     "portfolio_balances_included": false,

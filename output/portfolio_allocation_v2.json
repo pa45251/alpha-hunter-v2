@@ -1,26 +1,12 @@
 {
   "contract": "ALPHA_HUNTER_PORTFOLIO_ALLOCATION_V2",
   "schema_version": "2.0",
-  "generated_at": "2026-09-08T00:14:39.411202+00:00",
+  "generated_at": "2026-09-08T01:00:36.845090+00:00",
   "status": "READY",
   "risk_regime": "RISK_ON",
   "risk_score": 16,
   "target_cash_pct": 0.0,
-  "best_research_opportunity": {
-    "ticker": "2606.TW",
-    "name": "裕民",
-    "driver_id": "DRY_BULK_FREIGHT",
-    "advisory_action": "HOLD_BIAS",
-    "edge_score": 0.6363,
-    "score_is_probability": false,
-    "entry_plan_present": true,
-    "entry_style": "CONTINUATION_BASE",
-    "entry_status": "NO_VALID_CONTINUATION_BASE",
-    "trigger_price": null,
-    "buy_zone_low": null,
-    "buy_zone_high": null,
-    "invalidation_price": null
-  },
+  "best_research_opportunity": null,
   "best_entry_plan_destination": null,
   "rotations": [],
   "source_ranking": [

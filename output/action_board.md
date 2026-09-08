@@ -6,16 +6,16 @@
 - Rule: EOD output never claims BUY_NOW without a fresh executable quote inside the buy zone.
 
 ### A. Strongest Global-Aligned Trend
-- **2617.TW 台航** — alignment `0.9067` / global `Shipping` / reaction `PERSISTENT` / action `HOLD_DONT_CHASE`
+- **NONE** — no stock passes the V2 global-alignment hard gates.
 
 ### B. Best Fresh Entry
-- **8996.TW 高力** — `AVOID` / `WATCHLIST`
+- **3231.TW 緯創** — `AVOID` / `WATCHLIST`
 - Entry style: `FRESH_BREAKOUT`
 - Trigger: **—**
 - Buy zone: **— – —**
 - Invalidation: **—**
 - Why now: 
-- Why not now: CAUSAL_DRIVER_NOT_ACTIVE;COMPANY_EDGE_NOT_SOURCE_BACKED;GLOBAL_ALIGNMENT_NOT_ELIGIBLE
+- Why not now: CAUSAL_DRIVER_NOT_ACTIVE;GLOBAL_ALIGNMENT_NOT_ELIGIBLE
 
 ### C. Best Pullback Entry
 - **2603.TW 長榮** — `PREPARE` / `WATCHLIST`
@@ -27,13 +27,13 @@
 - Why not now: CAUSAL_DRIVER_NOT_ACTIVE;GLOBAL_ALIGNMENT_NOT_ELIGIBLE
 
 ### D. Best Continuation Entry
-- **2617.TW 台航** — `WAIT_BREAKOUT` / `NO_VALID_CONTINUATION_BASE`
+- **2617.TW 台航** — `PREPARE` / `WATCHLIST`
 - Entry style: `CONTINUATION_BASE`
 - Trigger: **—**
 - Buy zone: **— – —**
 - Invalidation: **—**
 - Why now: 
-- Why not now: CONTINUATION_BASE_QUALITY_NOT_COMPLETE
+- Why not now: CAUSAL_DRIVER_NOT_ACTIVE;GLOBAL_ALIGNMENT_NOT_ELIGIBLE
 
 ### E. Rotation / Exact Execution
 - **NO ROTATION NOW** — no destination simultaneously passes the canonical V2 opportunity + entry gate.
@@ -45,11 +45,7 @@ V2 is shadow/advisory only. Exact levels are structure-derived conditional plans
 - Global risk regime: `RISK_ON` / score `16`
 - Target cash / dry-powder buffer: **0.0%**
 - For leveraged portfolios, a higher buffer should generally be implemented by reducing gross exposure before accumulating idle cash.
-- Best new opportunity: **2606.TW 裕民** — `HOLD_BIAS` / edge `0.6363` / reaction `PERSISTENT`
-
-| Source alias | Destination | Rotation state | Edge spread | Trim now | Trim on trigger | Entry trigger | Redeploy on trigger | Buffer on trigger |
-|---|---|---|---:|---:|---:|---|---:|---:|
-| 標的D | 2606.TW 裕民 | WAIT_BETTER_ENTRY | 0.2237 | 0% | 30% | DESTINATION_ENTRY_STATE_NOT_CONFIRMING | 100% | 0% |
+- Rotation: no source/destination pair currently clears the policy threshold, or the risk regime blocks redeployment.
 
 PREPARE_ROTATION means the edge is strong enough to nominate the switch, but the destination has not reached the required entry-confirmation state; current trim remains zero.
 Rotation and cash outputs are CIO advisories only. They do not authorize brokerage orders.
@@ -57,22 +53,15 @@ Rotation and cash outputs are CIO advisories only. They do not authorize brokera
 ## 0.5 Global Alignment Leaderboard
 - Purpose: find Taiwan stocks whose own trend quality is supported by the corresponding international market and an ACTIVE causal driver.
 - Alignment score is a relative opportunity/evidence score, **not a calibrated win probability**.
-- Strongest aligned trend now: **2617.TW 台航** — score `0.9017` / `HOLD_DONT_CHASE` / global `Shipping` / reaction `PERSISTENT`
-- Best fresh aligned setup now: **NONE** — current alignment leaders are already persistent or no early/confirming setup passes every hard gate.
-
-| Rank | Taiwan stock | Global theme | Alignment | Global | Taiwan | Breadth | Keynes | State |
-|---:|---|---|---:|---:|---:|---:|---:|---|
-| 1 | 2617.TW 台航 | Shipping | 0.9017 | 0.9656 | 0.7127 | 1.0 | 0.9091 | HOLD_DONT_CHASE |
-| 2 | 2637.TW 慧洋-KY | Shipping | 0.8895 | 0.9656 | 0.7491 | 1.0 | 0.7636 | HOLD_DONT_CHASE |
-| 3 | 2606.TW 裕民 | Shipping | 0.8672 | 0.9656 | 0.6382 | 1.0 | 0.8 | HOLD_DONT_CHASE |
-| 4 | 2605.TW 新興 | Shipping | 0.8572 | 0.9656 | 0.6327 | 1.0 | 0.7455 | HOLD_DONT_CHASE |
+- Strongest aligned trend now: **NONE** — no stock currently passes all Global Alignment hard gates.
+- Best fresh aligned setup now: **NONE**.
 
 Global Alignment is advisory only; BROKEN/EXTENDED names cannot become fresh entries through this leaderboard.
 
-- Run: `20260908T080641+0800-3df4fce0`
+- Run: `20260908T085056+0800-7bed948e`
 - Causal source: `V3_AUTONOMOUS_RESEARCH`
 - Same snapshot: `True`
-- Active opportunity drivers: DRY_BULK_FREIGHT
+- Active opportunity drivers: NONE
 - Private risk inputs valid: `True`
 - Auto order execution: `False`
 
@@ -89,23 +78,23 @@ Global Alignment is advisory only; BROKEN/EXTENDED names cannot become fresh ent
 
 | Rank | Exposure | Name | Advisory | Confidence | Driver | Why |
 |---:|---|---|---|---|---|---|
-| 1 | 2606.TW | 裕民 | HOLD_BIAS | MEDIUM | DRY_BULK_FREIGHT | The thesis is confirmed, but more information may already be priced; prefer hold or a better entry over chasing. |
-| 2 | 2637.TW | 慧洋-KY | HOLD_BIAS | MEDIUM | DRY_BULK_FREIGHT | The thesis is confirmed, but more information may already be priced; prefer hold or a better entry over chasing. |
-| 3 | 2605.TW | 新興 | HOLD_BIAS | MEDIUM | DRY_BULK_FREIGHT | The thesis is confirmed, but more information may already be priced; prefer hold or a better entry over chasing. |
-| 4 | 2617.TW | 台航 | HOLD_BIAS | MEDIUM | DRY_BULK_FREIGHT | The thesis is confirmed, but more information may already be priced; prefer hold or a better entry over chasing. |
-| 5 | 2609.TW | 陽明 | RESEARCH_FIRST | INSUFFICIENT | CONTAINER_FREIGHT | The causal driver is not validated active; price strength cannot substitute for causality. |
-| 6 | 2615.TW | 萬海 | RESEARCH_FIRST | INSUFFICIENT | CONTAINER_FREIGHT | The causal driver is not validated active; price strength cannot substitute for causality. |
-| 7 | 2408.TW | 南亞科 | RESEARCH_FIRST | INSUFFICIENT | DRAM_PRICING | The causal driver is not validated active; price strength cannot substitute for causality. |
-| 8 | 6669.TW | 緯穎 | RESEARCH_FIRST | INSUFFICIENT | AI_SERVER_SHIPMENTS | The causal driver is not validated active; price strength cannot substitute for causality. |
-| 9 | 2344.TW | 華邦電 | RESEARCH_FIRST | INSUFFICIENT | SPECIALTY_MEMORY_PRICING | The causal driver is not validated active; price strength cannot substitute for causality. |
-| 10 | 3231.TW | 緯創 | RESEARCH_FIRST | INSUFFICIENT | AI_SERVER_SHIPMENTS | The causal driver is not validated active; price strength cannot substitute for causality. |
-| 11 | 3006.TW | 晶豪科 | RESEARCH_FIRST | INSUFFICIENT | MEMORY_IC_CYCLE | The causal driver is not validated active; price strength cannot substitute for causality. |
-| 12 | 2882.TW | 國泰金 | RESEARCH_FIRST | INSUFFICIENT | FINANCIALS_RATE_CREDIT_CYCLE | The causal driver is not validated active; price strength cannot substitute for causality. |
-| 13 | 2881.TW | 富邦金 | RESEARCH_FIRST | INSUFFICIENT | FINANCIALS_RATE_CREDIT_CYCLE | The causal driver is not validated active; price strength cannot substitute for causality. |
-| 14 | 2303.TW | 聯電 | RESEARCH_FIRST | INSUFFICIENT | MATURE_NODE_FOUNDRY_UTILIZATION | The causal driver is not validated active; price strength cannot substitute for causality. |
-| 15 | 2603.TW | 長榮 | RESEARCH_FIRST | INSUFFICIENT | CONTAINER_FREIGHT | The causal driver is not validated active; price strength cannot substitute for causality. |
+| 1 | 2609.TW | 陽明 | RESEARCH_FIRST | INSUFFICIENT | CONTAINER_FREIGHT | The causal driver is not validated active; price strength cannot substitute for causality. |
+| 2 | 2615.TW | 萬海 | RESEARCH_FIRST | INSUFFICIENT | CONTAINER_FREIGHT | The causal driver is not validated active; price strength cannot substitute for causality. |
+| 3 | 2606.TW | 裕民 | RESEARCH_FIRST | INSUFFICIENT | DRY_BULK_FREIGHT | The causal driver is not validated active; price strength cannot substitute for causality. |
+| 4 | 2637.TW | 慧洋-KY | RESEARCH_FIRST | INSUFFICIENT | DRY_BULK_FREIGHT | The causal driver is not validated active; price strength cannot substitute for causality. |
+| 5 | 2605.TW | 新興 | RESEARCH_FIRST | INSUFFICIENT | DRY_BULK_FREIGHT | The causal driver is not validated active; price strength cannot substitute for causality. |
+| 6 | 2617.TW | 台航 | RESEARCH_FIRST | INSUFFICIENT | DRY_BULK_FREIGHT | The causal driver is not validated active; price strength cannot substitute for causality. |
+| 7 | 6669.TW | 緯穎 | RESEARCH_FIRST | INSUFFICIENT | AI_SERVER_SHIPMENTS | The causal driver is not validated active; price strength cannot substitute for causality. |
+| 8 | 3006.TW | 晶豪科 | RESEARCH_FIRST | INSUFFICIENT | MEMORY_IC_CYCLE | The causal driver is not validated active; price strength cannot substitute for causality. |
+| 9 | 6770.TW | 力積電 | RESEARCH_FIRST | INSUFFICIENT | MATURE_NODE_FOUNDRY_UTILIZATION | The causal driver is not validated active; price strength cannot substitute for causality. |
+| 10 | 2881.TW | 富邦金 | RESEARCH_FIRST | INSUFFICIENT | FINANCIALS_RATE_CREDIT_CYCLE | The causal driver is not validated active; price strength cannot substitute for causality. |
+| 11 | 2882.TW | 國泰金 | RESEARCH_FIRST | INSUFFICIENT | FINANCIALS_RATE_CREDIT_CYCLE | The causal driver is not validated active; price strength cannot substitute for causality. |
+| 12 | 2303.TW | 聯電 | RESEARCH_FIRST | INSUFFICIENT | MATURE_NODE_FOUNDRY_UTILIZATION | The causal driver is not validated active; price strength cannot substitute for causality. |
+| 13 | 2603.TW | 長榮 | RESEARCH_FIRST | INSUFFICIENT | CONTAINER_FREIGHT | The causal driver is not validated active; price strength cannot substitute for causality. |
+| 14 | 2330.TW | 台積電 | RESEARCH_FIRST | INSUFFICIENT | LEADING_EDGE_FOUNDRY_AI_DEMAND | The causal driver is not validated active; price strength cannot substitute for causality. |
+| 15 | 3231.TW | 緯創 | RESEARCH_FIRST | INSUFFICIENT | AI_SERVER_SHIPMENTS | The causal driver is not validated active; price strength cannot substitute for causality. |
 
-Advisory counts: `{"HOLD_BIAS": 4, "RESEARCH_FIRST": 51}`
+Advisory counts: `{"RESEARCH_FIRST": 55}`
 The advisory lane may say BUY_BIAS/PREFER_ETF/WAIT_PULLBACK/AVOID even when execution remains blocked. That is intentional.
 
 ## 2. Existing-position CIO advisory — alias only
@@ -126,17 +115,11 @@ No validated BUY/ADD/REDUCE/EXIT/HOLD action is currently emitted by the frozen 
 
 ## 4. Closest to execution action
 
-| Ticker | Name | Driver | Reaction | Stage | Blocker |
-|---|---|---|---|---|---|
-| 2606.TW | 裕民 | DRY_BULK_FREIGHT | PERSISTENT | GATE_4_REACTION | INFORMATION_MAY_BE_PRICED |
-| 2637.TW | 慧洋-KY | DRY_BULK_FREIGHT | PERSISTENT | GATE_4_REACTION | INFORMATION_MAY_BE_PRICED |
-| 2605.TW | 新興 | DRY_BULK_FREIGHT | PERSISTENT | GATE_4_REACTION | INFORMATION_MAY_BE_PRICED |
-| 2617.TW | 台航 | DRY_BULK_FREIGHT | PERSISTENT | GATE_4_REACTION | INFORMATION_MAY_BE_PRICED |
+No WATCH_ENTRY candidates.
 
 ## 5. Main execution blockers
-- `DRIVER_NOT_ACTIVE_RESEARCH_VALIDATED`: 51
+- `DRIVER_NOT_ACTIVE_RESEARCH_VALIDATED`: 55
 - `EDGE_PROVENANCE_NOT_SOURCE_BACKED`: 40
-- `INFORMATION_MAY_BE_PRICED`: 4
 
 ## 6. Existing-position strict layer — privacy-safe alias view
 
