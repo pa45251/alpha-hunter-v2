@@ -1,15 +1,15 @@
 {
   "contract": "ALPHA_HUNTER_RISK_REGIME",
   "schema_version": "1.0",
-  "generated_at": "2026-09-08T01:00:28.920774+00:00",
+  "generated_at": "2026-09-09T00:53:14.128824+00:00",
   "status": "READY",
-  "risk_snapshot_date": "2026-09-07",
-  "regime": "RISK_ON",
-  "risk_score": 16,
-  "target_cash_pct": 0.0,
-  "gross_multiplier": 1.0,
+  "risk_snapshot_date": "2026-09-08",
+  "regime": "NORMAL",
+  "risk_score": 21,
+  "target_cash_pct": 5.0,
+  "gross_multiplier": 0.9,
   "components": {
-    "VIX_VXN": 5,
+    "VIX_VXN": 10,
     "US_TREND": 0,
     "US_BREADTH": 11,
     "CREDIT": 0,
@@ -17,16 +17,16 @@
   },
   "signals": {
     "vix": {
-      "price": 15.300000190734863,
-      "ma20": 15.091500043869019,
-      "ret5": 0.025469176440869656,
-      "last_date": "2026-09-07"
+      "price": 15.720000267028809,
+      "ma20": 15.113500070571899,
+      "ret5": -0.03794368909237056,
+      "last_date": "2026-09-08"
     },
     "vxn": {
-      "price": 20.040000915527344,
-      "ma20": 21.457999992370606,
-      "ret5": 0.006024138492660258,
-      "last_date": "2026-09-04"
+      "price": 21.709999084472656,
+      "ma20": 21.39149990081787,
+      "ret5": 0.07581757959163449,
+      "last_date": "2026-09-08"
     },
     "spy": {
       "price": 770.1900024414062,
@@ -45,7 +45,7 @@
     "credit_hyg_lqd": {
       "price": 0.750474034346017,
       "ma20": 0.7494856924199516,
-      "ma60": 0.7418197589065205,
+      "ma60": 0.7418197555055508,
       "ret20": 0.005716889325801722,
       "above_ma20": true,
       "above_ma60": true

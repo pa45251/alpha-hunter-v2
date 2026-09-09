@@ -1,8 +1,8 @@
 {
   "contract": "ALPHA_HUNTER_CIO_ADVISORY_PACKET",
   "advisory_version": "1.0",
-  "run_id": "20260908T085056+0800-7bed948e",
-  "generated_at": "2026-09-08T01:00:26.555346+00:00",
+  "run_id": "20260909T082137+0800-65b75d0b",
+  "generated_at": "2026-09-09T00:53:11.581995+00:00",
   "advisory_is_order": false,
   "auto_trade_allowed": false,
   "purpose": "Directional CIO decision support under uncertainty. Execution permissions remain governed by the frozen shadow execution lane.",
@@ -12,22 +12,6 @@
   "top_advisories": [
     {
       "advisory_rank": 1,
-      "global_theme": "Shipping",
-      "driver_id": "CONTAINER_FREIGHT",
-      "ticker": "2609.TW",
-      "name": "陽明",
-      "etf_ticker": "BOAT",
-      "preferred_exposure": "CASH",
-      "advisory_action": "RESEARCH_FIRST",
-      "advisory_confidence": "INSUFFICIENT",
-      "advisory_rationale": "The causal driver is not validated active; price strength cannot substitute for causality.",
-      "advisory_missing_evidence": "ACTIVE_DRIVER_VALIDATION",
-      "reaction_state": "PERSISTENT",
-      "provenance_status": "SOURCE_BACKED",
-      "research_priority_score": 0.8700275735294116
-    },
-    {
-      "advisory_rank": 2,
       "global_theme": "Shipping",
       "driver_id": "CONTAINER_FREIGHT",
       "ticker": "2615.TW",
@@ -40,10 +24,10 @@
       "advisory_missing_evidence": "ACTIVE_DRIVER_VALIDATION",
       "reaction_state": "PERSISTENT",
       "provenance_status": "SOURCE_BACKED",
-      "research_priority_score": 0.8700275735294116
+      "research_priority_score": 0.8666819852941177
     },
     {
-      "advisory_rank": 3,
+      "advisory_rank": 2,
       "global_theme": "Shipping",
       "driver_id": "DRY_BULK_FREIGHT",
       "ticker": "2606.TW",
@@ -56,10 +40,10 @@
       "advisory_missing_evidence": "ACTIVE_DRIVER_VALIDATION",
       "reaction_state": "PERSISTENT",
       "provenance_status": "SOURCE_BACKED",
-      "research_priority_score": 0.8580275735294118
+      "research_priority_score": 0.8546819852941177
     },
     {
-      "advisory_rank": 4,
+      "advisory_rank": 3,
       "global_theme": "Shipping",
       "driver_id": "DRY_BULK_FREIGHT",
       "ticker": "2637.TW",
@@ -72,10 +56,10 @@
       "advisory_missing_evidence": "ACTIVE_DRIVER_VALIDATION",
       "reaction_state": "PERSISTENT",
       "provenance_status": "SOURCE_BACKED",
-      "research_priority_score": 0.8580275735294118
+      "research_priority_score": 0.8546819852941177
     },
     {
-      "advisory_rank": 5,
+      "advisory_rank": 4,
       "global_theme": "Shipping",
       "driver_id": "DRY_BULK_FREIGHT",
       "ticker": "2605.TW",
@@ -88,10 +72,10 @@
       "advisory_missing_evidence": "ACTIVE_DRIVER_VALIDATION",
       "reaction_state": "PERSISTENT",
       "provenance_status": "SOURCE_BACKED",
-      "research_priority_score": 0.8500275735294118
+      "research_priority_score": 0.8466819852941176
     },
     {
-      "advisory_rank": 6,
+      "advisory_rank": 5,
       "global_theme": "Shipping",
       "driver_id": "DRY_BULK_FREIGHT",
       "ticker": "2617.TW",
@@ -104,7 +88,23 @@
       "advisory_missing_evidence": "ACTIVE_DRIVER_VALIDATION",
       "reaction_state": "PERSISTENT",
       "provenance_status": "SOURCE_BACKED",
-      "research_priority_score": 0.8500275735294118
+      "research_priority_score": 0.8466819852941176
+    },
+    {
+      "advisory_rank": 6,
+      "global_theme": "Memory",
+      "driver_id": "MEMORY_IC_CYCLE",
+      "ticker": "3006.TW",
+      "name": "晶豪科",
+      "etf_ticker": "SOXX",
+      "preferred_exposure": "CASH",
+      "advisory_action": "RESEARCH_FIRST",
+      "advisory_confidence": "INSUFFICIENT",
+      "advisory_rationale": "The causal driver is not validated active; price strength cannot substitute for causality.",
+      "advisory_missing_evidence": "ACTIVE_DRIVER_VALIDATION;COMPANY_EDGE_SOURCE_BACKING",
+      "reaction_state": "PERSISTENT",
+      "provenance_status": "NEEDS_SOURCE_BACKFILL",
+      "research_priority_score": 0.8261174150485436
     },
     {
       "advisory_rank": 7,
@@ -120,42 +120,10 @@
       "advisory_missing_evidence": "ACTIVE_DRIVER_VALIDATION",
       "reaction_state": "PERSISTENT",
       "provenance_status": "SOURCE_BACKED",
-      "research_priority_score": 0.8309306192660549
+      "research_priority_score": 0.8139380733944953
     },
     {
       "advisory_rank": 8,
-      "global_theme": "Memory",
-      "driver_id": "MEMORY_IC_CYCLE",
-      "ticker": "3006.TW",
-      "name": "晶豪科",
-      "etf_ticker": "SOXX",
-      "preferred_exposure": "CASH",
-      "advisory_action": "RESEARCH_FIRST",
-      "advisory_confidence": "INSUFFICIENT",
-      "advisory_rationale": "The causal driver is not validated active; price strength cannot substitute for causality.",
-      "advisory_missing_evidence": "ACTIVE_DRIVER_VALIDATION;COMPANY_EDGE_SOURCE_BACKING",
-      "reaction_state": "PERSISTENT",
-      "provenance_status": "NEEDS_SOURCE_BACKFILL",
-      "research_priority_score": 0.8262418082524272
-    },
-    {
-      "advisory_rank": 9,
-      "global_theme": "Foundry",
-      "driver_id": "MATURE_NODE_FOUNDRY_UTILIZATION",
-      "ticker": "6770.TW",
-      "name": "力積電",
-      "etf_ticker": "SOXX",
-      "preferred_exposure": "CASH",
-      "advisory_action": "RESEARCH_FIRST",
-      "advisory_confidence": "INSUFFICIENT",
-      "advisory_rationale": "The causal driver is not validated active; price strength cannot substitute for causality.",
-      "advisory_missing_evidence": "ACTIVE_DRIVER_VALIDATION;COMPANY_EDGE_SOURCE_BACKING",
-      "reaction_state": "PERSISTENT",
-      "provenance_status": "NEEDS_SOURCE_BACKFILL",
-      "research_priority_score": 0.7912418082524273
-    },
-    {
-      "advisory_rank": 10,
       "global_theme": "Financials",
       "driver_id": "FINANCIALS_RATE_CREDIT_CYCLE",
       "ticker": "2881.TW",
@@ -168,10 +136,10 @@
       "advisory_missing_evidence": "ACTIVE_DRIVER_VALIDATION;COMPANY_EDGE_SOURCE_BACKING",
       "reaction_state": "PERSISTENT",
       "provenance_status": "NEEDS_SOURCE_BACKFILL",
-      "research_priority_score": 0.7898437500000001
+      "research_priority_score": 0.7892187500000001
     },
     {
-      "advisory_rank": 11,
+      "advisory_rank": 9,
       "global_theme": "Financials",
       "driver_id": "FINANCIALS_RATE_CREDIT_CYCLE",
       "ticker": "2882.TW",
@@ -184,10 +152,26 @@
       "advisory_missing_evidence": "ACTIVE_DRIVER_VALIDATION;COMPANY_EDGE_SOURCE_BACKING",
       "reaction_state": "PERSISTENT",
       "provenance_status": "NEEDS_SOURCE_BACKFILL",
-      "research_priority_score": 0.7898437500000001
+      "research_priority_score": 0.7892187500000001
     },
     {
-      "advisory_rank": 12,
+      "advisory_rank": 10,
+      "global_theme": "Foundry",
+      "driver_id": "MATURE_NODE_FOUNDRY_UTILIZATION",
+      "ticker": "6770.TW",
+      "name": "力積電",
+      "etf_ticker": "SOXX",
+      "preferred_exposure": "CASH",
+      "advisory_action": "RESEARCH_FIRST",
+      "advisory_confidence": "INSUFFICIENT",
+      "advisory_rationale": "The causal driver is not validated active; price strength cannot substitute for causality.",
+      "advisory_missing_evidence": "ACTIVE_DRIVER_VALIDATION;COMPANY_EDGE_SOURCE_BACKING",
+      "reaction_state": "PERSISTENT",
+      "provenance_status": "NEEDS_SOURCE_BACKFILL",
+      "research_priority_score": 0.7789299150485437
+    },
+    {
+      "advisory_rank": 11,
       "global_theme": "Foundry",
       "driver_id": "MATURE_NODE_FOUNDRY_UTILIZATION",
       "ticker": "2303.TW",
@@ -200,10 +184,10 @@
       "advisory_missing_evidence": "ACTIVE_DRIVER_VALIDATION;COMPANY_EDGE_SOURCE_BACKING",
       "reaction_state": "CONFIRMING",
       "provenance_status": "NEEDS_SOURCE_BACKFILL",
-      "research_priority_score": 0.7832418082524272
+      "research_priority_score": 0.7709299150485437
     },
     {
-      "advisory_rank": 13,
+      "advisory_rank": 12,
       "global_theme": "Shipping",
       "driver_id": "CONTAINER_FREIGHT",
       "ticker": "2603.TW",
@@ -216,15 +200,31 @@
       "advisory_missing_evidence": "ACTIVE_DRIVER_VALIDATION",
       "reaction_state": "PULLBACK",
       "provenance_status": "SOURCE_BACKED",
-      "research_priority_score": 0.7740275735294116
+      "research_priority_score": 0.7706819852941176
+    },
+    {
+      "advisory_rank": 13,
+      "global_theme": "Shipping",
+      "driver_id": "CONTAINER_FREIGHT",
+      "ticker": "2609.TW",
+      "name": "陽明",
+      "etf_ticker": "BOAT",
+      "preferred_exposure": "CASH",
+      "advisory_action": "RESEARCH_FIRST",
+      "advisory_confidence": "INSUFFICIENT",
+      "advisory_rationale": "The causal driver is not validated active; price strength cannot substitute for causality.",
+      "advisory_missing_evidence": "ACTIVE_DRIVER_VALIDATION",
+      "reaction_state": "PULLBACK",
+      "provenance_status": "SOURCE_BACKED",
+      "research_priority_score": 0.7706819852941176
     },
     {
       "advisory_rank": 14,
-      "global_theme": "Foundry",
-      "driver_id": "LEADING_EDGE_FOUNDRY_AI_DEMAND",
-      "ticker": "2330.TW",
-      "name": "台積電",
-      "etf_ticker": "SMH",
+      "global_theme": "Memory",
+      "driver_id": "DRAM_PRICING",
+      "ticker": "2408.TW",
+      "name": "南亞科",
+      "etf_ticker": "SOXX",
       "preferred_exposure": "CASH",
       "advisory_action": "RESEARCH_FIRST",
       "advisory_confidence": "INSUFFICIENT",
@@ -232,23 +232,23 @@
       "advisory_missing_evidence": "ACTIVE_DRIVER_VALIDATION;COMPANY_EDGE_SOURCE_BACKING",
       "reaction_state": "PRE_CONFIRMATION",
       "provenance_status": "NEEDS_SOURCE_BACKFILL",
-      "research_priority_score": 0.7352418082524271
+      "research_priority_score": 0.7661174150485437
     },
     {
       "advisory_rank": 15,
-      "global_theme": "AI_Server",
-      "driver_id": "AI_SERVER_SHIPMENTS",
-      "ticker": "3231.TW",
-      "name": "緯創",
-      "etf_ticker": "QQQ",
+      "global_theme": "Memory",
+      "driver_id": "SPECIALTY_MEMORY_PRICING",
+      "ticker": "2344.TW",
+      "name": "華邦電",
+      "etf_ticker": "SOXX",
       "preferred_exposure": "CASH",
       "advisory_action": "RESEARCH_FIRST",
       "advisory_confidence": "INSUFFICIENT",
       "advisory_rationale": "The causal driver is not validated active; price strength cannot substitute for causality.",
-      "advisory_missing_evidence": "ACTIVE_DRIVER_VALIDATION",
+      "advisory_missing_evidence": "ACTIVE_DRIVER_VALIDATION;COMPANY_EDGE_SOURCE_BACKING",
       "reaction_state": "PRE_CONFIRMATION",
-      "provenance_status": "SOURCE_BACKED",
-      "research_priority_score": 0.734930619266055
+      "provenance_status": "NEEDS_SOURCE_BACKFILL",
+      "research_priority_score": 0.7541174150485437
     },
     {
       "advisory_rank": 16,
@@ -264,30 +264,30 @@
       "advisory_missing_evidence": "ACTIVE_DRIVER_VALIDATION",
       "reaction_state": "PRE_CONFIRMATION",
       "provenance_status": "SOURCE_BACKED",
-      "research_priority_score": 0.7262418082524272
+      "research_priority_score": 0.7261174150485437
     },
     {
       "advisory_rank": 17,
-      "global_theme": "Memory",
-      "driver_id": "DRAM_PRICING",
-      "ticker": "2408.TW",
-      "name": "南亞科",
-      "etf_ticker": "SOXX",
+      "global_theme": "Foundry",
+      "driver_id": "LEADING_EDGE_FOUNDRY_AI_DEMAND",
+      "ticker": "2330.TW",
+      "name": "台積電",
+      "etf_ticker": "SMH",
       "preferred_exposure": "CASH",
       "advisory_action": "RESEARCH_FIRST",
       "advisory_confidence": "INSUFFICIENT",
       "advisory_rationale": "The causal driver is not validated active; price strength cannot substitute for causality.",
       "advisory_missing_evidence": "ACTIVE_DRIVER_VALIDATION;COMPANY_EDGE_SOURCE_BACKING",
-      "reaction_state": "UNKNOWN",
+      "reaction_state": "PRE_CONFIRMATION",
       "provenance_status": "NEEDS_SOURCE_BACKFILL",
-      "research_priority_score": 0.7202418082524271
+      "research_priority_score": 0.7229299150485436
     },
     {
       "advisory_rank": 18,
       "global_theme": "AI_Server",
       "driver_id": "AI_SERVER_THERMAL_DENSITY",
-      "ticker": "3017.TW",
-      "name": "奇鋐",
+      "ticker": "3324.TWO",
+      "name": "雙鴻",
       "etf_ticker": "QQQ",
       "preferred_exposure": "CASH",
       "advisory_action": "RESEARCH_FIRST",
@@ -296,23 +296,23 @@
       "advisory_missing_evidence": "ACTIVE_DRIVER_VALIDATION;COMPANY_EDGE_SOURCE_BACKING",
       "reaction_state": "PERSISTENT",
       "provenance_status": "NEEDS_SOURCE_BACKFILL",
-      "research_priority_score": 0.717730619266055
+      "research_priority_score": 0.7229223404255318
     },
     {
       "advisory_rank": 19,
-      "global_theme": "Memory",
-      "driver_id": "SPECIALTY_MEMORY_PRICING",
-      "ticker": "2344.TW",
-      "name": "華邦電",
-      "etf_ticker": "SOXX",
+      "global_theme": "AI_Server",
+      "driver_id": "AI_SERVER_SHIPMENTS",
+      "ticker": "3231.TW",
+      "name": "緯創",
+      "etf_ticker": "QQQ",
       "preferred_exposure": "CASH",
       "advisory_action": "RESEARCH_FIRST",
       "advisory_confidence": "INSUFFICIENT",
       "advisory_rationale": "The causal driver is not validated active; price strength cannot substitute for causality.",
-      "advisory_missing_evidence": "ACTIVE_DRIVER_VALIDATION;COMPANY_EDGE_SOURCE_BACKING",
-      "reaction_state": "UNKNOWN",
-      "provenance_status": "NEEDS_SOURCE_BACKFILL",
-      "research_priority_score": 0.7082418082524271
+      "advisory_missing_evidence": "ACTIVE_DRIVER_VALIDATION",
+      "reaction_state": "PRE_CONFIRMATION",
+      "provenance_status": "SOURCE_BACKED",
+      "research_priority_score": 0.7179380733944953
     },
     {
       "advisory_rank": 20,
@@ -328,10 +328,26 @@
       "advisory_missing_evidence": "ACTIVE_DRIVER_VALIDATION;COMPANY_EDGE_SOURCE_BACKING",
       "reaction_state": "PRE_CONFIRMATION",
       "provenance_status": "NEEDS_SOURCE_BACKFILL",
-      "research_priority_score": 0.7058437500000001
+      "research_priority_score": 0.70521875
     },
     {
       "advisory_rank": 21,
+      "global_theme": "AI_Server",
+      "driver_id": "AI_SERVER_THERMAL_DENSITY",
+      "ticker": "3017.TW",
+      "name": "奇鋐",
+      "etf_ticker": "QQQ",
+      "preferred_exposure": "CASH",
+      "advisory_action": "RESEARCH_FIRST",
+      "advisory_confidence": "INSUFFICIENT",
+      "advisory_rationale": "The causal driver is not validated active; price strength cannot substitute for causality.",
+      "advisory_missing_evidence": "ACTIVE_DRIVER_VALIDATION;COMPANY_EDGE_SOURCE_BACKING",
+      "reaction_state": "PERSISTENT",
+      "provenance_status": "NEEDS_SOURCE_BACKFILL",
+      "research_priority_score": 0.7007380733944953
+    },
+    {
+      "advisory_rank": 22,
       "global_theme": "Financials",
       "driver_id": "FINANCIALS_RATE_CREDIT_CYCLE",
       "ticker": "2886.TW",
@@ -344,10 +360,10 @@
       "advisory_missing_evidence": "ACTIVE_DRIVER_VALIDATION;COMPANY_EDGE_SOURCE_BACKING",
       "reaction_state": "PRE_CONFIRMATION",
       "provenance_status": "NEEDS_SOURCE_BACKFILL",
-      "research_priority_score": 0.6978437500000001
+      "research_priority_score": 0.69721875
     },
     {
-      "advisory_rank": 22,
+      "advisory_rank": 23,
       "global_theme": "Memory",
       "driver_id": "NAND_STORAGE_CYCLE",
       "ticker": "8299.TWO",
@@ -360,39 +376,23 @@
       "advisory_missing_evidence": "ACTIVE_DRIVER_VALIDATION;COMPANY_EDGE_SOURCE_BACKING",
       "reaction_state": "UNKNOWN",
       "provenance_status": "NEEDS_SOURCE_BACKFILL",
-      "research_priority_score": 0.6962418082524272
-    },
-    {
-      "advisory_rank": 23,
-      "global_theme": "AI_Server",
-      "driver_id": "AI_SERVER_THERMAL_DENSITY",
-      "ticker": "8996.TW",
-      "name": "高力",
-      "etf_ticker": "QQQ",
-      "preferred_exposure": "CASH",
-      "advisory_action": "RESEARCH_FIRST",
-      "advisory_confidence": "INSUFFICIENT",
-      "advisory_rationale": "The causal driver is not validated active; price strength cannot substitute for causality.",
-      "advisory_missing_evidence": "ACTIVE_DRIVER_VALIDATION;COMPANY_EDGE_SOURCE_BACKING",
-      "reaction_state": "CONFIRMING",
-      "provenance_status": "NEEDS_SOURCE_BACKFILL",
-      "research_priority_score": 0.6913875000000002
+      "research_priority_score": 0.6961174150485436
     },
     {
       "advisory_rank": 24,
-      "global_theme": "AI_Server",
-      "driver_id": "AI_SERVER_SHIPMENTS",
-      "ticker": "2382.TW",
-      "name": "廣達",
-      "etf_ticker": "QQQ",
+      "global_theme": "AI_Infrastructure",
+      "driver_id": "DATACENTER_COOLING_INFRA",
+      "ticker": "3324.TWO",
+      "name": "雙鴻",
+      "etf_ticker": "XLI",
       "preferred_exposure": "CASH",
       "advisory_action": "RESEARCH_FIRST",
       "advisory_confidence": "INSUFFICIENT",
       "advisory_rationale": "The causal driver is not validated active; price strength cannot substitute for causality.",
       "advisory_missing_evidence": "ACTIVE_DRIVER_VALIDATION;COMPANY_EDGE_SOURCE_BACKING",
-      "reaction_state": "UNKNOWN",
+      "reaction_state": "PERSISTENT",
       "provenance_status": "NEEDS_SOURCE_BACKFILL",
-      "research_priority_score": 0.6889306192660549
+      "research_priority_score": 0.6922160904255319
     },
     {
       "advisory_rank": 25,
@@ -408,15 +408,15 @@
       "advisory_missing_evidence": "ACTIVE_DRIVER_VALIDATION;COMPANY_EDGE_SOURCE_BACKING",
       "reaction_state": "UNKNOWN",
       "provenance_status": "NEEDS_SOURCE_BACKFILL",
-      "research_priority_score": 0.6882418082524272
+      "research_priority_score": 0.6881174150485436
     },
     {
       "advisory_rank": 26,
-      "global_theme": "AI_Infrastructure",
-      "driver_id": "DATACENTER_COOLING_INFRA",
-      "ticker": "3017.TW",
-      "name": "奇鋐",
-      "etf_ticker": "XLI",
+      "global_theme": "AI_Server",
+      "driver_id": "AI_SERVER_RACK_BUILD",
+      "ticker": "3693.TWO",
+      "name": "營邦",
+      "etf_ticker": "QQQ",
       "preferred_exposure": "CASH",
       "advisory_action": "RESEARCH_FIRST",
       "advisory_confidence": "INSUFFICIENT",
@@ -424,10 +424,26 @@
       "advisory_missing_evidence": "ACTIVE_DRIVER_VALIDATION;COMPANY_EDGE_SOURCE_BACKING",
       "reaction_state": "PERSISTENT",
       "provenance_status": "NEEDS_SOURCE_BACKFILL",
-      "research_priority_score": 0.686086869266055
+      "research_priority_score": 0.6871380733944955
     },
     {
       "advisory_rank": 27,
+      "global_theme": "AI_Server",
+      "driver_id": "AI_SERVER_THERMAL_DENSITY",
+      "ticker": "8996.TW",
+      "name": "高力",
+      "etf_ticker": "QQQ",
+      "preferred_exposure": "CASH",
+      "advisory_action": "RESEARCH_FIRST",
+      "advisory_confidence": "INSUFFICIENT",
+      "advisory_rationale": "The causal driver is not validated active; price strength cannot substitute for causality.",
+      "advisory_missing_evidence": "ACTIVE_DRIVER_VALIDATION;COMPANY_EDGE_SOURCE_BACKING",
+      "reaction_state": "CONFIRMING",
+      "provenance_status": "NEEDS_SOURCE_BACKFILL",
+      "research_priority_score": 0.6824500000000001
+    },
+    {
+      "advisory_rank": 28,
       "global_theme": "AI_Infrastructure",
       "driver_id": "DATACENTER_COOLING_INFRA",
       "ticker": "8996.TW",
@@ -440,55 +456,39 @@
       "advisory_missing_evidence": "ACTIVE_DRIVER_VALIDATION;COMPANY_EDGE_SOURCE_BACKING",
       "reaction_state": "CONFIRMING",
       "provenance_status": "NEEDS_SOURCE_BACKFILL",
-      "research_priority_score": 0.68014375
+      "research_priority_score": 0.67214375
     },
     {
-      "advisory_rank": 28,
+      "advisory_rank": 29,
       "global_theme": "AI_Server",
       "driver_id": "AI_SERVER_SHIPMENTS",
-      "ticker": "2317.TW",
-      "name": "鴻海",
+      "ticker": "2382.TW",
+      "name": "廣達",
       "etf_ticker": "QQQ",
       "preferred_exposure": "CASH",
       "advisory_action": "RESEARCH_FIRST",
       "advisory_confidence": "INSUFFICIENT",
       "advisory_rationale": "The causal driver is not validated active; price strength cannot substitute for causality.",
-      "advisory_missing_evidence": "ACTIVE_DRIVER_VALIDATION",
-      "reaction_state": "PRE_CONFIRMATION",
-      "provenance_status": "SOURCE_BACKED",
-      "research_priority_score": 0.6698343085106383
-    },
-    {
-      "advisory_rank": 29,
-      "global_theme": "Power",
-      "driver_id": "POWER_ELECTRONICS_CAPEX",
-      "ticker": "2308.TW",
-      "name": "台達電",
-      "etf_ticker": "XLI",
-      "preferred_exposure": "CASH",
-      "advisory_action": "RESEARCH_FIRST",
-      "advisory_confidence": "INSUFFICIENT",
-      "advisory_rationale": "The causal driver is not validated active; price strength cannot substitute for causality.",
-      "advisory_missing_evidence": "ACTIVE_DRIVER_VALIDATION",
-      "reaction_state": "PRE_CONFIRMATION",
-      "provenance_status": "SOURCE_BACKED",
-      "research_priority_score": 0.6495098214285714
+      "advisory_missing_evidence": "ACTIVE_DRIVER_VALIDATION;COMPANY_EDGE_SOURCE_BACKING",
+      "reaction_state": "UNKNOWN",
+      "provenance_status": "NEEDS_SOURCE_BACKFILL",
+      "research_priority_score": 0.6719380733944953
     },
     {
       "advisory_rank": 30,
-      "global_theme": "Power",
-      "driver_id": "POWER_ELECTRONICS_CAPEX",
-      "ticker": "1513.TW",
-      "name": "中興電",
+      "global_theme": "AI_Infrastructure",
+      "driver_id": "DATACENTER_COOLING_INFRA",
+      "ticker": "3017.TW",
+      "name": "奇鋐",
       "etf_ticker": "XLI",
       "preferred_exposure": "CASH",
       "advisory_action": "RESEARCH_FIRST",
       "advisory_confidence": "INSUFFICIENT",
       "advisory_rationale": "The causal driver is not validated active; price strength cannot substitute for causality.",
-      "advisory_missing_evidence": "ACTIVE_DRIVER_VALIDATION",
-      "reaction_state": "PRE_CONFIRMATION",
-      "provenance_status": "SOURCE_BACKED",
-      "research_priority_score": 0.6488812500000001
+      "advisory_missing_evidence": "ACTIVE_DRIVER_VALIDATION;COMPANY_EDGE_SOURCE_BACKING",
+      "reaction_state": "PERSISTENT",
+      "provenance_status": "NEEDS_SOURCE_BACKFILL",
+      "research_priority_score": 0.6700318233944954
     }
   ],
   "decision_rule": "Always separate recommendation from execution permission. Active causal evidence may support a directional bias even when execution remains blocked. Weak Taiwan stock evidence should fall back to ETF or cash, not to endless research."

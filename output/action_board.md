@@ -9,16 +9,16 @@
 - **NONE** — no stock passes the V2 global-alignment hard gates.
 
 ### B. Best Fresh Entry
-- **3231.TW 緯創** — `AVOID` / `WATCHLIST`
+- **2886.TW 兆豐金** — `AVOID` / `WATCHLIST`
 - Entry style: `FRESH_BREAKOUT`
 - Trigger: **—**
 - Buy zone: **— – —**
 - Invalidation: **—**
 - Why now: 
-- Why not now: CAUSAL_DRIVER_NOT_ACTIVE;GLOBAL_ALIGNMENT_NOT_ELIGIBLE
+- Why not now: CAUSAL_DRIVER_NOT_ACTIVE;COMPANY_EDGE_NOT_SOURCE_BACKED;GLOBAL_ALIGNMENT_NOT_ELIGIBLE
 
 ### C. Best Pullback Entry
-- **2603.TW 長榮** — `PREPARE` / `WATCHLIST`
+- **2609.TW 陽明** — `PREPARE` / `WATCHLIST`
 - Entry style: `PULLBACK_RECOVERY`
 - Trigger: **—**
 - Buy zone: **— – —**
@@ -42,8 +42,8 @@ V2 is shadow/advisory only. Exact levels are structure-derived conditional plans
 <!-- ENTRY_V2_END -->
 
 ## 0. Portfolio allocation / cash regime
-- Global risk regime: `RISK_ON` / score `16`
-- Target cash / dry-powder buffer: **0.0%**
+- Global risk regime: `NORMAL` / score `21`
+- Target cash / dry-powder buffer: **5.0%**
 - For leveraged portfolios, a higher buffer should generally be implemented by reducing gross exposure before accumulating idle cash.
 - Rotation: no source/destination pair currently clears the policy threshold, or the risk regime blocks redeployment.
 
@@ -58,7 +58,7 @@ Rotation and cash outputs are CIO advisories only. They do not authorize brokera
 
 Global Alignment is advisory only; BROKEN/EXTENDED names cannot become fresh entries through this leaderboard.
 
-- Run: `20260908T085056+0800-7bed948e`
+- Run: `20260909T082137+0800-65b75d0b`
 - Causal source: `V3_AUTONOMOUS_RESEARCH`
 - Same snapshot: `True`
 - Active opportunity drivers: NONE
@@ -78,21 +78,21 @@ Global Alignment is advisory only; BROKEN/EXTENDED names cannot become fresh ent
 
 | Rank | Exposure | Name | Advisory | Confidence | Driver | Why |
 |---:|---|---|---|---|---|---|
-| 1 | 2609.TW | 陽明 | RESEARCH_FIRST | INSUFFICIENT | CONTAINER_FREIGHT | The causal driver is not validated active; price strength cannot substitute for causality. |
-| 2 | 2615.TW | 萬海 | RESEARCH_FIRST | INSUFFICIENT | CONTAINER_FREIGHT | The causal driver is not validated active; price strength cannot substitute for causality. |
-| 3 | 2606.TW | 裕民 | RESEARCH_FIRST | INSUFFICIENT | DRY_BULK_FREIGHT | The causal driver is not validated active; price strength cannot substitute for causality. |
-| 4 | 2637.TW | 慧洋-KY | RESEARCH_FIRST | INSUFFICIENT | DRY_BULK_FREIGHT | The causal driver is not validated active; price strength cannot substitute for causality. |
-| 5 | 2605.TW | 新興 | RESEARCH_FIRST | INSUFFICIENT | DRY_BULK_FREIGHT | The causal driver is not validated active; price strength cannot substitute for causality. |
-| 6 | 2617.TW | 台航 | RESEARCH_FIRST | INSUFFICIENT | DRY_BULK_FREIGHT | The causal driver is not validated active; price strength cannot substitute for causality. |
+| 1 | 2615.TW | 萬海 | RESEARCH_FIRST | INSUFFICIENT | CONTAINER_FREIGHT | The causal driver is not validated active; price strength cannot substitute for causality. |
+| 2 | 2606.TW | 裕民 | RESEARCH_FIRST | INSUFFICIENT | DRY_BULK_FREIGHT | The causal driver is not validated active; price strength cannot substitute for causality. |
+| 3 | 2637.TW | 慧洋-KY | RESEARCH_FIRST | INSUFFICIENT | DRY_BULK_FREIGHT | The causal driver is not validated active; price strength cannot substitute for causality. |
+| 4 | 2605.TW | 新興 | RESEARCH_FIRST | INSUFFICIENT | DRY_BULK_FREIGHT | The causal driver is not validated active; price strength cannot substitute for causality. |
+| 5 | 2617.TW | 台航 | RESEARCH_FIRST | INSUFFICIENT | DRY_BULK_FREIGHT | The causal driver is not validated active; price strength cannot substitute for causality. |
+| 6 | 3006.TW | 晶豪科 | RESEARCH_FIRST | INSUFFICIENT | MEMORY_IC_CYCLE | The causal driver is not validated active; price strength cannot substitute for causality. |
 | 7 | 6669.TW | 緯穎 | RESEARCH_FIRST | INSUFFICIENT | AI_SERVER_SHIPMENTS | The causal driver is not validated active; price strength cannot substitute for causality. |
-| 8 | 3006.TW | 晶豪科 | RESEARCH_FIRST | INSUFFICIENT | MEMORY_IC_CYCLE | The causal driver is not validated active; price strength cannot substitute for causality. |
-| 9 | 6770.TW | 力積電 | RESEARCH_FIRST | INSUFFICIENT | MATURE_NODE_FOUNDRY_UTILIZATION | The causal driver is not validated active; price strength cannot substitute for causality. |
-| 10 | 2881.TW | 富邦金 | RESEARCH_FIRST | INSUFFICIENT | FINANCIALS_RATE_CREDIT_CYCLE | The causal driver is not validated active; price strength cannot substitute for causality. |
-| 11 | 2882.TW | 國泰金 | RESEARCH_FIRST | INSUFFICIENT | FINANCIALS_RATE_CREDIT_CYCLE | The causal driver is not validated active; price strength cannot substitute for causality. |
-| 12 | 2303.TW | 聯電 | RESEARCH_FIRST | INSUFFICIENT | MATURE_NODE_FOUNDRY_UTILIZATION | The causal driver is not validated active; price strength cannot substitute for causality. |
-| 13 | 2603.TW | 長榮 | RESEARCH_FIRST | INSUFFICIENT | CONTAINER_FREIGHT | The causal driver is not validated active; price strength cannot substitute for causality. |
-| 14 | 2330.TW | 台積電 | RESEARCH_FIRST | INSUFFICIENT | LEADING_EDGE_FOUNDRY_AI_DEMAND | The causal driver is not validated active; price strength cannot substitute for causality. |
-| 15 | 3231.TW | 緯創 | RESEARCH_FIRST | INSUFFICIENT | AI_SERVER_SHIPMENTS | The causal driver is not validated active; price strength cannot substitute for causality. |
+| 8 | 2881.TW | 富邦金 | RESEARCH_FIRST | INSUFFICIENT | FINANCIALS_RATE_CREDIT_CYCLE | The causal driver is not validated active; price strength cannot substitute for causality. |
+| 9 | 2882.TW | 國泰金 | RESEARCH_FIRST | INSUFFICIENT | FINANCIALS_RATE_CREDIT_CYCLE | The causal driver is not validated active; price strength cannot substitute for causality. |
+| 10 | 6770.TW | 力積電 | RESEARCH_FIRST | INSUFFICIENT | MATURE_NODE_FOUNDRY_UTILIZATION | The causal driver is not validated active; price strength cannot substitute for causality. |
+| 11 | 2303.TW | 聯電 | RESEARCH_FIRST | INSUFFICIENT | MATURE_NODE_FOUNDRY_UTILIZATION | The causal driver is not validated active; price strength cannot substitute for causality. |
+| 12 | 2603.TW | 長榮 | RESEARCH_FIRST | INSUFFICIENT | CONTAINER_FREIGHT | The causal driver is not validated active; price strength cannot substitute for causality. |
+| 13 | 2609.TW | 陽明 | RESEARCH_FIRST | INSUFFICIENT | CONTAINER_FREIGHT | The causal driver is not validated active; price strength cannot substitute for causality. |
+| 14 | 2408.TW | 南亞科 | RESEARCH_FIRST | INSUFFICIENT | DRAM_PRICING | The causal driver is not validated active; price strength cannot substitute for causality. |
+| 15 | 2344.TW | 華邦電 | RESEARCH_FIRST | INSUFFICIENT | SPECIALTY_MEMORY_PRICING | The causal driver is not validated active; price strength cannot substitute for causality. |
 
 Advisory counts: `{"RESEARCH_FIRST": 55}`
 The advisory lane may say BUY_BIAS/PREFER_ETF/WAIT_PULLBACK/AVOID even when execution remains blocked. That is intentional.
