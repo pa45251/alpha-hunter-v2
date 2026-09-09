@@ -23,8 +23,9 @@ Rules:
 5. UNKNOWN is correct when evidence is stale, indirect, conflicting or insufficient.
 6. Search breadth is not proof. Separate event evidence, industry-wide scope and company transmission.
 7. Do not invent sources, dates, claims, metrics or URLs.
-8. Preserve the exact research_run_id.
-9. Return JSON only. Do not wrap it in markdown.
+8. Use only source URLs present in the supplied deterministic source prefetch.
+9. Preserve the exact research_run_id.
+10. Return JSON only. Do not wrap it in markdown.
 
 Return an object with:
 contract = ALPHA_HUNTER_FRONTIER_RESEARCH_V4
@@ -53,13 +54,35 @@ def extract_output_text(response: dict[str, Any]) -> str:
     return "\n".join(chunks).strip()
 
 
-def validate_frontier_payload(payload: dict[str, Any], handoff: dict[str, Any]) -> list[str]:
+def allowed_source_urls(prefetch: dict[str, Any]) -> set[str]:
+    urls: set[str] = set()
+    for target in prefetch.get("targets") or []:
+        if not isinstance(target, dict):
+            continue
+        for source in target.get("candidate_sources") or []:
+            if not isinstance(source, dict):
+                continue
+            url = str(source.get("source_url") or "")
+            if url.startswith(("http://", "https://")):
+                urls.add(url)
+    return urls
+
+
+def validate_frontier_payload(
+    payload: dict[str, Any],
+    handoff: dict[str, Any],
+    prefetch: dict[str, Any] | None = None,
+) -> list[str]:
     errors: list[str] = []
     run_id = str(handoff.get("run_id") or "")
     if payload.get("contract") != "ALPHA_HUNTER_FRONTIER_RESEARCH_V4":
         errors.append("CONTRACT_MISMATCH")
     if str(payload.get("research_run_id") or "") != run_id:
         errors.append("RUN_ID_MISMATCH")
+
+    if prefetch is not None and str(prefetch.get("research_run_id") or "") != run_id:
+        errors.append("PREFETCH_RUN_ID_MISMATCH")
+    allowed_urls = allowed_source_urls(prefetch or {}) if prefetch is not None else None
 
     targets = [str(x.get("driver_id") or "") for x in handoff.get("research_targets") or []]
     results = payload.get("results")
@@ -74,15 +97,16 @@ def validate_frontier_payload(payload: dict[str, Any], handoff: dict[str, Any]) 
         if not isinstance(row, dict):
             errors.append("RESULT_NOT_OBJECT")
             continue
+        driver_id = row.get("driver_id")
         if row.get("state") not in {"ACTIVE", "INACTIVE", "UNKNOWN"}:
-            errors.append(f"INVALID_STATE:{row.get('driver_id')}")
+            errors.append(f"INVALID_STATE:{driver_id}")
         try:
             confidence = float(row.get("confidence"))
         except (TypeError, ValueError):
-            errors.append(f"INVALID_CONFIDENCE:{row.get('driver_id')}")
+            errors.append(f"INVALID_CONFIDENCE:{driver_id}")
             confidence = -1
         if not 0 <= confidence <= 1:
-            errors.append(f"CONFIDENCE_RANGE:{row.get('driver_id')}")
+            errors.append(f"CONFIDENCE_RANGE:{driver_id}")
         evidence = (row.get("supporting_evidence") or []) + (row.get("counter_evidence") or [])
         source_count = int(row.get("source_count") or 0)
         unique_urls = {
@@ -91,9 +115,12 @@ def validate_frontier_payload(payload: dict[str, Any], handoff: dict[str, Any]) 
             if isinstance(item, dict) and str(item.get("source_url") or "").startswith(("http://", "https://"))
         }
         if source_count != len(unique_urls):
-            errors.append(f"SOURCE_COUNT_MISMATCH:{row.get('driver_id')}")
+            errors.append(f"SOURCE_COUNT_MISMATCH:{driver_id}")
         if row.get("state") in {"ACTIVE", "INACTIVE"} and not unique_urls:
-            errors.append(f"SOURCE_REQUIRED_FOR_DECISIVE_STATE:{row.get('driver_id')}")
+            errors.append(f"SOURCE_REQUIRED_FOR_DECISIVE_STATE:{driver_id}")
+        if allowed_urls is not None:
+            for url in sorted(unique_urls - allowed_urls):
+                errors.append(f"SOURCE_NOT_IN_DETERMINISTIC_PREFETCH:{driver_id}:{url}")
     return errors
 
 
@@ -154,7 +181,7 @@ def main() -> int:
     effort = os.environ.get("OPENAI_FRONTIER_REASONING_EFFORT", "high").strip() or "high"
 
     payload = call_openai(handoff, prefetch, model, effort)
-    errors = validate_frontier_payload(payload, handoff)
+    errors = validate_frontier_payload(payload, handoff, prefetch)
     payload["validation_status"] = "PASS" if not errors else "FAIL"
     payload["validation_errors"] = errors
     Path(args.out).write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
