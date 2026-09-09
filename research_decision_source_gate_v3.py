@@ -6,18 +6,10 @@ from pathlib import Path
 import pandas as pd
 
 from causal_engine import CausalConfig, validate_driver_activation_file
+from research_quality_gate_v3 import evaluate as evaluate_research_quality
 
 
 OUT = Path("output")
-
-
-def _research_source_count() -> tuple[str, int]:
-    path = OUT / "research_result_v3.json"
-    if not path.exists():
-        return "MISSING", 0
-    payload = json.loads(path.read_text(encoding="utf-8"))
-    total_sources = sum(int(x.get("source_count", 0) or 0) for x in payload.get("results", []))
-    return str(payload.get("status", "")), total_sources
 
 
 def _challenger_is_valid() -> tuple[bool, int, int, str]:
@@ -45,9 +37,22 @@ def _challenger_is_valid() -> tuple[bool, int, int, str]:
 
 
 def main() -> None:
-    research_status, research_sources = _research_source_count()
-    if research_status == "PASS" and research_sources > 0:
-        print(f"decision-source evidence gate PASS via autonomous research: total_sources={research_sources}")
+    q = evaluate_research_quality()
+    if q["status"] == "PASS" and q["evidence_pass"]:
+        print(
+            "decision-source evidence gate PASS via autonomous research evidence: "
+            f"total_sources={q['total_sources']} sourced_drivers={q['sourced_drivers']}"
+        )
+        return
+
+    if q["status"] == "PASS" and q["transport_pass"]:
+        print(
+            "decision-source evidence gate PASS via deterministic external-search transport: "
+            f"searches={q['query_attempt_count']} candidate_sources={q['candidate_source_count']} "
+            f"sourced_targets={q['sourced_target_count']}; autonomous_sources={q['total_sources']}. "
+            "This authorizes downstream fail-closed evaluation only; causal activation still requires "
+            "source-backed ACTIVE/INACTIVE research rows."
+        )
         return
 
     challenger_ok, accepted, challenger_sources, reason = _challenger_is_valid()
@@ -55,13 +60,16 @@ def main() -> None:
         print(
             "decision-source evidence gate PASS via same-snapshot challenger: "
             f"accepted={accepted} source_count={challenger_sources}; "
-            f"autonomous_research_status={research_status} autonomous_sources={research_sources}"
+            f"autonomous_research_status={q['status']} autonomous_sources={q['total_sources']}"
         )
         return
 
     raise SystemExit(
-        "decision-source evidence gate FAIL: neither autonomous research nor same-snapshot challenger is usable; "
-        f"research_status={research_status} research_sources={research_sources} challenger_reason={reason}"
+        "decision-source evidence gate FAIL: neither autonomous research transport/evidence nor "
+        "same-snapshot challenger is usable; "
+        f"research_status={q['status']} research_sources={q['total_sources']} "
+        f"transport_status={q['transport_status']} transport_candidates={q['candidate_source_count']} "
+        f"challenger_reason={reason}"
     )
 
 
