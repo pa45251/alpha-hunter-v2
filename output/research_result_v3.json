@@ -1,8 +1,8 @@
 {
   "contract": "ALPHA_HUNTER_V3_VALIDATED_RESEARCH",
   "status": "PASS",
-  "research_run_id": "20260909T082137+0800-65b75d0b",
-  "validated_at_utc": "2026-09-09T00:50:18.586831+00:00",
+  "research_run_id": "20260909T085627+0800-a2dba6ce",
+  "validated_at_utc": "2026-09-09T01:02:12.329579+00:00",
   "target_driver_ids": [
     "NUCLEAR_GRID_SECOND_ORDER",
     "CONTAINER_FREIGHT",
@@ -15,88 +15,97 @@
     {
       "driver_id": "NUCLEAR_GRID_SECOND_ORDER",
       "state": "UNKNOWN",
-      "confidence": 0.08,
-      "primary_cause": "No verifiable source was found confirming that nuclear-specific buildout is currently driving second-order grid-equipment demand; nuclear buildout evidence was insufficient to establish transmission, transformer, switchgear, or interconnection causality.",
+      "confidence": 0.05,
+      "primary_cause": "No verifiable source was found confirming that nuclear-specific buildout is driving second-order grid equipment demand; the available searches did not establish nuclear-specific transmission, transformer, switchgear, or utility-capex causality.",
       "industry_scope": "UNKNOWN",
       "supporting_evidence": [],
       "counter_evidence": [],
       "source_count": 0,
       "event_date": null,
       "source_dates": [],
-      "researched_at_utc": "2026-09-09T00:49:49Z",
-      "research_run_id": "20260909T082137+0800-65b75d0b"
+      "researched_at_utc": "2026-09-09T01:01:37Z",
+      "research_run_id": "20260909T085627+0800-a2dba6ce"
     },
     {
       "driver_id": "CONTAINER_FREIGHT",
       "state": "UNKNOWN",
-      "confidence": 0.31,
-      "primary_cause": "Available evidence confirms container-freight volatility and possible cycle effects, but the evidence is dated, mixed on direction, and does not establish a current time-consistent industry-wide liner-utilization or freight-cycle state.",
+      "confidence": 0.43,
+      "primary_cause": "Evidence confirms container-freight volatility and cycle sensitivity, but the available evidence is mixed and does not establish a current, time-consistent industry-wide utilization and freight-cycle direction as of the research date.",
       "industry_scope": "INDUSTRY_WIDE",
       "supporting_evidence": [
         {
-          "claim": "Container freight conditions were described as unstable, with potential excess capacity if Red Sea routing normalized.",
+          "claim": "Container shipping conditions were described as unstable, with a risk that Red Sea normalization would expose excess capacity and weaken the freight cycle.",
           "source_title": "Container Shipping: Sailing Through Uncertainty And Looming Overcapacity",
           "source_url": "https://seekingalpha.com/article/4765754-container-shipping-sailing-through-uncertainty-and-looming-overcapacity",
           "published_at": "2025-03-07T09:44:00Z",
           "event_date": null,
-          "evidence_type": "OTHER_NONPRICE"
+          "evidence_type": "HIGH_QUALITY_REPORTING"
         },
         {
-          "claim": "Container freight markets have experienced substantial volatility, including large changes in the cost of moving containers across major trade lanes.",
+          "claim": "Container freight markets were described as highly volatile, with contract and spot-market dynamics central to the cycle.",
           "source_title": "Are Container Freight Contract Derivatives Finally the Solution to Market Volatility?",
           "source_url": "https://www.supplychainbrain.com/articles/40268-are-container-freight-contract-derivatives-finally-the-solution-to-market-volatility",
           "published_at": "2024-08-27T21:00:00Z",
           "event_date": null,
-          "evidence_type": "OTHER_NONPRICE"
+          "evidence_type": "HIGH_QUALITY_REPORTING"
         }
       ],
       "counter_evidence": [
         {
-          "claim": "A later report described a sharp profit rebound at COSCO as container freight rates recovered, while analysts questioned the sustainability of the upswing, indicating conflicting evidence about the durability and direction of the cycle.",
-          "source_title": "COSCO Shipping Holdings stock (CNE1000002J5): earnings rebound and freight cycle in focus",
-          "source_url": "https://www.ad-hoc-news.de/boerse/news/ueberblick/cosco-shipping-holdings-stock-cne1000002J5-earnings-rebound-and-freight/69347985",
-          "published_at": "2026-05-16T00:29:00Z",
+          "claim": "The container spot-rate cycle was characterized as having undergone a rise and fall, with the market outlook for 2026 associated with normalization and possible overcapacity rather than an unambiguously strengthening cycle.",
+          "source_title": "The rise and fall of container spot rates — and what it means for 2026",
+          "source_url": "https://www.lloydslist.com/LL1154942/The-rise-and-fall-of-container-spot-rates--and-what-it-means-for-2026",
+          "published_at": "2025-09-26T13:37:00Z",
+          "event_date": null,
+          "evidence_type": "HIGH_QUALITY_REPORTING"
+        },
+        {
+          "claim": "A report on Maersk described freight rates as elevated while questioning the sustainability of the upswing and framing the market as near a cycle peak.",
+          "source_title": "A.P. Møller - Mærsk A / S: Container Titan Tests Investor Patience as Freight Cycle Peaks",
+          "source_url": "https://www.ad-hoc-news.de/boerse/news/ueberblick/a-p-moeller-maersk-a-s-container-titan-tests-investor-patience-as/68441257",
+          "published_at": "2025-12-30T05:27:00Z",
           "event_date": null,
           "evidence_type": "HIGH_QUALITY_REPORTING"
         }
       ],
-      "source_count": 3,
+      "source_count": 4,
       "event_date": null,
       "source_dates": [
         "2025-03-07T09:44:00Z",
         "2024-08-27T21:00:00Z",
-        "2026-05-16T00:29:00Z"
+        "2025-09-26T13:37:00Z",
+        "2025-12-30T05:27:00Z"
       ],
-      "researched_at_utc": "2026-09-09T00:49:49Z",
-      "research_run_id": "20260909T082137+0800-65b75d0b"
+      "researched_at_utc": "2026-09-09T01:01:37Z",
+      "research_run_id": "20260909T085627+0800-a2dba6ce"
     },
     {
       "driver_id": "DRY_BULK_FREIGHT",
       "state": "UNKNOWN",
-      "confidence": 0.43,
-      "primary_cause": "Evidence indicates stronger dry-bulk freight conditions during 2026, including higher BDI and Capesize rates, but conflicting evidence attributes part of the strength to temporary rerouting and warns of a future supply glut; persistence of the commodity-volume freight cycle is unresolved.",
+      "confidence": 0.5,
+      "primary_cause": "Supportive evidence indicates stronger dry-bulk rates and Capesize demand in 2026, but counter-evidence warns that the apparent strength may be driven by temporary rerouting and could reverse into a supply glut; the exact sustainable commodity-volume freight cycle remains unresolved.",
       "industry_scope": "INDUSTRY_WIDE",
       "supporting_evidence": [
         {
-          "claim": "The Baltic Dry Index reached 2,732 points on July 31, 2026, up approximately 9.2% during July, with market conditions varying by segment.",
+          "claim": "The Baltic Dry Index reportedly reached 2,732 points on July 31, 2026, rising approximately 9.2% during July, with conditions differing by vessel segment.",
           "source_title": "HTCO Highlights Strengthening Dry Bulk Market as BDI Rises Approximately 9.2% in July and Shipping Equities Gain Investor Attention",
           "source_url": "https://www.nasdaq.com/press-release/htco-highlights-strengthening-dry-bulk-market-bdi-rises-approximately-92-july-and",
           "published_at": "2026-08-13T05:00:00Z",
           "event_date": "2026-07-31T00:00:00Z",
-          "evidence_type": "OTHER_NONPRICE"
+          "evidence_type": "INDUSTRY_DATA"
         },
         {
-          "claim": "A key bulk-shipping rate measure reached its highest level since December 2023, attributed to rising Capesize demand and tightening vessel supply.",
+          "claim": "Capesize shipping rates reached their highest level since December 2023, attributed to rising Capesize demand and tightening vessel supply.",
           "source_title": "Dry-Bulk Shipping Rates Hit Two-Year High on Capesize Demand",
           "source_url": "https://gcaptain.com/dry-bulk-shipping-rates-hit-two-year-high-on-capesize-demand/",
           "published_at": "2026-05-07T00:07:00Z",
-          "event_date": null,
+          "event_date": "2026-05-07T00:00:00Z",
           "evidence_type": "HIGH_QUALITY_REPORTING"
         }
       ],
       "counter_evidence": [
         {
-          "claim": "BIMCO warned that apparent 2026 dry-bulk strength was substantially artificial because of forced rerouting and could reverse into a 2027 supply glut.",
+          "claim": "BIMCO warned that apparent 2026 dry-bulk strength was substantially artificial because of forced rerouting and that the benefit could reverse into a 2027 supply glut.",
           "source_title": "Dry bulk shipping faces 2027 supply glut: BIMCO warns Hormuz rerouting boost will reverse",
           "source_url": "https://www.msn.com/en-us/news/other/dry-bulk-shipping-faces-2027-supply-glut-bimco-warns-hormuz-rerouting-boost-will-reverse/ar-AA29coQf",
           "published_at": "2026-08-01T10:36:00Z",
@@ -111,36 +120,36 @@
         "2026-05-07T00:07:00Z",
         "2026-08-01T10:36:00Z"
       ],
-      "researched_at_utc": "2026-09-09T00:49:49Z",
-      "research_run_id": "20260909T082137+0800-65b75d0b"
+      "researched_at_utc": "2026-09-09T01:01:37Z",
+      "research_run_id": "20260909T085627+0800-a2dba6ce"
     },
     {
       "driver_id": "DRAM_PRICING",
       "state": "UNKNOWN",
       "confidence": 0.05,
-      "primary_cause": "No verifiable source was found establishing current commodity DRAM ASP movement, bit-demand growth, or inventory conditions. HBM or semiconductor evidence cannot be inferred as commodity DRAM evidence.",
+      "primary_cause": "No verifiable source was found establishing current commodity DRAM ASP, bit-demand, or inventory conditions; HBM-related evidence could not be used as a proxy for commodity DRAM.",
       "industry_scope": "UNKNOWN",
       "supporting_evidence": [],
       "counter_evidence": [],
       "source_count": 0,
       "event_date": null,
       "source_dates": [],
-      "researched_at_utc": "2026-09-09T00:49:49Z",
-      "research_run_id": "20260909T082137+0800-65b75d0b"
+      "researched_at_utc": "2026-09-09T01:01:37Z",
+      "research_run_id": "20260909T085627+0800-a2dba6ce"
     },
     {
       "driver_id": "MEMORY_IC_CYCLE",
       "state": "UNKNOWN",
       "confidence": 0.05,
-      "primary_cause": "No verifiable source was found establishing a current memory-IC design-demand, revenue, or ASP cycle. Evidence for other memory segments cannot be substituted for the exact memory-IC design-demand and ASP scope.",
+      "primary_cause": "No verifiable source was found confirming a current memory-IC design-demand or ASP cycle; evidence for adjacent memory or HBM markets cannot establish this exact driver.",
       "industry_scope": "UNKNOWN",
       "supporting_evidence": [],
       "counter_evidence": [],
       "source_count": 0,
       "event_date": null,
       "source_dates": [],
-      "researched_at_utc": "2026-09-09T00:49:49Z",
-      "research_run_id": "20260909T082137+0800-65b75d0b"
+      "researched_at_utc": "2026-09-09T01:01:37Z",
+      "research_run_id": "20260909T085627+0800-a2dba6ce"
     }
   ]
 }
