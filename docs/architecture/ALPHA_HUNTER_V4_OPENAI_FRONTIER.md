@@ -26,7 +26,18 @@ The evidence layer, not any model, is the truth layer.
 
 `automation_guard_v4.py` makes these triggers idempotent. Once a PASS canonical snapshot has been generated on the current Taipei date, later backup triggers intentionally perform no new scan. Manual workflow dispatch remains an emergency path and defaults to `force=true`.
 
-Downstream reasoning must additionally verify that a `workflow_run` trigger actually produced the current canonical snapshot. A successful no-op backup must never consume reasoning credits or masquerade as a new snapshot.
+Downstream reasoning additionally verifies that a `workflow_run` trigger actually produced the current canonical snapshot. A successful no-op backup must never consume reasoning credits or masquerade as a new snapshot.
+
+### Independent ChatGPT watchdog
+
+GitHub cron is not treated as a timing SLA. A separate scheduled ChatGPT watchdog checks the canonical manifest before the morning report. If a current Taipei-date PASS snapshot is absent, it updates only `.alpha-hunter/scan_watchdog.json`. That harmless push is an external trigger for `Alpha Hunter Daily Scan`; the same deterministic freshness guard still decides whether a scan is actually needed.
+
+This creates two independent orchestration paths:
+
+1. GitHub scheduled workflow;
+2. ChatGPT scheduled watchdog -> guarded trigger-file push.
+
+Neither path can bypass the canonical freshness guard, and duplicate/no-op Daily Scan completions are rejected by downstream research trigger gates.
 
 ## Reasoning lanes
 
@@ -54,9 +65,9 @@ If `OPENAI_API_KEY` is absent, this lane is safely inactive; the baseline pipeli
 
 ## ChatGPT product frontier lane
 
-A scheduled ChatGPT task should read the latest GitHub canonical outputs and act as the user-facing frontier CIO/challenger. This lane benefits directly from ChatGPT model improvements without coupling the repository to a fixed model release.
+A scheduled ChatGPT task reads the latest GitHub canonical outputs and acts as the user-facing frontier CIO/challenger. This lane benefits directly from ChatGPT model improvements without coupling the repository to a fixed model release.
 
-Before producing a report it must verify:
+Before producing a report it verifies:
 
 - manifest status = PASS;
 - canonical snapshot is fresh for the current Taipei morning;
@@ -64,7 +75,7 @@ Before producing a report it must verify:
 - research source is same-snapshot;
 - no stale Action Board is presented as today's conclusion.
 
-It should then challenge causal reasoning with current public evidence, explicitly separate evidence from inference, and report portfolio aliases plus new opportunities. It is advisory and must not create brokerage orders.
+It then challenges causal reasoning with current public evidence, explicitly separates evidence from inference, and reports portfolio aliases plus new opportunities. It is advisory and must not create brokerage orders.
 
 ## Promotion policy
 
@@ -85,34 +96,33 @@ Model upgrades therefore improve intelligence without silently changing frozen p
 ## Target end-state
 
 ```text
-Scheduled orchestration
-        |
-        v
-Canonical scanner
-        |
-        v
-Deterministic evidence factory
-        |
-        +-----------------------+
-        |                       |
-        v                       v
-Baseline reasoner        OpenAI frontier reasoner
-        |                       |
-        +-----------+-----------+
-                    v
-          bounded adjudication
-                    |
-                    v
-        deterministic policy gates
-                    |
-                    v
-       Entry / Hold / Reduce / Exit
-                    |
-                    v
-          prospective validation
-                    |
-                    v
-        ChatGPT morning CIO report
+GitHub cron ---------+
+                     |
+ChatGPT watchdog ----+--> Canonical scanner
+                          |
+                          v
+                Deterministic evidence factory
+                          |
+              +-----------+-----------+
+              |                       |
+              v                       v
+       Baseline reasoner        OpenAI frontier reasoner
+              |                       |
+              +-----------+-----------+
+                          v
+                bounded adjudication
+                          |
+                          v
+              deterministic policy gates
+                          |
+                          v
+             Entry / Hold / Reduce / Exit
+                          |
+                          v
+                prospective validation
+                          |
+                          v
+              ChatGPT morning CIO report
 ```
 
 ## Non-negotiable invariants
