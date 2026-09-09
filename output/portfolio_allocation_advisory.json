@@ -1,45 +1,83 @@
 {
   "contract": "ALPHA_HUNTER_PORTFOLIO_ALLOCATION_ADVISORY",
   "schema_version": "1.1",
-  "generated_at": "2026-09-09T02:00:32.543520+00:00",
+  "generated_at": "2026-09-09T22:40:43.068897+00:00",
   "status": "READY",
   "risk_regime": "NORMAL",
-  "risk_score": 22,
+  "risk_score": 26,
   "target_cash_pct": 5.0,
   "cash_rule": "Target cash is a risk-budget buffer. In leveraged accounts, implementation should generally reduce financing/gross exposure before holding idle cash; private balances are not published here.",
-  "best_new_opportunity": null,
-  "rotations": [],
+  "best_new_opportunity": {
+    "ticker": "QQQ",
+    "name": "Mapped ETF",
+    "preferred_exposure": "ETF",
+    "advisory_action": "PREFER_ETF",
+    "edge_score": 0.6329,
+    "driver_id": "AI_SERVER_THERMAL_DENSITY",
+    "reaction_state": "PERSISTENT",
+    "confidence": "MEDIUM"
+  },
+  "rotations": [
+    {
+      "source_alias": "標的D",
+      "source_action": "REDUCE_BIAS",
+      "destination_ticker": "QQQ",
+      "destination_name": "Mapped ETF",
+      "destination_action": "PREFER_ETF",
+      "destination_driver": "AI_SERVER_THERMAL_DENSITY",
+      "destination_reaction_state": "PERSISTENT",
+      "rotation_action": "WAIT_BETTER_ENTRY",
+      "edge_spread": 0.3329,
+      "suggested_source_trim_pct_now": 0,
+      "suggested_source_trim_pct_on_trigger": 24,
+      "suggested_redeploy_pct_of_trim_on_trigger": 75,
+      "suggested_risk_buffer_pct_of_trim_on_trigger": 25,
+      "entry_trigger_required": "DESTINATION_ENTRY_STATE_NOT_CONFIRMING",
+      "reason": "DESTINATION_EDGE_EXCEEDS_SOURCE_BY_POLICY_THRESHOLD"
+    }
+  ],
   "source_ranking": [
     {
       "alias": "標的D",
+      "current_action": "REDUCE_BIAS",
+      "current_edge_score": 0.3,
+      "confidence": "MEDIUM",
+      "signal_state": "WEAK"
+    },
+    {
+      "alias": "標的B",
       "current_action": "REVIEW_HOLD",
-      "current_edge_score": 0.4126,
+      "current_edge_score": 0.4816,
       "confidence": "MEDIUM",
       "signal_state": "MIXED"
     },
     {
       "alias": "標的A",
       "current_action": "HOLD_BIAS",
-      "current_edge_score": 0.5858,
+      "current_edge_score": 0.6616,
       "confidence": "HIGH",
       "signal_state": "POSITIVE"
     },
     {
       "alias": "標的C",
       "current_action": "HOLD_BIAS",
-      "current_edge_score": 0.7444,
+      "current_edge_score": 0.9111,
       "confidence": "HIGH",
-      "signal_state": "STRONG"
-    },
-    {
-      "alias": "標的B",
-      "current_action": "HOLD_BIAS",
-      "current_edge_score": 0.9461,
-      "confidence": "MEDIUM",
       "signal_state": "STRONG"
     }
   ],
-  "candidate_ranking": [],
+  "candidate_ranking": [
+    {
+      "ticker": "QQQ",
+      "name": "Mapped ETF",
+      "preferred_exposure": "ETF",
+      "advisory_action": "PREFER_ETF",
+      "edge_score": 0.6329,
+      "driver_id": "AI_SERVER_THERMAL_DENSITY",
+      "reaction_state": "PERSISTENT",
+      "confidence": "MEDIUM"
+    }
+  ],
   "privacy": {
     "source_positions_alias_only": true,
     "portfolio_balances_included": false,

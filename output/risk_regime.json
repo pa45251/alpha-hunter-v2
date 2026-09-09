@@ -1,56 +1,56 @@
 {
   "contract": "ALPHA_HUNTER_RISK_REGIME",
   "schema_version": "1.0",
-  "generated_at": "2026-09-09T02:00:32.398795+00:00",
+  "generated_at": "2026-09-09T22:40:42.935644+00:00",
   "status": "READY",
-  "risk_snapshot_date": "2026-09-08",
+  "risk_snapshot_date": "2026-09-09",
   "regime": "NORMAL",
-  "risk_score": 22,
+  "risk_score": 26,
   "target_cash_pct": 5.0,
   "gross_multiplier": 0.9,
   "components": {
     "VIX_VXN": 10,
-    "US_TREND": 4,
+    "US_TREND": 8,
     "US_BREADTH": 8,
     "CREDIT": 0,
     "GLOBAL_BREADTH": 0
   },
   "signals": {
     "vix": {
-      "price": 15.720000267028809,
-      "ma20": 15.113500070571899,
-      "ret5": -0.03794368909237056,
-      "last_date": "2026-09-08"
+      "price": 16.459999084472656,
+      "ma20": 15.20900001525879,
+      "ret5": 0.08289469019858076,
+      "last_date": "2026-09-09"
     },
     "vxn": {
-      "price": 21.709999084472656,
-      "ma20": 21.39149990081787,
-      "ret5": 0.07581757959163449,
-      "last_date": "2026-09-08"
+      "price": 22.31999969482422,
+      "ma20": 21.38849992752075,
+      "ret5": 0.016393471100192736,
+      "last_date": "2026-09-09"
     },
     "spy": {
-      "price": 765.9600219726562,
-      "ma20": 768.6994934082031,
-      "ma60": 754.6877075195313,
-      "ret20": -0.00914583787986789,
-      "last_date": "2026-09-08"
+      "price": 762.4000244140625,
+      "ma20": 768.2914947509765,
+      "ma60": 755.0636413574218,
+      "ret20": -0.010589666178344226,
+      "last_date": "2026-09-09"
     },
     "qqq": {
-      "price": 718.3599853515625,
-      "ma20": 717.3850006103515,
-      "ma60": 713.4254018147786,
-      "ret20": -0.003481917381256694,
-      "last_date": "2026-09-08"
+      "price": 716.3099975585938,
+      "ma20": 717.2779998779297,
+      "ma60": 713.3547658284505,
+      "ret20": -0.0029786548988475214,
+      "last_date": "2026-09-09"
     },
     "credit_hyg_lqd": {
-      "price": 0.7500948068692034,
-      "ma20": 0.7495335427253578,
-      "ma60": 0.742142619691128,
-      "ret20": 0.0012774767301158008,
+      "price": 0.749976309827466,
+      "ma20": 0.7495719393402702,
+      "ma60": 0.7424557007999457,
+      "ret20": 0.0010249916061881859,
       "above_ma20": true,
       "above_ma60": true
     },
-    "global_above_ma60_pct": 1.0
+    "global_above_ma60_pct": 0.8333333333333334
   },
   "method": "Unfitted heuristic combining volatility, US trend, breadth, credit and global breadth. It is an advisory risk budget, not an order trigger.",
   "auto_trade_allowed": false
