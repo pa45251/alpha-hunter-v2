@@ -21,6 +21,7 @@ from causal_engine import (
 from scanner_core import TAIPEI_TZ, ScanConfig, append_audit_log, run_scan, write_outputs
 from taiwan_sensor import TaiwanScanConfig, run_taiwan_scan
 from canonical_gate import run_gate
+from semantic_theme_breadth import build_taiwan_semantic_breadth, attach_semantic_breadth
 
 OUT = Path("output")
 OUT.mkdir(parents=True, exist_ok=True)
@@ -87,7 +88,7 @@ def build_manifest(
     required = [
         "market_snapshot.csv", "theme_breadth.csv", "leader_registry.csv", "feature_history.csv",
         "market_snapshot.json", "taiwan_candidates.csv", "taiwan_candidate_history.csv",
-        "taiwan_industry_breadth.csv", "taiwan_universe.csv", "causal_research_queue.csv",
+        "taiwan_industry_breadth.csv", "taiwan_semantic_breadth.csv", "taiwan_universe.csv", "causal_research_queue.csv",
         "structural_matches.csv", "causal_graph_audit.csv", "causal_driver_taxonomy.csv",
         "structural_exposure_graph.csv",
     ]
@@ -115,6 +116,7 @@ def build_manifest(
     if not structural_matches.empty and "dynamic_driver_state" in structural_matches.columns:
         active_count = int(structural_matches["dynamic_driver_state"].eq("ACTIVE_RESEARCH_VALIDATED").sum())
 
+    semantic = tw.get("semantic_breadth", pd.DataFrame())
     manifest = {
         "contract": "ALPHA_HUNTER_CANONICAL_DATA_CONTRACT",
         "schema_version": "2.6",
@@ -142,6 +144,7 @@ def build_manifest(
             "coverage_pct": float(coverage),
             "candidate_count": int(len(tw["candidates"])),
             "industry_count": int(t["industry"].nunique()),
+            "semantic_theme_count": int(len(semantic)),
             "latest_price_date": str(t["last_price_date"].max()),
             "earliest_price_date": str(t["last_price_date"].min()),
             "benchmark": "^TWII",
@@ -181,8 +184,6 @@ def build_manifest(
         },
     }
     def _json_default(obj):
-        # pandas/numpy reductions often return numpy scalar types (e.g. np.bool_),
-        # which Python's stdlib json encoder cannot serialize directly.
         if isinstance(obj, np.bool_):
             return bool(obj)
         if isinstance(obj, np.integer):
@@ -224,6 +225,14 @@ if __name__ == "__main__":
     exposures = pd.read_csv("config/structural_exposure_graph.csv", dtype={"taiwan_code": str})
     ccfg = CausalConfig()
 
+    # Semantic breadth uses the causal exposure graph as membership, not TWSE industry labels.
+    # It is a participation/risk filter only and can never activate a causal driver.
+    semantic_breadth = build_taiwan_semantic_breadth(tw["stocks"], exposures)
+    if semantic_breadth.empty:
+        raise RuntimeError("Taiwan semantic breadth produced zero themes")
+    semantic_breadth.to_csv(OUT / "taiwan_semantic_breadth.csv", index=False)
+    tw["semantic_breadth"] = semantic_breadth
+
     research_queue = build_causal_research_queue(global_results["stocks"], taxonomy, ccfg)
     research_queue.insert(0, "run_id", run_id)
     research_queue.to_csv(OUT / "causal_research_queue.csv", index=False)
@@ -232,6 +241,7 @@ if __name__ == "__main__":
     structural = build_structural_matches(
         global_results["stocks"], tw["stocks"], tw["candidates"], tw["breadth"], exposures, taxonomy, ccfg
     )
+    structural = attach_semantic_breadth(structural, semantic_breadth)
 
     # Optional future bridge: a Research Agent may write driver activations, but only canonical driver_ids are accepted.
     activations = validate_driver_activation_file(Path("input/driver_activation.csv"), research_queue, ccfg)
@@ -244,12 +254,13 @@ if __name__ == "__main__":
     ga.to_csv(OUT / "causal_graph_audit.csv", index=False)
     _copy_causal_configs_to_output()
 
-    # Integration contract checks: prove the causal files were rebuilt in THIS run, not merely left over from an older snapshot.
     pipeline_checks = {
         "global_outputs_generated": (OUT / "market_snapshot.csv").exists() and len(global_results["stocks"]) > 0,
         "taiwan_outputs_generated": (OUT / "taiwan_candidates.csv").exists() and len(tw["stocks"]) > 0,
+        "semantic_breadth_rebuilt_this_run": (OUT / "taiwan_semantic_breadth.csv").exists() and not semantic_breadth.empty,
         "causal_queue_rebuilt_this_run": (not research_queue.empty) and research_queue["run_id"].eq(run_id).all(),
         "structural_matches_rebuilt_this_run": (not structural.empty) and structural["run_id"].eq(run_id).all(),
+        "semantic_breadth_attached_to_structural": (not structural.empty) and structural["semantic_breadth_state"].notna().all(),
         "graph_audit_rebuilt_this_run": (not ga.empty) and ga["run_id"].eq(run_id).all(),
         "causal_taxonomy_snapshot_present": (OUT / "causal_driver_taxonomy.csv").exists(),
         "structural_graph_snapshot_present": (OUT / "structural_exposure_graph.csv").exists(),
@@ -264,6 +275,7 @@ if __name__ == "__main__":
 
     print(f"Global: {len(global_results['stocks'])} securities / {global_results['stocks']['theme'].nunique()} themes")
     print(f"Taiwan: {len(tw['stocks'])}/{len(tw['universe'])} common stocks / {tw['stocks']['industry'].nunique()} industries")
+    print(f"Taiwan semantic themes: {len(semantic_breadth)}")
     print(f"Taiwan candidates: {len(tw['candidates'])}")
     print(f"Causal research queue: {len(research_queue)} unresolved driver tasks")
     print(f"Structural matches: {len(structural)}; activated by external research: {int(structural.get('dynamic_driver_state', pd.Series(dtype=str)).eq('ACTIVE_RESEARCH_VALIDATED').sum()) if not structural.empty else 0}")
