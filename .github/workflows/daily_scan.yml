@@ -8,6 +8,10 @@ on:
         required: false
         default: true
         type: boolean
+  push:
+    branches: [main]
+    paths:
+      - '.alpha-hunter/scan_watchdog.json'
   schedule:
     # GitHub scheduled workflows can be delayed. Use staggered Asia/Taipei morning triggers.
     # UTC Sun-Thu maps to Taiwan Mon-Fri for these times.
@@ -100,4 +104,4 @@ jobs:
 
       - name: Record backup no-op
         if: steps.freshness_guard.outputs.should_run != 'true'
-        run: echo "Canonical snapshot already fresh; backup trigger intentionally performed no scan."
+        run: echo "Canonical snapshot already fresh; trigger intentionally performed no scan."
