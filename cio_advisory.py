@@ -8,7 +8,7 @@ import pandas as pd
 
 
 OUT = Path("output")
-ADVISORY_VERSION = "1.0"
+ADVISORY_VERSION = "1.1"
 ENTRY_FRIENDLY_STATES = {"PRE_CONFIRMATION", "EARLY_CONFIRMATION", "CONFIRMING", "PULLBACK"}
 DIRECT_LINKAGES = {"DIRECT", "STRONG"}
 
@@ -41,6 +41,8 @@ def _missing_evidence(row: pd.Series) -> list[str]:
         missing.append("ACTIVE_DRIVER_VALIDATION")
     if _s(row, "provenance_status") != "SOURCE_BACKED":
         missing.append("COMPANY_EDGE_SOURCE_BACKING")
+    if _s(row, "stock_vs_etf_state") == "STOCK_ALPHA_RESEARCH" and _s(row, "semantic_breadth_state") != "HEALTHY":
+        missing.append("SEMANTIC_THEME_BREADTH_HEALTHY")
     if not str(row.get("etf_ticker", "") or "").strip():
         missing.append("ETF_MAPPING")
     return missing
@@ -54,6 +56,7 @@ def _advisory_for_row(row: pd.Series) -> dict[str, object]:
     route = _s(row, "stock_vs_etf_state")
     linkage = _s(row, "linkage_tier")
     linkage_conf = _f(row, "linkage_confidence")
+    breadth = _s(row, "semantic_breadth_state") or "UNKNOWN"
     etf_ticker = str(row.get("etf_ticker", "") or "").strip().upper()
 
     source_backed = provenance == "SOURCE_BACKED"
@@ -93,14 +96,30 @@ def _advisory_for_row(row: pd.Series) -> dict[str, object]:
             "advisory_rationale": "The expected Taiwan transmission is broken despite an active global driver.",
         }
 
-    # Important architecture rule: weak/unverified Taiwan stock alpha does NOT block
-    # the clean global ETF route. Company provenance is a stock gate, not an ETF gate.
+    # Weak/unverified Taiwan stock alpha never blocks the clean global ETF route.
     if route == "ETF_CORE_PREFERRED" or etf_fallback:
         return {
             "advisory_action": "PREFER_ETF",
             "advisory_confidence": "HIGH" if route == "ETF_CORE_PREFERRED" else "MEDIUM",
             "preferred_exposure": "ETF",
             "advisory_rationale": "Global driver is active; ETF is the cleaner exposure because stock alpha is not clearly superior or is not source-backed.",
+        }
+
+    # Semantic breadth is a stock-alpha participation gate, never a causal gate.
+    # This catches the strong-fundamental / weak-group-price-action landmine.
+    if route == "STOCK_ALPHA_RESEARCH" and breadth == "BROKEN":
+        return {
+            "advisory_action": "AVOID",
+            "advisory_confidence": "HIGH",
+            "preferred_exposure": "CASH",
+            "advisory_rationale": "Company thesis may be positive, but mapped Taiwan semantic-theme breadth is broken; do not buy against weak group participation.",
+        }
+    if route == "STOCK_ALPHA_RESEARCH" and breadth != "HEALTHY":
+        return {
+            "advisory_action": "RESEARCH_FIRST",
+            "advisory_confidence": "LOW" if breadth in {"UNKNOWN", "LOW_CONFIDENCE"} else "MEDIUM",
+            "preferred_exposure": "CASH",
+            "advisory_rationale": "Stock alpha is not surfaced until semantic-theme breadth is healthy. This is a participation filter, not causal evidence.",
         }
 
     if reaction == "EXTENDED":
@@ -117,14 +136,14 @@ def _advisory_for_row(row: pd.Series) -> dict[str, object]:
                 "advisory_action": "BUY_BIAS_STOCK",
                 "advisory_confidence": "HIGH" if reaction in {"CONFIRMING", "PULLBACK"} else "MEDIUM",
                 "preferred_exposure": "STOCK",
-                "advisory_rationale": "Active driver, source-backed company edge, and a non-extended reaction state support a positive stock bias.",
+                "advisory_rationale": "Active driver, source-backed company edge, healthy semantic-theme breadth, and a non-extended reaction state support a positive stock bias.",
             }
         if reaction == "PERSISTENT":
             return {
                 "advisory_action": "HOLD_BIAS",
                 "advisory_confidence": "MEDIUM",
                 "preferred_exposure": "STOCK",
-                "advisory_rationale": "The thesis is confirmed, but more information may already be priced; prefer hold or a better entry over chasing.",
+                "advisory_rationale": "The thesis and breadth are confirmed, but more information may already be priced; prefer hold or a better entry over chasing.",
             }
 
     if not source_backed and direct:
@@ -133,7 +152,7 @@ def _advisory_for_row(row: pd.Series) -> dict[str, object]:
                 "advisory_action": "PROVISIONAL_BUY_BIAS_STOCK",
                 "advisory_confidence": "LOW",
                 "preferred_exposure": "STOCK_RESEARCH_ONLY",
-                "advisory_rationale": "Active driver and strong structural linkage create a favorable hypothesis, but company-level source backing is still missing.",
+                "advisory_rationale": "Active driver and healthy theme participation support a hypothesis, but company-level source backing is still missing.",
             }
         if reaction == "PERSISTENT":
             return {
@@ -175,8 +194,6 @@ def build_cio_advisory(board: pd.DataFrame) -> pd.DataFrame:
     x["advisory_priority"] = x["advisory_action"].map(ACTION_PRIORITY).fillna(99).astype(int)
     x["research_priority_score"] = pd.to_numeric(x.get("research_priority_score", 0), errors="coerce").fillna(0.0)
 
-    # Deduplicate ETF fallbacks so one global driver does not appear multiple times merely
-    # because several Taiwan stocks map to the same ETF. Stock ideas remain ticker-specific.
     exposure_key = []
     for _, r in x.iterrows():
         if str(r.get("preferred_exposure", "")).upper() == "ETF":
@@ -192,8 +209,10 @@ def build_cio_advisory(board: pd.DataFrame) -> pd.DataFrame:
         "advisory_rank", "advisory_version", "run_id", "global_theme", "driver_id", "driver_label",
         "taiwan_code", "ticker", "name", "etf_ticker", "stock_vs_etf_state", "preferred_exposure",
         "advisory_action", "advisory_confidence", "advisory_rationale", "advisory_missing_evidence",
-        "dynamic_driver_state", "provenance_status", "reaction_state", "linkage_tier", "linkage_confidence",
-        "research_priority_score", "candidate_action", "portfolio_action", "advisory_is_order", "auto_trade_allowed",
+        "dynamic_driver_state", "provenance_status", "reaction_state", "semantic_breadth_state",
+        "semantic_breadth_n", "semantic_above_ma20_pct", "semantic_above_ma60_pct", "semantic_positive_rs20_pct", "semantic_median_rs20",
+        "linkage_tier", "linkage_confidence", "research_priority_score", "candidate_action", "portfolio_action",
+        "advisory_is_order", "auto_trade_allowed",
     ]
     return x[[c for c in preferred if c in x.columns]]
 
@@ -203,7 +222,9 @@ def build_advisory_packet(advisory: pd.DataFrame, run_id: str) -> dict:
     cols = [c for c in [
         "advisory_rank", "global_theme", "driver_id", "ticker", "name", "etf_ticker",
         "preferred_exposure", "advisory_action", "advisory_confidence", "advisory_rationale",
-        "advisory_missing_evidence", "reaction_state", "provenance_status", "research_priority_score",
+        "advisory_missing_evidence", "dynamic_driver_state", "reaction_state", "provenance_status",
+        "semantic_breadth_state", "semantic_breadth_n", "semantic_positive_rs20_pct", "semantic_median_rs20",
+        "research_priority_score", "candidate_action", "portfolio_action",
     ] if c in advisory.columns]
     return {
         "contract": "ALPHA_HUNTER_CIO_ADVISORY_PACKET",
@@ -215,7 +236,7 @@ def build_advisory_packet(advisory: pd.DataFrame, run_id: str) -> dict:
         "purpose": "Directional CIO decision support under uncertainty. Execution permissions remain governed by the frozen shadow execution lane.",
         "action_counts": {str(k): int(v) for k, v in counts.items()},
         "top_advisories": advisory[cols].head(30).to_dict(orient="records") if cols else [],
-        "decision_rule": "Always separate recommendation from execution permission. Active causal evidence may support a directional bias even when execution remains blocked. Weak Taiwan stock evidence should fall back to ETF or cash, not to endless research.",
+        "decision_rule": "Stock alpha requires active causality, source-backed company edge and healthy semantic-theme participation. ETF fallback remains separate. Recommendation is not execution permission.",
     }
 
 
