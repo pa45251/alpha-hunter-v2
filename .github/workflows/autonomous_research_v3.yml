@@ -9,6 +9,7 @@ on:
     branches: [main]
     paths:
       - '.github/workflows/autonomous_research_v3.yml'
+      - '.github/agents/alpha-hunter-evidence-research.agent.md'
       - 'RESEARCH_AGENT_PROMPT_V3.md'
       - 'research_ingest_v3.py'
       - 'research_contract_v3.py'
@@ -133,10 +134,9 @@ jobs:
           $(cat /tmp/research_handoff.json)
           --- END AUTHORITATIVE COMPACT RESEARCH HANDOFF ---"
           copilot \
+            --agent=alpha-hunter-evidence-research \
             -p "$RESEARCH_PROMPT" \
             -s \
-            --available-tools='web_search,web_fetch' \
-            --allow-tool='web_search,web_fetch' \
             --allow-all-urls \
             --deny-tool='write,shell,memory' \
             --no-ask-user \
@@ -166,10 +166,9 @@ jobs:
           $(cat /tmp/portfolio_maintenance_handoff.json)
           --- END PRIVATE EPHEMERAL MAINTENANCE HANDOFF ---"
           copilot \
+            --agent=alpha-hunter-evidence-research \
             -p "$MAINTENANCE_PROMPT" \
             -s \
-            --available-tools='web_search,web_fetch' \
-            --allow-tool='web_search,web_fetch' \
             --allow-all-urls \
             --deny-tool='write,shell,memory' \
             --no-ask-user \
@@ -206,16 +205,15 @@ jobs:
           set +e
           RECOVERY_PROMPT="$(cat RESEARCH_AGENT_PROMPT_V3.md)
 
-          RECOVERY PASS: The previous attempt produced no usable external-source coverage. Perform fresh web_search calls for EVERY target. Do not answer 'web access inadequate' before trying alternate exact-driver queries. Fetch promising sources and return source-backed evidence when it exists. UNKNOWN remains correct if evidence is insufficient, but this recovery pass must actually search. Use the exact same JSON schema and run_id.
+          RECOVERY PASS: The previous attempt produced no usable external-source coverage. Perform fresh web searches for EVERY target. Do not answer 'web access inadequate' before trying alternate exact-driver queries. Fetch promising sources and return source-backed evidence when it exists. UNKNOWN remains correct if evidence is insufficient, but this recovery pass must actually search. Use the exact same JSON schema and run_id.
 
           --- BEGIN AUTHORITATIVE COMPACT RESEARCH HANDOFF ---
           $(cat /tmp/research_handoff.json)
           --- END AUTHORITATIVE COMPACT RESEARCH HANDOFF ---"
           copilot \
+            --agent=alpha-hunter-evidence-research \
             -p "$RECOVERY_PROMPT" \
             -s \
-            --available-tools='web_search,web_fetch' \
-            --allow-tool='web_search,web_fetch' \
             --allow-all-urls \
             --deny-tool='write,shell,memory' \
             --no-ask-user \
