@@ -8,3 +8,5 @@ html5lib>=1.1
 google-api-python-client>=2.160
 google-auth>=2.38
 pytest>=8.0
+PyYAML>=6.0
+exchange-calendars>=4.11,<5

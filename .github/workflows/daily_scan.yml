@@ -2,9 +2,17 @@ name: Alpha Hunter Daily Scan
 
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "canonical_price_inputs.py"
+      - "market_sessions.py"
+      - "scanner_core.py"
+      - "taiwan_sensor.py"
+      - ".github/workflows/daily_scan.yml"
   schedule:
-    # 22:55 UTC = 06:55 Asia/Taipei next day. Sun-Thu UTC = Mon-Fri Taiwan.
-    - cron: '55 22 * * 0-4'
+    # 21:17 UTC = 05:17 Asia/Taipei. Budget 40m scan + 45m research + 15m board; 103m slack to 08:40.
+    - cron: '17 21 * * 0-4'
 
 concurrency:
   group: alpha-hunter-daily-main
@@ -40,6 +48,9 @@ jobs:
       - name: Run Alpha Hunter v2.6 scanner
         run: python daily_scan.py
 
+      - name: Bind public risk and entry histories to canonical snapshot
+        run: python canonical_price_inputs.py
+
       - name: Build v2.6.1 research handoff
         run: python research_handoff.py
 
@@ -50,6 +61,7 @@ jobs:
           # The scanner intentionally does NOT build or publish a decision here. A new scanner
           # run_id has no same-snapshot V3 research yet. Alpha Hunter v3 Autonomous Research is
           # triggered by this workflow's successful completion and owns the causal decision step.
+          git add output/canonical_price_inputs.json
           git add \
             output/manifest.json \
             output/gate_report.json \

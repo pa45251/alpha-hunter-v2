@@ -209,6 +209,11 @@ def build_position_cio_advisory() -> dict[str, Any]:
 
 def main() -> None:
     payload = build_position_cio_advisory()
+    manifest = json.loads((OUT / "manifest.json").read_text(encoding="utf-8"))
+    strict = json.loads(ALIAS_ACTION_PATH.read_text(encoding="utf-8"))
+    if not manifest.get("run_id") or strict.get("run_id") != manifest["run_id"]:
+        raise RuntimeError("POSITION_CIO_RUN_MISMATCH")
+    payload["run_id"] = manifest["run_id"]
     OUT.mkdir(parents=True, exist_ok=True)
     OUTPUT_PATH.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
     print(f"Existing-position CIO advisory: records={len(payload['positions'])}; alias-only, no holdings identity published")

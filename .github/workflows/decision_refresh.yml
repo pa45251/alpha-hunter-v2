@@ -72,7 +72,7 @@ jobs:
           ALPHA_HUNTER_RISK_POLICY_JSON: ${{ secrets.ALPHA_HUNTER_RISK_POLICY_JSON }}
           ALPHA_HUNTER_PORTFOLIO_JSON: ${{ secrets.ALPHA_HUNTER_PORTFOLIO_JSON }}
           ALPHA_HUNTER_POSITION_THESIS_JSON: ${{ secrets.ALPHA_HUNTER_POSITION_THESIS_JSON }}
-        run: python decision_run_v2.py
+        run: python runtime_input_guard.py decision_run_v2
 
       - name: Assert decision source and trace guards
         run: |
@@ -102,14 +102,14 @@ jobs:
           ALPHA_HUNTER_PORTFOLIO_JSON: ${{ secrets.ALPHA_HUNTER_PORTFOLIO_JSON }}
           ALPHA_HUNTER_POSITION_THESIS_JSON: ${{ secrets.ALPHA_HUNTER_POSITION_THESIS_JSON }}
           ALPHA_HUNTER_POSITION_ALIAS_JSON: ${{ secrets.ALPHA_HUNTER_POSITION_ALIAS_JSON }}
-        run: python position_alias_output_v2.py
+        run: python runtime_input_guard.py position_alias_output_v2
 
       - name: Publish existing-position CIO advisory
         env:
           ALPHA_HUNTER_RISK_POLICY_JSON: ${{ secrets.ALPHA_HUNTER_RISK_POLICY_JSON }}
           ALPHA_HUNTER_PORTFOLIO_JSON: ${{ secrets.ALPHA_HUNTER_PORTFOLIO_JSON }}
           ALPHA_HUNTER_POSITION_ALIAS_JSON: ${{ secrets.ALPHA_HUNTER_POSITION_ALIAS_JSON }}
-        run: python position_cio_advisory.py
+        run: python runtime_input_guard.py position_cio_advisory
 
       - name: Commit refreshed public decision artifacts
         run: |
@@ -132,6 +132,6 @@ jobs:
           if ! git diff --cached --quiet; then
             git commit -m "refresh alpha hunter guarded v2 decision layer $(date -u +%F)"
             git fetch origin main
-            git rebase origin/main
+            # Fail closed if main advanced after inputs were read; never rebase computed artifacts.
             git push origin HEAD:main
           fi

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import math
 from pathlib import Path
 
 import pandas as pd
@@ -85,8 +86,11 @@ def main() -> None:
         state = str(result.get("state", "UNKNOWN")).upper()
         if state not in {"ACTIVE", "INACTIVE", "UNKNOWN"}:
             raise RuntimeError(f"V3 activation bridge invalid state for {driver_id}: {state}")
-        confidence = float(result.get("confidence", 0.0))
-        if confidence < 0 or confidence > 1:
+        raw_confidence = result.get("confidence")
+        if isinstance(raw_confidence, bool) or not isinstance(raw_confidence, (int, float)):
+            raise RuntimeError(f"V3 activation bridge invalid confidence for {driver_id}")
+        confidence = float(raw_confidence)
+        if not math.isfinite(confidence) or not 0 <= confidence <= 1:
             raise RuntimeError(f"V3 activation bridge invalid confidence for {driver_id}: {confidence}")
         source_count = int(result.get("source_count", 0))
         if source_count < 0:

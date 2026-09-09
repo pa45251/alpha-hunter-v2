@@ -5,6 +5,7 @@ from zoneinfo import ZoneInfo
 
 import pandas as pd
 import streamlit as st
+from publication_guard import readiness
 
 TAIPEI = ZoneInfo("Asia/Taipei")
 OUT = Path("output")
@@ -15,6 +16,12 @@ st.caption(
     "Global price structure nominates research. Research validates the exact causal driver. "
     "Structural exposure, Taiwan reaction, ETF-vs-stock, entry, risk and exit remain separate auditable layers."
 )
+
+publication = readiness(OUT)
+if publication["status"] != "READY_CURRENT_SNAPSHOT":
+    st.error("NOT_READY — 最新完整結果尚未通過驗證。" + publication.get("reason", ""))
+    st.stop()
+st.success("READY_CURRENT_SNAPSHOT — " + publication["source_run_id"])
 
 mf = OUT / "manifest.json"
 if not mf.exists():

@@ -31,7 +31,7 @@ permissions:
 
 jobs:
   maintenance-recovery:
-    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
+    if: ${{ github.event_name != 'workflow_run' || (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'main' && github.event.workflow_run.head_repository.full_name == github.repository) }}
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -126,7 +126,7 @@ jobs:
           ALPHA_HUNTER_PORTFOLIO_JSON: ${{ secrets.ALPHA_HUNTER_PORTFOLIO_JSON }}
           ALPHA_HUNTER_POSITION_THESIS_JSON: ${{ secrets.ALPHA_HUNTER_POSITION_THESIS_JSON }}
           ALPHA_HUNTER_MAINTENANCE_RESEARCH_PATH: /tmp/portfolio_maintenance_result.json
-        run: python decision_run_with_maintenance_v2.py
+        run: python runtime_input_guard.py decision_run_with_maintenance_v2
 
       - name: Publish alias-only existing-position actions with V2 contract guard
         if: steps.need_recovery.outputs.needed == 'true'
@@ -136,7 +136,7 @@ jobs:
           ALPHA_HUNTER_POSITION_THESIS_JSON: ${{ secrets.ALPHA_HUNTER_POSITION_THESIS_JSON }}
           ALPHA_HUNTER_POSITION_ALIAS_JSON: ${{ secrets.ALPHA_HUNTER_POSITION_ALIAS_JSON }}
           ALPHA_HUNTER_MAINTENANCE_RESEARCH_PATH: /tmp/portfolio_maintenance_result.json
-        run: python position_alias_output_v2.py
+        run: python runtime_input_guard.py position_alias_output_v2
 
       - name: Publish existing-position CIO advisory
         if: steps.need_recovery.outputs.needed == 'true'
@@ -144,7 +144,7 @@ jobs:
           ALPHA_HUNTER_RISK_POLICY_JSON: ${{ secrets.ALPHA_HUNTER_RISK_POLICY_JSON }}
           ALPHA_HUNTER_PORTFOLIO_JSON: ${{ secrets.ALPHA_HUNTER_PORTFOLIO_JSON }}
           ALPHA_HUNTER_POSITION_ALIAS_JSON: ${{ secrets.ALPHA_HUNTER_POSITION_ALIAS_JSON }}
-        run: python position_cio_advisory.py
+        run: python runtime_input_guard.py position_cio_advisory
 
       - name: Test privacy and maintenance contracts
         if: steps.need_recovery.outputs.needed == 'true'
@@ -168,7 +168,7 @@ jobs:
           if ! git diff --cached --quiet; then
             git commit -m "refresh guarded v2 maintenance decision layer $(date -u +%F)"
             git fetch origin main
-            git rebase origin/main
+            # Fail closed if main advanced after inputs were read; never rebase computed artifacts.
             git push origin HEAD:main
           fi
 

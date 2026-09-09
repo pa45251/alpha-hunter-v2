@@ -5,6 +5,10 @@ on:
     branches: [main]
   workflow_dispatch:
 
+concurrency:
+  group: alpha-audit-ci-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: read
 
@@ -31,6 +35,9 @@ jobs:
           PYTHONPATH: ${{ github.workspace }}
         run: python -m pytest -q
 
+      - name: Run isolated full production-entrypoint acceptance
+        run: python scripts/runtime_acceptance.py
+
       - name: Verify frozen V1 contract file is still present
         run: |
           test -f config/frozen_strategy_v1.json
@@ -45,3 +52,38 @@ jobs:
 
       - name: Enforce accepted frozen V2 prospective baseline
         run: python v2_freeze_guard.py
+
+  live-runtime-acceptance:
+    # Secrets only enter trusted same-repository branches; never a fork.
+    if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+      - run: pip install -r requirements.txt
+      - run: npm install -g @github/copilot
+      - name: Run live production chain without Git publication
+        env:
+          COPILOT_GITHUB_TOKEN: ${{ secrets.COPILOT_GITHUB_TOKEN }}
+          ALPHA_HUNTER_ACTIVATION_SOURCE: V3_VALIDATED
+          ALPHA_HUNTER_RISK_POLICY_JSON: ${{ secrets.ALPHA_HUNTER_RISK_POLICY_JSON }}
+          ALPHA_HUNTER_PORTFOLIO_JSON: ${{ secrets.ALPHA_HUNTER_PORTFOLIO_JSON }}
+          ALPHA_HUNTER_POSITION_THESIS_JSON: ${{ secrets.ALPHA_HUNTER_POSITION_THESIS_JSON }}
+          ALPHA_HUNTER_POSITION_ALIAS_JSON: ${{ secrets.ALPHA_HUNTER_POSITION_ALIAS_JSON }}
+          ALPHA_HUNTER_MAINTENANCE_RESEARCH_PATH: /tmp/portfolio_maintenance_result.json
+        run: python scripts/live_runtime_acceptance.py
+      - name: Upload aggregate acceptance status only
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: live-runtime-acceptance-status
+          path: live_runtime_acceptance.json
+          if-no-files-found: warn

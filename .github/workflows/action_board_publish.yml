@@ -15,6 +15,7 @@ on:
       - '.github/workflows/action_board_publish.yml'
   workflow_run:
     workflows:
+      - "Alpha Hunter v3 Autonomous Research"
       - "Alpha Hunter Portfolio Maintenance Recovery"
       - "Alpha Hunter Decision Refresh"
     types: [completed]
@@ -28,7 +29,7 @@ permissions:
 
 jobs:
   publish:
-    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
+    if: ${{ github.event_name != 'workflow_run' || (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'main' && github.event.workflow_run.head_repository.full_name == github.repository) }}
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -51,6 +52,9 @@ jobs:
           PYTHONPATH: ${{ github.workspace }}
         run: python -m pytest -q
 
+      - name: Verify current canonical publication inputs
+        run: python publication_guard.py begin
+
       - name: Build CIO advisory layer
         run: python cio_advisory.py
 
@@ -70,7 +74,7 @@ jobs:
         env:
           ALPHA_HUNTER_RISK_POLICY_JSON: ${{ secrets.ALPHA_HUNTER_RISK_POLICY_JSON }}
           ALPHA_HUNTER_PORTFOLIO_JSON: ${{ secrets.ALPHA_HUNTER_PORTFOLIO_JSON }}
-        run: python entry_plan_run_v2.py
+        run: python runtime_input_guard.py entry_plan_run_v2
 
       - name: Append prospective Exact Entry V2 trace
         run: python entry_plan_trace_v2.py
@@ -90,10 +94,14 @@ jobs:
       - name: Prepend V2 A-E Global Alignment and Exact Entry summary
         run: python entry_action_board_v2.py
 
+      - name: Seal fully verified publication
+        run: python publication_guard.py seal
+
       - name: Commit advisory, trace and action board
         run: |
           git config user.name "alpha-hunter-bot"
           git config user.email "actions@users.noreply.github.com"
+          git add output/publication_readiness.json
           git add \
             output/cio_advisory.csv \
             output/cio_advisory.json \
@@ -113,6 +121,6 @@ jobs:
           if ! git diff --cached --quiet; then
             git commit -m "publish alpha hunter frozen v2 exact-entry trace $(date -u +%F)"
             git fetch origin main
-            git rebase origin/main
+            # Fail closed if main advanced after inputs were read; never rebase computed artifacts.
             git push origin HEAD:main
           fi

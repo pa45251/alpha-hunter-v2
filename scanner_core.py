@@ -11,6 +11,7 @@ from typing import Dict, Iterable, Optional
 import numpy as np
 import pandas as pd
 import yfinance as yf
+from market_sessions import clip_closed_bars
 
 TRADING_DAYS = 252
 
@@ -229,13 +230,13 @@ def _download(tickers: Iterable[str], period: str = "2y") -> Dict[str, pd.DataFr
     raw = yf.download(tickers, period=period, auto_adjust=False, group_by="ticker", progress=False, threads=True)
     result: Dict[str, pd.DataFrame] = {}
     if len(tickers) == 1:
-        result[tickers[0]] = raw.copy()
+        result[tickers[0]] = clip_closed_bars(raw, tickers[0])
         return result
     for t in tickers:
         try:
             df = raw[t].copy()
             if not df.empty:
-                result[t] = df
+                result[t] = clip_closed_bars(df, t)
         except Exception:
             continue
     return result

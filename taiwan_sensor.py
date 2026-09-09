@@ -11,6 +11,7 @@ import numpy as np
 import pandas as pd
 import requests
 import yfinance as yf
+from market_sessions import clip_closed_bars
 
 from scanner_core import (
     TAIPEI_TZ,
@@ -139,13 +140,13 @@ def _download_chunked(tickers: Iterable[str], period: str, batch_size: int = 80)
                 )
                 if len(chunk) == 1:
                     if not raw.empty:
-                        result[chunk[0]] = raw.copy()
+                        result[chunk[0]] = clip_closed_bars(raw, chunk[0])
                 else:
                     for t in chunk:
                         try:
                             d = raw[t].copy()
                             if not d.empty:
-                                result[t] = d
+                                result[t] = clip_closed_bars(d, t)
                         except Exception:
                             continue
                 last_exc = None
@@ -285,6 +286,9 @@ def run_taiwan_scan(cfg: TaiwanScanConfig = TaiwanScanConfig(), cached_universe:
     bench_raw = yf.Ticker(cfg.benchmark).history(period=cfg.lookback, auto_adjust=False)
     if bench_raw is None or bench_raw.empty:
         raise RuntimeError(f"Taiwan benchmark {cfg.benchmark} unavailable")
+    bench_raw = clip_closed_bars(bench_raw, cfg.benchmark)
+    if bench_raw.empty:
+        raise RuntimeError("Taiwan closed benchmark unavailable")
     bench_close = _price_series(bench_raw)
 
     data = _download_chunked(uni["ticker"].tolist(), cfg.lookback, cfg.batch_size)
