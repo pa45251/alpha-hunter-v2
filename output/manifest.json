@@ -2,13 +2,13 @@
   "contract": "ALPHA_HUNTER_CANONICAL_DATA_CONTRACT",
   "schema_version": "2.6",
   "scanner_version": "2.6.0",
-  "run_id": "20260908T085056+0800-7bed948e",
+  "run_id": "20260909T082137+0800-65b75d0b",
   "repository": "pa45251/alpha-hunter-v2",
   "branch": "main",
   "canonical_output_directory": "https://github.com/pa45251/alpha-hunter-v2/tree/main/output",
   "canonical_manifest_raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/manifest.json",
-  "generated_at_utc": "2026-09-08T00:54:51.050878+00:00",
-  "generated_at_taipei": "2026-09-08T08:54:51.050890+08:00",
+  "generated_at_utc": "2026-09-09T00:25:27.081051+00:00",
+  "generated_at_taipei": "2026-09-09T08:25:27.081061+08:00",
   "status": "PASS",
   "missing_required_files": [],
   "pipeline_checks": {
@@ -23,7 +23,7 @@
   "global": {
     "scanned_count": 98,
     "theme_count": 40,
-    "latest_price_date": "2026-09-08",
+    "latest_price_date": "2026-09-09",
     "earliest_price_date": "2026-09-04"
   },
   "taiwan": {
@@ -33,8 +33,8 @@
     "coverage_pct": 0.997467071935157,
     "candidate_count": 150,
     "industry_count": 34,
-    "latest_price_date": "2026-09-07",
-    "earliest_price_date": "2026-09-07",
+    "latest_price_date": "2026-09-08",
+    "earliest_price_date": "2026-09-08",
     "benchmark": "^TWII"
   },
   "causal_engine": {
@@ -42,7 +42,7 @@
     "research_queue_count": 21,
     "structural_match_count": 55,
     "driver_activation_input_present": true,
-    "active_research_validated_matches": 11,
+    "active_research_validated_matches": 0,
     "price_can_create_causality": false,
     "broad_industry_causal_fallback": false,
     "decision_eligible_by_scanner": false,
@@ -60,57 +60,57 @@
       "name": "market_snapshot.csv",
       "relative_path": "output/market_snapshot.csv",
       "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/market_snapshot.csv",
-      "sha256": "e0293be7116c6e976ccaec319a977017e23dd5e2800b9ea0de30a0125fe04921",
-      "bytes": 68980
+      "sha256": "36c7635e4db99a06848594156d6f80b25fff521324ed51539c76d3ee2d52eb5a",
+      "bytes": 68940
     },
     {
       "name": "theme_breadth.csv",
       "relative_path": "output/theme_breadth.csv",
       "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/theme_breadth.csv",
-      "sha256": "557691d8cd224abce224547e7abb44aa16cd4759a0895df986f2f51fbe2f64ca",
-      "bytes": 5100
+      "sha256": "3faa77218b97733e1eef83a78d9e348fe0daac89c77ee34ada208f8e46c590c5",
+      "bytes": 5064
     },
     {
       "name": "leader_registry.csv",
       "relative_path": "output/leader_registry.csv",
       "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/leader_registry.csv",
-      "sha256": "e4a2baddbe8e5381a247de54f51dab620403cd75939432c5c1feb9139ba01bf8",
-      "bytes": 19300
+      "sha256": "76f88d6365500a5a52f6cfc82698bbb40cc4019cbd6a10ae8482bf182575ad99",
+      "bytes": 19321
     },
     {
       "name": "feature_history.csv",
       "relative_path": "output/feature_history.csv",
       "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/feature_history.csv",
-      "sha256": "bde36130ce62f9551bafff0c4a6c2bf5940a24b4491c8a97e1c3828ee652e7b1",
-      "bytes": 165017
+      "sha256": "7f811f931f7a8da4bf68c7ed88a59349c1899e5f79e3ec99ab602baaceec17d4",
+      "bytes": 197817
     },
     {
       "name": "market_snapshot.json",
       "relative_path": "output/market_snapshot.json",
       "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/market_snapshot.json",
-      "sha256": "b6d3113038348c189e01a86bfd4f717a8b7797986d9106f0dc280e544b2327cd",
-      "bytes": 33025
+      "sha256": "cb2668fa0e9f46e66374997b8815122d273570f35646ddb56838b1cb28fc12d2",
+      "bytes": 32976
     },
     {
       "name": "taiwan_candidates.csv",
       "relative_path": "output/taiwan_candidates.csv",
       "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/taiwan_candidates.csv",
-      "sha256": "e0282374ef6e165cfb5bf4ac023ebe3be4fd70279b51447a6fd8b9a9637d2720",
-      "bytes": 130934
+      "sha256": "83f719078bb362bf8f6f328506d597db5213f3a93481c76a1e8db8acc2d94ef3",
+      "bytes": 131874
     },
     {
       "name": "taiwan_candidate_history.csv",
       "relative_path": "output/taiwan_candidate_history.csv",
       "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/taiwan_candidate_history.csv",
-      "sha256": "696127445d71378d2fc68c196b96385fe193ebe859f6ebf9ce3fc9b114dd94af",
-      "bytes": 191122
+      "sha256": "79937bd55e6c0c66fb0ead209a32adf2d45ac6f84ce62281150d5c031de2b574",
+      "bytes": 248564
     },
     {
       "name": "taiwan_industry_breadth.csv",
       "relative_path": "output/taiwan_industry_breadth.csv",
       "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/taiwan_industry_breadth.csv",
-      "sha256": "650483941ccd1520205785492b30fe189a17fc6a877a235f805adcfd0ff63fd3",
-      "bytes": 6592
+      "sha256": "b4cc9ca492c40c867e495468e349b3bb944e6a3bfff0ca00e3beb22444d9d24c",
+      "bytes": 6582
     },
     {
       "name": "taiwan_universe.csv",
@@ -123,21 +123,21 @@
       "name": "causal_research_queue.csv",
       "relative_path": "output/causal_research_queue.csv",
       "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/causal_research_queue.csv",
-      "sha256": "a0d09f216ded9b59a91467fb96b3e3bf1e9c9d19804f0415dc6162feb9a3f1f1",
-      "bytes": 12692
+      "sha256": "3a32bfee5bf3a2f176ce8d9da03e849e5693b41eb2dffda4a17616d21b6ca49c",
+      "bytes": 12766
     },
     {
       "name": "structural_matches.csv",
       "relative_path": "output/structural_matches.csv",
       "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/structural_matches.csv",
-      "sha256": "1696ebb8b2d45a9ab3d4228df3189b745fcedce8106f9915f5a90d8690480503",
-      "bytes": 42988
+      "sha256": "abbfd0b2356c72c8a17ead216e34fe3498d0edce27d132e9c808f3379bece5a9",
+      "bytes": 42439
     },
     {
       "name": "causal_graph_audit.csv",
       "relative_path": "output/causal_graph_audit.csv",
       "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/causal_graph_audit.csv",
-      "sha256": "b4a2c39168e0a44e44970613b4d8d944617efd795b99dfb94dca72e6944486b1",
+      "sha256": "7552084b0a5c9e42387bd6d8647fa162202c3f71fb0bd34e071ec349ed46faaf",
       "bytes": 23551
     },
     {
