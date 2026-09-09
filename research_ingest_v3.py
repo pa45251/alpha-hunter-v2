@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+import os
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -10,7 +11,7 @@ from research_contract_v3 import ResearchContractError, validate_research_result
 PACKET = Path("output/research_packet.json")
 RAW = Path("output/research_result_v3.raw.txt")
 OUT = Path("output/research_result_v3.json")
-TARGET_COUNT = 5
+DEFAULT_HANDOFF = Path("/tmp/research_handoff.json")
 
 
 def _utcnow() -> str:
@@ -18,18 +19,9 @@ def _utcnow() -> str:
 
 
 def _extract_json(text: str):
-    """Extract one top-level JSON object without relaxing downstream validation.
-
-    Copilot CLI can occasionally wrap an otherwise valid JSON object with brief
-    prose/tool chatter. We tolerate only that transport noise. The extracted
-    object must still pass the exact research contract, run_id, target and
-    evidence validators below.
-    """
     text = text.strip().lstrip("\ufeff")
     if not text:
         raise ResearchContractError("empty autonomous research output")
-
-    # Fast path: strict JSON or a single fenced JSON block.
     candidates = [text]
     if text.startswith("```"):
         lines = text.splitlines()
@@ -38,7 +30,6 @@ def _extract_json(text: str):
         if lines and lines[-1].strip() == "```":
             lines = lines[:-1]
         candidates.append("\n".join(lines).strip())
-
     for candidate in candidates:
         try:
             payload = json.loads(candidate)
@@ -47,9 +38,6 @@ def _extract_json(text: str):
             return payload
         except json.JSONDecodeError:
             pass
-
-    # Bounded recovery for prefix/suffix chatter: scan for the first decodable
-    # top-level object and reject any case where none is found.
     decoder = json.JSONDecoder()
     for idx, ch in enumerate(text):
         if ch != "{":
@@ -60,7 +48,6 @@ def _extract_json(text: str):
             continue
         if isinstance(payload, dict):
             return payload
-
     preview = text[:180].replace("\n", " ")
     raise ResearchContractError(f"no valid top-level JSON object found; raw_prefix={preview!r}")
 
@@ -82,12 +69,30 @@ def _unknown(driver_id: str, run_id: str, reason: str) -> dict:
     }
 
 
+def _target_ids(packet: dict) -> list[str]:
+    handoff_path = Path(os.getenv("ALPHA_HUNTER_RESEARCH_HANDOFF_PATH", str(DEFAULT_HANDOFF)))
+    if not handoff_path.exists():
+        raise ResearchContractError("deterministic research handoff missing")
+    handoff = json.loads(handoff_path.read_text(encoding="utf-8"))
+    run_id = str(packet.get("run_id", ""))
+    if str(handoff.get("run_id", "")) != run_id:
+        raise ResearchContractError("research handoff run_id mismatch")
+    targets = handoff.get("research_targets")
+    if not isinstance(targets, list) or not targets:
+        raise ResearchContractError("research handoff target set missing")
+    target_ids = [str(x.get("driver_id", "")) for x in targets if isinstance(x, dict) and x.get("driver_id")]
+    if not target_ids or len(target_ids) != len(set(target_ids)):
+        raise ResearchContractError("research handoff target ids missing or duplicated")
+    queue_ids = {str(x.get("driver_id")) for x in (packet.get("research_queue_top30") or []) if isinstance(x, dict)}
+    if not set(target_ids).issubset(queue_ids):
+        raise ResearchContractError("research handoff contains noncanonical target")
+    return target_ids
+
+
 def main() -> None:
     packet = json.loads(PACKET.read_text(encoding="utf-8"))
     run_id = str(packet["run_id"])
-    queue = packet.get("research_queue_top30") or []
-    targets = queue[:TARGET_COUNT]
-    target_ids = [str(x["driver_id"]) for x in targets]
+    target_ids = _target_ids(packet)
     target_set = set(target_ids)
 
     status = "PASS"
@@ -147,6 +152,7 @@ def main() -> None:
         "research_run_id": run_id,
         "validated_at_utc": _utcnow(),
         "target_driver_ids": target_ids,
+        "target_selection_source": "DETERMINISTIC_RESEARCH_SCHEDULER",
         "errors": errors,
         "results": final_results,
     }
