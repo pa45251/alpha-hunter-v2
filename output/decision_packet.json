@@ -1,8 +1,8 @@
 {
   "contract": "ALPHA_HUNTER_DECISION_PACKET",
   "decision_contract_version": "2.7.1",
-  "run_id": "20260908T085056+0800-7bed948e",
-  "generated_at": "2026-09-08T00:59:33.414440+00:00",
+  "run_id": "20260909T082137+0800-65b75d0b",
+  "generated_at": "2026-09-09T00:50:20.687280+00:00",
   "gate_first_score_second": true,
   "price_can_create_causality": false,
   "auto_trade_allowed": false,
@@ -25,7 +25,7 @@
   },
   "decision_bridge": {
     "contract": "ALPHA_HUNTER_DECISION_BRIDGE_V2",
-    "public_lineage_id": "4445e6d3460abc56475ba97f79498483370ddd3dd09d6b8af8ccd74d7944330c",
+    "public_lineage_id": "ccdf19b74a169add0c3672803869be3aa1204c7866f9a1e82a915ee5889966c9",
     "canonical_snapshot_revalidated_immediately_before_decision": true,
     "persisted_gate_reused_without_revalidation": false,
     "mixed_snapshot_allowed": false,
@@ -33,8 +33,8 @@
   },
   "snapshot_lineage_layer": {
     "contract": "ALPHA_HUNTER_SNAPSHOT_LINEAGE_V2",
-    "run_id": "20260908T085056+0800-7bed948e",
-    "manifest_sha256": "383822f978ff3d94f03ce170332b011d94ab55892684014a33f2533548ea7883",
+    "run_id": "20260909T082137+0800-65b75d0b",
+    "manifest_sha256": "9e7a1c76a743312d915d21661429231e02b40f94e70ab6fdb34afba809a507ac",
     "fresh_gate_status": "PASS",
     "persisted_gate_matches_current_files": true,
     "mixed_snapshot_allowed": false
@@ -79,7 +79,7 @@
     ],
     "validation_evidence_status": "PENDING_ACCEPTANCE_REVIEW",
     "current_shadow_statistics_are_strategy_validation": false,
-    "sealed_snapshot_id": "7b7ddfe7242c34803a3321ec5e748be8a928af67ec9988082ba758e89f9a4408"
+    "sealed_snapshot_id": "8bb97f2407cf434e9c29903a7574e9da8e4807f84dd87241d4fdb7ab6b37afca"
   },
   "risk_layer": {
     "risk_inputs_valid": true,
