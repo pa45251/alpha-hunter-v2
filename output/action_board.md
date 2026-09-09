@@ -58,7 +58,7 @@ Rotation and cash outputs are CIO advisories only. They do not authorize brokera
 
 Global Alignment is advisory only; BROKEN/EXTENDED names cannot become fresh entries through this leaderboard.
 
-- Run: `20260909T082137+0800-65b75d0b`
+- Run: `20260909T085627+0800-a2dba6ce`
 - Causal source: `V3_AUTONOMOUS_RESEARCH`
 - Same snapshot: `True`
 - Active opportunity drivers: NONE

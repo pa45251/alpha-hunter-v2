@@ -1,8 +1,8 @@
 {
   "contract": "ALPHA_HUNTER_CIO_ADVISORY_PACKET",
   "advisory_version": "1.0",
-  "run_id": "20260909T082137+0800-65b75d0b",
-  "generated_at": "2026-09-09T00:53:11.581995+00:00",
+  "run_id": "20260909T085627+0800-a2dba6ce",
+  "generated_at": "2026-09-09T01:04:54.776309+00:00",
   "advisory_is_order": false,
   "auto_trade_allowed": false,
   "purpose": "Directional CIO decision support under uncertainty. Execution permissions remain governed by the frozen shadow execution lane.",
@@ -120,7 +120,7 @@
       "advisory_missing_evidence": "ACTIVE_DRIVER_VALIDATION",
       "reaction_state": "PERSISTENT",
       "provenance_status": "SOURCE_BACKED",
-      "research_priority_score": 0.8139380733944953
+      "research_priority_score": 0.8130005733944955
     },
     {
       "advisory_rank": 8,
@@ -296,7 +296,7 @@
       "advisory_missing_evidence": "ACTIVE_DRIVER_VALIDATION;COMPANY_EDGE_SOURCE_BACKING",
       "reaction_state": "PERSISTENT",
       "provenance_status": "NEEDS_SOURCE_BACKFILL",
-      "research_priority_score": 0.7229223404255318
+      "research_priority_score": 0.7219848404255319
     },
     {
       "advisory_rank": 19,
@@ -312,7 +312,7 @@
       "advisory_missing_evidence": "ACTIVE_DRIVER_VALIDATION",
       "reaction_state": "PRE_CONFIRMATION",
       "provenance_status": "SOURCE_BACKED",
-      "research_priority_score": 0.7179380733944953
+      "research_priority_score": 0.7170005733944954
     },
     {
       "advisory_rank": 20,
@@ -344,7 +344,7 @@
       "advisory_missing_evidence": "ACTIVE_DRIVER_VALIDATION;COMPANY_EDGE_SOURCE_BACKING",
       "reaction_state": "PERSISTENT",
       "provenance_status": "NEEDS_SOURCE_BACKFILL",
-      "research_priority_score": 0.7007380733944953
+      "research_priority_score": 0.6998005733944954
     },
     {
       "advisory_rank": 22,
@@ -424,7 +424,7 @@
       "advisory_missing_evidence": "ACTIVE_DRIVER_VALIDATION;COMPANY_EDGE_SOURCE_BACKING",
       "reaction_state": "PERSISTENT",
       "provenance_status": "NEEDS_SOURCE_BACKFILL",
-      "research_priority_score": 0.6871380733944955
+      "research_priority_score": 0.6862005733944955
     },
     {
       "advisory_rank": 27,
@@ -440,7 +440,7 @@
       "advisory_missing_evidence": "ACTIVE_DRIVER_VALIDATION;COMPANY_EDGE_SOURCE_BACKING",
       "reaction_state": "CONFIRMING",
       "provenance_status": "NEEDS_SOURCE_BACKFILL",
-      "research_priority_score": 0.6824500000000001
+      "research_priority_score": 0.6815125000000001
     },
     {
       "advisory_rank": 28,
@@ -472,7 +472,7 @@
       "advisory_missing_evidence": "ACTIVE_DRIVER_VALIDATION;COMPANY_EDGE_SOURCE_BACKING",
       "reaction_state": "UNKNOWN",
       "provenance_status": "NEEDS_SOURCE_BACKFILL",
-      "research_priority_score": 0.6719380733944953
+      "research_priority_score": 0.6710005733944954
     },
     {
       "advisory_rank": 30,
