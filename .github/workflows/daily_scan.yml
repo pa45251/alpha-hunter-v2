@@ -13,11 +13,11 @@ on:
     paths:
       - '.alpha-hunter/scan_watchdog.json'
   schedule:
-    # Start early enough for downstream causal research + action-board publication before 07:00 Taipei.
-    # UTC Sun-Thu maps to Taiwan Mon-Fri for these times.
-    - cron: '45 21 * * 0-4'  # 05:45 Asia/Taipei
-    - cron: '5 22 * * 0-4'   # 06:05 Asia/Taipei backup
-    - cron: '25 22 * * 0-4'  # 06:25 Asia/Taipei final backup
+    # US regular session is already closed. Start early enough for scan + bounded causal research
+    # + action-board publication before the user's 07:00 Asia/Taipei report.
+    - cron: '15 21 * * 0-4'  # 05:15 Asia/Taipei
+    - cron: '35 21 * * 0-4'  # 05:35 Asia/Taipei backup
+    - cron: '55 21 * * 0-4'  # 05:55 Asia/Taipei final backup
 
 concurrency:
   group: alpha-hunter-daily-main
@@ -76,7 +76,6 @@ jobs:
         run: |
           git config user.name "alpha-hunter-bot"
           git config user.email "actions@users.noreply.github.com"
-          # Scanner publishes canonical evidence only. Reasoning and decisioning stay downstream.
           git add \
             output/manifest.json \
             output/gate_report.json \
