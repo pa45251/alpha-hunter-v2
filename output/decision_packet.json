@@ -2,7 +2,7 @@
   "contract": "ALPHA_HUNTER_DECISION_PACKET",
   "decision_contract_version": "2.7.1",
   "run_id": "20260909T085627+0800-a2dba6ce",
-  "generated_at": "2026-09-09T01:02:14.767690+00:00",
+  "generated_at": "2026-09-09T01:03:49.361099+00:00",
   "gate_first_score_second": true,
   "price_can_create_causality": false,
   "auto_trade_allowed": false,
