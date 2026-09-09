@@ -22,6 +22,7 @@ from scanner_core import TAIPEI_TZ, ScanConfig, append_audit_log, run_scan, writ
 from taiwan_sensor import TaiwanScanConfig, run_taiwan_scan
 from canonical_gate import run_gate
 from semantic_theme_breadth import build_taiwan_semantic_breadth, attach_semantic_breadth
+from research_target_scheduler import select_research_targets
 
 OUT = Path("output")
 OUT.mkdir(parents=True, exist_ok=True)
@@ -71,6 +72,28 @@ def _copy_causal_configs_to_output() -> None:
         p = Path(src_name)
         if p.exists():
             pd.read_csv(p, dtype={"taiwan_code": str}).to_csv(OUT / out_name, index=False)
+
+
+def _apply_research_scheduler(structural: pd.DataFrame) -> None:
+    """Reorder only the bounded research handoff; never alter causal facts or scores."""
+    path = OUT / "research_packet.json"
+    packet = json.loads(path.read_text(encoding="utf-8"))
+    queue = packet.get("research_queue_top30") or []
+    selected = select_research_targets(queue, structural, max_targets=10, max_per_theme=2)
+    selected_ids = [str(r.get("driver_id")) for r in selected]
+    selected_set = set(selected_ids)
+    remaining = [r for r in queue if str(r.get("driver_id")) not in selected_set]
+    packet["research_queue_top30"] = selected + remaining
+    packet["research_scheduler"] = {
+        "contract": "ALPHA_HUNTER_RESEARCH_TARGET_SCHEDULER_V1",
+        "policy": "DIVERSIFIED_BOUNDED_RESEARCH",
+        "scheduled_driver_ids": selected_ids,
+        "first_five_theme_count": len({str(r.get('global_theme')) for r in selected[:5]}),
+        "price_can_nominate_research": True,
+        "price_can_create_causality": False,
+        "note": "Scheduling affects research attention only; ACTIVE/INACTIVE still requires external causal evidence.",
+    }
+    path.write_text(json.dumps(packet, ensure_ascii=False, indent=2), encoding="utf-8")
 
 
 def build_manifest(
@@ -272,6 +295,10 @@ if __name__ == "__main__":
     gate = run_gate("output")
     if gate.get("gate_status") != "PASS":
         raise RuntimeError(f"V2.6 deterministic gate failed: {gate.get('failure_code')}")
+
+    # 5) Scarce external-research capacity is diversified only AFTER the canonical gate passes.
+    # This reorders a bounded handoff but cannot modify causal evidence, driver state or trade permission.
+    _apply_research_scheduler(structural)
 
     print(f"Global: {len(global_results['stocks'])} securities / {global_results['stocks']['theme'].nunique()} themes")
     print(f"Taiwan: {len(tw['stocks'])}/{len(tw['universe'])} common stocks / {tw['stocks']['industry'].nunique()} industries")
