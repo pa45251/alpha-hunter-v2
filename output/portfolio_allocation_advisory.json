@@ -1,10 +1,10 @@
 {
   "contract": "ALPHA_HUNTER_PORTFOLIO_ALLOCATION_ADVISORY",
   "schema_version": "1.1",
-  "generated_at": "2026-09-09T01:04:56.673455+00:00",
+  "generated_at": "2026-09-09T02:00:32.543520+00:00",
   "status": "READY",
   "risk_regime": "NORMAL",
-  "risk_score": 21,
+  "risk_score": 22,
   "target_cash_pct": 5.0,
   "cash_rule": "Target cash is a risk-budget buffer. In leveraged accounts, implementation should generally reduce financing/gross exposure before holding idle cash; private balances are not published here.",
   "best_new_opportunity": null,

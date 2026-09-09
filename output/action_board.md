@@ -42,7 +42,7 @@ V2 is shadow/advisory only. Exact levels are structure-derived conditional plans
 <!-- ENTRY_V2_END -->
 
 ## 0. Portfolio allocation / cash regime
-- Global risk regime: `NORMAL` / score `21`
+- Global risk regime: `NORMAL` / score `22`
 - Target cash / dry-powder buffer: **5.0%**
 - For leveraged portfolios, a higher buffer should generally be implemented by reducing gross exposure before accumulating idle cash.
 - Rotation: no source/destination pair currently clears the policy threshold, or the risk regime blocks redeployment.
@@ -139,7 +139,7 @@ No WATCH_ENTRY candidates.
 - System mapping counts: `{"SYSTEM_MAPPING_MISSING": 2, "SYSTEM_RISK_GROUP": 2, "SYSTEM_TICKER_EXPOSURE": 1}`
 - Portfolio-maintenance research lane: `PASS`
 - Maintenance drivers researched/targeted: `4/4`
-- Maintenance driver states (aggregate only): `{"UNKNOWN": 4}`
+- Maintenance driver states (aggregate only): `{"ACTIVE": 2, "UNKNOWN": 2}`
 - Maintenance targets truncated by safety cap: `0`
 - Optional user-thesis overlay: `NOT_CONFIGURED`
 - User/system disagreement count: `0`

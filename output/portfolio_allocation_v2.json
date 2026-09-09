@@ -1,10 +1,10 @@
 {
   "contract": "ALPHA_HUNTER_PORTFOLIO_ALLOCATION_V2",
   "schema_version": "2.0",
-  "generated_at": "2026-09-09T01:05:02.872182+00:00",
+  "generated_at": "2026-09-09T02:00:38.280181+00:00",
   "status": "READY",
   "risk_regime": "NORMAL",
-  "risk_score": 21,
+  "risk_score": 22,
   "target_cash_pct": 5.0,
   "best_research_opportunity": null,
   "best_entry_plan_destination": null,
