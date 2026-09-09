@@ -13,11 +13,11 @@ on:
     paths:
       - '.alpha-hunter/scan_watchdog.json'
   schedule:
-    # GitHub scheduled workflows can be delayed. Use staggered Asia/Taipei morning triggers.
+    # Start early enough for downstream causal research + action-board publication before 07:00 Taipei.
     # UTC Sun-Thu maps to Taiwan Mon-Fri for these times.
-    - cron: '20 22 * * 0-4'  # 06:20 Asia/Taipei
-    - cron: '40 22 * * 0-4'  # 06:40 Asia/Taipei backup
-    - cron: '0 23 * * 0-4'   # 07:00 Asia/Taipei final backup
+    - cron: '45 21 * * 0-4'  # 05:45 Asia/Taipei
+    - cron: '5 22 * * 0-4'   # 06:05 Asia/Taipei backup
+    - cron: '25 22 * * 0-4'  # 06:25 Asia/Taipei final backup
 
 concurrency:
   group: alpha-hunter-daily-main
@@ -90,6 +90,7 @@ jobs:
             output/taiwan_candidates.csv \
             output/taiwan_candidate_history.csv \
             output/taiwan_industry_breadth.csv \
+            output/taiwan_semantic_breadth.csv \
             output/taiwan_universe.csv \
             output/causal_research_queue.csv \
             output/structural_matches.csv \
