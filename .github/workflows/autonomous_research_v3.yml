@@ -11,6 +11,7 @@ on:
       - '.github/workflows/autonomous_research_v3.yml'
       - '.github/agents/alpha-hunter-evidence-research.agent.md'
       - 'RESEARCH_AGENT_PROMPT_V3.md'
+      - 'automation_guard_v4.py'
       - 'research_source_prefetch_v3.py'
       - 'research_ingest_v3.py'
       - 'research_contract_v3.py'
@@ -27,6 +28,7 @@ on:
       - 'shadow_validation_v2.py'
       - 'existing_position_v2.py'
       - 'position_alias_output_v2.py'
+      - 'tests/test_automation_guard_v4.py'
       - 'tests/test_research_source_prefetch_v3.py'
       - 'tests/test_research_quality_gate_v3.py'
       - 'tests/test_portfolio_maintenance_research.py'
@@ -43,8 +45,44 @@ permissions:
   contents: write
 
 jobs:
+  trigger_gate:
+    runs-on: ubuntu-latest
+    outputs:
+      should_run: ${{ steps.gate.outputs.should_run }}
+      reason: ${{ steps.gate.outputs.reason }}
+    steps:
+      - name: Checkout latest main for trigger lineage
+        uses: actions/checkout@v6
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+
+      - name: Verify workflow_run produced the current canonical snapshot
+        id: gate
+        shell: bash
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_run" ]; then
+            if [ "${{ github.event.workflow_run.conclusion }}" != "success" ]; then
+              echo "should_run=false" >> "$GITHUB_OUTPUT"
+              echo "reason=UPSTREAM_NOT_SUCCESS" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+            python automation_guard_v4.py \
+              --mode workflow-trigger \
+              --trigger-started-at-utc "${{ github.event.workflow_run.run_started_at }}"
+          else
+            echo "should_run=true" >> "$GITHUB_OUTPUT"
+            echo "reason=MANUAL_OR_CODE_TRIGGER" >> "$GITHUB_OUTPUT"
+          fi
+
   research:
-    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
+    needs: trigger_gate
+    if: needs.trigger_gate.outputs.should_run == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 45
 
