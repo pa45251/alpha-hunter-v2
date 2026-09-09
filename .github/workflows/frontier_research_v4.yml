@@ -1,0 +1,147 @@
+name: Alpha Hunter V4 OpenAI Frontier Research
+
+on:
+  workflow_dispatch:
+  workflow_run:
+    workflows: ["Alpha Hunter Daily Scan"]
+    types: [completed]
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/frontier_research_v4.yml'
+      - 'automation_guard_v4.py'
+      - 'openai_frontier_research_v4.py'
+      - 'research_source_prefetch_v3.py'
+      - 'tests/test_automation_guard_v4.py'
+      - 'tests/test_openai_frontier_research_v4.py'
+
+concurrency:
+  group: alpha-hunter-v4-openai-frontier-main
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  frontier:
+    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout latest main
+        uses: actions/checkout@v6
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+
+      - name: Verify this trigger produced a new canonical snapshot
+        id: trigger_guard
+        shell: bash
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_run" ]; then
+            python automation_guard_v4.py \
+              --mode workflow-trigger \
+              --trigger-started-at-utc "${{ github.event.workflow_run.run_started_at }}"
+          else
+            echo "should_run=true" >> "$GITHUB_OUTPUT"
+            echo "reason=MANUAL_OR_CODE_TRIGGER" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Check OpenAI frontier provider configuration
+        if: steps.trigger_guard.outputs.should_run == 'true'
+        id: provider
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        shell: bash
+        run: |
+          if [ -z "$OPENAI_API_KEY" ]; then
+            echo "enabled=false" >> "$GITHUB_OUTPUT"
+            echo "OpenAI frontier lane is configured but inactive: repository secret OPENAI_API_KEY is absent."
+          else
+            echo "enabled=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Install dependencies
+        if: steps.trigger_guard.outputs.should_run == 'true' && steps.provider.outputs.enabled == 'true'
+        run: pip install -r requirements.txt
+
+      - name: Build bounded frontier handoff
+        if: steps.trigger_guard.outputs.should_run == 'true' && steps.provider.outputs.enabled == 'true'
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          packet = json.loads(Path('output/research_packet.json').read_text(encoding='utf-8'))
+          keep = (
+              'research_priority', 'global_theme', 'driver_id', 'driver_label',
+              'driver_scope', 'global_theme_strength_v2', 'global_latest_price_date',
+              'activation_evidence_required', 'counter_evidence_required',
+              'price_cannot_activate_driver'
+          )
+          compact = {
+              'contract': packet.get('contract'),
+              'run_id': packet.get('run_id'),
+              'lane': 'FRONTIER_CHALLENGER',
+              'causal_rule': packet.get('causal_rule'),
+              'research_targets': [
+                  {k: row.get(k) for k in keep if k in row}
+                  for row in (packet.get('research_queue_top30') or [])[:5]
+              ],
+          }
+          Path('/tmp/frontier_handoff_v4.json').write_text(
+              json.dumps(compact, ensure_ascii=False, separators=(',', ':')), encoding='utf-8'
+          )
+          PY
+
+      - name: Prefetch deterministic evidence for frontier lane
+        if: steps.trigger_guard.outputs.should_run == 'true' && steps.provider.outputs.enabled == 'true'
+        run: |
+          python research_source_prefetch_v3.py \
+            --handoff /tmp/frontier_handoff_v4.json \
+            --out /tmp/frontier_prefetch_v4.json \
+            --per-query 4
+
+      - name: Run OpenAI frontier causal adjudication
+        if: steps.trigger_guard.outputs.should_run == 'true' && steps.provider.outputs.enabled == 'true'
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          OPENAI_FRONTIER_MODEL: ${{ vars.OPENAI_FRONTIER_MODEL || 'gpt-5.6' }}
+          OPENAI_FRONTIER_REASONING_EFFORT: ${{ vars.OPENAI_FRONTIER_REASONING_EFFORT || 'high' }}
+        run: |
+          python openai_frontier_research_v4.py \
+            --handoff /tmp/frontier_handoff_v4.json \
+            --prefetch /tmp/frontier_prefetch_v4.json \
+            --out output/frontier_research_v4.json
+
+      - name: Validate V4 frontier contracts
+        if: steps.trigger_guard.outputs.should_run == 'true' && steps.provider.outputs.enabled == 'true'
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+        run: python -m pytest -q tests/test_automation_guard_v4.py tests/test_openai_frontier_research_v4.py
+
+      - name: Commit validated frontier challenger artifact
+        if: steps.trigger_guard.outputs.should_run == 'true' && steps.provider.outputs.enabled == 'true'
+        run: |
+          git config user.name "alpha-hunter-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add output/frontier_research_v4.json
+          git diff --cached --quiet && exit 0
+          git commit -m "alpha hunter v4 frontier challenger $(date -u +%F)"
+          git fetch origin main
+          # Challenger artifacts are snapshot-bound; never rebase computed output onto a newer snapshot.
+          if [ "$(git rev-parse origin/main)" != "$(git rev-parse HEAD^)" ]; then
+            echo "::error::main advanced after frontier inputs were read; refusing mixed-snapshot publish."
+            exit 1
+          fi
+          git push origin HEAD:main
+
+      - name: Frontier lane status
+        if: always()
+        run: |
+          echo "trigger_guard=${{ steps.trigger_guard.outputs.should_run }} reason=${{ steps.trigger_guard.outputs.reason }}"
+          echo "openai_provider_enabled=${{ steps.provider.outputs.enabled }}"

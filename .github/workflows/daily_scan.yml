@@ -2,9 +2,22 @@ name: Alpha Hunter Daily Scan
 
 on:
   workflow_dispatch:
+    inputs:
+      force:
+        description: Force a new scanner snapshot even if today's canonical snapshot already passed
+        required: false
+        default: true
+        type: boolean
+  push:
+    branches: [main]
+    paths:
+      - '.alpha-hunter/scan_watchdog.json'
   schedule:
-    # 22:55 UTC = 06:55 Asia/Taipei next day. Sun-Thu UTC = Mon-Fri Taiwan.
-    - cron: '55 22 * * 0-4'
+    # GitHub scheduled workflows can be delayed. Use staggered Asia/Taipei morning triggers.
+    # UTC Sun-Thu maps to Taiwan Mon-Fri for these times.
+    - cron: '20 22 * * 0-4'  # 06:20 Asia/Taipei
+    - cron: '40 22 * * 0-4'  # 06:40 Asia/Taipei backup
+    - cron: '0 23 * * 0-4'   # 07:00 Asia/Taipei final backup
 
 concurrency:
   group: alpha-hunter-daily-main
@@ -20,8 +33,9 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
+          ref: main
           fetch-depth: 0
 
       - name: Set up Python
@@ -29,27 +43,40 @@ jobs:
         with:
           python-version: '3.12'
 
+      - name: Decide whether a new canonical scan is required
+        id: freshness_guard
+        shell: bash
+        run: |
+          force_arg=""
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ inputs.force }}" = "true" ]; then
+            force_arg="--force"
+          fi
+          python automation_guard_v4.py --mode scheduled-scan $force_arg
+
       - name: Install dependencies
+        if: steps.freshness_guard.outputs.should_run == 'true'
         run: pip install -r requirements.txt
 
       - name: Run contract tests
+        if: steps.freshness_guard.outputs.should_run == 'true'
         env:
           PYTHONPATH: ${{ github.workspace }}
         run: python -m pytest -q
 
       - name: Run Alpha Hunter v2.6 scanner
+        if: steps.freshness_guard.outputs.should_run == 'true'
         run: python daily_scan.py
 
       - name: Build v2.6.1 research handoff
+        if: steps.freshness_guard.outputs.should_run == 'true'
         run: python research_handoff.py
 
-      - name: Commit canonical scanner snapshot for same-snapshot V3 research
+      - name: Commit canonical scanner snapshot for same-snapshot research
+        if: steps.freshness_guard.outputs.should_run == 'true'
         run: |
           git config user.name "alpha-hunter-bot"
           git config user.email "actions@users.noreply.github.com"
-          # The scanner intentionally does NOT build or publish a decision here. A new scanner
-          # run_id has no same-snapshot V3 research yet. Alpha Hunter v3 Autonomous Research is
-          # triggered by this workflow's successful completion and owns the causal decision step.
+          # Scanner publishes canonical evidence only. Reasoning and decisioning stay downstream.
           git add \
             output/manifest.json \
             output/gate_report.json \
@@ -71,4 +98,10 @@ jobs:
             output/structural_exposure_graph.csv
           git diff --cached --quiet && exit 0
           git commit -m "alpha hunter canonical scanner snapshot $(date -u +%F)"
-          git push
+          git fetch origin main
+          git rebase origin/main
+          git push origin HEAD:main
+
+      - name: Record backup no-op
+        if: steps.freshness_guard.outputs.should_run != 'true'
+        run: echo "Canonical snapshot already fresh; trigger intentionally performed no scan."
