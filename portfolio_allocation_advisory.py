@@ -15,6 +15,8 @@ OUTPUT_PATH = OUT / "portfolio_allocation_advisory.json"
 CONF_SCORE = {"HIGH": 1.0, "MEDIUM": 0.65, "LOW": 0.35, "INSUFFICIENT": 0.0}
 REACTION_SCORE = {"PRE_CONFIRMATION": 0.10, "CONFIRMING": 0.08, "PULLBACK": 0.04, "PERSISTENT": -0.03, "EXTENDED": -0.10, "UNKNOWN": 0.0}
 ACTION_BASE = {"BUY_BIAS_STOCK": 0.78, "PREFER_ETF": 0.68, "HOLD_BIAS": 0.55}
+SUPPORTIVE_REGIMES = {"RISK_ON", "NORMAL"}
+ADVERSE_REGIMES = {"CAUTION", "DEFENSIVE", "CRISIS"}
 
 
 def _load(path: Path) -> dict[str, Any]:
@@ -62,6 +64,41 @@ def _position_edge(row: dict[str, Any]) -> float:
     return round(val, 4)
 
 
+def _trend_state(reaction_state: str) -> str:
+    reaction = str(reaction_state or "UNKNOWN").upper()
+    if reaction == "PULLBACK":
+        return "UPTREND_PULLBACK"
+    if reaction in {"PRE_CONFIRMATION", "EARLY_CONFIRMATION", "CONFIRMING", "PERSISTENT", "EXTENDED"}:
+        return "UPTREND"
+    if reaction == "BROKEN":
+        return "DOWNTREND_OR_BROKEN"
+    return "UNKNOWN"
+
+
+def _regime_support(regime: str) -> str:
+    label = str(regime or "UNKNOWN").upper()
+    if label in SUPPORTIVE_REGIMES:
+        return "SUPPORTIVE"
+    if label in ADVERSE_REGIMES:
+        return "ADVERSE"
+    return "UNKNOWN"
+
+
+def _trend_regime_stance(trend_state: str, regime_support: str) -> str:
+    """High-level CIO philosophy: follow trend; buy weakness only when regime still supports it."""
+    if trend_state == "UPTREND_PULLBACK" and regime_support == "SUPPORTIVE":
+        return "BUY_PULLBACK_CANDIDATE"
+    if trend_state == "UPTREND" and regime_support == "SUPPORTIVE":
+        return "HOLD_OR_WAIT_PULLBACK"
+    if trend_state in {"UPTREND", "UPTREND_PULLBACK"} and regime_support == "ADVERSE":
+        return "WAIT_REGIME"
+    if trend_state == "DOWNTREND_OR_BROKEN" and regime_support == "SUPPORTIVE":
+        return "WAIT_RECOVERY"
+    if trend_state == "DOWNTREND_OR_BROKEN" and regime_support == "ADVERSE":
+        return "REDUCE_EXIT_CASH"
+    return "WAIT"
+
+
 def _rotation_size(spread: float, regime: str, policy: dict[str, Any]) -> tuple[str, int]:
     rot = policy["rotation"]
     min_edge = float(rot["min_edge_spread"])
@@ -74,23 +111,28 @@ def _rotation_size(spread: float, regime: str, policy: dict[str, Any]) -> tuple[
     return "NORMAL", max(10, int(round(trim_cap * 0.6)))
 
 
-def _entry_gated_rotation(size_state: str, planned_trim: int, reaction_state: str) -> tuple[str, int, int, str]:
-    """Do not let portfolio rotation bypass the existing entry-state discipline.
+def _entry_gated_rotation(size_state: str, planned_trim: int, reaction_state: str, regime_support: str = "SUPPORTIVE") -> tuple[str, int, int, str]:
+    """Preserve entry discipline and add a regime veto for fresh risk.
 
-    PRE_CONFIRMATION can nominate and size a future rotation, but no source trim is recommended now.
-    CONFIRMING is the only state that upgrades the rotation to a current action bias.
-    Persistent/extended/unknown states do not create a fresh rotation entry.
+    Trend alone is insufficient. A pullback or confirmation can only become a current
+    rotation bias when the broader regime is supportive. Adverse/unknown regime keeps
+    the idea in wait/prepare mode; it does not manufacture a trade.
     """
     if size_state == "NO_ROTATION" or planned_trim <= 0:
         return "NO_ROTATION", 0, 0, ""
     reaction = str(reaction_state or "UNKNOWN").upper()
+    if regime_support != "SUPPORTIVE":
+        return "WAIT_REGIME", 0, planned_trim, "REGIME_SUPPORT_REQUIRED"
     if reaction == "PRE_CONFIRMATION":
         action = "PREPARE_ROTATION_STRONG" if size_state == "STRONG" else "PREPARE_ROTATION"
         return action, 0, planned_trim, "DESTINATION_REACTION_CONFIRMING"
     if reaction == "CONFIRMING":
         action = "ROTATE_PARTIAL_STRONG" if size_state == "STRONG" else "ROTATE_PARTIAL"
         return action, planned_trim, planned_trim, ""
-    return "WAIT_BETTER_ENTRY", 0, planned_trim, "DESTINATION_ENTRY_STATE_NOT_CONFIRMING"
+    if reaction == "PULLBACK":
+        action = "BUY_PULLBACK_ROTATION_STRONG" if size_state == "STRONG" else "BUY_PULLBACK_ROTATION"
+        return action, planned_trim, planned_trim, ""
+    return "WAIT_BETTER_ENTRY", 0, planned_trim, "DESTINATION_ENTRY_STATE_NOT_CONFIRMING_OR_PULLBACK"
 
 
 def build_portfolio_allocation() -> dict[str, Any]:
@@ -112,6 +154,7 @@ def build_portfolio_allocation() -> dict[str, Any]:
     if regime.get("status") != "READY":
         regime_label = "UNKNOWN"
         target_cash = None
+    regime_support = _regime_support(regime_label)
 
     candidates = []
     for r in cand.get("top_advisories") or []:
@@ -119,6 +162,8 @@ def build_portfolio_allocation() -> dict[str, Any]:
         if edge <= 0:
             continue
         preferred = str(r.get("preferred_exposure", "")).upper()
+        reaction_state = str(r.get("reaction_state", "UNKNOWN"))
+        trend_state = _trend_state(reaction_state)
         candidates.append({
             "ticker": r.get("ticker") if preferred == "STOCK" else r.get("etf_ticker"),
             "name": r.get("name") if preferred == "STOCK" else "Mapped ETF",
@@ -126,7 +171,10 @@ def build_portfolio_allocation() -> dict[str, Any]:
             "advisory_action": r.get("advisory_action"),
             "edge_score": edge,
             "driver_id": r.get("driver_id"),
-            "reaction_state": r.get("reaction_state"),
+            "reaction_state": reaction_state,
+            "trend_state": trend_state,
+            "regime_support": regime_support,
+            "trend_regime_stance": _trend_regime_stance(trend_state, regime_support),
             "confidence": r.get("advisory_confidence"),
         })
     candidates.sort(key=lambda x: x["edge_score"], reverse=True)
@@ -141,6 +189,7 @@ def build_portfolio_allocation() -> dict[str, Any]:
             "current_edge_score": _position_edge(r),
             "confidence": r.get("confidence"),
             "signal_state": r.get("signal_state"),
+            "regime_support": regime_support,
         })
     sources.sort(key=lambda x: x["current_edge_score"])
 
@@ -153,7 +202,10 @@ def build_portfolio_allocation() -> dict[str, Any]:
             if size_state == "NO_ROTATION":
                 continue
             action, trim_now, trim_on_trigger, entry_trigger = _entry_gated_rotation(
-                size_state, planned_trim, str(best.get("reaction_state", "UNKNOWN"))
+                size_state,
+                planned_trim,
+                str(best.get("reaction_state", "UNKNOWN")),
+                regime_support,
             )
             redeploy_pct = int(policy["rotation"]["redeploy_pct_of_trim"].get(regime_label, policy["rotation"]["redeploy_pct_of_trim"].get("UNKNOWN", 0)))
             rotations.append({
@@ -164,6 +216,9 @@ def build_portfolio_allocation() -> dict[str, Any]:
                 "destination_action": best["advisory_action"],
                 "destination_driver": best["driver_id"],
                 "destination_reaction_state": best["reaction_state"],
+                "destination_trend_state": best["trend_state"],
+                "regime_support": regime_support,
+                "trend_regime_stance": best["trend_regime_stance"],
                 "rotation_action": action,
                 "edge_spread": spread,
                 "suggested_source_trim_pct_now": trim_now,
@@ -173,17 +228,24 @@ def build_portfolio_allocation() -> dict[str, Any]:
                 "entry_trigger_required": entry_trigger,
                 "reason": "DESTINATION_EDGE_EXCEEDS_SOURCE_BY_POLICY_THRESHOLD",
             })
-            # One primary rotation at a time avoids mechanically concentrating multiple holdings into one destination.
             break
 
     return {
         "contract": "ALPHA_HUNTER_PORTFOLIO_ALLOCATION_ADVISORY",
-        "schema_version": "1.1",
+        "schema_version": "1.2",
         "generated_at": datetime.now().astimezone().isoformat(),
         "status": "READY",
         "risk_regime": regime_label,
         "risk_score": regime.get("risk_score"),
+        "regime_support": regime_support,
         "target_cash_pct": target_cash,
+        "core_philosophy": "FOLLOW_TREND_BUY_WEAKNESS_ONLY_WHEN_REGIME_SUPPORTS_TREND",
+        "decision_matrix": {
+            "UPTREND+SUPPORTIVE": "HOLD_OR_BUY_PULLBACK",
+            "UPTREND+ADVERSE": "HOLD_OR_WAIT; DO_NOT_AUTO_BUY_DIP",
+            "DOWNTREND+SUPPORTIVE": "WAIT_RECOVERY",
+            "DOWNTREND+ADVERSE": "REDUCE_EXIT_CASH",
+        },
         "cash_rule": "Target cash is a risk-budget buffer. In leveraged accounts, implementation should generally reduce financing/gross exposure before holding idle cash; private balances are not published here.",
         "best_new_opportunity": candidates[0] if candidates else None,
         "rotations": rotations,
@@ -196,7 +258,7 @@ def build_portfolio_allocation() -> dict[str, Any]:
             "financing_included": False
         },
         "auto_trade_allowed": False,
-        "method": "Compare normalized CIO edge for current holdings versus validated new opportunities, nominate at most one primary rotation, but preserve entry discipline: PRE_CONFIRMATION only prepares a rotation and CONFIRMING is required before a current rotation bias is emitted. Risk regime controls trim/redeploy sizing.",
+        "method": "Follow trend first, then apply the macro/risk regime as a veto on fresh risk. A pullback is attractive only when the underlying trend is intact and the regime remains supportive. Trend strength never creates causality, and adverse regime does not by itself prove a crash; it reduces willingness to buy weakness and increases the value of cash. Rotation remains advisory and preserves entry discipline.",
     }
 
 
