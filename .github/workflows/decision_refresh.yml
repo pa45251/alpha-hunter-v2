@@ -2,10 +2,6 @@ name: Alpha Hunter Decision Refresh
 
 on:
   workflow_dispatch:
-  workflow_run:
-    workflows:
-      - "Alpha Hunter Daily Scan"
-    types: [completed]
   push:
     branches: [main]
     paths:
@@ -45,7 +41,6 @@ permissions:
 
 jobs:
   decision-refresh:
-    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
