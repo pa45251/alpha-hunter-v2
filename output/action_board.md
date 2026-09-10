@@ -42,7 +42,7 @@ V2 is shadow/advisory only. Exact levels are structure-derived conditional plans
 <!-- ENTRY_V2_END -->
 
 ## 0. Portfolio allocation / cash regime
-- Global risk regime: `NORMAL` / score `26`
+- Global risk regime: `NORMAL` / score `22`
 - Target cash / dry-powder buffer: **5.0%**
 - For leveraged portfolios, a higher buffer should generally be implemented by reducing gross exposure before accumulating idle cash.
 - Best new opportunity: **QQQ Mapped ETF** — `PREFER_ETF` / edge `0.6329` / reaction `PERSISTENT`
