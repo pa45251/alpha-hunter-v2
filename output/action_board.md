@@ -42,14 +42,14 @@ V2 is shadow/advisory only. Exact levels are structure-derived conditional plans
 <!-- ENTRY_V2_END -->
 
 ## 0. Portfolio allocation / cash regime
-- Global risk regime: `NORMAL` / score `29`
-- Target cash / dry-powder buffer: **5.0%**
+- Global risk regime: `CAUTION` / score `43`
+- Target cash / dry-powder buffer: **15.0%**
 - For leveraged portfolios, a higher buffer should generally be implemented by reducing gross exposure before accumulating idle cash.
 - Best new opportunity: **QQQ Mapped ETF** — `PREFER_ETF` / edge `0.632` / reaction `PERSISTENT`
 
 | Source alias | Destination | Rotation state | Edge spread | Trim now | Trim on trigger | Entry trigger | Redeploy on trigger | Buffer on trigger |
 |---|---|---|---:|---:|---:|---|---:|---:|
-| 標的D | QQQ Mapped ETF | WAIT_BETTER_ENTRY | 0.3188 | 0% | 24% | DESTINATION_ENTRY_STATE_NOT_CONFIRMING_OR_PULLBACK | 75% | 25% |
+| 標的A | QQQ Mapped ETF | WAIT_REGIME | 0.332 | 0% | 15% | THEME_MACRO_SUPPORT_REQUIRED | 50% | 50% |
 
 PREPARE_ROTATION means the edge is strong enough to nominate the switch, but the destination has not reached the required entry-confirmation state; current trim remains zero.
 Rotation and cash outputs are CIO advisories only. They do not authorize brokerage orders.
@@ -106,10 +106,10 @@ The advisory lane may say BUY_BIAS/PREFER_ETF/WAIT_PULLBACK/AVOID even when exec
 | Alias | CIO bias | Confidence | State | Lane | Strict lane | Why |
 |---|---|---|---|---|---|---|
 | 零碎部位 | IGNORE_RESIDUAL | HIGH | DE_MINIMIS | RESIDUAL | REVIEW_RESEARCH | POSITION_BELOW_DE_MINIMIS_WEIGHT |
-| 標的A | REVIEW_HOLD | LOW | POSITIVE | ETF_THEME | REVIEW_RESEARCH | MIXED_OR_UNCERTAIN_TREND_ETF_THEME_POSITIVE_THEME_SUPPORT |
-| 標的B | REVIEW_HOLD | LOW | MIXED | ETF_THEME | REVIEW_RESEARCH | MIXED_OR_UNCERTAIN_TREND_ETF_THEME_MIXED_THEME_SUPPORT |
-| 標的C | REVIEW_HOLD | LOW | STRONG | ETF_THEME | REVIEW_RESEARCH | MIXED_OR_UNCERTAIN_TREND_ETF_THEME_STRONG_THEME_SUPPORT |
-| 標的D | REVIEW_HOLD | LOW | WEAK | STOCK_THEME_PROXY | REVIEW_RESEARCH | MIXED_OR_UNCERTAIN_TREND_STOCK_THEME_PROXY_WEAK_THEME_SUPPORT_COMPANY_TRANSMISSION_NOT_EXACT |
+| 標的A | REDUCE_BIAS | HIGH | POSITIVE | ETF_THEME | REVIEW_RESEARCH | MIXED_TREND_WITH_ADVERSE_MACRO_ETF_THEME_POSITIVE_THEME_SUPPORT |
+| 標的B | REVIEW_HOLD | MEDIUM | MIXED | ETF_THEME | REVIEW_RESEARCH | UPTREND_MACRO_NOT_FULLY_SUPPORTIVE_ETF_THEME_MIXED_THEME_SUPPORT |
+| 標的C | REDUCE_BIAS | HIGH | STRONG | ETF_THEME | REVIEW_RESEARCH | MIXED_TREND_WITH_ADVERSE_MACRO_ETF_THEME_STRONG_THEME_SUPPORT |
+| 標的D | REVIEW_HOLD | MEDIUM | WEAK | STOCK_THEME_PROXY | REVIEW_RESEARCH | UPTREND_MACRO_NOT_FULLY_SUPPORTIVE_STOCK_THEME_PROXY_WEAK_THEME_SUPPORT_COMPANY_TRANSMISSION_NOT_EXACT |
 
 ETF holdings use global theme breadth; stocks use a theme proxy until company-level transmission is exact. This is advisory, not execution authorization.
 
@@ -140,10 +140,10 @@ No WATCH_ENTRY candidates.
 - System mapping readiness: `PARTIAL`
 - Position count: `5`
 - Position action counts: `{"REVIEW_RESEARCH": 5}`
-- System mapping counts: `{"SYSTEM_MAPPING_MISSING": 2, "SYSTEM_RISK_GROUP": 2, "SYSTEM_TICKER_EXPOSURE": 1}`
-- Portfolio-maintenance research lane: `PASS`
-- Maintenance drivers researched/targeted: `4/4`
-- Maintenance driver states (aggregate only): `{"ACTIVE": 1, "UNKNOWN": 3}`
+- System mapping counts: `{"SYSTEM_MAPPING_MISSING": 2, "SYSTEM_RISK_GROUP": 3}`
+- Portfolio-maintenance research lane: `NOT_AVAILABLE`
+- Maintenance drivers researched/targeted: `0/0`
+- Maintenance driver states (aggregate only): `{}`
 - Maintenance targets truncated by safety cap: `0`
 - Optional user-thesis overlay: `NOT_CONFIGURED`
 - User/system disagreement count: `0`

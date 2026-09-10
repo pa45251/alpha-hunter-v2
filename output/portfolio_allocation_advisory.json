@@ -1,12 +1,12 @@
 {
   "contract": "ALPHA_HUNTER_PORTFOLIO_ALLOCATION_ADVISORY",
   "schema_version": "1.3",
-  "generated_at": "2026-09-10T13:27:18.369038+00:00",
+  "generated_at": "2026-09-10T13:32:34.294826+00:00",
   "status": "READY",
-  "risk_regime": "NORMAL",
-  "risk_score": 29,
+  "risk_regime": "CAUTION",
+  "risk_score": 43,
   "rate_pressure": "ADVERSE",
-  "target_cash_pct": 5.0,
+  "target_cash_pct": 15.0,
   "core_philosophy": "FOLLOW_TREND_BUY_WEAKNESS_ONLY_WHEN_THEME_MACRO_SUPPORTS_TREND",
   "decision_matrix": {
     "UPTREND+SUPPORTIVE+PULLBACK": "BUY_OR_ADD_CANDIDATE",
@@ -25,74 +25,74 @@
     "driver_id": "AI_SERVER_THERMAL_DENSITY",
     "reaction_state": "PERSISTENT",
     "trend_state": "UPTREND",
-    "macro_support": "SUPPORTIVE",
-    "trend_regime_stance": "HOLD_OR_WAIT_PULLBACK",
+    "macro_support": "ADVERSE",
+    "trend_regime_stance": "WAIT_REGIME",
     "confidence": "MEDIUM"
   },
   "rotations": [
     {
-      "source_alias": "標的D",
-      "source_action": "REVIEW_HOLD",
-      "source_trend_state": "UNKNOWN",
-      "source_macro_support": "SUPPORTIVE",
+      "source_alias": "標的A",
+      "source_action": "REDUCE_BIAS",
+      "source_trend_state": "MIXED",
+      "source_macro_support": "ADVERSE",
       "destination_ticker": "QQQ",
       "destination_name": "Mapped ETF",
       "destination_action": "PREFER_ETF",
       "destination_driver": "AI_SERVER_THERMAL_DENSITY",
       "destination_reaction_state": "PERSISTENT",
       "destination_trend_state": "UPTREND",
-      "destination_macro_support": "SUPPORTIVE",
-      "trend_regime_stance": "HOLD_OR_WAIT_PULLBACK",
-      "rotation_action": "WAIT_BETTER_ENTRY",
-      "edge_spread": 0.3188,
+      "destination_macro_support": "ADVERSE",
+      "trend_regime_stance": "WAIT_REGIME",
+      "rotation_action": "WAIT_REGIME",
+      "edge_spread": 0.332,
       "suggested_source_trim_pct_now": 0,
-      "suggested_source_trim_pct_on_trigger": 24,
-      "suggested_redeploy_pct_of_trim_on_trigger": 75,
-      "suggested_risk_buffer_pct_of_trim_on_trigger": 25,
-      "entry_trigger_required": "DESTINATION_ENTRY_STATE_NOT_CONFIRMING_OR_PULLBACK",
+      "suggested_source_trim_pct_on_trigger": 15,
+      "suggested_redeploy_pct_of_trim_on_trigger": 50,
+      "suggested_risk_buffer_pct_of_trim_on_trigger": 50,
+      "entry_trigger_required": "THEME_MACRO_SUPPORT_REQUIRED",
       "reason": "DESTINATION_EDGE_EXCEEDS_SOURCE_BY_POLICY_THRESHOLD"
     }
   ],
   "source_ranking": [
     {
+      "alias": "標的A",
+      "current_action": "REDUCE_BIAS",
+      "current_edge_score": 0.3,
+      "confidence": "HIGH",
+      "signal_state": "POSITIVE",
+      "trend_state": "MIXED",
+      "macro_support": "ADVERSE",
+      "trend_regime_stance": "REDUCE_OR_WAIT"
+    },
+    {
+      "alias": "標的C",
+      "current_action": "REDUCE_BIAS",
+      "current_edge_score": 0.3,
+      "confidence": "HIGH",
+      "signal_state": "STRONG",
+      "trend_state": "MIXED",
+      "macro_support": "ADVERSE",
+      "trend_regime_stance": "REDUCE_OR_WAIT"
+    },
+    {
       "alias": "標的D",
       "current_action": "REVIEW_HOLD",
       "current_edge_score": 0.3132,
-      "confidence": "LOW",
+      "confidence": "MEDIUM",
       "signal_state": "WEAK",
-      "trend_state": "UNKNOWN",
-      "macro_support": "SUPPORTIVE",
-      "trend_regime_stance": "WAIT"
+      "trend_state": "UPTREND",
+      "macro_support": "ADVERSE",
+      "trend_regime_stance": "WAIT_REGIME"
     },
     {
       "alias": "標的B",
       "current_action": "REVIEW_HOLD",
       "current_edge_score": 0.4816,
-      "confidence": "LOW",
+      "confidence": "MEDIUM",
       "signal_state": "MIXED",
-      "trend_state": "UNKNOWN",
+      "trend_state": "UPTREND",
       "macro_support": "ADVERSE",
-      "trend_regime_stance": "WAIT"
-    },
-    {
-      "alias": "標的A",
-      "current_action": "REVIEW_HOLD",
-      "current_edge_score": 0.5,
-      "confidence": "LOW",
-      "signal_state": "POSITIVE",
-      "trend_state": "UNKNOWN",
-      "macro_support": "ADVERSE",
-      "trend_regime_stance": "WAIT"
-    },
-    {
-      "alias": "標的C",
-      "current_action": "REVIEW_HOLD",
-      "current_edge_score": 0.5,
-      "confidence": "LOW",
-      "signal_state": "STRONG",
-      "trend_state": "UNKNOWN",
-      "macro_support": "CONDITIONAL",
-      "trend_regime_stance": "WAIT"
+      "trend_regime_stance": "WAIT_REGIME"
     }
   ],
   "candidate_ranking": [
@@ -106,8 +106,8 @@
       "driver_id": "AI_SERVER_THERMAL_DENSITY",
       "reaction_state": "PERSISTENT",
       "trend_state": "UPTREND",
-      "macro_support": "SUPPORTIVE",
-      "trend_regime_stance": "HOLD_OR_WAIT_PULLBACK",
+      "macro_support": "ADVERSE",
+      "trend_regime_stance": "WAIT_REGIME",
       "confidence": "MEDIUM"
     }
   ],
