@@ -135,6 +135,19 @@ def _close_series(hist: pd.DataFrame) -> pd.Series:
     if hist is None or hist.empty:
         return pd.Series(dtype=float)
     if isinstance(hist.columns, pd.MultiIndex):
+        for level in range(hist.columns.nlevels):
+            values = hist.columns.get_level_values(level)
+            for field in ["Adj Close", "Close"]:
+                if field in values:
+                    try:
+                        x = hist.xs(field, axis=1, level=level)
+                        if isinstance(x, pd.DataFrame):
+                            if x.shape[1] == 0:
+                                continue
+                            x = x.iloc[:, 0]
+                        return pd.to_numeric(x, errors="coerce").dropna()
+                    except Exception:
+                        continue
         return pd.Series(dtype=float)
     col = "Adj Close" if "Adj Close" in hist.columns and hist["Adj Close"].notna().any() else "Close"
     if col not in hist.columns:
@@ -173,7 +186,7 @@ def _classify_position_trend_from_close(s: pd.Series) -> dict[str, Any]:
 def _position_trend(raw_ticker: Any) -> dict[str, Any]:
     for symbol in _market_symbol_candidates(raw_ticker):
         try:
-            hist = yf.download(symbol, period="1y", auto_adjust=False, progress=False, threads=False)
+            hist = yf.Ticker(symbol).history(period="1y", auto_adjust=False)
             s = _close_series(hist)
             result = _classify_position_trend_from_close(s)
             if result.get("state") != "UNKNOWN":
