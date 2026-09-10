@@ -1,8 +1,8 @@
 {
   "contract": "ALPHA_HUNTER_V3_VALIDATED_RESEARCH",
   "status": "PASS",
-  "research_run_id": "20260910T062934+0800-c5bf2fe0",
-  "validated_at_utc": "2026-09-09T22:33:26.394708+00:00",
+  "research_run_id": "20260910T205947+0800-52cc1184",
+  "validated_at_utc": "2026-09-10T13:04:48.548845+00:00",
   "target_driver_ids": [
     "AI_SERVER_SHIPMENTS",
     "AI_SERVER_RACK_BUILD",
@@ -16,82 +16,100 @@
       "driver_id": "AI_SERVER_SHIPMENTS",
       "state": "UNKNOWN",
       "confidence": 0.18,
-      "primary_cause": "No verifiable current external evidence was found confirming or contradicting AI server units, rack shipments, or ODM backlog; generic AI demand evidence would not establish this exact driver.",
+      "primary_cause": "Exact, time-consistent evidence confirming AI server units, rack shipments, or ODM backlog was not found; contradictory demand, guidance, and breadth evidence therefore remains unresolved.",
       "industry_scope": "UNKNOWN",
       "supporting_evidence": [],
       "counter_evidence": [],
       "source_count": 0,
       "event_date": null,
       "source_dates": [],
-      "researched_at_utc": "2026-09-09T22:32:58Z",
-      "research_run_id": "20260910T062934+0800-c5bf2fe0"
+      "researched_at_utc": "2026-09-10T13:04:21Z",
+      "research_run_id": "20260910T205947+0800-52cc1184"
     },
     {
       "driver_id": "AI_SERVER_RACK_BUILD",
       "state": "UNKNOWN",
       "confidence": 0.18,
-      "primary_cause": "No verifiable current external evidence was found confirming or contradicting AI rack, server-system, chassis buildout, or product-mix expansion.",
+      "primary_cause": "Exact, time-consistent evidence confirming rack, system, chassis buildout, or product-mix expansion was not found; contradictory demand, guidance, and breadth evidence therefore remains unresolved.",
       "industry_scope": "UNKNOWN",
       "supporting_evidence": [],
       "counter_evidence": [],
       "source_count": 0,
       "event_date": null,
       "source_dates": [],
-      "researched_at_utc": "2026-09-09T22:32:58Z",
-      "research_run_id": "20260910T062934+0800-c5bf2fe0"
+      "researched_at_utc": "2026-09-10T13:04:21Z",
+      "research_run_id": "20260910T205947+0800-52cc1184"
     },
     {
       "driver_id": "AI_SERVER_THERMAL_DENSITY",
       "state": "ACTIVE",
-      "confidence": 0.83,
-      "primary_cause": "High-density AI training and inference workloads are driving adoption of liquid cooling because traditional air cooling is insufficient for the resulting thermal loads.",
-      "industry_scope": "INDUSTRY_WIDE",
+      "confidence": 0.82,
+      "primary_cause": "High-density AI workloads are driving thermal constraints beyond conventional air cooling, with liquid-cooling systems and high-density AI server deployments being developed and demonstrated.",
+      "industry_scope": "MIXED",
       "supporting_evidence": [
         {
-          "claim": "High-density computing workloads such as AI training and inference generate thermal loads that exceed traditional air-cooling capability, and companies are increasingly adopting liquid-cooling technologies.",
-          "source_title": "Liquid cooling becoming essential as AI servers proliferate",
-          "source_url": "https://www.networkworld.com/article/3978673/liquid-cooling-becoming-essential-as-ai-servers-proliferate.html",
-          "published_at": "2025-05-19T03:00:00Z",
-          "event_date": "2025-05-19T00:00:00Z",
+          "claim": "AI and high-performance-computing workloads are pushing server and rack power densities beyond traditional air-cooled facility capabilities, making cooling high-density racks a strategic requirement.",
+          "source_title": "Scaling AI data center cooling for high-density servers",
+          "source_url": "https://www.techtarget.com/it-infrastructure/tip/Scaling-AI-data-center-cooling-for-high-density-servers",
+          "published_at": "2026-06-11T07:42:00Z",
+          "event_date": null,
           "evidence_type": "HIGH_QUALITY_REPORTING"
+        },
+        {
+          "claim": "Compal showcased high-density liquid-cooled AI servers using AMD EPYC processors and AMD Instinct GPUs, providing company-specific evidence of liquid-cooling adoption in AI server systems.",
+          "source_title": "Compal Showcases High-Density Liquid-Cooled AI Servers at SC25, Powered by AMD EPYC Processors and AMD Instinct GPUs for Next-Generation Sustainable Computing",
+          "source_url": "https://finance.yahoo.com/news/compal-showcases-high-density-liquid-140000279.html",
+          "published_at": "2025-11-19T06:00:00Z",
+          "event_date": "2025-11-19T00:00:00Z",
+          "evidence_type": "COMPANY_PRIMARY"
+        },
+        {
+          "claim": "Frore Systems introduced an integrated liquid-cooling system for next-generation half-U AI server systems to address thermal barriers limiting AI performance.",
+          "source_title": "Frore Systems Introduces LiquidJet Nexus - Defining the AI Thermal Stack for Next-Generation ½ U AI Server Systems like NVIDIA Kyber",
+          "source_url": "https://finance.yahoo.com/news/frore-systems-introduces-liquidjet-nexus-100500066.html",
+          "published_at": "2026-03-13T03:06:00Z",
+          "event_date": "2026-03-13T00:00:00Z",
+          "evidence_type": "COMPANY_PRIMARY"
         }
       ],
       "counter_evidence": [],
-      "source_count": 1,
-      "event_date": "2025-05-19T00:00:00Z",
+      "source_count": 3,
+      "event_date": "2026-06-11T00:00:00Z",
       "source_dates": [
-        "2025-05-19T03:00:00Z"
+        "2026-06-11T07:42:00Z",
+        "2025-11-19T06:00:00Z",
+        "2026-03-13T03:06:00Z"
       ],
-      "researched_at_utc": "2026-09-09T22:32:58Z",
-      "research_run_id": "20260910T062934+0800-c5bf2fe0"
+      "researched_at_utc": "2026-09-10T13:04:21Z",
+      "research_run_id": "20260910T205947+0800-52cc1184"
     },
     {
       "driver_id": "DRAM_PRICING",
       "state": "UNKNOWN",
       "confidence": 0.18,
-      "primary_cause": "No verifiable current external evidence was found confirming or contradicting commodity DRAM ASPs, bit demand, or inventory conditions; HBM evidence cannot be inferred as commodity DRAM evidence.",
+      "primary_cause": "Exact, time-consistent evidence for commodity DRAM ASP, bit demand, and inventory conditions, explicitly separated from HBM, was not found; contradictory pricing, demand, guidance, and breadth evidence remains unresolved.",
       "industry_scope": "UNKNOWN",
       "supporting_evidence": [],
       "counter_evidence": [],
       "source_count": 0,
       "event_date": null,
       "source_dates": [],
-      "researched_at_utc": "2026-09-09T22:32:58Z",
-      "research_run_id": "20260910T062934+0800-c5bf2fe0"
+      "researched_at_utc": "2026-09-10T13:04:21Z",
+      "research_run_id": "20260910T205947+0800-52cc1184"
     },
     {
       "driver_id": "SPECIALTY_MEMORY_PRICING",
       "state": "UNKNOWN",
       "confidence": 0.18,
-      "primary_cause": "No verifiable current external evidence was found confirming or contradicting specialty DRAM, NOR, or NAND pricing and utilization.",
+      "primary_cause": "Exact, time-consistent evidence for specialty DRAM, NOR, or NAND pricing and utilization was not found; contradictory pricing, demand, guidance, and breadth evidence remains unresolved.",
       "industry_scope": "UNKNOWN",
       "supporting_evidence": [],
       "counter_evidence": [],
       "source_count": 0,
       "event_date": null,
       "source_dates": [],
-      "researched_at_utc": "2026-09-09T22:32:58Z",
-      "research_run_id": "20260910T062934+0800-c5bf2fe0"
+      "researched_at_utc": "2026-09-10T13:04:21Z",
+      "research_run_id": "20260910T205947+0800-52cc1184"
     }
   ]
 }
