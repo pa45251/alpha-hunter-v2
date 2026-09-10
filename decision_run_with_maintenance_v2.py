@@ -5,6 +5,7 @@ from collections import Counter
 import json
 import os
 from pathlib import Path
+import subprocess
 
 import decision_run_v2
 import risk_regime
@@ -61,10 +62,17 @@ def _rebuild_same_snapshot_risk_regime() -> None:
 
     out = Path("output")
     out.mkdir(parents=True, exist_ok=True)
-    (out / "risk_regime.json").write_text(
+    regime_path = out / "risk_regime.json"
+    regime_path.write_text(
         json.dumps(payload, ensure_ascii=False, indent=2),
         encoding="utf-8",
     )
+
+    # The autonomous workflow commits validated outputs after this entrypoint. Stage the
+    # regenerated risk overlay here so it is part of that same atomic publication and
+    # does not remain as an unstaged change that blocks the workflow rebase/push step.
+    subprocess.run(["git", "add", str(regime_path)], check=False)
+
     print(
         "Risk regime rebuilt for canonical snapshot: "
         f"run_id={run_id} regime={payload.get('regime')} score={payload.get('risk_score')}"
