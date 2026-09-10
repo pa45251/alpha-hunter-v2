@@ -2,6 +2,10 @@ name: Alpha Hunter Decision Refresh
 
 on:
   workflow_dispatch:
+  workflow_run:
+    workflows:
+      - "Alpha Hunter Daily Scan"
+    types: [completed]
   push:
     branches: [main]
     paths:
@@ -41,8 +45,9 @@ permissions:
 
 jobs:
   decision-refresh:
+    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
     steps:
       - name: Checkout latest main
         uses: actions/checkout@v6
@@ -96,6 +101,22 @@ jobs:
               raise SystemExit('Shadow future-data cutoff invariant missing')
           PY
 
+      - name: Build global risk regime for this canonical snapshot
+        run: python risk_regime.py
+
+      - name: Assert risk-regime lineage matches canonical manifest
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          m = json.loads(Path('output/manifest.json').read_text(encoding='utf-8'))
+          r = json.loads(Path('output/risk_regime.json').read_text(encoding='utf-8'))
+          if m.get('status') != 'PASS':
+              raise SystemExit('Canonical manifest not PASS')
+          if r.get('source_run_id') != m.get('run_id'):
+              raise SystemExit('Risk regime lineage mismatch')
+          PY
+
       - name: Publish alias-only existing-position actions with V2 contract guard
         env:
           ALPHA_HUNTER_RISK_POLICY_JSON: ${{ secrets.ALPHA_HUNTER_RISK_POLICY_JSON }}
@@ -104,12 +125,23 @@ jobs:
           ALPHA_HUNTER_POSITION_ALIAS_JSON: ${{ secrets.ALPHA_HUNTER_POSITION_ALIAS_JSON }}
         run: python position_alias_output_v2.py
 
-      - name: Publish existing-position CIO advisory
+      - name: Publish existing-position CIO advisory from actual held-instrument trend
         env:
           ALPHA_HUNTER_RISK_POLICY_JSON: ${{ secrets.ALPHA_HUNTER_RISK_POLICY_JSON }}
           ALPHA_HUNTER_PORTFOLIO_JSON: ${{ secrets.ALPHA_HUNTER_PORTFOLIO_JSON }}
           ALPHA_HUNTER_POSITION_ALIAS_JSON: ${{ secrets.ALPHA_HUNTER_POSITION_ALIAS_JSON }}
         run: python position_cio_advisory.py
+
+      - name: Assert position CIO lineage matches canonical manifest
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          m = json.loads(Path('output/manifest.json').read_text(encoding='utf-8'))
+          p = json.loads(Path('output/position_cio_advisory.json').read_text(encoding='utf-8'))
+          if p.get('source_run_id') != m.get('run_id'):
+              raise SystemExit('Position CIO lineage mismatch')
+          PY
 
       - name: Commit refreshed public decision artifacts
         run: |
@@ -122,7 +154,8 @@ jobs:
             output/decision_history.csv \
             output/shadow_audit.csv \
             output/shadow_validation.csv \
-            output/shadow_validation_report.json
+            output/shadow_validation_report.json \
+            output/risk_regime.json
           if [ -e output/position_alias_actions.json ] || git ls-files --error-unmatch output/position_alias_actions.json >/dev/null 2>&1; then
             git add -A output/position_alias_actions.json
           fi

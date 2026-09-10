@@ -57,6 +57,28 @@ jobs:
       - name: Build global risk regime and cash target
         run: python risk_regime.py
 
+      - name: Rebuild existing-position CIO on the same fresh risk overlay
+        env:
+          ALPHA_HUNTER_RISK_POLICY_JSON: ${{ secrets.ALPHA_HUNTER_RISK_POLICY_JSON }}
+          ALPHA_HUNTER_PORTFOLIO_JSON: ${{ secrets.ALPHA_HUNTER_PORTFOLIO_JSON }}
+          ALPHA_HUNTER_POSITION_ALIAS_JSON: ${{ secrets.ALPHA_HUNTER_POSITION_ALIAS_JSON }}
+        run: python position_cio_advisory.py
+
+      - name: Assert advisory lineage before portfolio allocation
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          m = json.loads(Path('output/manifest.json').read_text(encoding='utf-8'))
+          r = json.loads(Path('output/risk_regime.json').read_text(encoding='utf-8'))
+          p = json.loads(Path('output/position_cio_advisory.json').read_text(encoding='utf-8'))
+          run_id = m.get('run_id')
+          if m.get('status') != 'PASS' or not run_id:
+              raise SystemExit('Canonical manifest not PASS')
+          if r.get('source_run_id') != run_id or p.get('source_run_id') != run_id:
+              raise SystemExit('Advisory lineage mismatch')
+          PY
+
       - name: Build legacy portfolio allocation advisory
         run: python portfolio_allocation_advisory.py
 
@@ -98,6 +120,7 @@ jobs:
             output/cio_advisory.csv \
             output/cio_advisory.json \
             output/risk_regime.json \
+            output/position_cio_advisory.json \
             output/portfolio_allocation_advisory.json \
             output/global_alignment.csv \
             output/global_alignment.json \

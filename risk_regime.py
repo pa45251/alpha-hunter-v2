@@ -10,6 +10,7 @@ import yfinance as yf
 
 OUT = Path("output")
 POLICY_PATH = Path("config/portfolio_allocation_policy.json")
+MANIFEST_PATH = OUT / "manifest.json"
 OUTPUT_PATH = OUT / "risk_regime.json"
 
 RISK_TICKERS = [
@@ -19,6 +20,18 @@ RISK_TICKERS = [
 ]
 CORE_TICKERS = ["^VIX", "^VXN", "SPY", "QQQ"]
 GLOBAL_TICKERS = ["ACWI", "VGK", "EWJ", "EWY", "EWT", "FXI"]
+
+
+def _manifest_run_id() -> str:
+    if not MANIFEST_PATH.exists():
+        return ""
+    try:
+        payload = json.loads(MANIFEST_PATH.read_text(encoding="utf-8"))
+    except Exception:
+        return ""
+    if payload.get("status") != "PASS":
+        return ""
+    return str(payload.get("run_id") or "").strip()
 
 
 def _close(hist: pd.DataFrame) -> pd.Series:
@@ -96,11 +109,6 @@ def _ratio_features(a: pd.DataFrame, b: pd.DataFrame) -> dict[str, Any]:
 
 
 def _yield_pressure(z: dict[str, Any]) -> str:
-    """Classify rate pressure without hard-coding an absolute yield threshold.
-
-    Rising yields above both their 20d/60d trend are adverse to rate-sensitive assets;
-    falling yields below the 20d trend are supportive. Everything else is neutral.
-    """
     if not z:
         return "UNKNOWN"
     if bool(z.get("above_ma20")) and bool(z.get("above_ma60")) and float(z.get("ret20", 0.0)) > 0:
@@ -136,6 +144,7 @@ def _band_for(score: int, policy: dict[str, Any]) -> dict[str, Any]:
 
 def build_risk_regime(histories: dict[str, pd.DataFrame] | None = None) -> dict[str, Any]:
     policy = json.loads(POLICY_PATH.read_text(encoding="utf-8"))
+    source_run_id = _manifest_run_id()
     live_download = histories is None
     histories = histories or _download()
     f = {t: _features(histories.get(t, pd.DataFrame())) for t in RISK_TICKERS}
@@ -143,7 +152,8 @@ def build_risk_regime(histories: dict[str, pd.DataFrame] | None = None) -> dict[
     if missing_core:
         return {
             "contract": "ALPHA_HUNTER_RISK_REGIME",
-            "schema_version": "1.1",
+            "schema_version": "1.2",
+            "source_run_id": source_run_id,
             "generated_at": datetime.now().astimezone().isoformat(),
             "status": "DATA_UNAVAILABLE",
             "missing_core_signals": missing_core,
@@ -165,7 +175,8 @@ def build_risk_regime(histories: dict[str, pd.DataFrame] | None = None) -> dict[
     if stale_core:
         return {
             "contract": "ALPHA_HUNTER_RISK_REGIME",
-            "schema_version": "1.1",
+            "schema_version": "1.2",
+            "source_run_id": source_run_id,
             "generated_at": datetime.now().astimezone().isoformat(),
             "status": "STALE_CORE_DATA",
             "stale_core_signals": stale_core,
@@ -243,7 +254,8 @@ def build_risk_regime(histories: dict[str, pd.DataFrame] | None = None) -> dict[
 
     return {
         "contract": "ALPHA_HUNTER_RISK_REGIME",
-        "schema_version": "1.1",
+        "schema_version": "1.2",
+        "source_run_id": source_run_id,
         "generated_at": datetime.now().astimezone().isoformat(),
         "status": "READY",
         "risk_snapshot_date": latest_date,
@@ -263,7 +275,7 @@ def build_risk_regime(histories: dict[str, pd.DataFrame] | None = None) -> dict[
             "ust2y": ({**ust2y, "pressure_state": yield_pressure_2y} if ust2y else {"pressure_state": "UNKNOWN"}),
             "rate_pressure": rate_pressure,
         },
-        "method": "Unfitted heuristic combining volatility, US trend, breadth, credit and global breadth. Treasury yields are exposed as macro-compatibility evidence for rate-sensitive themes and do not by themselves predict a crash or mechanically change the global risk score.",
+        "method": "Unfitted heuristic combining volatility, US trend, breadth, credit and global breadth. Treasury yields are macro-compatibility evidence, not a crash predictor. source_run_id binds this overlay to the canonical scanner snapshot used downstream.",
         "auto_trade_allowed": False,
     }
 
@@ -272,7 +284,7 @@ def main() -> None:
     OUT.mkdir(parents=True, exist_ok=True)
     payload = build_risk_regime()
     OUTPUT_PATH.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
-    print(f"Risk regime: status={payload.get('status')} regime={payload.get('regime')} score={payload.get('risk_score')} target_cash={payload.get('target_cash_pct')}")
+    print(f"Risk regime: run_id={payload.get('source_run_id')} status={payload.get('status')} regime={payload.get('regime')} score={payload.get('risk_score')}")
 
 
 if __name__ == "__main__":
