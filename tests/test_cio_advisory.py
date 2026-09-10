@@ -17,6 +17,10 @@ def row(**overrides):
         "dynamic_driver_state": "ACTIVE_RESEARCH_VALIDATED",
         "provenance_status": "NEEDS_SOURCE_BACKFILL",
         "reaction_state": "CONFIRMING",
+        "semantic_breadth_state": "HEALTHY",
+        "semantic_breadth_n": 6,
+        "semantic_positive_rs20_pct": 0.67,
+        "semantic_median_rs20": 0.04,
         "polarity": "POSITIVE",
         "linkage_tier": "DIRECT",
         "linkage_confidence": 0.95,
@@ -49,8 +53,25 @@ def test_source_backed_confirming_stock_gets_buy_bias():
     assert r["preferred_exposure"] == "STOCK"
 
 
-def test_etf_core_route_is_not_blocked_by_missing_company_provenance():
-    r = advisory(stock_vs_etf_state="ETF_CORE_PREFERRED", provenance_status="NEEDS_SOURCE_BACKFILL")
+def test_broken_semantic_theme_blocks_otherwise_valid_stock():
+    r = advisory(provenance_status="SOURCE_BACKED", semantic_breadth_state="BROKEN")
+    assert r["advisory_action"] == "AVOID"
+    assert r["preferred_exposure"] == "CASH"
+    assert "breadth is broken" in r["advisory_rationale"]
+
+
+def test_mixed_semantic_theme_does_not_surface_buy_bias():
+    r = advisory(provenance_status="SOURCE_BACKED", semantic_breadth_state="MIXED")
+    assert r["advisory_action"] == "RESEARCH_FIRST"
+    assert "SEMANTIC_THEME_BREADTH_HEALTHY" in r["advisory_missing_evidence"]
+
+
+def test_etf_core_route_is_not_blocked_by_missing_company_provenance_or_taiwan_breadth():
+    r = advisory(
+        stock_vs_etf_state="ETF_CORE_PREFERRED",
+        provenance_status="NEEDS_SOURCE_BACKFILL",
+        semantic_breadth_state="BROKEN",
+    )
     assert r["advisory_action"] == "PREFER_ETF"
     assert r["preferred_exposure"] == "ETF"
 

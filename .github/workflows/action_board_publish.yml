@@ -12,11 +12,14 @@ on:
       - 'portfolio_risk_v2.py'
       - 'portfolio_allocation_v2.py'
       - 'entry_action_board_v2.py'
+      - 'cio_advisory.py'
+      - 'buy_now_report.py'
       - '.github/workflows/action_board_publish.yml'
   workflow_run:
     workflows:
       - "Alpha Hunter Portfolio Maintenance Recovery"
       - "Alpha Hunter Decision Refresh"
+      - "Alpha Hunter v3 Autonomous Research"
     types: [completed]
 
 concurrency:
@@ -78,6 +81,9 @@ jobs:
       - name: Build Rotation V2 using the same canonical entry plans
         run: python portfolio_allocation_v2.py
 
+      - name: Build low-noise BUY NOW report
+        run: python buy_now_report.py
+
       - name: Build privacy-safe legacy one-page action board
         run: python action_board_summary.py
 
@@ -106,6 +112,7 @@ jobs:
             output/entry_plans_v2.json \
             output/entry_plan_trace_v2.csv \
             output/portfolio_allocation_v2.json \
+            output/buy_now_report.json \
             output/action_board.md
           if [ -e output/entry_plans_v2.csv ] || git ls-files --error-unmatch output/entry_plans_v2.csv >/dev/null 2>&1; then
             git add -A output/entry_plans_v2.csv
