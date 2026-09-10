@@ -16,7 +16,7 @@ def _policy():
     }
 
 
-def _run_case(tmp_path, monkeypatch, reaction_state: str):
+def _run_case(tmp_path, monkeypatch, reaction_state: str, regime_label: str = "NORMAL"):
     policy = _policy()
     pos = {
         "positions": [
@@ -35,7 +35,7 @@ def _run_case(tmp_path, monkeypatch, reaction_state: str):
             }
         ]
     }
-    regime = {"status": "READY", "regime": "NORMAL", "risk_score": 28, "target_cash_pct": 5}
+    regime = {"status": "READY", "regime": regime_label, "risk_score": 28, "target_cash_pct": 5}
 
     files = {}
     for name, payload in [("policy.json", policy), ("pos.json", pos), ("cand.json", cand), ("regime.json", regime)]:
@@ -54,6 +54,7 @@ def test_preconfirmation_prepares_but_does_not_trim_now(tmp_path, monkeypatch):
     out = _run_case(tmp_path, monkeypatch, "PRE_CONFIRMATION")
     assert out["status"] == "READY"
     assert out["best_new_opportunity"]["ticker"] == "2317.TW"
+    assert out["regime_support"] == "SUPPORTIVE"
     assert len(out["rotations"]) == 1
     r = out["rotations"][0]
     assert r["source_alias"] == "標的D"
@@ -73,6 +74,27 @@ def test_confirming_allows_partial_rotation_bias(tmp_path, monkeypatch):
     assert r["suggested_source_trim_pct_now"] == 40
     assert r["suggested_source_trim_pct_on_trigger"] == 40
     assert r["entry_trigger_required"] == ""
+
+
+def test_pullback_is_buy_candidate_only_when_regime_supportive(tmp_path, monkeypatch):
+    out = _run_case(tmp_path, monkeypatch, "PULLBACK", "NORMAL")
+    best = out["best_new_opportunity"]
+    assert best["trend_state"] == "UPTREND_PULLBACK"
+    assert best["trend_regime_stance"] == "BUY_PULLBACK_CANDIDATE"
+    r = out["rotations"][0]
+    assert r["rotation_action"] == "BUY_PULLBACK_ROTATION_STRONG"
+    assert r["suggested_source_trim_pct_now"] == 40
+
+
+def test_adverse_regime_vetoes_fresh_pullback_risk(tmp_path, monkeypatch):
+    out = _run_case(tmp_path, monkeypatch, "PULLBACK", "CAUTION")
+    best = out["best_new_opportunity"]
+    assert out["regime_support"] == "ADVERSE"
+    assert best["trend_regime_stance"] == "WAIT_REGIME"
+    r = out["rotations"][0]
+    assert r["rotation_action"] == "WAIT_REGIME"
+    assert r["suggested_source_trim_pct_now"] == 0
+    assert r["entry_trigger_required"] == "REGIME_SUPPORT_REQUIRED"
 
 
 def test_crisis_blocks_rotation():
