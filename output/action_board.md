@@ -49,7 +49,7 @@ V2 is shadow/advisory only. Exact levels are structure-derived conditional plans
 
 | Source alias | Destination | Rotation state | Edge spread | Trim now | Trim on trigger | Entry trigger | Redeploy on trigger | Buffer on trigger |
 |---|---|---|---:|---:|---:|---|---:|---:|
-| 標的B | QQQ Mapped ETF | WAIT_BETTER_ENTRY | 0.332 | 0% | 24% | DESTINATION_ENTRY_STATE_NOT_CONFIRMING_OR_PULLBACK | 75% | 25% |
+| 標的D | QQQ Mapped ETF | WAIT_BETTER_ENTRY | 0.3188 | 0% | 24% | DESTINATION_ENTRY_STATE_NOT_CONFIRMING_OR_PULLBACK | 75% | 25% |
 
 PREPARE_ROTATION means the edge is strong enough to nominate the switch, but the destination has not reached the required entry-confirmation state; current trim remains zero.
 Rotation and cash outputs are CIO advisories only. They do not authorize brokerage orders.
@@ -106,10 +106,10 @@ The advisory lane may say BUY_BIAS/PREFER_ETF/WAIT_PULLBACK/AVOID even when exec
 | Alias | CIO bias | Confidence | State | Lane | Strict lane | Why |
 |---|---|---|---|---|---|---|
 | 零碎部位 | IGNORE_RESIDUAL | HIGH | DE_MINIMIS | RESIDUAL | REVIEW_RESEARCH | POSITION_BELOW_DE_MINIMIS_WEIGHT |
-| 標的A | REVIEW_HOLD | HIGH | POSITIVE | ETF_THEME | REVIEW_RESEARCH | UPTREND_MACRO_NOT_FULLY_SUPPORTIVE_ETF_THEME_POSITIVE_MARKET_BREADTH |
-| 標的B | REDUCE_BIAS | MEDIUM | MIXED | ETF_THEME | REVIEW_RESEARCH | MIXED_TREND_WITH_ADVERSE_MACRO_ETF_THEME_MIXED_MARKET_BREADTH |
-| 標的C | HOLD_BIAS | HIGH | STRONG | ETF_THEME | REVIEW_RESEARCH | UPTREND_MACRO_SUPPORTIVE_ETF_THEME_STRONG_MARKET_BREADTH |
-| 標的D | REVIEW_HOLD | MEDIUM | WEAK | STOCK_THEME_PROXY | REVIEW_RESEARCH | WAIT_FOR_TREND_RECOVERY_STOCK_THEME_PROXY_WEAK_MARKET_BREADTH_COMPANY_TRANSMISSION_NOT_EXACT |
+| 標的A | REVIEW_HOLD | LOW | POSITIVE | ETF_THEME | REVIEW_RESEARCH | MIXED_OR_UNCERTAIN_TREND_ETF_THEME_POSITIVE_THEME_SUPPORT |
+| 標的B | REVIEW_HOLD | LOW | MIXED | ETF_THEME | REVIEW_RESEARCH | MIXED_OR_UNCERTAIN_TREND_ETF_THEME_MIXED_THEME_SUPPORT |
+| 標的C | REVIEW_HOLD | LOW | STRONG | ETF_THEME | REVIEW_RESEARCH | MIXED_OR_UNCERTAIN_TREND_ETF_THEME_STRONG_THEME_SUPPORT |
+| 標的D | REVIEW_HOLD | LOW | WEAK | STOCK_THEME_PROXY | REVIEW_RESEARCH | MIXED_OR_UNCERTAIN_TREND_STOCK_THEME_PROXY_WEAK_THEME_SUPPORT_COMPANY_TRANSMISSION_NOT_EXACT |
 
 ETF holdings use global theme breadth; stocks use a theme proxy until company-level transmission is exact. This is advisory, not execution authorization.
 
