@@ -1,8 +1,8 @@
 {
   "contract": "ALPHA_HUNTER_CIO_ADVISORY_PACKET",
-  "advisory_version": "1.0",
+  "advisory_version": "1.1",
   "run_id": "20260910T062934+0800-c5bf2fe0",
-  "generated_at": "2026-09-10T00:58:03.645364+00:00",
+  "generated_at": "2026-09-10T12:31:46.417368+00:00",
   "advisory_is_order": false,
   "auto_trade_allowed": false,
   "purpose": "Directional CIO decision support under uncertainty. Execution permissions remain governed by the frozen shadow execution lane.",
@@ -26,7 +26,11 @@
       "advisory_missing_evidence": "COMPANY_EDGE_SOURCE_BACKING",
       "reaction_state": "PERSISTENT",
       "provenance_status": "NEEDS_SOURCE_BACKFILL",
-      "research_priority_score": 0.771868484042553
+      "research_priority_score": 0.771868484042553,
+      "rs_20d_vs_bench": 0.2383021720171618,
+      "rs_60d_vs_bench": 0.2182174906480753,
+      "acceleration": -0.1146051103368177,
+      "keynes_v2": 0.4584895553330173
     },
     {
       "advisory_rank": 2,
@@ -42,7 +46,11 @@
       "advisory_missing_evidence": "ACTIVE_DRIVER_VALIDATION",
       "reaction_state": "PERSISTENT",
       "provenance_status": "SOURCE_BACKED",
-      "research_priority_score": 0.8642262041284404
+      "research_priority_score": 0.8642262041284404,
+      "rs_20d_vs_bench": 0.1330273501948271,
+      "rs_60d_vs_bench": 0.4143121877868176,
+      "acceleration": -0.146954630207773,
+      "keynes_v2": 0.1884127648448668
     },
     {
       "advisory_rank": 3,
@@ -58,7 +66,11 @@
       "advisory_missing_evidence": "ACTIVE_DRIVER_VALIDATION",
       "reaction_state": "PERSISTENT",
       "provenance_status": "SOURCE_BACKED",
-      "research_priority_score": 0.8605606617647059
+      "research_priority_score": 0.8605606617647059,
+      "rs_20d_vs_bench": 0.0579285835506229,
+      "rs_60d_vs_bench": 0.0724909382366141,
+      "acceleration": -0.0154907030830861,
+      "keynes_v2": 0.1798261790311854
     },
     {
       "advisory_rank": 4,
@@ -74,7 +86,11 @@
       "advisory_missing_evidence": "ACTIVE_DRIVER_VALIDATION",
       "reaction_state": "PERSISTENT",
       "provenance_status": "SOURCE_BACKED",
-      "research_priority_score": 0.8605606617647059
+      "research_priority_score": 0.8605606617647059,
+      "rs_20d_vs_bench": 0.241883844630051,
+      "rs_60d_vs_bench": 0.3006939875363941,
+      "acceleration": -0.0472363515766711,
+      "keynes_v2": 0.6940558597489447
     },
     {
       "advisory_rank": 5,
@@ -90,7 +106,11 @@
       "advisory_missing_evidence": "ACTIVE_DRIVER_VALIDATION;COMPANY_EDGE_SOURCE_BACKING",
       "reaction_state": "PERSISTENT",
       "provenance_status": "NEEDS_SOURCE_BACKFILL",
-      "research_priority_score": 0.8592072208737863
+      "research_priority_score": 0.8592072208737863,
+      "rs_20d_vs_bench": 0.0418950918516056,
+      "rs_60d_vs_bench": 0.3578605694145023,
+      "acceleration": -0.0113319463060394,
+      "keynes_v2": 0.0548057274642594
     },
     {
       "advisory_rank": 6,
@@ -106,7 +126,11 @@
       "advisory_missing_evidence": "ACTIVE_DRIVER_VALIDATION",
       "reaction_state": "PERSISTENT",
       "provenance_status": "SOURCE_BACKED",
-      "research_priority_score": 0.8485606617647059
+      "research_priority_score": 0.8485606617647059,
+      "rs_20d_vs_bench": 0.1276922873221346,
+      "rs_60d_vs_bench": 0.1221292671291049,
+      "acceleration": 0.0156285179855908,
+      "keynes_v2": 0.4093490358946755
     },
     {
       "advisory_rank": 7,
@@ -122,7 +146,11 @@
       "advisory_missing_evidence": "ACTIVE_DRIVER_VALIDATION",
       "reaction_state": "PERSISTENT",
       "provenance_status": "SOURCE_BACKED",
-      "research_priority_score": 0.8485606617647059
+      "research_priority_score": 0.8485606617647059,
+      "rs_20d_vs_bench": 0.0797168047453509,
+      "rs_60d_vs_bench": 0.1831928046967501,
+      "acceleration": 0.0081023104565108,
+      "keynes_v2": 0.2655363422748067
     },
     {
       "advisory_rank": 8,
@@ -138,7 +166,11 @@
       "advisory_missing_evidence": "ACTIVE_DRIVER_VALIDATION;COMPANY_EDGE_SOURCE_BACKING",
       "reaction_state": "PERSISTENT",
       "provenance_status": "NEEDS_SOURCE_BACKFILL",
-      "research_priority_score": 0.8472072208737863
+      "research_priority_score": 0.8472072208737863,
+      "rs_20d_vs_bench": 0.0121852965803572,
+      "rs_60d_vs_bench": 0.0265345512862309,
+      "acceleration": 0.0138717924438973,
+      "keynes_v2": 0.0147754808989273
     },
     {
       "advisory_rank": 9,
@@ -154,7 +186,11 @@
       "advisory_missing_evidence": "ACTIVE_DRIVER_VALIDATION",
       "reaction_state": "PERSISTENT",
       "provenance_status": "SOURCE_BACKED",
-      "research_priority_score": 0.8405606617647059
+      "research_priority_score": 0.8405606617647059,
+      "rs_20d_vs_bench": 0.0638821524254278,
+      "rs_60d_vs_bench": 0.0685989612309123,
+      "acceleration": 0.0308690011912379,
+      "keynes_v2": 0.8072099875844528
     },
     {
       "advisory_rank": 10,
@@ -170,7 +206,11 @@
       "advisory_missing_evidence": "ACTIVE_DRIVER_VALIDATION",
       "reaction_state": "PERSISTENT",
       "provenance_status": "SOURCE_BACKED",
-      "research_priority_score": 0.8405606617647059
+      "research_priority_score": 0.8405606617647059,
+      "rs_20d_vs_bench": 0.0705093380933516,
+      "rs_60d_vs_bench": 0.1285421583668875,
+      "acceleration": 0.0204141432707241,
+      "keynes_v2": 0.36850488047874
     },
     {
       "advisory_rank": 11,
@@ -186,7 +226,11 @@
       "advisory_missing_evidence": "ACTIVE_DRIVER_VALIDATION;COMPANY_EDGE_SOURCE_BACKING",
       "reaction_state": "PERSISTENT",
       "provenance_status": "NEEDS_SOURCE_BACKFILL",
-      "research_priority_score": 0.8352072208737865
+      "research_priority_score": 0.8352072208737865,
+      "rs_20d_vs_bench": 0.0718933717667482,
+      "rs_60d_vs_bench": 0.3155758279553398,
+      "acceleration": 0.0591566620424991,
+      "keynes_v2": 0.1184966556372502
     },
     {
       "advisory_rank": 12,
@@ -202,7 +246,11 @@
       "advisory_missing_evidence": "ACTIVE_DRIVER_VALIDATION",
       "reaction_state": "CONFIRMING",
       "provenance_status": "SOURCE_BACKED",
-      "research_priority_score": 0.7992072208737865
+      "research_priority_score": 0.7992072208737865,
+      "rs_20d_vs_bench": 0.0109302349874365,
+      "rs_60d_vs_bench": -0.0018680167896967,
+      "acceleration": 0.0026532786884507,
+      "keynes_v2": 0.0665999783752095
     },
     {
       "advisory_rank": 13,
@@ -218,7 +266,11 @@
       "advisory_missing_evidence": "ACTIVE_DRIVER_VALIDATION;COMPANY_EDGE_SOURCE_BACKING",
       "reaction_state": "PERSISTENT",
       "provenance_status": "NEEDS_SOURCE_BACKFILL",
-      "research_priority_score": 0.7955197208737864
+      "research_priority_score": 0.7955197208737864,
+      "rs_20d_vs_bench": 0.0401545701112329,
+      "rs_60d_vs_bench": 0.0144337734257993,
+      "acceleration": 0.0320115484907731,
+      "keynes_v2": -0.0026167677100553
     },
     {
       "advisory_rank": 14,
@@ -234,7 +286,11 @@
       "advisory_missing_evidence": "ACTIVE_DRIVER_VALIDATION;COMPANY_EDGE_SOURCE_BACKING",
       "reaction_state": "CONFIRMING",
       "provenance_status": "NEEDS_SOURCE_BACKFILL",
-      "research_priority_score": 0.7875197208737864
+      "research_priority_score": 0.7875197208737864,
+      "rs_20d_vs_bench": 0.0698266595108405,
+      "rs_60d_vs_bench": -0.0227084253991034,
+      "acceleration": 0.0854142469996128,
+      "keynes_v2": 0.1856932060439599
     },
     {
       "advisory_rank": 15,
@@ -250,7 +306,11 @@
       "advisory_missing_evidence": "ACTIVE_DRIVER_VALIDATION;COMPANY_EDGE_SOURCE_BACKING",
       "reaction_state": "PRE_CONFIRMATION",
       "provenance_status": "NEEDS_SOURCE_BACKFILL",
-      "research_priority_score": 0.7682262041284403
+      "research_priority_score": 0.7682262041284403,
+      "rs_20d_vs_bench": -0.0043748273534733,
+      "rs_60d_vs_bench": -0.1471250111640856,
+      "acceleration": 0.0021639841923176,
+      "keynes_v2": 0.0861064756734251
     },
     {
       "advisory_rank": 16,
@@ -266,7 +326,11 @@
       "advisory_missing_evidence": "ACTIVE_DRIVER_VALIDATION",
       "reaction_state": "PRE_CONFIRMATION",
       "provenance_status": "SOURCE_BACKED",
-      "research_priority_score": 0.7682262041284403
+      "research_priority_score": 0.7682262041284403,
+      "rs_20d_vs_bench": -0.0675546881246252,
+      "rs_60d_vs_bench": 0.1728647389229154,
+      "acceleration": 0.0246818780166739,
+      "keynes_v2": -0.0134688931512853
     },
     {
       "advisory_rank": 17,
@@ -282,7 +346,11 @@
       "advisory_missing_evidence": "ACTIVE_DRIVER_VALIDATION",
       "reaction_state": "PULLBACK",
       "provenance_status": "SOURCE_BACKED",
-      "research_priority_score": 0.7645606617647058
+      "research_priority_score": 0.7645606617647058,
+      "rs_20d_vs_bench": 0.0064642368957887,
+      "rs_60d_vs_bench": 0.0164800370610502,
+      "acceleration": -0.0248594688893196,
+      "keynes_v2": 0.1793884031702471
     },
     {
       "advisory_rank": 18,
@@ -298,7 +366,11 @@
       "advisory_missing_evidence": "ACTIVE_DRIVER_VALIDATION;COMPANY_EDGE_SOURCE_BACKING",
       "reaction_state": "PRE_CONFIRMATION",
       "provenance_status": "NEEDS_SOURCE_BACKFILL",
-      "research_priority_score": 0.7512072208737864
+      "research_priority_score": 0.7512072208737864,
+      "rs_20d_vs_bench": -0.0463868231981491,
+      "rs_60d_vs_bench": -0.157300045453668,
+      "acceleration": 0.0238255015174258,
+      "keynes_v2": -0.0524125062077741
     },
     {
       "advisory_rank": 19,
@@ -314,7 +386,11 @@
       "advisory_missing_evidence": "ACTIVE_DRIVER_VALIDATION;COMPANY_EDGE_SOURCE_BACKING",
       "reaction_state": "PRE_CONFIRMATION",
       "provenance_status": "NEEDS_SOURCE_BACKFILL",
-      "research_priority_score": 0.7432072208737864
+      "research_priority_score": 0.7432072208737864,
+      "rs_20d_vs_bench": -0.0230327031148449,
+      "rs_60d_vs_bench": -0.0455269289420259,
+      "acceleration": 0.0017959817959818,
+      "keynes_v2": 0.0039549983202564
     },
     {
       "advisory_rank": 20,
@@ -330,7 +406,11 @@
       "advisory_missing_evidence": "ACTIVE_DRIVER_VALIDATION;COMPANY_EDGE_SOURCE_BACKING",
       "reaction_state": "PRE_CONFIRMATION",
       "provenance_status": "NEEDS_SOURCE_BACKFILL",
-      "research_priority_score": 0.7395197208737864
+      "research_priority_score": 0.7395197208737864,
+      "rs_20d_vs_bench": -0.0126792386170342,
+      "rs_60d_vs_bench": 0.0027753647363468,
+      "acceleration": 0.0283669935023502,
+      "keynes_v2": 0.0434893843832156
     },
     {
       "advisory_rank": 21,
@@ -346,7 +426,11 @@
       "advisory_missing_evidence": "ACTIVE_DRIVER_VALIDATION",
       "reaction_state": "PRE_CONFIRMATION",
       "provenance_status": "SOURCE_BACKED",
-      "research_priority_score": 0.7082684840425532
+      "research_priority_score": 0.7082684840425532,
+      "rs_20d_vs_bench": -0.0877207144419863,
+      "rs_60d_vs_bench": -0.0722868417214298,
+      "acceleration": 0.0206507304116865,
+      "keynes_v2": -0.2222661152288204
     },
     {
       "advisory_rank": 22,
@@ -362,7 +446,11 @@
       "advisory_missing_evidence": "ACTIVE_DRIVER_VALIDATION;COMPANY_EDGE_SOURCE_BACKING",
       "reaction_state": "PRE_CONFIRMATION",
       "provenance_status": "NEEDS_SOURCE_BACKFILL",
-      "research_priority_score": 0.6688072208737864
+      "research_priority_score": 0.6688072208737864,
+      "rs_20d_vs_bench": -0.0649149807925917,
+      "rs_60d_vs_bench": 0.2525643284534544,
+      "acceleration": 0.0167437298584839,
+      "keynes_v2": -0.0089661018860311
     },
     {
       "advisory_rank": 23,
@@ -378,7 +466,11 @@
       "advisory_missing_evidence": "ACTIVE_DRIVER_VALIDATION;COMPANY_EDGE_SOURCE_BACKING",
       "reaction_state": "BROKEN",
       "provenance_status": "NEEDS_SOURCE_BACKFILL",
-      "research_priority_score": 0.6552072208737865
+      "research_priority_score": 0.6552072208737865,
+      "rs_20d_vs_bench": -0.0930510824741264,
+      "rs_60d_vs_bench": -0.2064204451420569,
+      "acceleration": 0.0467703028678639,
+      "keynes_v2": -0.1145591651859705
     },
     {
       "advisory_rank": 24,
@@ -394,7 +486,11 @@
       "advisory_missing_evidence": "ACTIVE_DRIVER_VALIDATION;COMPANY_EDGE_SOURCE_BACKING",
       "reaction_state": "PRE_CONFIRMATION",
       "provenance_status": "NEEDS_SOURCE_BACKFILL",
-      "research_priority_score": 0.6528422794117646
+      "research_priority_score": 0.6528422794117646,
+      "rs_20d_vs_bench": -0.0318815061632802,
+      "rs_60d_vs_bench": -0.0398521878750823,
+      "acceleration": 0.0133474546475163,
+      "keynes_v2": 0.0138761611481913
     },
     {
       "advisory_rank": 25,
@@ -410,7 +506,11 @@
       "advisory_missing_evidence": "ACTIVE_DRIVER_VALIDATION;COMPANY_EDGE_SOURCE_BACKING",
       "reaction_state": "PRE_CONFIRMATION",
       "provenance_status": "NEEDS_SOURCE_BACKFILL",
-      "research_priority_score": 0.6392422794117647
+      "research_priority_score": 0.6392422794117647,
+      "rs_20d_vs_bench": -0.0385074894343353,
+      "rs_60d_vs_bench": 0.0704220473715508,
+      "acceleration": 0.0116930428726618,
+      "keynes_v2": -0.0355917516290131
     },
     {
       "advisory_rank": 26,
@@ -426,7 +526,11 @@
       "advisory_missing_evidence": "ACTIVE_DRIVER_VALIDATION",
       "reaction_state": "UNKNOWN",
       "provenance_status": "SOURCE_BACKED",
-      "research_priority_score": 0.6210262041284402
+      "research_priority_score": 0.6210262041284402,
+      "rs_20d_vs_bench": -0.02544954289455,
+      "rs_60d_vs_bench": 0.0159728415072457,
+      "acceleration": -0.0158847677508826,
+      "keynes_v2": -0.084554650458043
     },
     {
       "advisory_rank": 27,
@@ -442,7 +546,11 @@
       "advisory_missing_evidence": "ACTIVE_DRIVER_VALIDATION;COMPANY_EDGE_SOURCE_BACKING",
       "reaction_state": "BROKEN",
       "provenance_status": "NEEDS_SOURCE_BACKFILL",
-      "research_priority_score": 0.6168512041284404
+      "research_priority_score": 0.6168512041284404,
+      "rs_20d_vs_bench": -0.0824472353531901,
+      "rs_60d_vs_bench": -0.2834003933019198,
+      "acceleration": -0.0257086010363256,
+      "keynes_v2": -0.1019494224651413
     },
     {
       "advisory_rank": 28,
@@ -458,7 +566,11 @@
       "advisory_missing_evidence": "ACTIVE_DRIVER_VALIDATION;COMPANY_EDGE_SOURCE_BACKING",
       "reaction_state": "BROKEN",
       "provenance_status": "NEEDS_SOURCE_BACKFILL",
-      "research_priority_score": 0.6155197208737865
+      "research_priority_score": 0.6155197208737865,
+      "rs_20d_vs_bench": -0.0819691622448453,
+      "rs_60d_vs_bench": -0.1485096261973423,
+      "acceleration": 0.0540857193780731,
+      "keynes_v2": -0.0073176559176127
     },
     {
       "advisory_rank": 29,
@@ -474,7 +586,11 @@
       "advisory_missing_evidence": "ACTIVE_DRIVER_VALIDATION",
       "reaction_state": "PRE_CONFIRMATION",
       "provenance_status": "SOURCE_BACKED",
-      "research_priority_score": 0.5994125
+      "research_priority_score": 0.5994125,
+      "rs_20d_vs_bench": -0.0159570955229715,
+      "rs_60d_vs_bench": -0.0426451897012953,
+      "acceleration": 0.0098553510940218,
+      "keynes_v2": 0.0040909821157596
     },
     {
       "advisory_rank": 30,
@@ -490,8 +606,12 @@
       "advisory_missing_evidence": "ACTIVE_DRIVER_VALIDATION;COMPANY_EDGE_SOURCE_BACKING",
       "reaction_state": "BROKEN",
       "provenance_status": "NEEDS_SOURCE_BACKFILL",
-      "research_priority_score": 0.5710262041284403
+      "research_priority_score": 0.5710262041284403,
+      "rs_20d_vs_bench": -0.0608915370708019,
+      "rs_60d_vs_bench": -0.0683836340978807,
+      "acceleration": -0.01750549214232,
+      "keynes_v2": -0.1474928927879136
     }
   ],
-  "decision_rule": "Always separate recommendation from execution permission. Active causal evidence may support a directional bias even when execution remains blocked. Weak Taiwan stock evidence should fall back to ETF or cash, not to endless research."
+  "decision_rule": "Always separate recommendation from execution permission. Active causal evidence may support a directional bias even when execution remains blocked. Trend evidence is exposed independently from entry reaction state; price still cannot create causality."
 }

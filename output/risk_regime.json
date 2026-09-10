@@ -1,26 +1,26 @@
 {
   "contract": "ALPHA_HUNTER_RISK_REGIME",
-  "schema_version": "1.0",
-  "generated_at": "2026-09-10T00:58:05.128709+00:00",
+  "schema_version": "1.1",
+  "generated_at": "2026-09-10T12:31:48.853713+00:00",
   "status": "READY",
-  "risk_snapshot_date": "2026-09-09",
+  "risk_snapshot_date": "2026-09-10",
   "regime": "NORMAL",
-  "risk_score": 22,
+  "risk_score": 29,
   "target_cash_pct": 5.0,
   "gross_multiplier": 0.9,
   "components": {
-    "VIX_VXN": 10,
-    "US_TREND": 4,
+    "VIX_VXN": 13,
+    "US_TREND": 8,
     "US_BREADTH": 8,
     "CREDIT": 0,
     "GLOBAL_BREADTH": 0
   },
   "signals": {
     "vix": {
-      "price": 16.459999084472656,
-      "ma20": 15.20900001525879,
-      "ret5": 0.08289469019858076,
-      "last_date": "2026-09-09"
+      "price": 16.969999313354492,
+      "ma20": 15.325999975204468,
+      "ret5": 0.18505584322659452,
+      "last_date": "2026-09-10"
     },
     "vxn": {
       "price": 22.31999969482422,
@@ -29,29 +29,45 @@
       "last_date": "2026-09-09"
     },
     "spy": {
-      "price": 765.9600219726562,
-      "ma20": 768.6994934082031,
-      "ma60": 754.6877075195313,
-      "ret20": -0.00914583787986789,
-      "last_date": "2026-09-08"
+      "price": 762.4000244140625,
+      "ma20": 768.2914947509765,
+      "ma60": 755.0636413574218,
+      "ret20": -0.010589666178344226,
+      "last_date": "2026-09-09"
     },
     "qqq": {
-      "price": 718.3599853515625,
-      "ma20": 717.3850006103515,
-      "ma60": 713.4254018147786,
-      "ret20": -0.003481917381256694,
-      "last_date": "2026-09-08"
+      "price": 716.3099975585938,
+      "ma20": 717.2779998779297,
+      "ma60": 713.3547658284505,
+      "ret20": -0.0029786548988475214,
+      "last_date": "2026-09-09"
     },
     "credit_hyg_lqd": {
-      "price": 0.7500948068692034,
-      "ma20": 0.7495335427253578,
-      "ma60": 0.7421426254398312,
-      "ret20": 0.0012774767301158008,
+      "price": 0.749976309827466,
+      "ma20": 0.7495719393402703,
+      "ma60": 0.742455692653157,
+      "ret20": 0.0010249916061881859,
       "above_ma20": true,
       "above_ma60": true
     },
-    "global_above_ma60_pct": 1.0
+    "global_above_ma60_pct": 0.8333333333333334,
+    "ust10y": {
+      "price": 4.836999893188477,
+      "ma20": 4.723699975013733,
+      "ma60": 4.615366649627686,
+      "ret5": 0.00854876758573142,
+      "ret20": 0.032664363243225525,
+      "above_ma20": true,
+      "above_ma60": true,
+      "ma20_above_ma60": true,
+      "last_date": "2026-09-09",
+      "pressure_state": "ADVERSE"
+    },
+    "ust2y": {
+      "pressure_state": "UNKNOWN"
+    },
+    "rate_pressure": "ADVERSE"
   },
-  "method": "Unfitted heuristic combining volatility, US trend, breadth, credit and global breadth. It is an advisory risk budget, not an order trigger.",
+  "method": "Unfitted heuristic combining volatility, US trend, breadth, credit and global breadth. Treasury yields are exposed as macro-compatibility evidence for rate-sensitive themes and do not by themselves predict a crash or mechanically change the global risk score.",
   "auto_trade_allowed": false
 }

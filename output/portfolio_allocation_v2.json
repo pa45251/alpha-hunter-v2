@@ -1,10 +1,10 @@
 {
   "contract": "ALPHA_HUNTER_PORTFOLIO_ALLOCATION_V2",
   "schema_version": "2.0",
-  "generated_at": "2026-09-10T00:58:09.928934+00:00",
+  "generated_at": "2026-09-10T12:31:55.477369+00:00",
   "status": "READY",
   "risk_regime": "NORMAL",
-  "risk_score": 22,
+  "risk_score": 29,
   "target_cash_pct": 5.0,
   "best_research_opportunity": null,
   "best_entry_plan_destination": null,
@@ -12,8 +12,8 @@
   "source_ranking": [
     {
       "alias": "標的D",
-      "current_action": "REDUCE_BIAS",
-      "current_edge_score": 0.3,
+      "current_action": "REVIEW_HOLD",
+      "current_edge_score": 0.3132,
       "confidence": "MEDIUM",
       "signal_state": "WEAK"
     },
@@ -26,8 +26,8 @@
     },
     {
       "alias": "標的A",
-      "current_action": "HOLD_BIAS",
-      "current_edge_score": 0.6616,
+      "current_action": "REVIEW_HOLD",
+      "current_edge_score": 0.5,
       "confidence": "HIGH",
       "signal_state": "POSITIVE"
     },

@@ -1,80 +1,113 @@
 {
   "contract": "ALPHA_HUNTER_PORTFOLIO_ALLOCATION_ADVISORY",
-  "schema_version": "1.1",
-  "generated_at": "2026-09-10T00:58:05.264723+00:00",
+  "schema_version": "1.3",
+  "generated_at": "2026-09-10T12:31:49.315397+00:00",
   "status": "READY",
   "risk_regime": "NORMAL",
-  "risk_score": 22,
+  "risk_score": 29,
+  "rate_pressure": "ADVERSE",
   "target_cash_pct": 5.0,
-  "cash_rule": "Target cash is a risk-budget buffer. In leveraged accounts, implementation should generally reduce financing/gross exposure before holding idle cash; private balances are not published here.",
+  "core_philosophy": "FOLLOW_TREND_BUY_WEAKNESS_ONLY_WHEN_THEME_MACRO_SUPPORTS_TREND",
+  "decision_matrix": {
+    "UPTREND+SUPPORTIVE+PULLBACK": "BUY_OR_ADD_CANDIDATE",
+    "UPTREND+ADVERSE": "HOLD_OR_WAIT; DO_NOT_AUTO_BUY_DIP",
+    "DOWNTREND+SUPPORTIVE": "WAIT_RECOVERY",
+    "DOWNTREND+ADVERSE": "REDUCE_EXIT_CASH"
+  },
+  "cash_rule": "Target cash is a risk-budget buffer. Adverse regime or theme-macro incompatibility reduces willingness to add fresh risk; neither is a crash prediction.",
   "best_new_opportunity": {
     "ticker": "QQQ",
     "name": "Mapped ETF",
+    "global_theme": "AI_Server",
     "preferred_exposure": "ETF",
     "advisory_action": "PREFER_ETF",
     "edge_score": 0.6329,
     "driver_id": "AI_SERVER_THERMAL_DENSITY",
     "reaction_state": "PERSISTENT",
+    "trend_state": "UPTREND",
+    "macro_support": "SUPPORTIVE",
+    "trend_regime_stance": "HOLD_OR_WAIT_PULLBACK",
     "confidence": "MEDIUM"
   },
   "rotations": [
     {
       "source_alias": "標的D",
-      "source_action": "REDUCE_BIAS",
+      "source_action": "REVIEW_HOLD",
+      "source_trend_state": "DOWNTREND_OR_BROKEN",
+      "source_macro_support": "SUPPORTIVE",
       "destination_ticker": "QQQ",
       "destination_name": "Mapped ETF",
       "destination_action": "PREFER_ETF",
       "destination_driver": "AI_SERVER_THERMAL_DENSITY",
       "destination_reaction_state": "PERSISTENT",
+      "destination_trend_state": "UPTREND",
+      "destination_macro_support": "SUPPORTIVE",
+      "trend_regime_stance": "HOLD_OR_WAIT_PULLBACK",
       "rotation_action": "WAIT_BETTER_ENTRY",
-      "edge_spread": 0.3329,
+      "edge_spread": 0.3197,
       "suggested_source_trim_pct_now": 0,
       "suggested_source_trim_pct_on_trigger": 24,
       "suggested_redeploy_pct_of_trim_on_trigger": 75,
       "suggested_risk_buffer_pct_of_trim_on_trigger": 25,
-      "entry_trigger_required": "DESTINATION_ENTRY_STATE_NOT_CONFIRMING",
+      "entry_trigger_required": "DESTINATION_ENTRY_STATE_NOT_CONFIRMING_OR_PULLBACK",
       "reason": "DESTINATION_EDGE_EXCEEDS_SOURCE_BY_POLICY_THRESHOLD"
     }
   ],
   "source_ranking": [
     {
       "alias": "標的D",
-      "current_action": "REDUCE_BIAS",
-      "current_edge_score": 0.3,
+      "current_action": "REVIEW_HOLD",
+      "current_edge_score": 0.3132,
       "confidence": "MEDIUM",
-      "signal_state": "WEAK"
+      "signal_state": "WEAK",
+      "trend_state": "DOWNTREND_OR_BROKEN",
+      "macro_support": "SUPPORTIVE",
+      "trend_regime_stance": "WAIT_RECOVERY"
     },
     {
       "alias": "標的B",
       "current_action": "REVIEW_HOLD",
       "current_edge_score": 0.4816,
       "confidence": "MEDIUM",
-      "signal_state": "MIXED"
+      "signal_state": "MIXED",
+      "trend_state": "MIXED",
+      "macro_support": "CONDITIONAL",
+      "trend_regime_stance": "WAIT"
     },
     {
       "alias": "標的A",
-      "current_action": "HOLD_BIAS",
-      "current_edge_score": 0.6616,
+      "current_action": "REVIEW_HOLD",
+      "current_edge_score": 0.5,
       "confidence": "HIGH",
-      "signal_state": "POSITIVE"
+      "signal_state": "POSITIVE",
+      "trend_state": "UPTREND",
+      "macro_support": "CONDITIONAL",
+      "trend_regime_stance": "WAIT_REGIME"
     },
     {
       "alias": "標的C",
       "current_action": "HOLD_BIAS",
       "current_edge_score": 0.9111,
       "confidence": "HIGH",
-      "signal_state": "STRONG"
+      "signal_state": "STRONG",
+      "trend_state": "UPTREND",
+      "macro_support": "SUPPORTIVE",
+      "trend_regime_stance": "HOLD_OR_WAIT_PULLBACK"
     }
   ],
   "candidate_ranking": [
     {
       "ticker": "QQQ",
       "name": "Mapped ETF",
+      "global_theme": "AI_Server",
       "preferred_exposure": "ETF",
       "advisory_action": "PREFER_ETF",
       "edge_score": 0.6329,
       "driver_id": "AI_SERVER_THERMAL_DENSITY",
       "reaction_state": "PERSISTENT",
+      "trend_state": "UPTREND",
+      "macro_support": "SUPPORTIVE",
+      "trend_regime_stance": "HOLD_OR_WAIT_PULLBACK",
       "confidence": "MEDIUM"
     }
   ],
@@ -85,5 +118,5 @@
     "financing_included": false
   },
   "auto_trade_allowed": false,
-  "method": "Compare normalized CIO edge for current holdings versus validated new opportunities, nominate at most one primary rotation, but preserve entry discipline: PRE_CONFIRMATION only prepares a rotation and CONFIRMING is required before a current rotation bias is emitted. Risk regime controls trim/redeploy sizing."
+  "method": "Trend, macro compatibility and entry location are separate. Trend is derived from theme breadth/relative-strength evidence rather than reaction state. Rate-sensitive themes consume Treasury rate pressure. Pullbacks may become buy candidates only when trend is up and theme macro is supportive. Price strength never creates causality."
 }
