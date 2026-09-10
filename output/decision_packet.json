@@ -2,7 +2,7 @@
   "contract": "ALPHA_HUNTER_DECISION_PACKET",
   "decision_contract_version": "2.7.1",
   "run_id": "20260910T205947+0800-52cc1184",
-  "generated_at": "2026-09-10T13:04:50.390083+00:00",
+  "generated_at": "2026-09-10T13:07:06.365363+00:00",
   "gate_first_score_second": true,
   "price_can_create_causality": false,
   "auto_trade_allowed": false,
@@ -117,7 +117,8 @@
       "maintenance_private_artifact_committed": false,
       "maintenance_privacy_rule": "Maintenance target/result artifacts remain ephemeral; only aggregate metadata may enter public decision_packet.json.",
       "maintenance_state_counts": {
-        "UNKNOWN": 4
+        "UNKNOWN": 3,
+        "ACTIVE": 1
       }
     },
     "legacy_frozen_v1_position_action_counts": {
