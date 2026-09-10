@@ -1,14 +1,49 @@
-# Alpha Hunter — CIO Advisory Contract v1.0
+# Alpha Hunter — CIO Advisory Contract v1.1
 
 ## Purpose
 
-The CIO Advisory Layer exists to answer the portfolio decision question under uncertainty without weakening the frozen execution controls.
+The CIO Advisory Layer exists to answer the portfolio decision question under uncertainty without weakening frozen execution controls.
 
 Canonical sequence:
 
-`Scanner -> Causal Research -> Structural Transmission -> Frozen Execution Decision Board -> CIO Advisory -> Human Decision`
+`Scanner -> Causal Research -> Structural Transmission -> Trend -> Risk Regime -> Entry Location -> CIO Advisory -> Human Decision`
 
-The advisory output is a directional research decision. It is never a brokerage order and never changes `auto_trade_allowed`.
+The advisory output is directional decision support. It is never a brokerage order and never changes `auto_trade_allowed`.
+
+## Core philosophy
+
+**FOLLOW THE TREND. BUY WEAKNESS ONLY WHEN THE REGIME STILL SUPPORTS THE TREND.**
+
+The system should not predict crashes merely to justify de-risking, and it should not treat every pullback as a bargain.
+
+The highest-level decision matrix is:
+
+| Trend | Regime | Default CIO stance |
+| --- | --- | --- |
+| Uptrend | Supportive | HOLD / BUY PULLBACK / ADD |
+| Uptrend | Adverse | HOLD / WAIT; fresh dip buying is vetoed |
+| Downtrend or broken | Supportive | WAIT FOR RECOVERY |
+| Downtrend or broken | Adverse | REDUCE / EXIT / CASH |
+
+This matrix is a decision framework, not an automatic execution rule.
+
+## What each layer is allowed to answer
+
+### Trend
+
+Trend answers whether the asset or relevant market exposure is persistently moving in the desired direction. It may use price structure, relative strength and breadth, but **trend cannot create causality**.
+
+### Macro / risk regime
+
+The regime layer answers whether the wider environment supports taking fresh risk. Volatility, US trend, breadth, credit and global breadth are portfolio-level risk evidence.
+
+An adverse regime does **not** prove that a crash is coming. It means the expected reward for buying weakness is lower and the value of cash/risk reduction is higher.
+
+### Entry location
+
+Entry location answers whether the current setup is extended, confirming or a controlled pullback.
+
+A pullback is not automatically bullish. A pullback becomes a buy candidate only when the trend remains intact and the regime remains supportive.
 
 ## Core separation
 
@@ -16,35 +51,10 @@ The advisory output is a directional research decision. It is never a brokerage 
 
 The system must not confuse these two questions:
 
-1. **What is the best directional decision given the current evidence?**
-2. **Is the system validated and authorized to execute that decision automatically?**
+1. What is the best directional decision given the current evidence?
+2. Is the system validated and authorized to execute that decision automatically?
 
-The CIO Advisory Layer answers the first question.
-The frozen Decision / Risk / Launch layers answer the second.
-
-A blocked execution lane therefore does not justify an empty or endlessly deferred advisory answer.
-
-## Advisory obligation
-
-When canonical data integrity is valid, every opportunity row should be reduced to one directional advisory state:
-
-- `BUY_BIAS_STOCK`
-- `PROVISIONAL_BUY_BIAS_STOCK`
-- `PREFER_ETF`
-- `HOLD_BIAS`
-- `WAIT_PULLBACK`
-- `RESEARCH_FIRST`
-- `PASS`
-- `AVOID`
-
-The advisory must also emit:
-
-- confidence: `HIGH`, `MEDIUM`, `LOW`, or `INSUFFICIENT`;
-- preferred exposure: stock, ETF, cash, or cash-until-entry;
-- the evidence gap that prevents higher confidence;
-- a short rationale;
-- `advisory_is_order = false`;
-- `auto_trade_allowed = false`.
+The CIO Advisory Layer answers the first question. Frozen Decision / Risk / Launch layers answer the second.
 
 ## Causal discipline remains intact
 
@@ -54,67 +64,59 @@ The advisory must also emit:
 - An unresolved driver -> `RESEARCH_FIRST` regardless of price strength.
 - A `BROKEN` transmission state -> `AVOID` for new exposure.
 - An `EXTENDED` state -> `WAIT_PULLBACK`; do not chase merely to force a decision.
+- A `PULLBACK` state may support a fresh risk bias only if the broader regime is supportive.
 
-The advisory lane is allowed to express uncertainty. It is not allowed to manufacture causality.
+Price strength can nominate research and describe trend. It cannot manufacture a causal story.
+
+## Regime veto
+
+The regime layer is a veto on **fresh risk**, not a mechanical liquidation trigger.
+
+- `RISK_ON` / `NORMAL` are treated as supportive for fresh pullback entries.
+- `CAUTION` / `DEFENSIVE` / `CRISIS` veto fresh dip-buying and shift the default stance toward waiting, holding less risk, or cash.
+- `UNKNOWN` fails closed for fresh risk.
+
+Existing positions may remain held if their trend and thesis are intact, but an adverse regime lowers tolerance for deterioration.
 
 ## Stock vs ETF fallback
 
-Company-level provenance is a **stock-alpha gate**, not a global-theme gate.
+Company-level provenance is a stock-alpha gate, not a global-theme gate.
 
-Therefore:
-
-- If the global causal driver is active but Taiwan stock alpha is weak or not source-backed, a mapped ETF may still be the preferred advisory exposure.
+- If the global causal driver is active but Taiwan stock alpha is weak or not source-backed, a mapped ETF may remain the cleaner exposure.
 - `SOURCE_BACKED` company evidence is required for a high-confidence stock advisory.
-- Strong direct/structural linkage without source-backed company evidence may produce only `PROVISIONAL_BUY_BIAS_STOCK`, never an executable stock order.
-- Weak Taiwan stock evidence should fall back to `PREFER_ETF` or cash rather than causing an endless research loop.
-
-This fixes the architecture error where missing company provenance could implicitly block the cleaner ETF route.
+- Strong direct/structural linkage without source-backed company evidence may produce only a provisional stock bias.
+- Weak Taiwan stock evidence should fall back to ETF or cash rather than causing an endless research loop.
 
 ## Entry state interpretation
 
-For stock advisories:
-
-- `PRE_CONFIRMATION` / `EARLY_CONFIRMATION` / `CONFIRMING` / controlled `PULLBACK` may support a positive stock bias when causality and company transmission are credible.
-- `PERSISTENT` may support `HOLD_BIAS`, but it is not treated as an automatic fresh entry because information may already be priced.
+- `PRE_CONFIRMATION` can prepare a future entry but not force one.
+- `CONFIRMING` can support a current entry bias only when the regime is supportive.
+- `PULLBACK` can support `BUY_PULLBACK_CANDIDATE` only when the trend is intact and the regime is supportive.
+- `PERSISTENT` generally favors hold or waiting for a better entry.
 - `EXTENDED` -> `WAIT_PULLBACK`.
-- `BROKEN` -> `AVOID`.
+- `BROKEN` -> `AVOID` for new exposure.
 
-ETF advisory does not pretend that Taiwan-stock reaction state is an ETF timing signal. The advisory may prefer the ETF exposure while leaving exact ETF entry timing to a future ETF-specific timing module.
+## Avoid overfitting
+
+Do not encode one-off technical anecdotes such as “gap filled = sell” or “below 20DMA = exit” as universal rules.
+
+The framework should remain deliberately simple:
+
+`Trend -> Regime -> Entry Location -> Risk stance`
+
+Causal research remains an independent validation layer. Macro events such as CPI/PPI are evidence updates, not hard-coded event-specific trade rules.
 
 ## Confidence is evidence confidence, not a fake win probability
 
-The advisory confidence field measures completeness and consistency of the current evidence. It is not an uncalibrated probability of profit.
-
-- `HIGH`: active driver plus source-backed economic transmission with a coherent non-broken state, or a clean ETF-core route.
-- `MEDIUM`: direction is supported but timing, route, or incremental stock alpha remains incomplete.
-- `LOW`: favorable causal/structural hypothesis exists but company-level evidence is incomplete.
-- `INSUFFICIENT`: the causal driver itself is unresolved.
-
-Win probabilities must not be emitted until they are empirically calibrated out-of-sample.
-
-## Ranking
-
-Advisory ranking is a decision-priority ordering, not an opaque predictive score.
-
-Priority favors:
-
-1. validated positive stock bias;
-2. clean ETF fallback;
-3. provisional stock hypotheses;
-4. hold / wait states;
-5. research-first / pass / avoid states.
-
-`research_priority_score` may be used only as a tie-breaker inside the advisory class. It cannot override causal, transmission, or chase-risk rules.
+Confidence measures completeness and consistency of evidence. It is not an uncalibrated probability of profit.
 
 ## Frozen execution lane remains unchanged
 
-The CIO Advisory Layer does **not** alter the frozen shadow execution strategy, launch gate, portfolio risk gate, or brokerage authorization.
+The CIO Advisory Layer does not alter the frozen shadow execution strategy, launch gate, portfolio risk gate, or brokerage authorization.
 
 The following remain true:
 
 - `auto_trade_allowed = false`;
 - live execution is disabled;
 - execution rules remain subject to shadow validation and acceptance review;
-- the advisory layer may be improved without silently rewriting frozen execution history.
-
-This separation lets Alpha Hunter answer the user's real question today while preserving the integrity of future systematic validation.
+- advisory logic may improve without silently rewriting frozen execution history.

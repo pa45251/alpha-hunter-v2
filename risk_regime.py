@@ -15,6 +15,7 @@ OUTPUT_PATH = OUT / "risk_regime.json"
 RISK_TICKERS = [
     "^VIX", "^VXN", "SPY", "QQQ", "RSP", "IWM", "MTUM",
     "HYG", "LQD", "ACWI", "VGK", "EWJ", "EWY", "EWT", "FXI",
+    "^TNX", "^UST2Y",
 ]
 CORE_TICKERS = ["^VIX", "^VXN", "SPY", "QQQ"]
 GLOBAL_TICKERS = ["ACWI", "VGK", "EWJ", "EWY", "EWT", "FXI"]
@@ -94,6 +95,21 @@ def _ratio_features(a: pd.DataFrame, b: pd.DataFrame) -> dict[str, Any]:
     return {"price": price, "ma20": ma20, "ma60": ma60, "ret20": ret20, "above_ma20": price > ma20, "above_ma60": price > ma60}
 
 
+def _yield_pressure(z: dict[str, Any]) -> str:
+    """Classify rate pressure without hard-coding an absolute yield threshold.
+
+    Rising yields above both their 20d/60d trend are adverse to rate-sensitive assets;
+    falling yields below the 20d trend are supportive. Everything else is neutral.
+    """
+    if not z:
+        return "UNKNOWN"
+    if bool(z.get("above_ma20")) and bool(z.get("above_ma60")) and float(z.get("ret20", 0.0)) > 0:
+        return "ADVERSE"
+    if (not bool(z.get("above_ma20"))) and float(z.get("ret20", 0.0)) <= 0:
+        return "SUPPORTIVE"
+    return "NEUTRAL"
+
+
 def _vol_points(price: float, ma20: float, ret5: float, bands: tuple[float, float, float]) -> int:
     a, b, c = bands
     if price >= c:
@@ -127,7 +143,7 @@ def build_risk_regime(histories: dict[str, pd.DataFrame] | None = None) -> dict[
     if missing_core:
         return {
             "contract": "ALPHA_HUNTER_RISK_REGIME",
-            "schema_version": "1.0",
+            "schema_version": "1.1",
             "generated_at": datetime.now().astimezone().isoformat(),
             "status": "DATA_UNAVAILABLE",
             "missing_core_signals": missing_core,
@@ -138,8 +154,6 @@ def build_risk_regime(histories: dict[str, pd.DataFrame] | None = None) -> dict[
             "auto_trade_allowed": False,
         }
 
-    # Synthetic histories used in tests can have arbitrary dates. For live downloads,
-    # fail closed if any core signal is older than the policy freshness limit.
     max_age = int(policy["cash_regime"].get("max_data_age_days", 5))
     stale_core: list[str] = []
     if live_download:
@@ -151,7 +165,7 @@ def build_risk_regime(histories: dict[str, pd.DataFrame] | None = None) -> dict[
     if stale_core:
         return {
             "contract": "ALPHA_HUNTER_RISK_REGIME",
-            "schema_version": "1.0",
+            "schema_version": "1.1",
             "generated_at": datetime.now().astimezone().isoformat(),
             "status": "STALE_CORE_DATA",
             "stale_core_signals": stale_core,
@@ -213,9 +227,23 @@ def build_risk_regime(histories: dict[str, pd.DataFrame] | None = None) -> dict[
     dates = [z.get("last_date") for z in f.values() if z.get("last_date")]
     latest_date = max(dates) if dates else None
 
+    ust10y = f.get("^TNX") or {}
+    ust2y = f.get("^UST2Y") or {}
+    yield_pressure_10y = _yield_pressure(ust10y)
+    yield_pressure_2y = _yield_pressure(ust2y)
+    available_pressures = [x for x in [yield_pressure_2y, yield_pressure_10y] if x != "UNKNOWN"]
+    if "ADVERSE" in available_pressures:
+        rate_pressure = "ADVERSE"
+    elif available_pressures and all(x == "SUPPORTIVE" for x in available_pressures):
+        rate_pressure = "SUPPORTIVE"
+    elif available_pressures:
+        rate_pressure = "NEUTRAL"
+    else:
+        rate_pressure = "UNKNOWN"
+
     return {
         "contract": "ALPHA_HUNTER_RISK_REGIME",
-        "schema_version": "1.0",
+        "schema_version": "1.1",
         "generated_at": datetime.now().astimezone().isoformat(),
         "status": "READY",
         "risk_snapshot_date": latest_date,
@@ -231,8 +259,11 @@ def build_risk_regime(histories: dict[str, pd.DataFrame] | None = None) -> dict[
             "qqq": {k: f["QQQ"][k] for k in ["price", "ma20", "ma60", "ret20", "last_date"]},
             "credit_hyg_lqd": credit,
             "global_above_ma60_pct": global_above_ma60,
+            "ust10y": ({**ust10y, "pressure_state": yield_pressure_10y} if ust10y else {"pressure_state": "UNKNOWN"}),
+            "ust2y": ({**ust2y, "pressure_state": yield_pressure_2y} if ust2y else {"pressure_state": "UNKNOWN"}),
+            "rate_pressure": rate_pressure,
         },
-        "method": "Unfitted heuristic combining volatility, US trend, breadth, credit and global breadth. It is an advisory risk budget, not an order trigger.",
+        "method": "Unfitted heuristic combining volatility, US trend, breadth, credit and global breadth. Treasury yields are exposed as macro-compatibility evidence for rate-sensitive themes and do not by themselves predict a crash or mechanically change the global risk score.",
         "auto_trade_allowed": False,
     }
 
