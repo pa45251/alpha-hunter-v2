@@ -1,8 +1,8 @@
 {
   "contract": "ALPHA_HUNTER_POSITION_ALIAS_ACTIONS",
   "schema_version": "1.0",
-  "run_id": "20260910T205947+0800-52cc1184",
-  "generated_at": "2026-09-10T13:31:11.049774+00:00",
+  "run_id": "20260911T063144+0800-1b683761",
+  "generated_at": "2026-09-10T23:16:38.958896+00:00",
   "privacy": {
     "alias_only": true,
     "ticker_included": false,
@@ -48,8 +48,8 @@
     {
       "alias": "標的D",
       "action": "REVIEW_RESEARCH",
-      "reason": "SYSTEM_GROUP_RESEARCH_REQUIRES_POSITION_EXPOSURE_VALIDATION",
-      "thesis_mapping": "SYSTEM_RISK_GROUP",
+      "reason": "SYSTEM_THESIS_COVERAGE_INCOMPLETE",
+      "thesis_mapping": "SYSTEM_TICKER_EXPOSURE",
       "thesis_strength": 1,
       "user_thesis_disagrees": false
     }
