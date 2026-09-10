@@ -1,11 +1,11 @@
 {
-  "generated_at_utc": "2026-09-09T22:29:40.862284+00:00",
+  "generated_at_utc": "2026-09-10T12:59:53.951446+00:00",
   "schema_version": "2.6",
-  "generated_at_taipei": "2026-09-10T06:29:40.871275+08:00",
+  "generated_at_taipei": "2026-09-10T20:59:53.960782+08:00",
   "scan_quality": {
     "scanned_count": 98,
     "theme_count": 40,
-    "latest_price_date": "2026-09-09",
+    "latest_price_date": "2026-09-10",
     "earliest_price_date": "2026-09-09"
   },
   "notes": {
@@ -23,12 +23,12 @@
       "observation_date": "2026-09-09",
       "confirmation_streak": 1,
       "weakening_streak": 0,
-      "leader_score_v1": 0.6872448979591838,
-      "rs20": 0.10920444661482187,
-      "rs60": -0.011868468385683562,
-      "keynes_legacy": 0.6413002651004936,
-      "keynes_v2": 0.13788509776101296,
-      "updated_at_utc": "2026-09-09T22:29:40.845272+00:00"
+      "leader_score_v1": 0.6857142857142856,
+      "rs20": 0.10921499831564652,
+      "rs60": -0.011858685007571257,
+      "keynes_legacy": 0.6413845819019393,
+      "keynes_v2": 0.13790988289563647,
+      "updated_at_utc": "2026-09-10T12:59:53.934728+00:00"
     },
     {
       "ticker": "NVDA",
@@ -39,12 +39,12 @@
       "observation_date": "2026-09-09",
       "confirmation_streak": 2,
       "weakening_streak": 0,
-      "leader_score_v1": 0.5872448979591837,
+      "leader_score_v1": 0.5852040816326531,
       "rs20": 0.038957473851656044,
       "rs60": 0.059575297329749644,
       "keynes_legacy": 0.1526122503843072,
       "keynes_v2": 0.01575856262074884,
-      "updated_at_utc": "2026-09-09T22:29:40.845272+00:00"
+      "updated_at_utc": "2026-09-10T12:59:53.934728+00:00"
     },
     {
       "ticker": "DELL",
@@ -55,12 +55,12 @@
       "observation_date": "2026-09-09",
       "confirmation_streak": 2,
       "weakening_streak": 0,
-      "leader_score_v1": 0.8862244897959184,
+      "leader_score_v1": 0.8831632653061224,
       "rs20": 0.22439105520324132,
       "rs60": 0.324859096975709,
       "keynes_legacy": 1.393495758086877,
       "keynes_v2": 0.26779058988212745,
-      "updated_at_utc": "2026-09-09T22:29:40.845272+00:00"
+      "updated_at_utc": "2026-09-10T12:59:53.934728+00:00"
     },
     {
       "ticker": "HPE",
@@ -76,7 +76,7 @@
       "rs60": 0.19584274255631295,
       "keynes_legacy": 0.3999121193409922,
       "keynes_v2": 0.06400446273044029,
-      "updated_at_utc": "2026-09-09T22:29:40.845272+00:00"
+      "updated_at_utc": "2026-09-10T12:59:53.934728+00:00"
     },
     {
       "ticker": "SMCI",
@@ -87,12 +87,12 @@
       "observation_date": "2026-09-09",
       "confirmation_streak": 2,
       "weakening_streak": 0,
-      "leader_score_v1": 0.6979591836734693,
+      "leader_score_v1": 0.6959183673469387,
       "rs20": 0.24255168628022927,
       "rs60": 0.24758209857066094,
       "keynes_legacy": 1.5962716472454783,
       "keynes_v2": 0.2576811569482264,
-      "updated_at_utc": "2026-09-09T22:29:40.845272+00:00"
+      "updated_at_utc": "2026-09-10T12:59:53.934728+00:00"
     },
     {
       "ticker": "AMGN",
@@ -103,12 +103,12 @@
       "observation_date": "2026-09-09",
       "confirmation_streak": 0,
       "weakening_streak": 1,
-      "leader_score_v1": 0.4367346938775511,
+      "leader_score_v1": 0.43469387755102046,
       "rs20": -0.03947891991094177,
       "rs60": 0.07749832535241064,
       "keynes_legacy": -0.5915315583896854,
       "keynes_v2": -0.06310746642778954,
-      "updated_at_utc": "2026-09-09T22:29:40.845272+00:00"
+      "updated_at_utc": "2026-09-10T12:59:53.934728+00:00"
     },
     {
       "ticker": "ORCL",
@@ -119,12 +119,12 @@
       "observation_date": "2026-09-09",
       "confirmation_streak": 2,
       "weakening_streak": 0,
-      "leader_score_v1": 0.629591836734694,
+      "leader_score_v1": 0.6285714285714287,
       "rs20": 0.12160155530102368,
       "rs60": -0.1496299446923931,
       "keynes_legacy": 0.5868190702831352,
       "keynes_v2": 0.1710781667812116,
-      "updated_at_utc": "2026-09-09T22:29:40.845272+00:00"
+      "updated_at_utc": "2026-09-10T12:59:53.934728+00:00"
     },
     {
       "ticker": "SCCO",
@@ -135,28 +135,12 @@
       "observation_date": "2026-09-09",
       "confirmation_streak": 1,
       "weakening_streak": 0,
-      "leader_score_v1": 0.7270408163265306,
+      "leader_score_v1": 0.7260204081632653,
       "rs20": 0.08658719345103716,
       "rs60": 0.09149836478880835,
       "keynes_legacy": 0.49701526619258385,
       "keynes_v2": 0.0784909174304651,
-      "updated_at_utc": "2026-09-09T22:29:40.845272+00:00"
-    },
-    {
-      "ticker": "FCX",
-      "theme": "Copper",
-      "name": "Freeport-McMoRan",
-      "state": "EMERGING",
-      "raw_state": "PERSISTENT",
-      "observation_date": "2026-09-09",
-      "confirmation_streak": 1,
-      "weakening_streak": 0,
-      "leader_score_v1": 0.7193877551020409,
-      "rs20": 0.11745768297564041,
-      "rs60": 0.08652785325108892,
-      "keynes_legacy": 0.7278528359283386,
-      "keynes_v2": 0.16063162326931943,
-      "updated_at_utc": "2026-09-09T22:29:40.845272+00:00"
+      "updated_at_utc": "2026-09-10T12:59:53.934728+00:00"
     },
     {
       "ticker": "COPX",
@@ -172,7 +156,23 @@
       "rs60": 0.08145556210665439,
       "keynes_legacy": 0.4877674888882131,
       "keynes_v2": 0.14336707729223874,
-      "updated_at_utc": "2026-09-09T22:29:40.845272+00:00"
+      "updated_at_utc": "2026-09-10T12:59:53.934728+00:00"
+    },
+    {
+      "ticker": "FCX",
+      "theme": "Copper",
+      "name": "Freeport-McMoRan",
+      "state": "EMERGING",
+      "raw_state": "PERSISTENT",
+      "observation_date": "2026-09-09",
+      "confirmation_streak": 1,
+      "weakening_streak": 0,
+      "leader_score_v1": 0.7127551020408164,
+      "rs20": 0.11745768297564041,
+      "rs60": 0.08652785325108892,
+      "keynes_legacy": 0.7278528359283386,
+      "keynes_v2": 0.16063162326931943,
+      "updated_at_utc": "2026-09-10T12:59:53.934728+00:00"
     },
     {
       "ticker": "NET",
@@ -183,28 +183,12 @@
       "observation_date": "2026-09-09",
       "confirmation_streak": 1,
       "weakening_streak": 0,
-      "leader_score_v1": 0.7637755102040815,
+      "leader_score_v1": 0.7581632653061223,
       "rs20": 0.034077275476994684,
       "rs60": 0.3445999793336405,
       "keynes_legacy": -0.009361186481030848,
       "keynes_v2": 0.003389659907794046,
-      "updated_at_utc": "2026-09-09T22:29:40.845272+00:00"
-    },
-    {
-      "ticker": "TSLA",
-      "theme": "EV",
-      "name": "Tesla",
-      "state": "EMERGING",
-      "raw_state": "EMERGING",
-      "observation_date": "2026-09-09",
-      "confirmation_streak": 1,
-      "weakening_streak": 0,
-      "leader_score_v1": 0.5520408163265307,
-      "rs20": 0.11575477617128538,
-      "rs60": -0.12551005213789668,
-      "keynes_legacy": 0.6825029377239022,
-      "keynes_v2": 0.13393926388365077,
-      "updated_at_utc": "2026-09-09T22:29:40.845272+00:00"
+      "updated_at_utc": "2026-09-10T12:59:53.934728+00:00"
     },
     {
       "ticker": "CVX",
@@ -215,28 +199,12 @@
       "observation_date": "2026-09-09",
       "confirmation_streak": 2,
       "weakening_streak": 0,
-      "leader_score_v1": 0.7357142857142858,
+      "leader_score_v1": 0.7301020408163266,
       "rs20": 0.10728418409577345,
       "rs60": 0.12150451347138103,
       "keynes_legacy": 0.6093591472666108,
       "keynes_v2": 0.9767871027794938,
-      "updated_at_utc": "2026-09-09T22:29:40.845272+00:00"
-    },
-    {
-      "ticker": "XLE",
-      "theme": "Energy",
-      "name": "Energy ETF",
-      "state": "PULLBACK_LEADER",
-      "raw_state": "PULLBACK_LEADER",
-      "observation_date": "2026-09-09",
-      "confirmation_streak": 2,
-      "weakening_streak": 0,
-      "leader_score_v1": 0.7040816326530612,
-      "rs20": 0.08247539129700798,
-      "rs60": 0.11253585234571117,
-      "keynes_legacy": 0.493158381854271,
-      "keynes_v2": 0.7131675125196626,
-      "updated_at_utc": "2026-09-09T22:29:40.845272+00:00"
+      "updated_at_utc": "2026-09-10T12:59:53.934728+00:00"
     },
     {
       "ticker": "TSM",
@@ -247,12 +215,12 @@
       "observation_date": "2026-09-09",
       "confirmation_streak": 2,
       "weakening_streak": 0,
-      "leader_score_v1": 0.589795918367347,
+      "leader_score_v1": 0.5877551020408163,
       "rs20": 0.04210174472144845,
       "rs60": -0.003525567705522814,
       "keynes_legacy": 0.18854033540528742,
       "keynes_v2": 0.04936489636369922,
-      "updated_at_utc": "2026-09-09T22:29:40.845272+00:00"
+      "updated_at_utc": "2026-09-10T12:59:53.934728+00:00"
     },
     {
       "ticker": "IDNA",
@@ -263,12 +231,12 @@
       "observation_date": "2026-09-09",
       "confirmation_streak": 2,
       "weakening_streak": 0,
-      "leader_score_v1": 0.7346938775510204,
+      "leader_score_v1": 0.7316326530612245,
       "rs20": 0.10718050815245439,
       "rs60": 0.2715869279125529,
       "keynes_legacy": 0.6096208878220843,
       "keynes_v2": 0.13562020700690802,
-      "updated_at_utc": "2026-09-09T22:29:40.845272+00:00"
+      "updated_at_utc": "2026-09-10T12:59:53.934728+00:00"
     },
     {
       "ticker": "GNOM",
@@ -279,12 +247,12 @@
       "observation_date": "2026-09-09",
       "confirmation_streak": 2,
       "weakening_streak": 0,
-      "leader_score_v1": 0.7066326530612245,
-      "rs20": 0.06201387568834571,
-      "rs60": 0.2527422750831889,
-      "keynes_legacy": 0.23493175947516035,
-      "keynes_v2": 0.0374243844238629,
-      "updated_at_utc": "2026-09-09T22:29:40.845272+00:00"
+      "leader_score_v1": 0.7096938775510204,
+      "rs20": 0.062010488198206204,
+      "rs60": 0.2527381407591571,
+      "keynes_legacy": 0.23490472177784455,
+      "keynes_v2": 0.03741909735225816,
+      "updated_at_utc": "2026-09-10T12:59:53.934728+00:00"
     },
     {
       "ticker": "NEM",
@@ -295,12 +263,12 @@
       "observation_date": "2026-09-09",
       "confirmation_streak": 2,
       "weakening_streak": 0,
-      "leader_score_v1": 0.8076530612244899,
+      "leader_score_v1": 0.8056122448979592,
       "rs20": 0.11099012837805877,
       "rs60": 0.25633212557461404,
       "keynes_legacy": 0.6123866673682784,
       "keynes_v2": 0.1449709383665151,
-      "updated_at_utc": "2026-09-09T22:29:40.845272+00:00"
+      "updated_at_utc": "2026-09-10T12:59:53.934728+00:00"
     },
     {
       "ticker": "GDX",
@@ -311,28 +279,28 @@
       "observation_date": "2026-09-09",
       "confirmation_streak": 1,
       "weakening_streak": 0,
-      "leader_score_v1": 0.7081632653061225,
+      "leader_score_v1": 0.7015306122448981,
       "rs20": 0.11434020090051167,
       "rs60": 0.21242139403278082,
       "keynes_legacy": 0.6688520048448426,
       "keynes_v2": 0.12956754345198174,
-      "updated_at_utc": "2026-09-09T22:29:40.845272+00:00"
+      "updated_at_utc": "2026-09-10T12:59:53.934728+00:00"
     },
     {
       "ticker": "AEM",
       "theme": "Gold_Miners",
       "name": "Agnico Eagle",
       "state": "EMERGING",
-      "raw_state": "PERSISTENT",
+      "raw_state": "EMERGING",
       "observation_date": "2026-09-09",
       "confirmation_streak": 1,
       "weakening_streak": 0,
-      "leader_score_v1": 0.7000000000000001,
+      "leader_score_v1": 0.6954081632653062,
       "rs20": 0.12761751474228045,
       "rs60": 0.21778967451241704,
       "keynes_legacy": 0.7290128276978597,
       "keynes_v2": 0.14058122755714875,
-      "updated_at_utc": "2026-09-09T22:29:40.845272+00:00"
+      "updated_at_utc": "2026-09-10T12:59:53.934728+00:00"
     },
     {
       "ticker": "META",
@@ -343,12 +311,12 @@
       "observation_date": "2026-09-09",
       "confirmation_streak": 2,
       "weakening_streak": 0,
-      "leader_score_v1": 0.7739795918367347,
+      "leader_score_v1": 0.7734693877551022,
       "rs20": 0.10167326840988866,
       "rs60": 0.1235141862890834,
       "keynes_legacy": 0.6518054556594013,
       "keynes_v2": 0.19541307682239398,
-      "updated_at_utc": "2026-09-09T22:29:40.845272+00:00"
+      "updated_at_utc": "2026-09-10T12:59:53.934728+00:00"
     },
     {
       "ticker": "MU",
@@ -359,12 +327,12 @@
       "observation_date": "2026-09-09",
       "confirmation_streak": 2,
       "weakening_streak": 0,
-      "leader_score_v1": 0.7265306122448979,
+      "leader_score_v1": 0.7173469387755103,
       "rs20": 0.19394755824621956,
       "rs60": 0.016698295387901574,
       "keynes_legacy": 1.2385444867435373,
       "keynes_v2": 0.3595758650776454,
-      "updated_at_utc": "2026-09-09T22:29:40.845272+00:00"
+      "updated_at_utc": "2026-09-10T12:59:53.934728+00:00"
     },
     {
       "ticker": "000660.KS",
@@ -372,15 +340,15 @@
       "name": "SK Hynix",
       "state": "EMERGING",
       "raw_state": "EMERGING",
-      "observation_date": "2026-09-09",
-      "confirmation_streak": 1,
+      "observation_date": "2026-09-10",
+      "confirmation_streak": 2,
       "weakening_streak": 0,
-      "leader_score_v1": 0.6535714285714286,
+      "leader_score_v1": 0.7051020408163265,
       "rs20": 0.3210767884195067,
       "rs60": -0.14722393249631016,
-      "keynes_legacy": 2.0771430600563847,
-      "keynes_v2": 0.48958900142508505,
-      "updated_at_utc": "2026-09-09T22:29:40.845272+00:00"
+      "keynes_legacy": 1.5196663794348835,
+      "keynes_v2": 0.330316532058023,
+      "updated_at_utc": "2026-09-10T12:59:53.934728+00:00"
     },
     {
       "ticker": "005930.KS",
@@ -388,15 +356,15 @@
       "name": "Samsung Electronics",
       "state": "EMERGING",
       "raw_state": "EMERGING",
-      "observation_date": "2026-09-09",
-      "confirmation_streak": 1,
+      "observation_date": "2026-09-10",
+      "confirmation_streak": 2,
       "weakening_streak": 0,
-      "leader_score_v1": 0.5801020408163265,
+      "leader_score_v1": 0.6331632653061225,
       "rs20": 0.18549021962918455,
       "rs60": -0.16177880134739608,
-      "keynes_legacy": 0.781236894613826,
-      "keynes_v2": 0.10740157556035379,
-      "updated_at_utc": "2026-09-09T22:29:40.845272+00:00"
+      "keynes_legacy": 0.20457922030953768,
+      "keynes_v2": 0.023560115109068337,
+      "updated_at_utc": "2026-09-10T12:59:53.934728+00:00"
     },
     {
       "ticker": "CEG",
@@ -407,12 +375,12 @@
       "observation_date": "2026-09-09",
       "confirmation_streak": 2,
       "weakening_streak": 0,
-      "leader_score_v1": 0.6418367346938776,
+      "leader_score_v1": 0.6341836734693879,
       "rs20": 0.06805774123900976,
       "rs60": 0.12949358633883623,
       "keynes_legacy": 0.3465471648522549,
       "keynes_v2": 0.11762884916142562,
-      "updated_at_utc": "2026-09-09T22:29:40.845272+00:00"
+      "updated_at_utc": "2026-09-10T12:59:53.934728+00:00"
     },
     {
       "ticker": "VST",
@@ -423,12 +391,12 @@
       "observation_date": "2026-09-09",
       "confirmation_streak": 2,
       "weakening_streak": 0,
-      "leader_score_v1": 0.5831632653061225,
+      "leader_score_v1": 0.573469387755102,
       "rs20": 0.05323393896784401,
       "rs60": -0.008249975614280203,
       "keynes_legacy": 0.2521141592712949,
       "keynes_v2": 0.06955540720582687,
-      "updated_at_utc": "2026-09-09T22:29:40.845272+00:00"
+      "updated_at_utc": "2026-09-10T12:59:53.934728+00:00"
     },
     {
       "ticker": "QCOM",
@@ -439,28 +407,12 @@
       "observation_date": "2026-09-09",
       "confirmation_streak": 1,
       "weakening_streak": 0,
-      "leader_score_v1": 0.5826530612244898,
+      "leader_score_v1": 0.5790816326530612,
       "rs20": 0.10082857840555581,
       "rs60": -0.19277709728091086,
       "keynes_legacy": 0.44028038768660105,
       "keynes_v2": 0.4327036156703402,
-      "updated_at_utc": "2026-09-09T22:29:40.845272+00:00"
-    },
-    {
-      "ticker": "INTC",
-      "theme": "Semiconductor",
-      "name": "Intel",
-      "state": "EMERGING",
-      "raw_state": "EMERGING",
-      "observation_date": "2026-09-09",
-      "confirmation_streak": 1,
-      "weakening_streak": 0,
-      "leader_score_v1": 0.5525510204081632,
-      "rs20": 0.09788880505073827,
-      "rs60": -0.17763374726608516,
-      "keynes_legacy": 0.47800954185630473,
-      "keynes_v2": 0.09172089305801454,
-      "updated_at_utc": "2026-09-09T22:29:40.845272+00:00"
+      "updated_at_utc": "2026-09-10T12:59:53.934728+00:00"
     },
     {
       "ticker": "BOAT",
@@ -471,12 +423,12 @@
       "observation_date": "2026-09-09",
       "confirmation_streak": 2,
       "weakening_streak": 0,
-      "leader_score_v1": 0.8387755102040816,
+      "leader_score_v1": 0.8357142857142857,
       "rs20": 0.179253557025554,
       "rs60": 0.19764158721341696,
       "keynes_legacy": 1.2373357661109474,
       "keynes_v2": 1.2619232765948762,
-      "updated_at_utc": "2026-09-09T22:29:40.845272+00:00"
+      "updated_at_utc": "2026-09-10T12:59:53.934728+00:00"
     },
     {
       "ticker": "ZIM",
@@ -487,12 +439,12 @@
       "observation_date": "2026-09-09",
       "confirmation_streak": 2,
       "weakening_streak": 0,
-      "leader_score_v1": 0.7816326530612245,
+      "leader_score_v1": 0.7729591836734694,
       "rs20": 0.20830667956438553,
       "rs60": 0.08960393649944276,
       "keynes_legacy": 1.4982705990658296,
       "keynes_v2": 0.5335883580856952,
-      "updated_at_utc": "2026-09-09T22:29:40.845272+00:00"
+      "updated_at_utc": "2026-09-10T12:59:53.934728+00:00"
     },
     {
       "ticker": "DAC",
@@ -503,12 +455,12 @@
       "observation_date": "2026-09-09",
       "confirmation_streak": 2,
       "weakening_streak": 0,
-      "leader_score_v1": 0.7188775510204082,
+      "leader_score_v1": 0.7163265306122448,
       "rs20": 0.15627176917437602,
       "rs60": 0.1560116989886866,
       "keynes_legacy": 1.0611567121927095,
       "keynes_v2": 1.1488633672850788,
-      "updated_at_utc": "2026-09-09T22:29:40.845272+00:00"
+      "updated_at_utc": "2026-09-10T12:59:53.934728+00:00"
     },
     {
       "ticker": "URA",
@@ -519,12 +471,12 @@
       "observation_date": "2026-09-09",
       "confirmation_streak": 1,
       "weakening_streak": 0,
-      "leader_score_v1": 0.573469387755102,
+      "leader_score_v1": 0.5683673469387754,
       "rs20": 0.048003934717503416,
       "rs60": -0.001049936439629473,
       "keynes_legacy": 0.14623603873117977,
       "keynes_v2": 0.026142020181957826,
-      "updated_at_utc": "2026-09-09T22:29:40.845272+00:00"
+      "updated_at_utc": "2026-09-10T12:59:53.934728+00:00"
     }
   ],
   "theme_breadth": [
@@ -555,7 +507,7 @@
       "breadth_confidence": "MEDIUM",
       "breadth_eligible": true,
       "median_rs20": 0.19394755824621956,
-      "median_keynes_v2": 0.3595758650776454,
+      "median_keynes_v2": 0.330316532058023,
       "median_keynes_legacy": 1.2385444867435373
     },
     {
@@ -644,9 +596,9 @@
       "near_52w_high_pct": 0.0,
       "breadth_confidence": "LOW",
       "breadth_eligible": false,
-      "median_rs20": 0.08459719192040005,
-      "median_keynes_v2": 0.08652229571538546,
-      "median_keynes_legacy": 0.42227632364862233
+      "median_rs20": 0.0845954981753303,
+      "median_keynes_v2": 0.08651965217958309,
+      "median_keynes_legacy": 0.4222628047999645
     },
     {
       "theme": "Energy",
@@ -825,8 +777,8 @@
       "breadth_confidence": "MEDIUM",
       "breadth_eligible": true,
       "median_rs20": -0.010077998726715554,
-      "median_keynes_v2": -0.02484790499672464,
-      "median_keynes_legacy": -0.7868464036075973
+      "median_keynes_v2": -0.1015585551302488,
+      "median_keynes_legacy": -1.1022132123842434
     },
     {
       "theme": "Financials",
@@ -886,7 +838,7 @@
       "breadth_eligible": true,
       "median_rs20": -0.0399934041976685,
       "median_keynes_v2": -0.142560211992886,
-      "median_keynes_legacy": -0.8612932405274223
+      "median_keynes_legacy": -0.9191011085714349
     },
     {
       "theme": "Market_US",
@@ -1080,8 +1032,8 @@
       "breadth_confidence": "LOW",
       "breadth_eligible": false,
       "median_rs20": -0.0626035906085537,
-      "median_keynes_v2": -0.1866044172998034,
-      "median_keynes_legacy": -0.9647211590662195
+      "median_keynes_v2": -0.33097360886175603,
+      "median_keynes_legacy": -1.1415456910600543
     },
     {
       "theme": "Industrials",

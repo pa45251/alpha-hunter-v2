@@ -770,6 +770,7 @@ code,ticker,name,industry,exchange,market,listed_date,cfi_code,benchmark,theme,r
 7814,7814.TWO,海昌生技,生技醫療業,TPEX,上櫃,2026/07/16,ESVUFR,^TWII,生技醫療業,TW,TWSE_ISIN
 7819,7819.TWO,精誠金融,資訊服務業,TPEX,上櫃,2026/05/27,ESVUFR,^TWII,資訊服務業,TW,TWSE_ISIN
 7820,7820.TWO,立盈,綠能環保,TPEX,上櫃,2026/04/27,ESVUFR,^TWII,綠能環保,TW,TWSE_ISIN
+7825,7825.TWO,和亞智慧,其他電子業,TPEX,上櫃,2026/09/10,ESVUFR,^TWII,其他電子業,TW,TWSE_ISIN
 7828,7828.TWO,創新服務,半導體業,TPEX,上櫃,2026/04/22,ESVUFR,^TWII,半導體業,TW,TWSE_ISIN
 7839,7839.TWO,達人網,數位雲端,TPEX,上櫃,2026/06/15,ESVUFR,^TWII,數位雲端,TW,TWSE_ISIN
 7842,7842.TWO,天能綠電,綠能環保,TPEX,上櫃,2026/05/11,ESVUFR,^TWII,綠能環保,TW,TWSE_ISIN
