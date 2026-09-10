@@ -72,7 +72,44 @@ def _load_json_path_or_env(path: Path, env_name: str) -> dict[str, Any]:
     return {}
 
 
+def _ensure_current_risk_regime_for_cio() -> None:
+    """Refresh the risk overlay only when a current-run alias packet proves we are in CIO publish phase.
+
+    This avoids the prior workflow race where Autonomous Research reached the CIO advisory
+    with a risk_regime.json from the previous scanner snapshot. It deliberately does nothing
+    during ordinary decision construction, when the alias packet is still stale or absent.
+    """
+    manifest_path = Path("output/manifest.json")
+    alias_path = Path("output/position_alias_actions.json")
+    regime_path = Path("output/risk_regime.json")
+    if not manifest_path.exists() or not alias_path.exists():
+        return
+    try:
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+        alias = json.loads(alias_path.read_text(encoding="utf-8"))
+        regime = json.loads(regime_path.read_text(encoding="utf-8")) if regime_path.exists() else {}
+    except Exception:
+        return
+
+    run_id = str(manifest.get("run_id") or "").strip()
+    if manifest.get("status") != "PASS" or not run_id:
+        return
+    if str(alias.get("source_run_id") or alias.get("run_id") or "").strip() != run_id:
+        return
+    if str(regime.get("source_run_id") or "").strip() == run_id:
+        return
+
+    from risk_regime import build_risk_regime
+
+    payload = build_risk_regime()
+    if str(payload.get("source_run_id") or "").strip() != run_id:
+        raise RuntimeError("RISK_REGIME_REFRESH_LINEAGE_MISMATCH")
+    regime_path.parent.mkdir(parents=True, exist_ok=True)
+    regime_path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+
+
 def load_risk_policy() -> dict[str, Any]:
+    _ensure_current_risk_regime_for_cio()
     return _load_json_path_or_env(Path("input/risk_policy.json"), "ALPHA_HUNTER_RISK_POLICY_JSON")
 
 
