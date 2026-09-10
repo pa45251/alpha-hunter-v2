@@ -7,6 +7,7 @@ import os
 from pathlib import Path
 
 import decision_run_v2
+import risk_regime
 from existing_position_v2 import apply_existing_position_engine as _base_existing_position_engine
 from portfolio_maintenance_research import private_board_overlay
 
@@ -41,9 +42,42 @@ def _maintenance_existing_position_engine(board):
     return actions, position_meta
 
 
+def _rebuild_same_snapshot_risk_regime() -> None:
+    manifest_path = Path("output/manifest.json")
+    if not manifest_path.exists():
+        raise RuntimeError("RISK_REGIME_CANONICAL_MANIFEST_MISSING")
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    if manifest.get("status") != "PASS":
+        raise RuntimeError("RISK_REGIME_CANONICAL_MANIFEST_NOT_PASS")
+    run_id = str(manifest.get("run_id") or "").strip()
+    if not run_id:
+        raise RuntimeError("RISK_REGIME_CANONICAL_RUN_ID_MISSING")
+
+    payload = risk_regime.build_risk_regime()
+    if payload.get("status") != "READY":
+        raise RuntimeError(f"RISK_REGIME_NOT_READY:{payload.get('status')}")
+    if str(payload.get("source_run_id") or "") != run_id:
+        raise RuntimeError("RISK_REGIME_LINEAGE_MISMATCH_AFTER_REBUILD")
+
+    out = Path("output")
+    out.mkdir(parents=True, exist_ok=True)
+    (out / "risk_regime.json").write_text(
+        json.dumps(payload, ensure_ascii=False, indent=2),
+        encoding="utf-8",
+    )
+    print(
+        "Risk regime rebuilt for canonical snapshot: "
+        f"run_id={run_id} regime={payload.get('regime')} score={payload.get('risk_score')}"
+    )
+
+
 def main() -> None:
     decision_run_v2.apply_existing_position_engine = _maintenance_existing_position_engine
     decision_run_v2.main()
+    # The autonomous research workflow publishes position CIO immediately after this
+    # entrypoint. Always rebuild the risk overlay here so that the CIO cannot consume
+    # a previous snapshot's risk_regime.json. Fail closed if same-snapshot rebuild fails.
+    _rebuild_same_snapshot_risk_regime()
 
 
 if __name__ == "__main__":
