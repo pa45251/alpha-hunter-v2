@@ -5,18 +5,21 @@ import json
 from pathlib import Path
 from typing import Any
 
+import pandas as pd
+
 OUT = Path("output")
 POLICY_PATH = Path("config/portfolio_allocation_policy.json")
 POSITION_PATH = OUT / "position_cio_advisory.json"
 CANDIDATE_PATH = OUT / "cio_advisory.json"
 REGIME_PATH = OUT / "risk_regime.json"
+THEME_PATH = OUT / "theme_breadth.csv"
 OUTPUT_PATH = OUT / "portfolio_allocation_advisory.json"
 
 CONF_SCORE = {"HIGH": 1.0, "MEDIUM": 0.65, "LOW": 0.35, "INSUFFICIENT": 0.0}
 REACTION_SCORE = {"PRE_CONFIRMATION": 0.10, "CONFIRMING": 0.08, "PULLBACK": 0.04, "PERSISTENT": -0.03, "EXTENDED": -0.10, "UNKNOWN": 0.0}
 ACTION_BASE = {"BUY_BIAS_STOCK": 0.78, "PREFER_ETF": 0.68, "HOLD_BIAS": 0.55}
-SUPPORTIVE_REGIMES = {"RISK_ON", "NORMAL"}
 ADVERSE_REGIMES = {"CAUTION", "DEFENSIVE", "CRISIS"}
+RATE_SENSITIVE_THEME_TOKENS = {"BIOTECH", "GENOMICS", "GROWTH", "SOFTWARE", "CLOUD"}
 
 
 def _load(path: Path) -> dict[str, Any]:
@@ -64,38 +67,72 @@ def _position_edge(row: dict[str, Any]) -> float:
     return round(val, 4)
 
 
-def _trend_state(reaction_state: str) -> str:
-    reaction = str(reaction_state or "UNKNOWN").upper()
-    if reaction == "PULLBACK":
-        return "UPTREND_PULLBACK"
-    if reaction in {"PRE_CONFIRMATION", "EARLY_CONFIRMATION", "CONFIRMING", "PERSISTENT", "EXTENDED"}:
+def _theme_score(row: pd.Series) -> float:
+    return (
+        0.30 * _f(row.get("above_ma20_pct"))
+        + 0.25 * _f(row.get("above_ma60_pct"))
+        + 0.25 * _f(row.get("positive_rs20_pct"))
+        + 0.10 * _f(row.get("positive_rs5_pct"))
+        + 0.10 * _f(row.get("near_20d_high_pct"))
+    )
+
+
+def _theme_trend(global_theme: str, themes: pd.DataFrame) -> str:
+    if themes.empty or "theme" not in themes.columns:
+        return "UNKNOWN"
+    rows = themes[themes["theme"].astype(str) == str(global_theme)]
+    if rows.empty:
+        return "UNKNOWN"
+    score = _theme_score(rows.iloc[0])
+    if score >= 0.52:
         return "UPTREND"
-    if reaction == "BROKEN":
+    if score < 0.38:
         return "DOWNTREND_OR_BROKEN"
-    return "UNKNOWN"
+    return "MIXED"
 
 
-def _regime_support(regime: str) -> str:
-    label = str(regime or "UNKNOWN").upper()
-    if label in SUPPORTIVE_REGIMES:
-        return "SUPPORTIVE"
+def _theme_is_rate_sensitive(global_theme: str) -> bool:
+    text = str(global_theme or "").upper()
+    return any(token in text for token in RATE_SENSITIVE_THEME_TOKENS)
+
+
+def _theme_macro_support(global_theme: str, regime: dict[str, Any]) -> str:
+    if not regime or regime.get("status") != "READY":
+        return "UNKNOWN"
+    label = str(regime.get("regime", "UNKNOWN")).upper()
     if label in ADVERSE_REGIMES:
         return "ADVERSE"
+
+    rate_pressure = str((regime.get("signals") or {}).get("rate_pressure", "UNKNOWN")).upper()
+    if _theme_is_rate_sensitive(global_theme):
+        if rate_pressure == "ADVERSE":
+            return "ADVERSE"
+        if rate_pressure == "SUPPORTIVE":
+            return "SUPPORTIVE"
+        return "CONDITIONAL"
+
+    if label in {"RISK_ON", "NORMAL"}:
+        return "SUPPORTIVE"
     return "UNKNOWN"
 
 
-def _trend_regime_stance(trend_state: str, regime_support: str) -> str:
-    """High-level CIO philosophy: follow trend; buy weakness only when regime still supports it."""
-    if trend_state == "UPTREND_PULLBACK" and regime_support == "SUPPORTIVE":
+def _trend_regime_stance(trend_state: str, macro_support: str, entry_location: str) -> str:
+    trend = str(trend_state or "UNKNOWN").upper()
+    macro = str(macro_support or "UNKNOWN").upper()
+    entry = str(entry_location or "UNKNOWN").upper()
+
+    if trend == "UPTREND" and macro == "SUPPORTIVE" and entry == "PULLBACK":
         return "BUY_PULLBACK_CANDIDATE"
-    if trend_state == "UPTREND" and regime_support == "SUPPORTIVE":
+    if trend == "UPTREND" and macro == "SUPPORTIVE":
         return "HOLD_OR_WAIT_PULLBACK"
-    if trend_state in {"UPTREND", "UPTREND_PULLBACK"} and regime_support == "ADVERSE":
+    if trend == "UPTREND" and macro != "SUPPORTIVE":
         return "WAIT_REGIME"
-    if trend_state == "DOWNTREND_OR_BROKEN" and regime_support == "SUPPORTIVE":
-        return "WAIT_RECOVERY"
-    if trend_state == "DOWNTREND_OR_BROKEN" and regime_support == "ADVERSE":
+    if trend == "DOWNTREND_OR_BROKEN" and macro == "ADVERSE":
         return "REDUCE_EXIT_CASH"
+    if trend == "DOWNTREND_OR_BROKEN":
+        return "WAIT_RECOVERY"
+    if trend == "MIXED" and macro == "ADVERSE":
+        return "REDUCE_OR_WAIT"
     return "WAIT"
 
 
@@ -111,21 +148,18 @@ def _rotation_size(spread: float, regime: str, policy: dict[str, Any]) -> tuple[
     return "NORMAL", max(10, int(round(trim_cap * 0.6)))
 
 
-def _entry_gated_rotation(size_state: str, planned_trim: int, reaction_state: str, regime_support: str = "SUPPORTIVE") -> tuple[str, int, int, str]:
-    """Preserve entry discipline and add a regime veto for fresh risk.
-
-    Trend alone is insufficient. A pullback or confirmation can only become a current
-    rotation bias when the broader regime is supportive. Adverse/unknown regime keeps
-    the idea in wait/prepare mode; it does not manufacture a trade.
-    """
+def _entry_gated_rotation(size_state: str, planned_trim: int, reaction_state: str, trend_state: str, macro_support: str) -> tuple[str, int, int, str]:
     if size_state == "NO_ROTATION" or planned_trim <= 0:
         return "NO_ROTATION", 0, 0, ""
+    if trend_state != "UPTREND":
+        return "WAIT_TREND", 0, planned_trim, "UPTREND_REQUIRED"
+    if macro_support != "SUPPORTIVE":
+        return "WAIT_REGIME", 0, planned_trim, "THEME_MACRO_SUPPORT_REQUIRED"
+
     reaction = str(reaction_state or "UNKNOWN").upper()
-    if regime_support != "SUPPORTIVE":
-        return "WAIT_REGIME", 0, planned_trim, "REGIME_SUPPORT_REQUIRED"
     if reaction == "PRE_CONFIRMATION":
         action = "PREPARE_ROTATION_STRONG" if size_state == "STRONG" else "PREPARE_ROTATION"
-        return action, 0, planned_trim, "DESTINATION_REACTION_CONFIRMING"
+        return action, 0, planned_trim, "DESTINATION_REACTION_CONFIRMING_OR_PULLBACK"
     if reaction == "CONFIRMING":
         action = "ROTATE_PARTIAL_STRONG" if size_state == "STRONG" else "ROTATE_PARTIAL"
         return action, planned_trim, planned_trim, ""
@@ -140,10 +174,11 @@ def build_portfolio_allocation() -> dict[str, Any]:
     pos = _load(POSITION_PATH)
     cand = _load(CANDIDATE_PATH)
     regime = _load(REGIME_PATH)
+    themes = pd.read_csv(THEME_PATH) if THEME_PATH.exists() else pd.DataFrame()
     if not policy or not pos or not cand or not regime:
         return {
             "contract": "ALPHA_HUNTER_PORTFOLIO_ALLOCATION_ADVISORY",
-            "schema_version": "1.0",
+            "schema_version": "1.3",
             "generated_at": datetime.now().astimezone().isoformat(),
             "status": "DATA_UNAVAILABLE",
             "auto_trade_allowed": False,
@@ -154,7 +189,6 @@ def build_portfolio_allocation() -> dict[str, Any]:
     if regime.get("status") != "READY":
         regime_label = "UNKNOWN"
         target_cash = None
-    regime_support = _regime_support(regime_label)
 
     candidates = []
     for r in cand.get("top_advisories") or []:
@@ -163,18 +197,21 @@ def build_portfolio_allocation() -> dict[str, Any]:
             continue
         preferred = str(r.get("preferred_exposure", "")).upper()
         reaction_state = str(r.get("reaction_state", "UNKNOWN"))
-        trend_state = _trend_state(reaction_state)
+        global_theme = str(r.get("global_theme", ""))
+        trend_state = _theme_trend(global_theme, themes)
+        macro_support = _theme_macro_support(global_theme, regime)
         candidates.append({
             "ticker": r.get("ticker") if preferred == "STOCK" else r.get("etf_ticker"),
             "name": r.get("name") if preferred == "STOCK" else "Mapped ETF",
+            "global_theme": global_theme,
             "preferred_exposure": r.get("preferred_exposure"),
             "advisory_action": r.get("advisory_action"),
             "edge_score": edge,
             "driver_id": r.get("driver_id"),
             "reaction_state": reaction_state,
             "trend_state": trend_state,
-            "regime_support": regime_support,
-            "trend_regime_stance": _trend_regime_stance(trend_state, regime_support),
+            "macro_support": macro_support,
+            "trend_regime_stance": _trend_regime_stance(trend_state, macro_support, reaction_state),
             "confidence": r.get("advisory_confidence"),
         })
     candidates.sort(key=lambda x: x["edge_score"], reverse=True)
@@ -183,13 +220,17 @@ def build_portfolio_allocation() -> dict[str, Any]:
     for r in pos.get("positions") or []:
         if str(r.get("advisory_action")) == "IGNORE_RESIDUAL":
             continue
+        trend_state = str(r.get("trend_state", "UNKNOWN"))
+        macro_support = str(r.get("macro_support", "UNKNOWN"))
         sources.append({
             "alias": r.get("alias"),
             "current_action": r.get("advisory_action"),
             "current_edge_score": _position_edge(r),
             "confidence": r.get("confidence"),
             "signal_state": r.get("signal_state"),
-            "regime_support": regime_support,
+            "trend_state": trend_state,
+            "macro_support": macro_support,
+            "trend_regime_stance": _trend_regime_stance(trend_state, macro_support, "HOLDING"),
         })
     sources.sort(key=lambda x: x["current_edge_score"])
 
@@ -205,19 +246,22 @@ def build_portfolio_allocation() -> dict[str, Any]:
                 size_state,
                 planned_trim,
                 str(best.get("reaction_state", "UNKNOWN")),
-                regime_support,
+                str(best.get("trend_state", "UNKNOWN")),
+                str(best.get("macro_support", "UNKNOWN")),
             )
             redeploy_pct = int(policy["rotation"]["redeploy_pct_of_trim"].get(regime_label, policy["rotation"]["redeploy_pct_of_trim"].get("UNKNOWN", 0)))
             rotations.append({
                 "source_alias": source["alias"],
                 "source_action": source["current_action"],
+                "source_trend_state": source["trend_state"],
+                "source_macro_support": source["macro_support"],
                 "destination_ticker": best["ticker"],
                 "destination_name": best["name"],
                 "destination_action": best["advisory_action"],
                 "destination_driver": best["driver_id"],
                 "destination_reaction_state": best["reaction_state"],
                 "destination_trend_state": best["trend_state"],
-                "regime_support": regime_support,
+                "destination_macro_support": best["macro_support"],
                 "trend_regime_stance": best["trend_regime_stance"],
                 "rotation_action": action,
                 "edge_spread": spread,
@@ -232,21 +276,21 @@ def build_portfolio_allocation() -> dict[str, Any]:
 
     return {
         "contract": "ALPHA_HUNTER_PORTFOLIO_ALLOCATION_ADVISORY",
-        "schema_version": "1.2",
+        "schema_version": "1.3",
         "generated_at": datetime.now().astimezone().isoformat(),
         "status": "READY",
         "risk_regime": regime_label,
         "risk_score": regime.get("risk_score"),
-        "regime_support": regime_support,
+        "rate_pressure": str((regime.get("signals") or {}).get("rate_pressure", "UNKNOWN")),
         "target_cash_pct": target_cash,
-        "core_philosophy": "FOLLOW_TREND_BUY_WEAKNESS_ONLY_WHEN_REGIME_SUPPORTS_TREND",
+        "core_philosophy": "FOLLOW_TREND_BUY_WEAKNESS_ONLY_WHEN_THEME_MACRO_SUPPORTS_TREND",
         "decision_matrix": {
-            "UPTREND+SUPPORTIVE": "HOLD_OR_BUY_PULLBACK",
+            "UPTREND+SUPPORTIVE+PULLBACK": "BUY_OR_ADD_CANDIDATE",
             "UPTREND+ADVERSE": "HOLD_OR_WAIT; DO_NOT_AUTO_BUY_DIP",
             "DOWNTREND+SUPPORTIVE": "WAIT_RECOVERY",
             "DOWNTREND+ADVERSE": "REDUCE_EXIT_CASH",
         },
-        "cash_rule": "Target cash is a risk-budget buffer. In leveraged accounts, implementation should generally reduce financing/gross exposure before holding idle cash; private balances are not published here.",
+        "cash_rule": "Target cash is a risk-budget buffer. Adverse regime or theme-macro incompatibility reduces willingness to add fresh risk; neither is a crash prediction.",
         "best_new_opportunity": candidates[0] if candidates else None,
         "rotations": rotations,
         "source_ranking": sources,
@@ -258,7 +302,7 @@ def build_portfolio_allocation() -> dict[str, Any]:
             "financing_included": False
         },
         "auto_trade_allowed": False,
-        "method": "Follow trend first, then apply the macro/risk regime as a veto on fresh risk. A pullback is attractive only when the underlying trend is intact and the regime remains supportive. Trend strength never creates causality, and adverse regime does not by itself prove a crash; it reduces willingness to buy weakness and increases the value of cash. Rotation remains advisory and preserves entry discipline.",
+        "method": "Trend, macro compatibility and entry location are separate. Trend is derived from theme breadth/relative-strength evidence rather than reaction state. Rate-sensitive themes consume Treasury rate pressure. Pullbacks may become buy candidates only when trend is up and theme macro is supportive. Price strength never creates causality.",
     }
 
 
