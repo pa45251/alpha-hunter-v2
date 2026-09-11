@@ -1,40 +1,26 @@
 {
   "contract": "ALPHA_HUNTER_V3_VALIDATED_RESEARCH",
   "status": "PASS",
-  "research_run_id": "20260911T220954+0800-29a366dd",
-  "validated_at_utc": "2026-09-11T14:15:18.981430+00:00",
+  "research_run_id": "20260912T062257+0800-9958dac6",
+  "validated_at_utc": "2026-09-11T22:27:38.943975+00:00",
   "target_driver_ids": [
-    "MEMORY_IC_CYCLE",
     "CONTAINER_FREIGHT",
     "DRY_BULK_FREIGHT",
-    "NAND_STORAGE_CYCLE",
-    "MATURE_NODE_FOUNDRY_UTILIZATION"
+    "MATURE_NODE_FOUNDRY_UTILIZATION",
+    "LEADING_EDGE_FOUNDRY_AI_DEMAND",
+    "MEMORY_IC_CYCLE"
   ],
   "errors": [],
   "results": [
     {
-      "driver_id": "MEMORY_IC_CYCLE",
-      "state": "UNKNOWN",
-      "confidence": 0.05,
-      "primary_cause": "No verifiable external source was found confirming or contradicting the current memory IC design demand and ASP cycle; the exact industry-wide revenue/ASP evidence is missing.",
-      "industry_scope": "UNKNOWN",
-      "supporting_evidence": [],
-      "counter_evidence": [],
-      "source_count": 0,
-      "event_date": null,
-      "source_dates": [],
-      "researched_at_utc": "2026-09-11T14:14:57Z",
-      "research_run_id": "20260911T220954+0800-29a366dd"
-    },
-    {
       "driver_id": "CONTAINER_FREIGHT",
       "state": "UNKNOWN",
-      "confidence": 0.38,
-      "primary_cause": "Evidence is conflicting and not sufficiently current for the exact September 2026 container spot/contract freight and liner-utilization cycle. Available sources describe both freight-cycle strength or volatility and declining spot rates caused by demand weakness and available capacity.",
+      "confidence": 0.62,
+      "primary_cause": "Available evidence is conflicting and does not provide sufficiently current, time-consistent confirmation of the exact container spot/contract freight and liner-utilization cycle as of the research date. Earlier analysis describes potential overcapacity and a downward spot-rate trajectory, while other reporting describes a changing post-Red Sea market.",
       "industry_scope": "INDUSTRY_WIDE",
       "supporting_evidence": [
         {
-          "claim": "Container freight markets were described as volatile, with forward sailing conditions unstable and potential Red Sea reopening expected to expose excess capacity.",
+          "claim": "The container shipping market was described as facing uncertainty and potential overcapacity if Red Sea routing normalized, indicating a freight-cycle mechanism affecting industry capacity and rates.",
           "source_title": "Container Shipping: Sailing Through Uncertainty And Looming Overcapacity",
           "source_url": "https://seekingalpha.com/article/4765754-container-shipping-sailing-through-uncertainty-and-looming-overcapacity",
           "published_at": "2025-03-07T09:44:00Z",
@@ -42,17 +28,17 @@
           "evidence_type": "HIGH_QUALITY_REPORTING"
         },
         {
-          "claim": "Container freight derivatives coverage described substantial historical volatility in container freight markets and contract pricing.",
-          "source_title": "Are Container Freight Contract Derivatives Finally the Solution to Market Volatility?",
-          "source_url": "https://www.supplychainbrain.com/articles/40268-are-container-freight-contract-derivatives-finally-the-solution-to-market-volatility",
-          "published_at": "2024-08-27T21:00:00Z",
+          "claim": "The container shipping market in 2025 was described as resembling the pre-Red Sea-crisis market, indicating a material shift in container spot-rate conditions and liner-cycle dynamics.",
+          "source_title": "The rise and fall of container spot rates — and what it means for 2026",
+          "source_url": "https://www.lloydslist.com/LL1154942/The-rise-and-fall-of-container-spot-rates--and-what-it-means-for-2026",
+          "published_at": "2025-09-26T13:37:00Z",
           "event_date": null,
           "evidence_type": "HIGH_QUALITY_REPORTING"
         }
       ],
       "counter_evidence": [
         {
-          "claim": "Container spot rates were reported to be declining as tariff uncertainty affected the transpacific market and demand elsewhere failed to match supply; blank sailings only cushioned the decline.",
+          "claim": "Container freight spot rates were reported to be falling, with tariff uncertainty and demand failing to match supply; blank sailings only cushioned the decline.",
           "source_title": "Blank Sailings Cushion Fall for Container Spot Rates",
           "source_url": "https://gcaptain.com/blank-sailings-cushion-fall-for-container-spot-rates/",
           "published_at": "2025-04-25T11:00:00Z",
@@ -64,21 +50,21 @@
       "event_date": null,
       "source_dates": [
         "2025-03-07T09:44:00Z",
-        "2024-08-27T21:00:00Z",
+        "2025-09-26T13:37:00Z",
         "2025-04-25T11:00:00Z"
       ],
-      "researched_at_utc": "2026-09-11T14:14:57Z",
-      "research_run_id": "20260911T220954+0800-29a366dd"
+      "researched_at_utc": "2026-09-11T22:27:14Z",
+      "research_run_id": "20260912T062257+0800-9958dac6"
     },
     {
       "driver_id": "DRY_BULK_FREIGHT",
-      "state": "UNKNOWN",
-      "confidence": 0.58,
-      "primary_cause": "Recent evidence indicates stronger dry-bulk freight conditions, but counter-evidence indicates that apparent 2026 strength may be artificially driven by rerouting and could reverse into a supply glut; the persistence and underlying commodity-volume causality are unresolved.",
+      "state": "ACTIVE",
+      "confidence": 0.78,
+      "primary_cause": "Current 2026 evidence reports strengthening dry-bulk freight conditions, including a higher Baltic Dry Index and elevated Capesize rates tied to commodity-vessel demand and tighter vessel supply. Counter-evidence indicates that part of the strength may be rerouting-related and could reverse, but it does not negate the currently observed freight-cycle activation.",
       "industry_scope": "INDUSTRY_WIDE",
       "supporting_evidence": [
         {
-          "claim": "The Baltic Dry Index was reported at 2,732 points on July 31, 2026, up approximately 9.2% during July, with market conditions differing by vessel segment.",
+          "claim": "The Baltic Dry Index reached 2,732 points on July 31, 2026, up approximately 9.2% during July, with dry-bulk market conditions strengthening across vessel segments.",
           "source_title": "HTCO Highlights Strengthening Dry Bulk Market as BDI Rises Approximately 9.2% in July and Shipping Equities Gain Investor Attention",
           "source_url": "https://www.nasdaq.com/press-release/htco-highlights-strengthening-dry-bulk-market-bdi-rises-approximately-92-july-and",
           "published_at": "2026-08-13T05:00:00Z",
@@ -86,7 +72,7 @@
           "evidence_type": "INDUSTRY_DATA"
         },
         {
-          "claim": "Capesize shipping rates reached a two-year high, attributed to rising Capesize demand and tightening supply of bulk commodity vessels.",
+          "claim": "A key dry-bulk rate measure reached its highest level since December 2023, driven by rising Capesize demand and tightening supply of bulk carriers.",
           "source_title": "Dry-Bulk Shipping Rates Hit Two-Year High on Capesize Demand",
           "source_url": "https://gcaptain.com/dry-bulk-shipping-rates-hit-two-year-high-on-capesize-demand/",
           "published_at": "2026-05-07T00:07:00Z",
@@ -96,12 +82,12 @@
       ],
       "counter_evidence": [
         {
-          "claim": "BIMCO was reported to warn that apparent 2026 dry-bulk strength was substantially artificial because forced Hormuz rerouting increased tonne-miles and that the effect could reverse into a 2027 supply glut.",
+          "claim": "BIMCO warned that apparent 2026 dry-bulk strength was substantially artificial and driven by forced rerouting, with a potential 2027 supply glut as the rerouting effect reverses.",
           "source_title": "Dry bulk shipping faces 2027 supply glut: BIMCO warns Hormuz rerouting boost will reverse",
           "source_url": "https://www.msn.com/en-us/news/other/dry-bulk-shipping-faces-2027-supply-glut-bimco-warns-hormuz-rerouting-boost-will-reverse/ar-AA29coQf",
           "published_at": "2026-08-01T10:36:00Z",
           "event_date": null,
-          "evidence_type": "HIGH_QUALITY_REPORTING"
+          "evidence_type": "OTHER_NONPRICE"
         }
       ],
       "source_count": 3,
@@ -111,66 +97,50 @@
         "2026-05-07T00:07:00Z",
         "2026-08-01T10:36:00Z"
       ],
-      "researched_at_utc": "2026-09-11T14:14:57Z",
-      "research_run_id": "20260911T220954+0800-29a366dd"
-    },
-    {
-      "driver_id": "NAND_STORAGE_CYCLE",
-      "state": "UNKNOWN",
-      "confidence": 0.32,
-      "primary_cause": "Available evidence indicates storage demand and NAND shortage commentary, but does not establish a sufficiently current, industry-wide NAND pricing, SSD/controller/module demand, and inventory cycle; contradictory evidence on the exact cycle remains unresolved.",
-      "industry_scope": "MIXED",
-      "supporting_evidence": [
-        {
-          "claim": "Coverage of Phison described evolving storage demand associated with data growth and SSD adoption across consumer devices and data centers, while identifying Phison as a NAND controller supplier.",
-          "source_title": "Phison Electronics Corp highlights its NAND controller role as demand for storage keeps evolving",
-          "source_url": "https://www.ad-hoc-news.de/boerse/news/ueberblick/phison-electronics-corp-highlights-its-nand-controller-role-as-demand-for/69725587",
-          "published_at": "2026-07-08T12:14:00Z",
-          "event_date": null,
-          "evidence_type": "COMPANY_PRIMARY"
-        },
-        {
-          "claim": "Coverage reported that Western Digital's outlook was being supported by NAND flash pricing and AI-related storage demand.",
-          "source_title": "Western Digital stock trades near recent highs as NAND pricing and AI storage demand support outlook",
-          "source_url": "https://www.ad-hoc-news.de/boerse/news/ueberblick/western-digital-stock-trades-near-recent-highs-as-nand-pricing-and-ai/69793436",
-          "published_at": "2026-07-18T02:13:00Z",
-          "event_date": null,
-          "evidence_type": "HIGH_QUALITY_REPORTING"
-        }
-      ],
-      "counter_evidence": [
-        {
-          "claim": "A report quoting Phison's CEO described severe NAND flash shortages and unusually strong SSD demand, which supports demand strength but does not establish a broad, balanced NAND cycle across pricing, inventory, and modules.",
-          "source_title": "Phison CEO says 'severe' NAND flash shortages and unprecedented SSD demand could last 10 years",
-          "source_url": "https://www.tweaktown.com/news/108074/phison-ceo-says-severe-nand-flash-shortages-and-unprecedented-ssd-demand-could-last-10-years/index.html",
-          "published_at": "2025-10-05T22:36:00Z",
-          "event_date": null,
-          "evidence_type": "HIGH_QUALITY_REPORTING"
-        }
-      ],
-      "source_count": 3,
-      "event_date": null,
-      "source_dates": [
-        "2026-07-08T12:14:00Z",
-        "2026-07-18T02:13:00Z",
-        "2025-10-05T22:36:00Z"
-      ],
-      "researched_at_utc": "2026-09-11T14:14:57Z",
-      "research_run_id": "20260911T220954+0800-29a366dd"
+      "researched_at_utc": "2026-09-11T22:27:14Z",
+      "research_run_id": "20260912T062257+0800-9958dac6"
     },
     {
       "driver_id": "MATURE_NODE_FOUNDRY_UTILIZATION",
       "state": "UNKNOWN",
-      "confidence": 0.05,
-      "primary_cause": "No verifiable external source was found confirming or contradicting current mature or specialty-node utilization, wafer pricing, customer inventory, and end-demand conditions; leading-edge evidence cannot substitute for the exact driver.",
+      "confidence": 0.9,
+      "primary_cause": "Exact-driver support and counter searches did not yield a verifiable source confirming or contradicting current mature or specialty-node utilization, wafer pricing, customer inventory, or end-demand conditions. Leading-edge AI demand evidence cannot substitute for mature-node evidence.",
       "industry_scope": "UNKNOWN",
       "supporting_evidence": [],
       "counter_evidence": [],
       "source_count": 0,
       "event_date": null,
       "source_dates": [],
-      "researched_at_utc": "2026-09-11T14:14:57Z",
-      "research_run_id": "20260911T220954+0800-29a366dd"
+      "researched_at_utc": "2026-09-11T22:27:14Z",
+      "research_run_id": "20260912T062257+0800-9958dac6"
+    },
+    {
+      "driver_id": "LEADING_EDGE_FOUNDRY_AI_DEMAND",
+      "state": "UNKNOWN",
+      "confidence": 0.9,
+      "primary_cause": "Exact-driver support and counter searches did not yield a verifiable source confirming or contradicting current leading-edge 3nm/2nm AI or HPC wafer demand, utilization, advanced-node pricing, or capacity. Mature-node recovery evidence cannot substitute for leading-edge evidence.",
+      "industry_scope": "UNKNOWN",
+      "supporting_evidence": [],
+      "counter_evidence": [],
+      "source_count": 0,
+      "event_date": null,
+      "source_dates": [],
+      "researched_at_utc": "2026-09-11T22:27:14Z",
+      "research_run_id": "20260912T062257+0800-9958dac6"
+    },
+    {
+      "driver_id": "MEMORY_IC_CYCLE",
+      "state": "UNKNOWN",
+      "confidence": 0.9,
+      "primary_cause": "Exact-driver support and counter searches did not yield a verifiable source confirming or contradicting the current memory-IC design-demand and ASP cycle, including relevant revenue, pricing, inventory, or end-demand evidence.",
+      "industry_scope": "UNKNOWN",
+      "supporting_evidence": [],
+      "counter_evidence": [],
+      "source_count": 0,
+      "event_date": null,
+      "source_dates": [],
+      "researched_at_utc": "2026-09-11T22:27:14Z",
+      "research_run_id": "20260912T062257+0800-9958dac6"
     }
   ]
 }

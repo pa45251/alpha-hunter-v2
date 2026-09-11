@@ -6,7 +6,7 @@
 - Rule: EOD output never claims BUY_NOW without a fresh executable quote inside the buy zone.
 
 ### A. Strongest Global-Aligned Trend
-- **NONE** — no stock passes the V2 global-alignment hard gates.
+- **2617.TW 台航** — alignment `0.8946` / global `Shipping` / reaction `PERSISTENT` / action `HOLD_DONT_CHASE`
 
 ### B. Best Fresh Entry
 - **NONE** — no candidate currently has a valid canonical V2 plan.
@@ -24,7 +24,7 @@ V2 is shadow/advisory only. Exact levels are structure-derived conditional plans
 - Run: `20260912T062257+0800-9958dac6`
 - Market session: `2026-09-11`
 - Risk regime: **NORMAL**
-- Causal evidence: `UNKNOWN_NO_CURRENT_RESEARCH`
+- Causal evidence: `V3_AUTONOMOUS_RESEARCH`
 - Core rule: find the anomaly -> understand WHY -> validate the same driver globally -> act only if price still offers a setup.
 
 ## Simple Opportunity Brief
@@ -43,7 +43,7 @@ V2 is shadow/advisory only. Exact levels are structure-derived conditional plans
 
 ## Evidence and execution boundary
 
-- Current validated drivers: NONE — WAIT / CASH
+- Current validated drivers: DRY_BULK_FREIGHT
 - Frozen release integrity: `False`
 - Engineering gates, hashes, lineage, frontier/challenger and shadow validation remain background safety plumbing.
 - Automatic order execution is disabled.
