@@ -285,9 +285,12 @@ def run_taiwan_scan(cfg: TaiwanScanConfig = TaiwanScanConfig(), cached_universe:
     bench_raw = yf.Ticker(cfg.benchmark).history(period=cfg.lookback, auto_adjust=False)
     if bench_raw is None or bench_raw.empty:
         raise RuntimeError(f"Taiwan benchmark {cfg.benchmark} unavailable")
+    from scanner_core import closed_history
+    bench_raw = closed_history(bench_raw, cfg.benchmark)
     bench_close = _price_series(bench_raw)
 
     data = _download_chunked(uni["ticker"].tolist(), cfg.lookback, cfg.batch_size)
+    data = {t: closed_history(h, t) for t, h in data.items()}
     rows = []
     for _, meta in uni.iterrows():
         t = str(meta["ticker"])
@@ -311,6 +314,7 @@ def run_taiwan_scan(cfg: TaiwanScanConfig = TaiwanScanConfig(), cached_universe:
     breadth_input = stocks.rename(columns={"industry": "theme"}) if "theme" not in stocks.columns else stocks
     breadth = compute_theme_breadth(breadth_input)
     return {
+        "histories": data,
         "stocks": stocks,
         "candidates": candidates,
         "breadth": breadth,

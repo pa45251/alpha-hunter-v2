@@ -231,6 +231,8 @@ def build_global_alignment_v2(board: pd.DataFrame, breadth: pd.DataFrame) -> pd.
 
 
 def write_outputs() -> tuple[pd.DataFrame, dict[str, Any]]:
+    from canonical_evidence import assert_output_lineage
+    run_id = assert_output_lineage(["decision_packet.json"])
     if not BOARD_PATH.exists() or not BREADTH_PATH.exists():
         raise RuntimeError("GLOBAL_ALIGNMENT_V2_INPUT_MISSING")
     board = pd.read_csv(BOARD_PATH, dtype={"taiwan_code": str})
@@ -240,6 +242,7 @@ def write_outputs() -> tuple[pd.DataFrame, dict[str, Any]]:
     leaderboard.to_csv(CSV_OUT, index=False)
     top = leaderboard[leaderboard["alignment_eligible"]].head(20) if not leaderboard.empty else leaderboard
     payload = {
+        "source_run_id": run_id,
         "contract": "ALPHA_HUNTER_GLOBAL_ALIGNMENT_V2",
         "schema_version": "2.0",
         "generated_at": datetime.now().astimezone().isoformat(),

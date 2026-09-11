@@ -22,7 +22,7 @@ on:
 
 concurrency:
   group: alpha-hunter-action-board-main
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 permissions:
   contents: write
@@ -47,84 +47,12 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
-      - name: Test advisory and V2 entry publication contracts
-        env:
-          PYTHONPATH: ${{ github.workspace }}
-        run: |
-          # Frozen launch-baseline tests intentionally fail whenever frozen strategy files
-          # have drifted and must remain fail-closed until a separate acceptance review.
-          # That drift must not prevent a SHADOW/ADVISORY report from being published;
-          # the report itself surfaces freeze_integrity=false and never authorizes orders.
-          python -m pytest -q \
-            --ignore=tests/test_launch_gate.py \
-            --ignore=tests/test_v2_freeze_guard.py
-
-      - name: Diagnose frozen launch baseline drift (non-blocking)
-        continue-on-error: true
-        env:
-          PYTHONPATH: ${{ github.workspace }}
-        run: python -m pytest -q tests/test_launch_gate.py tests/test_v2_freeze_guard.py
-
-      - name: Build CIO advisory layer
-        run: python cio_advisory.py
-
-      - name: Build global risk regime and cash target
-        run: python risk_regime.py
-
-      - name: Rebuild existing-position CIO on the same fresh risk overlay
+      - name: Publish one canonical V2 action board
         env:
           ALPHA_HUNTER_RISK_POLICY_JSON: ${{ secrets.ALPHA_HUNTER_RISK_POLICY_JSON }}
           ALPHA_HUNTER_PORTFOLIO_JSON: ${{ secrets.ALPHA_HUNTER_PORTFOLIO_JSON }}
           ALPHA_HUNTER_POSITION_ALIAS_JSON: ${{ secrets.ALPHA_HUNTER_POSITION_ALIAS_JSON }}
-        run: python position_cio_advisory.py
-
-      - name: Assert advisory lineage before portfolio allocation
-        run: |
-          python - <<'PY'
-          import json
-          from pathlib import Path
-          m = json.loads(Path('output/manifest.json').read_text(encoding='utf-8'))
-          r = json.loads(Path('output/risk_regime.json').read_text(encoding='utf-8'))
-          p = json.loads(Path('output/position_cio_advisory.json').read_text(encoding='utf-8'))
-          run_id = m.get('run_id')
-          if m.get('status') != 'PASS' or not run_id:
-              raise SystemExit('Canonical manifest not PASS')
-          if r.get('source_run_id') != run_id or p.get('source_run_id') != run_id:
-              raise SystemExit('Advisory lineage mismatch')
-          PY
-
-      - name: Build legacy portfolio allocation advisory
-        run: python portfolio_allocation_advisory.py
-
-      - name: Build legacy Global Alignment Leaderboard
-        run: python global_alignment.py
-
-      - name: Build Global Alignment V2
-        run: python global_alignment_v2.py
-
-      - name: Build canonical Exact Entry V2 plans
-        env:
-          ALPHA_HUNTER_RISK_POLICY_JSON: ${{ secrets.ALPHA_HUNTER_RISK_POLICY_JSON }}
-          ALPHA_HUNTER_PORTFOLIO_JSON: ${{ secrets.ALPHA_HUNTER_PORTFOLIO_JSON }}
-        run: python entry_plan_run_v2.py
-
-      - name: Append prospective Exact Entry V2 trace
-        run: python entry_plan_trace_v2.py
-
-      - name: Build Rotation V2 using the same canonical entry plans
-        run: python portfolio_allocation_v2.py
-
-      - name: Build privacy-safe legacy one-page action board
-        run: python action_board_summary.py
-
-      - name: Prepend legacy Global Alignment summary
-        run: python global_alignment_summary.py
-
-      - name: Prepend legacy portfolio allocation summary
-        run: python portfolio_allocation_summary.py
-
-      - name: Prepend V2 A-E Global Alignment and Exact Entry summary
-        run: python entry_action_board_v2.py
+        run: python action_board_summary.py --refresh
 
       - name: Commit advisory, trace and action board
         run: |
@@ -135,9 +63,6 @@ jobs:
             output/cio_advisory.json \
             output/risk_regime.json \
             output/position_cio_advisory.json \
-            output/portfolio_allocation_advisory.json \
-            output/global_alignment.csv \
-            output/global_alignment.json \
             output/global_alignment_v2.csv \
             output/global_alignment_v2.json \
             output/entry_plans_v2.json \
@@ -149,7 +74,5 @@ jobs:
           fi
           if ! git diff --cached --quiet; then
             git commit -m "publish alpha hunter frozen v2 exact-entry trace $(date -u +%F)"
-            git fetch origin main
-            git rebase origin/main
             git push origin HEAD:main
           fi

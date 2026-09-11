@@ -37,7 +37,9 @@ def _best(rows: list[dict[str, Any]]) -> dict[str, Any] | None:
     if not rows:
         return None
     usable = [r for r in rows if bool(r.get("entry_structure_valid"))]
-    pool = usable or rows
+    if not usable:
+        return None
+    pool = usable
     def key(r: dict[str, Any]):
         status = str(r.get("entry_status", ""))
         order = 0 if status == "CONFIRMED_NEXT_SESSION_CONDITIONAL" else 1 if "WAITING" in status else 2
@@ -127,6 +129,8 @@ def inject_block(old: str, block: str) -> str:
 
 
 def main() -> None:
+    from canonical_evidence import assert_output_lineage
+    assert_output_lineage(["decision_packet.json", "global_alignment_v2.json", "entry_plans_v2.json", "portfolio_allocation_v2.json"])
     if not BOARD_PATH.exists():
         raise RuntimeError("ACTION_BOARD_MISSING")
     alignment = _load(ALIGN_PATH)

@@ -35,3 +35,11 @@ def test_inject_is_idempotent_not_duplicate():
     twice = inject_block(once, block)
     assert twice.count(START) == 1
     assert twice.count(END) == 1
+
+
+def test_invalid_watchlist_is_not_presented_as_best_entry():
+    invalid = {"ticker":"INVALID", "entry_structure_valid":False,
+               "current_action":"PREPARE", "entry_status":"WATCHLIST"}
+    block = build_block({"top_aligned":[]}, {"fresh":[invalid], "pullback":[invalid], "continuation":[invalid]}, {"rotations":[]})
+    assert "INVALID" not in block
+    assert block.count("no candidate currently has a valid canonical V2 plan") == 3

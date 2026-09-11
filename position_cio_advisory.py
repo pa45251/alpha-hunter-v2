@@ -183,17 +183,48 @@ def _classify_position_trend_from_close(s: pd.Series) -> dict[str, Any]:
     return {"state": state, "score": round(score, 4), "as_of": idx.date().isoformat()}
 
 
-def _position_trend(raw_ticker: Any) -> dict[str, Any]:
+def _live_position_trend(raw_ticker: Any) -> dict[str, Any]:
     for symbol in _market_symbol_candidates(raw_ticker):
         try:
             hist = yf.Ticker(symbol).history(period="1y", auto_adjust=False)
-            s = _close_series(hist)
+            from scanner_core import closed_history
+            s = _close_series(closed_history(hist, symbol))
             result = _classify_position_trend_from_close(s)
             if result.get("state") != "UNKNOWN":
                 return result
         except Exception:
             continue
     return {"state": "UNKNOWN", "score": None, "as_of": None}
+
+
+def capture_position_trends(histories: dict[str, pd.DataFrame]) -> dict[str, Any]:
+    """Scanner-only capture. Persist aliases and trend evidence, never private holdings."""
+    valid, _, portfolio = validate_risk_inputs(load_risk_policy(), load_portfolio_state())
+    if not valid:
+        return {}
+    aliases = load_alias_map(portfolio)
+    result = {}
+    for pos in portfolio.get("positions", []):
+        ticker = pos.get("ticker")
+        alias = aliases.get(_ticker_key(ticker))
+        if not alias:
+            continue
+        history = next((histories[t] for t in _market_symbol_candidates(ticker) if t in histories), None)
+        trend = _classify_position_trend_from_close(_close_series(history)) if history is not None else _live_position_trend(ticker)
+        if trend.get("as_of"):
+            age = (datetime.now().astimezone().date() - pd.Timestamp(trend["as_of"]).date()).days
+            if not 0 <= age <= 5:
+                trend = {"state": "UNKNOWN", "score": None, "as_of": None}
+        result[alias] = trend
+    return result
+
+
+def _position_trend(raw_ticker: Any) -> dict[str, Any]:
+    from canonical_evidence import read_evidence
+    portfolio = load_portfolio_state()
+    alias = load_alias_map(portfolio).get(_ticker_key(raw_ticker))
+    regime = read_evidence("risk_regime.json")
+    return (regime.get("position_trends") or {}).get(alias, {"state": "UNKNOWN", "score": None, "as_of": None})
 
 
 def _macro_support(pos: dict[str, Any], regime: dict[str, Any]) -> str:
@@ -252,6 +283,8 @@ def _strict_actions_by_alias() -> dict[str, str]:
         payload = json.loads(ALIAS_ACTION_PATH.read_text(encoding="utf-8"))
     except Exception:
         return {}
+    if payload.get("run_id") != _load_json(MANIFEST_PATH).get("run_id"):
+        return {}
     return {str(r.get("alias", "")): str(r.get("action", "")) for r in (payload.get("positions") or [])}
 
 
@@ -264,13 +297,16 @@ def build_position_cio_advisory() -> dict[str, Any]:
     raw_portfolio = load_portfolio_state()
     valid, blockers, portfolio = validate_risk_inputs(policy, raw_portfolio)
     if not valid:
-        raise RuntimeError("POSITION_CIO_PRIVATE_INPUTS_INVALID:" + ";".join(blockers))
+        return {"contract": "ALPHA_HUNTER_EXISTING_POSITION_CIO_ADVISORY",
+                "source_run_id": source_run_id, "status": "NOT_CONFIGURED",
+                "positions": [], "auto_trade_allowed": False}
 
     alias_map = load_alias_map(portfolio)
     strict = _strict_actions_by_alias()
-    regime = _load_json(REGIME_PATH)
+    from canonical_evidence import read_evidence
+    regime = read_evidence("risk_regime.json", MANIFEST_PATH.parent)
     regime_source = str(regime.get("source_run_id") or "")
-    if regime_source and regime_source != source_run_id:
+    if regime_source != source_run_id:
         raise RuntimeError("POSITION_CIO_RISK_REGIME_LINEAGE_MISMATCH")
     themes = pd.read_csv(THEME_PATH)
     themes["theme"] = themes["theme"].astype(str)

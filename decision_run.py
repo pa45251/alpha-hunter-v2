@@ -73,7 +73,7 @@ def _activation_source_for_run(run_id: str) -> tuple[Path, str]:
 
     if mode == "V3_VALIDATED":
         raise RuntimeError("Decision bridge requires same-snapshot validated adjudication or V3 research activation artifact")
-    return legacy_path, "LEGACY_MANUAL_FALLBACK"
+    return OUT / "no_validated_activation_for_this_snapshot.csv", "UNKNOWN_NO_CURRENT_RESEARCH"
 
 
 def _apply_current_activation(structural: pd.DataFrame, activations: pd.DataFrame) -> pd.DataFrame:
