@@ -1,11 +1,11 @@
 {
   "contract": "ALPHA_HUNTER_PORTFOLIO_ALLOCATION_V2",
   "schema_version": "2.0",
-  "generated_at": "2026-09-10T13:32:41.982916+00:00",
+  "generated_at": "2026-09-11T00:13:24.126044+00:00",
   "status": "READY",
-  "risk_regime": "CAUTION",
-  "risk_score": 43,
-  "target_cash_pct": 15.0,
+  "risk_regime": "NORMAL",
+  "risk_score": 32,
+  "target_cash_pct": 5.0,
   "best_research_opportunity": null,
   "best_entry_plan_destination": null,
   "rotations": [],
@@ -15,28 +15,28 @@
       "current_action": "REDUCE_BIAS",
       "current_edge_score": 0.3,
       "confidence": "HIGH",
-      "signal_state": "POSITIVE"
-    },
-    {
-      "alias": "標的C",
-      "current_action": "REDUCE_BIAS",
-      "current_edge_score": 0.3,
-      "confidence": "HIGH",
-      "signal_state": "STRONG"
-    },
-    {
-      "alias": "標的D",
-      "current_action": "REVIEW_HOLD",
-      "current_edge_score": 0.3132,
-      "confidence": "MEDIUM",
-      "signal_state": "WEAK"
+      "signal_state": "MIXED"
     },
     {
       "alias": "標的B",
       "current_action": "REVIEW_HOLD",
-      "current_edge_score": 0.4816,
+      "current_edge_score": 0.4585,
       "confidence": "MEDIUM",
       "signal_state": "MIXED"
+    },
+    {
+      "alias": "標的D",
+      "current_action": "HOLD_BIAS",
+      "current_edge_score": 0.475,
+      "confidence": "MEDIUM",
+      "signal_state": "MIXED"
+    },
+    {
+      "alias": "標的C",
+      "current_action": "REVIEW_HOLD",
+      "current_edge_score": 0.5,
+      "confidence": "HIGH",
+      "signal_state": "POSITIVE"
     }
   ],
   "candidate_ranking": [],
