@@ -24,7 +24,7 @@ V2 is shadow/advisory only. Exact levels are structure-derived conditional plans
 - Run: `20260911T220954+0800-29a366dd`
 - Market session: `2026-09-10`
 - Risk regime: **CAUTION**
-- Causal evidence: `UNKNOWN_NO_CURRENT_RESEARCH`
+- Causal evidence: `V3_AUTONOMOUS_RESEARCH`
 - Follow evidence-supported trends; use a valid entry; reduce risk when the thesis fails; otherwise WAIT / CASH.
 
 

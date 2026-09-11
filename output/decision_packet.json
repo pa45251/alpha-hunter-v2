@@ -2,7 +2,7 @@
   "contract": "ALPHA_HUNTER_DECISION_PACKET",
   "decision_contract_version": "2.7.1",
   "run_id": "20260911T220954+0800-29a366dd",
-  "generated_at": "2026-09-11T14:13:50.458258+00:00",
+  "generated_at": "2026-09-11T14:15:21.381379+00:00",
   "gate_first_score_second": true,
   "price_can_create_causality": false,
   "auto_trade_allowed": false,
@@ -25,11 +25,11 @@
   },
   "decision_bridge": {
     "contract": "ALPHA_HUNTER_DECISION_BRIDGE_V2",
-    "public_lineage_id": "bf9d6e9d1ae69dec8cf45590cfae7c5d46de1372f7de7a071a6f288257c2d4d3",
+    "public_lineage_id": "9335cc49e11446da99d209a4e568b72d901168531bea217b33cbe3efe75e6d6e",
     "canonical_snapshot_revalidated_immediately_before_decision": true,
     "persisted_gate_reused_without_revalidation": false,
     "mixed_snapshot_allowed": false,
-    "public_evidence_hash_count": 6
+    "public_evidence_hash_count": 7
   },
   "snapshot_lineage_layer": {
     "contract": "ALPHA_HUNTER_SNAPSHOT_LINEAGE_V2",
@@ -40,11 +40,11 @@
     "mixed_snapshot_allowed": false
   },
   "activation_layer": {
-    "source": "UNKNOWN_NO_CURRENT_RESEARCH",
-    "path": "output/no_validated_activation_for_this_snapshot.csv",
-    "same_snapshot_v3": false,
+    "source": "V3_AUTONOMOUS_RESEARCH",
+    "path": "output/driver_activation_v3.csv",
+    "same_snapshot_v3": true,
     "challenger_adjudicated": false,
-    "accepted_activation_rows": 0,
+    "accepted_activation_rows": 3,
     "active_driver_ids": [],
     "lineage_overwrite_enforced": true
   },
@@ -80,7 +80,7 @@
     ],
     "validation_evidence_status": "PENDING_ACCEPTANCE_REVIEW",
     "current_shadow_statistics_are_strategy_validation": false,
-    "sealed_snapshot_id": "13d709973cdb38f31349a1876a85837ab05881b0d1d90a6145a946ab880ac641"
+    "sealed_snapshot_id": "c8bc32dc93fdeb025b5a81447b8f5df5c9be0d7674cb19a0182583127b028100"
   },
   "shadow_validation_layer": {
     "validation_version": null,
