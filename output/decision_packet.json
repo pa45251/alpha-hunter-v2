@@ -1,8 +1,8 @@
 {
   "contract": "ALPHA_HUNTER_DECISION_PACKET",
   "decision_contract_version": "2.7.1",
-  "run_id": "20260911T063144+0800-1b683761",
-  "generated_at": "2026-09-11T00:35:12.104967+00:00",
+  "run_id": "20260911T095945+0800-cda2acb0",
+  "generated_at": "2026-09-11T02:08:54.554012+00:00",
   "gate_first_score_second": true,
   "price_can_create_causality": false,
   "auto_trade_allowed": false,
@@ -25,26 +25,26 @@
   },
   "decision_bridge": {
     "contract": "ALPHA_HUNTER_DECISION_BRIDGE_V2",
-    "public_lineage_id": "360f384eaa631df632e816dd494e48628bd1eb271cb9bbf6409fefaf636d0674",
+    "public_lineage_id": "6257acd84d026ca4169e800eb5921ff7282cbb1a2eb67f18d422ae54014d4767",
     "canonical_snapshot_revalidated_immediately_before_decision": true,
     "persisted_gate_reused_without_revalidation": false,
     "mixed_snapshot_allowed": false,
-    "public_evidence_hash_count": 7
+    "public_evidence_hash_count": 6
   },
   "snapshot_lineage_layer": {
     "contract": "ALPHA_HUNTER_SNAPSHOT_LINEAGE_V2",
-    "run_id": "20260911T063144+0800-1b683761",
-    "manifest_sha256": "83f3e044efc48648849f4f653221823bd714dcbb87d238f144423246ea3525e3",
+    "run_id": "20260911T095945+0800-cda2acb0",
+    "manifest_sha256": "f5824acc71d9941d16ea7b0fe31f5067280220c1cc0c7636002de1134ee66cf2",
     "fresh_gate_status": "PASS",
     "persisted_gate_matches_current_files": true,
     "mixed_snapshot_allowed": false
   },
   "activation_layer": {
-    "source": "V3_AUTONOMOUS_RESEARCH",
-    "path": "output/driver_activation_v3.csv",
-    "same_snapshot_v3": true,
+    "source": "UNKNOWN_NO_CURRENT_RESEARCH",
+    "path": "output/no_validated_activation_for_this_snapshot.csv",
+    "same_snapshot_v3": false,
     "challenger_adjudicated": false,
-    "accepted_activation_rows": 2,
+    "accepted_activation_rows": 0,
     "active_driver_ids": [],
     "lineage_overwrite_enforced": true
   },
@@ -80,7 +80,7 @@
     ],
     "validation_evidence_status": "PENDING_ACCEPTANCE_REVIEW",
     "current_shadow_statistics_are_strategy_validation": false,
-    "sealed_snapshot_id": "48f9a505bd811f21896487782f7e6ae230cc838d257bde244bf23559a118d232"
+    "sealed_snapshot_id": "0a9f345ccb63eaf1bc3142cc88e6eb41ef0602b7303dcab73465f1238ea2abe5"
   },
   "risk_layer": {
     "risk_inputs_valid": true,
@@ -108,18 +108,6 @@
     "broken_requires_persistence_confirmation": true,
     "private_position_details_committed": false,
     "privacy_rule": "Per-position actions, tickers, balances, weights and P/L stay in-memory and are never committed or logged.",
-    "maintenance_research": {
-      "maintenance_lane_status": "PASS",
-      "maintenance_target_count": 4,
-      "maintenance_validated_count": 4,
-      "maintenance_target_truncated_count": 0,
-      "maintenance_private_artifact_committed": false,
-      "maintenance_privacy_rule": "Maintenance target/result artifacts remain ephemeral; only aggregate metadata may enter public decision_packet.json.",
-      "maintenance_state_counts": {
-        "UNKNOWN": 3,
-        "ACTIVE": 1
-      }
-    },
     "legacy_frozen_v1_position_action_counts": {
       "REVIEW_RESEARCH": 5
     },

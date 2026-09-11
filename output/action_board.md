@@ -9,13 +9,13 @@
 - **NONE** — no stock passes the V2 global-alignment hard gates.
 
 ### B. Best Fresh Entry
-- **2408.TW 南亞科** — `AVOID` / `WATCHLIST`
+- **4967.TW 十銓** — `AVOID` / `WATCHLIST`
 - Entry style: `FRESH_BREAKOUT`
 - Trigger: **—**
 - Buy zone: **— – —**
 - Invalidation: **—**
 - Why now: 
-- Why not now: CAUSAL_DRIVER_NOT_ACTIVE;COMPANY_EDGE_NOT_SOURCE_BACKED;GLOBAL_ALIGNMENT_NOT_ELIGIBLE
+- Why not now: CAUSAL_DRIVER_NOT_ACTIVE;GLOBAL_ALIGNMENT_NOT_ELIGIBLE
 
 ### C. Best Pullback Entry
 - **2615.TW 萬海** — `PREPARE` / `WATCHLIST`
@@ -41,26 +41,9 @@
 V2 is shadow/advisory only. Exact levels are structure-derived conditional plans, not brokerage orders.
 <!-- ENTRY_V2_END -->
 
-## 0. Portfolio allocation / cash regime
-- Global risk regime: `NORMAL` / score `32`
-- Target cash / dry-powder buffer: **5.0%**
-- For leveraged portfolios, a higher buffer should generally be implemented by reducing gross exposure before accumulating idle cash.
-- Rotation: no source/destination pair currently clears the policy threshold, or the risk regime blocks redeployment.
-
-PREPARE_ROTATION means the edge is strong enough to nominate the switch, but the destination has not reached the required entry-confirmation state; current trim remains zero.
-Rotation and cash outputs are CIO advisories only. They do not authorize brokerage orders.
-
-## 0.5 Global Alignment Leaderboard
-- Purpose: find Taiwan stocks whose own trend quality is supported by the corresponding international market and an ACTIVE causal driver.
-- Alignment score is a relative opportunity/evidence score, **not a calibrated win probability**.
-- Strongest aligned trend now: **NONE** — no stock currently passes all Global Alignment hard gates.
-- Best fresh aligned setup now: **NONE**.
-
-Global Alignment is advisory only; BROKEN/EXTENDED names cannot become fresh entries through this leaderboard.
-
-- Run: `20260911T063144+0800-1b683761`
-- Causal source: `V3_AUTONOMOUS_RESEARCH`
-- Same snapshot: `True`
+- Run: `20260911T095945+0800-cda2acb0`
+- Causal source: `UNKNOWN_NO_CURRENT_RESEARCH`
+- Same snapshot: `False`
 - Active opportunity drivers: NONE
 - Private risk inputs valid: `True`
 - Auto order execution: `False`
@@ -82,17 +65,17 @@ Global Alignment is advisory only; BROKEN/EXTENDED names cannot become fresh ent
 | 2 | 2637.TW | 慧洋-KY | RESEARCH_FIRST | INSUFFICIENT | DRY_BULK_FREIGHT | The causal driver is not validated active; price strength cannot substitute for causality. |
 | 3 | 2617.TW | 台航 | RESEARCH_FIRST | INSUFFICIENT | DRY_BULK_FREIGHT | The causal driver is not validated active; price strength cannot substitute for causality. |
 | 4 | 2605.TW | 新興 | RESEARCH_FIRST | INSUFFICIENT | DRY_BULK_FREIGHT | The causal driver is not validated active; price strength cannot substitute for causality. |
-| 5 | 2408.TW | 南亞科 | RESEARCH_FIRST | INSUFFICIENT | DRAM_PRICING | The causal driver is not validated active; price strength cannot substitute for causality. |
-| 6 | 3006.TW | 晶豪科 | RESEARCH_FIRST | INSUFFICIENT | MEMORY_IC_CYCLE | The causal driver is not validated active; price strength cannot substitute for causality. |
-| 7 | 4967.TW | 十銓 | RESEARCH_FIRST | INSUFFICIENT | NAND_STORAGE_CYCLE | The causal driver is not validated active; price strength cannot substitute for causality. |
-| 8 | 6669.TW | 緯穎 | RESEARCH_FIRST | INSUFFICIENT | AI_SERVER_SHIPMENTS | The causal driver is not validated active; price strength cannot substitute for causality. |
-| 9 | 2303.TW | 聯電 | RESEARCH_FIRST | INSUFFICIENT | MATURE_NODE_FOUNDRY_UTILIZATION | The causal driver is not validated active; price strength cannot substitute for causality. |
+| 5 | 3006.TW | 晶豪科 | RESEARCH_FIRST | INSUFFICIENT | MEMORY_IC_CYCLE | The causal driver is not validated active; price strength cannot substitute for causality. |
+| 6 | 6669.TW | 緯穎 | RESEARCH_FIRST | INSUFFICIENT | AI_SERVER_SHIPMENTS | The causal driver is not validated active; price strength cannot substitute for causality. |
+| 7 | 2303.TW | 聯電 | RESEARCH_FIRST | INSUFFICIENT | MATURE_NODE_FOUNDRY_UTILIZATION | The causal driver is not validated active; price strength cannot substitute for causality. |
+| 8 | 2408.TW | 南亞科 | RESEARCH_FIRST | INSUFFICIENT | DRAM_PRICING | The causal driver is not validated active; price strength cannot substitute for causality. |
+| 9 | 2492.TW | 華新科 | RESEARCH_FIRST | INSUFFICIENT | MLCC_DEMAND_PRICING | The causal driver is not validated active; price strength cannot substitute for causality. |
 | 10 | 2603.TW | 長榮 | RESEARCH_FIRST | INSUFFICIENT | CONTAINER_FREIGHT | The causal driver is not validated active; price strength cannot substitute for causality. |
 | 11 | 2609.TW | 陽明 | RESEARCH_FIRST | INSUFFICIENT | CONTAINER_FREIGHT | The causal driver is not validated active; price strength cannot substitute for causality. |
 | 12 | 2615.TW | 萬海 | RESEARCH_FIRST | INSUFFICIENT | CONTAINER_FREIGHT | The causal driver is not validated active; price strength cannot substitute for causality. |
-| 13 | 2492.TW | 華新科 | RESEARCH_FIRST | INSUFFICIENT | MLCC_DEMAND_PRICING | The causal driver is not validated active; price strength cannot substitute for causality. |
-| 14 | 2344.TW | 華邦電 | RESEARCH_FIRST | INSUFFICIENT | SPECIALTY_MEMORY_PRICING | The causal driver is not validated active; price strength cannot substitute for causality. |
-| 15 | 3260.TWO | 威剛 | RESEARCH_FIRST | INSUFFICIENT | NAND_STORAGE_CYCLE | The causal driver is not validated active; price strength cannot substitute for causality. |
+| 13 | 2344.TW | 華邦電 | RESEARCH_FIRST | INSUFFICIENT | SPECIALTY_MEMORY_PRICING | The causal driver is not validated active; price strength cannot substitute for causality. |
+| 14 | 3260.TWO | 威剛 | RESEARCH_FIRST | INSUFFICIENT | NAND_STORAGE_CYCLE | The causal driver is not validated active; price strength cannot substitute for causality. |
+| 15 | 4967.TW | 十銓 | RESEARCH_FIRST | INSUFFICIENT | NAND_STORAGE_CYCLE | The causal driver is not validated active; price strength cannot substitute for causality. |
 
 Advisory counts: `{"RESEARCH_FIRST": 43}`
 The advisory lane may say BUY_BIAS/PREFER_ETF/WAIT_PULLBACK/AVOID even when execution remains blocked. That is intentional.
@@ -104,8 +87,8 @@ The advisory lane may say BUY_BIAS/PREFER_ETF/WAIT_PULLBACK/AVOID even when exec
 | 零碎部位 | IGNORE_RESIDUAL | HIGH | DE_MINIMIS | RESIDUAL | REVIEW_RESEARCH | POSITION_BELOW_DE_MINIMIS_WEIGHT |
 | 標的A | REDUCE_BIAS | HIGH | MIXED | ETF_THEME | REVIEW_RESEARCH | MIXED_TREND_WITH_ADVERSE_MACRO_ETF_THEME_MIXED_THEME_SUPPORT |
 | 標的B | REVIEW_HOLD | MEDIUM | MIXED | ETF_THEME | REVIEW_RESEARCH | UPTREND_MACRO_NOT_FULLY_SUPPORTIVE_ETF_THEME_MIXED_THEME_SUPPORT |
-| 標的C | REVIEW_HOLD | HIGH | POSITIVE | ETF_THEME | REVIEW_RESEARCH | MIXED_OR_UNCERTAIN_TREND_ETF_THEME_POSITIVE_THEME_SUPPORT |
-| 標的D | HOLD_BIAS | MEDIUM | MIXED | STOCK_THEME_PROXY | REVIEW_RESEARCH | UPTREND_MACRO_SUPPORTIVE_STOCK_THEME_PROXY_MIXED_THEME_SUPPORT_COMPANY_TRANSMISSION_NOT_EXACT |
+| 標的C | REDUCE_BIAS | HIGH | POSITIVE | ETF_THEME | REVIEW_RESEARCH | MIXED_TREND_WITH_ADVERSE_MACRO_ETF_THEME_POSITIVE_THEME_SUPPORT |
+| 標的D | REVIEW_HOLD | MEDIUM | MIXED | STOCK_THEME_PROXY | REVIEW_RESEARCH | UPTREND_MACRO_NOT_FULLY_SUPPORTIVE_STOCK_THEME_PROXY_MIXED_THEME_SUPPORT_COMPANY_TRANSMISSION_NOT_EXACT |
 
 ETF holdings use global theme breadth; stocks use a theme proxy until company-level transmission is exact. This is advisory, not execution authorization.
 
@@ -137,9 +120,9 @@ No WATCH_ENTRY candidates.
 - Position count: `5`
 - Position action counts: `{"REVIEW_RESEARCH": 5}`
 - System mapping counts: `{"SYSTEM_MAPPING_MISSING": 2, "SYSTEM_RISK_GROUP": 2, "SYSTEM_TICKER_EXPOSURE": 1}`
-- Portfolio-maintenance research lane: `PASS`
-- Maintenance drivers researched/targeted: `4/4`
-- Maintenance driver states (aggregate only): `{"ACTIVE": 1, "UNKNOWN": 3}`
+- Portfolio-maintenance research lane: `NOT_AVAILABLE`
+- Maintenance drivers researched/targeted: `0/0`
+- Maintenance driver states (aggregate only): `{}`
 - Maintenance targets truncated by safety cap: `0`
 - Optional user-thesis overlay: `NOT_CONFIGURED`
 - User/system disagreement count: `0`

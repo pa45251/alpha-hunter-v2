@@ -1,8 +1,8 @@
 {
   "contract": "ALPHA_HUNTER_EXISTING_POSITION_CIO_ADVISORY",
   "schema_version": "1.2",
-  "source_run_id": "20260911T063144+0800-1b683761",
-  "generated_at": "2026-09-11T00:36:15.222973+00:00",
+  "source_run_id": "20260911T095945+0800-cda2acb0",
+  "generated_at": "2026-09-11T02:09:04.513186+00:00",
   "privacy": {
     "alias_only": true,
     "ticker_included": false,
@@ -63,30 +63,30 @@
     {
       "alias": "標的C",
       "lane": "ETF_THEME",
-      "advisory_action": "REVIEW_HOLD",
+      "advisory_action": "REDUCE_BIAS",
       "confidence": "HIGH",
       "signal_state": "POSITIVE",
       "signal_score": 0.6611,
       "trend_state": "MIXED",
       "trend_score": 0.4,
       "trend_as_of": "2026-09-09",
-      "macro_support": "CONDITIONAL",
-      "reason": "MIXED_OR_UNCERTAIN_TREND_ETF_THEME_POSITIVE_THEME_SUPPORT",
+      "macro_support": "ADVERSE",
+      "reason": "MIXED_TREND_WITH_ADVERSE_MACRO_ETF_THEME_POSITIVE_THEME_SUPPORT",
       "execution_lane_action": "REVIEW_RESEARCH",
       "theme_coverage_count": 3
     },
     {
       "alias": "標的D",
       "lane": "STOCK_THEME_PROXY",
-      "advisory_action": "HOLD_BIAS",
+      "advisory_action": "REVIEW_HOLD",
       "confidence": "MEDIUM",
       "signal_state": "MIXED",
       "signal_score": 0.475,
       "trend_state": "UPTREND",
       "trend_score": 1.0,
       "trend_as_of": "2026-09-10",
-      "macro_support": "SUPPORTIVE",
-      "reason": "UPTREND_MACRO_SUPPORTIVE_STOCK_THEME_PROXY_MIXED_THEME_SUPPORT_COMPANY_TRANSMISSION_NOT_EXACT",
+      "macro_support": "ADVERSE",
+      "reason": "UPTREND_MACRO_NOT_FULLY_SUPPORTIVE_STOCK_THEME_PROXY_MIXED_THEME_SUPPORT_COMPANY_TRANSMISSION_NOT_EXACT",
       "execution_lane_action": "REVIEW_RESEARCH",
       "theme_coverage_count": 3
     }
