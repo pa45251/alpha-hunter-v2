@@ -2,18 +2,18 @@
   "contract": "ALPHA_HUNTER_V2_6_1_RESEARCH_HANDOFF",
   "handoff_version": "1.0",
   "handoff_status": "PASS",
-  "generated_at_taipei": "2026-09-11T19:39:30.020448+08:00",
+  "generated_at_taipei": "2026-09-11T19:44:50.917926+08:00",
   "repository": "pa45251/alpha-hunter-v2",
-  "branch": "main",
+  "branch": "repair/market-only-core",
   "schema_version": "2.6",
   "scanner_version": "2.6.0",
-  "run_id": "20260911T193650+0800-cd16558a",
+  "run_id": "20260911T194213+0800-21e7e198",
   "gate_status": "PASS",
   "causal_rule": "PRICE_CANNOT_CREATE_CAUSALITY",
   "transport_policy": {
     "source_identity": "GitHub repository pa45251/alpha-hunter-v2 branch main only",
     "preferred_transport": "GitHub connector exact path output/research_handoff.json",
-    "fallback_transport": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/research_handoff.json",
+    "fallback_transport": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/repair/market-only-core/output/research_handoff.json",
     "do_not_substitute": [
       "Streamlit tables",
       "GitHub search results",
@@ -25,28 +25,28 @@
   "artifacts": {
     "manifest": {
       "relative_path": "output/manifest.json",
-      "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/manifest.json",
-      "sha256": "1e737584c3029c0a58284c045c1b75dd13a82dea41a2645698ebb9a4f0c9c5c2",
-      "bytes": 8329
+      "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/repair/market-only-core/output/manifest.json",
+      "sha256": "735d6c3951a558f20ba87dc8a1eb5cd846575cc3b759c20f41df54dfc314fce1",
+      "bytes": 8671
     },
     "gate_report": {
       "relative_path": "output/gate_report.json",
-      "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/gate_report.json",
-      "sha256": "8dae0e08d44fe17d6362a734b22cf6c9c8580d57a0a4fc8b00f88e86904094cc",
-      "bytes": 3781
+      "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/repair/market-only-core/output/gate_report.json",
+      "sha256": "e44c51352027ad48164df75c05fd71af9b6c61e7057a2e61881b17e7ee327955",
+      "bytes": 3876
     },
     "research_packet": {
       "relative_path": "output/research_packet.json",
-      "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/research_packet.json",
-      "sha256": "5081525e2b89a078dfacd8bfc4f1cb4ed591d5f398bffb9d488712e52f6832e3",
-      "bytes": 171126
+      "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/repair/market-only-core/output/research_packet.json",
+      "sha256": "d716310214d4a69e4bfb0c27fdc9fa75429e670937a8308fe3779cca90ef6286",
+      "bytes": 171430
     }
   },
   "research_entrypoint": {
     "relative_path": "output/research_packet.json",
-    "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/research_packet.json",
-    "sha256": "5081525e2b89a078dfacd8bfc4f1cb4ed591d5f398bffb9d488712e52f6832e3",
-    "bytes": 171126
+    "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/repair/market-only-core/output/research_packet.json",
+    "sha256": "d716310214d4a69e4bfb0c27fdc9fa75429e670937a8308fe3779cca90ef6286",
+    "bytes": 171430
   },
   "research_rule": "Research may begin only when handoff_status=PASS, gate_status=PASS, run_id is consistent, and the fetched research_packet SHA256 matches this handoff."
 }
