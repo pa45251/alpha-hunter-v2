@@ -5,7 +5,6 @@ import pandas as pd
 
 import global_alignment_v2 as ga
 from entry_plan_run_v2 import build_canonical_plans
-from portfolio_allocation_v2 import build_portfolio_allocation_v2
 from entry_action_board_v2 import build_block
 
 
@@ -92,29 +91,35 @@ def test_v2_chain_uses_one_driver_one_plan_and_never_auto_executes(monkeypatch):
     assert plan["current_action"] != "BUY_NOW"
     assert not bool(plan["entry_executable"])
 
-    entry_packet = {"status": "READY", "all_plans": [plan]}
-    positions = {"positions": [{
-        "alias": "標的D", "advisory_action": "REVIEW_HOLD", "signal_score": 0.40,
-        "confidence": "MEDIUM", "signal_state": "MIXED",
-    }]}
-    candidates = {"top_advisories": [{
-        "ticker": "2317.TW", "name": "SYN-HONHAI", "driver_id": "AI_SERVER_SHIPMENTS",
-        "preferred_exposure": "STOCK", "advisory_action": "BUY_BIAS_STOCK",
-        "advisory_confidence": "HIGH", "reaction_state": "PRE_CONFIRMATION",
-        "provenance_status": "SOURCE_BACKED", "research_priority_score": 0.8,
-        "advisory_missing_evidence": "",
-    }]}
-    regime = {"status": "READY", "regime": "RISK_ON", "risk_score": 10, "target_cash_pct": 0}
-    rotation = build_portfolio_allocation_v2(_rotation_policy(), positions, candidates, regime, entry_packet)
-    assert rotation["best_entry_plan_destination"]["ticker"] == "2317.TW"
-    assert rotation["rotations"][0]["source_alias"] == "標的D"
-    assert rotation["rotations"][0]["suggested_source_trim_pct_now"] == 0
-    assert rotation["rotations"][0]["trigger_price"] == plan["trigger_price"]
-
     alignment_packet = {"top_aligned": alignment.to_dict(orient="records")}
     entry_full = {"fresh": [plan], "pullback": [], "continuation": []}
-    block = build_block(alignment_packet, entry_full, rotation)
+    block = build_block(alignment_packet, entry_full)
     assert "A. Strongest Global-Aligned Trend" in block
     assert "B. Best Fresh Entry" in block
     assert str(plan["trigger_price"]) in block
-    assert "標的D" in block
+    assert "Rotation" not in block
+
+
+def test_market_entry_is_independent_of_private_account(monkeypatch):
+    board = _board()
+    alignment = ga.build_global_alignment_v2(board, _breadth())
+    results = []
+    for value in [None, '{invalid', json.dumps({'gross_exposure_pct': 999, 'positions': [{'ticker': '2317.TW', 'weight_pct': 100}]})]:
+        for key in ['ALPHA_HUNTER_PORTFOLIO_JSON', 'ALPHA_HUNTER_RISK_POLICY_JSON', 'ALPHA_HUNTER_POSITION_THESIS_JSON']:
+            if value is None:
+                monkeypatch.delenv(key, raising=False)
+            else:
+                monkeypatch.setenv(key, value)
+        plan = build_canonical_plans(board, alignment, {'2317.TW': _history()})
+        results.append(plan.drop(columns=['signal_as_of_utc']))
+    for result in results[1:]:
+        pd.testing.assert_frame_equal(results[0], result)
+
+
+def test_market_workflows_do_not_read_personal_secrets():
+    from pathlib import Path
+    for workflow in Path('.github/workflows').glob('*.yml'):
+        source = workflow.read_text()
+        assert 'secrets.ALPHA_HUNTER_PORTFOLIO' not in source
+        assert 'secrets.ALPHA_HUNTER_POSITION' not in source
+        assert 'secrets.ALPHA_HUNTER_RISK_POLICY' not in source

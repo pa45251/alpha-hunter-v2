@@ -36,18 +36,18 @@ def _risk_off_histories():
     return h
 
 
-def test_risk_on_has_low_cash_target():
+def test_risk_on_regime():
     out = rr.build_risk_regime(_risk_on_histories())
     assert out["status"] == "READY"
     assert out["regime"] in {"RISK_ON", "NORMAL"}
-    assert out["target_cash_pct"] <= 5
+    assert "target_cash_pct" not in out
 
 
-def test_risk_off_raises_cash_target():
+def test_risk_off_regime():
     out = rr.build_risk_regime(_risk_off_histories())
     assert out["status"] == "READY"
     assert out["regime"] in {"DEFENSIVE", "CRISIS"}
-    assert out["target_cash_pct"] >= 30
+    assert "gross_multiplier" not in out
 
 
 def test_missing_vix_fails_closed():
@@ -55,4 +55,4 @@ def test_missing_vix_fails_closed():
     h.pop("^VIX")
     out = rr.build_risk_regime(h)
     assert out["status"] == "DATA_UNAVAILABLE"
-    assert out["target_cash_pct"] is None
+    assert out["regime"] == "UNKNOWN"

@@ -98,3 +98,26 @@ def test_stale_instrument_history_is_unknown_not_a_current_entry(tmp_path, monke
     seal(out,'market_snapshot.json',{'run_id':'TODAY','canonical_closed_price_date':'2026-09-10',
                                    'entry_histories':ce.encode_histories({'STALE.TW':h})})
     assert ce.load_histories(['STALE.TW']) == {}
+
+
+def test_same_snapshot_old_decision_output_is_rejected(tmp_path, monkeypatch):
+    import snapshot_lineage_v2
+    monkeypatch.setattr(snapshot_lineage_v2, 'assert_decision_snapshot_current', lambda out: {'run_id': 'TODAY'})
+    (tmp_path / 'decision_packet.json').write_text(json.dumps({'run_id': 'TODAY', 'decision_bridge': {'public_lineage_id': 'NEW'}}))
+    (tmp_path / 'entry_plans_v2.json').write_text(json.dumps({'source_run_id': 'TODAY', 'public_lineage_id': 'OLD'}))
+    with pytest.raises(RuntimeError, match='DECISION_LINEAGE_MISMATCH'):
+        ce.assert_output_lineage(['decision_packet.json', 'entry_plans_v2.json'], tmp_path)
+
+
+def test_same_run_csv_tampering_is_rejected(tmp_path, monkeypatch):
+    import snapshot_lineage_v2
+    monkeypatch.setattr(snapshot_lineage_v2, 'assert_decision_snapshot_current', lambda out: {'run_id': 'TODAY'})
+    (tmp_path / 'decision_packet.json').write_text(json.dumps({'run_id': 'TODAY', 'decision_bridge': {'public_lineage_id': 'CURRENT'}}))
+    csv = tmp_path / 'global_alignment_v2.csv'
+    csv.write_text('ticker\nEXAMPLE\n')
+    payload = {'source_run_id': 'TODAY', 'public_lineage_id': 'CURRENT', 'csv_sha256': hashlib.sha256(csv.read_bytes()).hexdigest()}
+    (tmp_path / 'global_alignment_v2.json').write_text(json.dumps(payload))
+    assert ce.assert_output_lineage(['decision_packet.json', 'global_alignment_v2.json'], tmp_path) == 'TODAY'
+    csv.write_text('ticker\nALTERED\n')
+    with pytest.raises(RuntimeError, match='CONTENT_MISMATCH'):
+        ce.assert_output_lineage(['decision_packet.json', 'global_alignment_v2.json'], tmp_path)

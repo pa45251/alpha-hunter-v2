@@ -1,0 +1,31 @@
+{
+  "bands": [
+    {
+      "max_score": 20,
+      "label": "RISK_ON"
+    },
+    {
+      "max_score": 35,
+      "label": "NORMAL"
+    },
+    {
+      "max_score": 55,
+      "label": "CAUTION"
+    },
+    {
+      "max_score": 75,
+      "label": "DEFENSIVE"
+    },
+    {
+      "max_score": 100,
+      "label": "CRISIS"
+    }
+  ],
+  "required_core_signals": [
+    "^VIX",
+    "^VXN",
+    "SPY",
+    "QQQ"
+  ],
+  "max_data_age_days": 5
+}

@@ -7,33 +7,9 @@ on:
     paths:
       - 'input/edge_provenance.csv'
       - 'output/driver_activation_adjudicated_v3.csv'
-      - 'decision_run.py'
-      - 'decision_run_v2.py'
-      - 'decision_state_v2.py'
-      - 'snapshot_lineage_v2.py'
-      - 'shadow_validation_v2.py'
-      - 'launch_gate.py'
-      - 'config/launch_policy.json'
-      - 'config/frozen_strategy_v1.json'
-      - 'config/frozen_strategy_v2.json'
-      - 'v2_freeze_guard.py'
-      - 'tests/test_v2_freeze_guard.py'
-      - 'config/portfolio_allocation_policy.json'
-      - 'existing_position.py'
-      - 'existing_position_v2.py'
-      - 'position_alias_output.py'
-      - 'position_alias_output_v2.py'
-      - 'position_cio_advisory.py'
-      - 'risk_regime.py'
-      - 'portfolio_allocation_advisory.py'
-      - 'global_alignment.py'
-      - 'global_alignment_summary.py'
-      - 'action_board_summary.py'
-      - '.github/workflows/action_board_publish.yml'
-      - '.github/workflows/decision_refresh.yml'
 
 concurrency:
-  group: alpha-hunter-v3-research-main
+  group: alpha-hunter-decision-refresh-main
   cancel-in-progress: false
 
 permissions:
@@ -70,10 +46,9 @@ jobs:
       - name: Rebuild guarded V2 decision layer from latest validated causal source
         env:
           ALPHA_HUNTER_ACTIVATION_SOURCE: V3_VALIDATED
-          ALPHA_HUNTER_RISK_POLICY_JSON: ${{ secrets.ALPHA_HUNTER_RISK_POLICY_JSON }}
-          ALPHA_HUNTER_PORTFOLIO_JSON: ${{ secrets.ALPHA_HUNTER_PORTFOLIO_JSON }}
-          ALPHA_HUNTER_POSITION_THESIS_JSON: ${{ secrets.ALPHA_HUNTER_POSITION_THESIS_JSON }}
-        run: python decision_run_v2.py
+        run: |
+          python decision_run_v2.py
+          python action_board_summary.py --refresh
 
       - name: Assert decision source and trace guards
         run: |
@@ -93,8 +68,6 @@ jobs:
               raise SystemExit('Mixed/stale snapshot blocked')
           if s.get('same_session_rerun_can_consume_trigger') is not False:
               raise SystemExit('Same-session idempotence invariant missing')
-          if v.get('future_data_cutoff_enforced') is not True:
-              raise SystemExit('Shadow future-data cutoff invariant missing')
           PY
 
       - name: Build global risk regime for this canonical snapshot
@@ -113,51 +86,21 @@ jobs:
               raise SystemExit('Risk regime lineage mismatch')
           PY
 
-      - name: Publish alias-only existing-position actions with V2 contract guard
-        env:
-          ALPHA_HUNTER_RISK_POLICY_JSON: ${{ secrets.ALPHA_HUNTER_RISK_POLICY_JSON }}
-          ALPHA_HUNTER_PORTFOLIO_JSON: ${{ secrets.ALPHA_HUNTER_PORTFOLIO_JSON }}
-          ALPHA_HUNTER_POSITION_THESIS_JSON: ${{ secrets.ALPHA_HUNTER_POSITION_THESIS_JSON }}
-          ALPHA_HUNTER_POSITION_ALIAS_JSON: ${{ secrets.ALPHA_HUNTER_POSITION_ALIAS_JSON }}
-        run: python position_alias_output_v2.py
-
-      - name: Publish existing-position CIO advisory from actual held-instrument trend
-        env:
-          ALPHA_HUNTER_RISK_POLICY_JSON: ${{ secrets.ALPHA_HUNTER_RISK_POLICY_JSON }}
-          ALPHA_HUNTER_PORTFOLIO_JSON: ${{ secrets.ALPHA_HUNTER_PORTFOLIO_JSON }}
-          ALPHA_HUNTER_POSITION_ALIAS_JSON: ${{ secrets.ALPHA_HUNTER_POSITION_ALIAS_JSON }}
-        run: python position_cio_advisory.py
-
-      - name: Assert position CIO lineage matches canonical manifest
-        run: |
-          python - <<'PY'
-          import json
-          from pathlib import Path
-          m = json.loads(Path('output/manifest.json').read_text(encoding='utf-8'))
-          p = json.loads(Path('output/position_cio_advisory.json').read_text(encoding='utf-8'))
-          if p.get('source_run_id') != m.get('run_id'):
-              raise SystemExit('Position CIO lineage mismatch')
-          PY
-
       - name: Commit refreshed public decision artifacts
         run: |
           git config user.name "alpha-hunter-bot"
           git config user.email "actions@users.noreply.github.com"
+          for path in output/position_cio_advisory.json output/position_alias_actions.json output/portfolio_allocation_v2.json output/portfolio_allocation_advisory.json output/cio_advisory.csv output/cio_advisory.json; do
+            if git ls-files --error-unmatch "$path" >/dev/null 2>&1; then git add -A "$path"; fi
+          done
           git add \
             output/shadow_journal.jsonl \
             output/decision_board.csv \
             output/decision_packet.json \
             output/decision_history.csv \
             output/shadow_audit.csv \
-            output/shadow_validation.csv \
-            output/shadow_validation_report.json \
             output/risk_regime.json
-          if [ -e output/position_alias_actions.json ] || git ls-files --error-unmatch output/position_alias_actions.json >/dev/null 2>&1; then
-            git add -A output/position_alias_actions.json
-          fi
-          if [ -e output/position_cio_advisory.json ] || git ls-files --error-unmatch output/position_cio_advisory.json >/dev/null 2>&1; then
-            git add -A output/position_cio_advisory.json
-          fi
+          git add -A output/action_board.md output/global_alignment_v2.csv output/global_alignment_v2.json output/entry_plans_v2.csv output/entry_plans_v2.json
           if ! git diff --cached --quiet; then
             git commit -m "refresh alpha hunter guarded v2 decision layer $(date -u +%F)"
             git push origin HEAD:main

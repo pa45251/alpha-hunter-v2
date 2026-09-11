@@ -8,7 +8,6 @@ OUT = Path("output")
 BOARD_PATH = OUT / "action_board.md"
 ALIGN_PATH = OUT / "global_alignment_v2.json"
 ENTRY_PATH = OUT / "entry_plans_v2.json"
-ROTATION_PATH = OUT / "portfolio_allocation_v2.json"
 
 START = "<!-- ENTRY_V2_START -->"
 END = "<!-- ENTRY_V2_END -->"
@@ -36,7 +35,7 @@ def _fmt(v: Any) -> str:
 def _best(rows: list[dict[str, Any]]) -> dict[str, Any] | None:
     if not rows:
         return None
-    usable = [r for r in rows if bool(r.get("entry_structure_valid"))]
+    usable = [r for r in rows if bool(r.get("entry_structure_valid")) and bool(r.get("risk_v2_pass", True))]
     if not usable:
         return None
     pool = usable
@@ -69,7 +68,7 @@ def _plan_lines(title: str, plan: dict[str, Any] | None) -> list[str]:
     return lines
 
 
-def build_block(alignment: dict[str, Any], entries: dict[str, Any], rotation: dict[str, Any]) -> str:
+def build_block(alignment: dict[str, Any], entries: dict[str, Any], rotation: dict[str, Any] | None = None) -> str:
     top = alignment.get("top_aligned") or []
     strongest = top[0] if top else None
     fresh = _best(entries.get("fresh") or [])
@@ -96,18 +95,6 @@ def build_block(alignment: dict[str, Any], entries: dict[str, Any], rotation: di
     lines += _plan_lines("C. Best Pullback Entry", pullback)
     lines += _plan_lines("D. Best Continuation Entry", continuation)
 
-    lines += ["### E. Rotation / Exact Execution"]
-    rots = rotation.get("rotations") or []
-    if rots:
-        r = rots[0]
-        lines += [
-            f"- Source: **{_fmt(r.get('source_alias'))}** → Destination: **{_fmt(r.get('destination_ticker'))} {_fmt(r.get('destination_name'))}**",
-            f"- State: `{_fmt(r.get('rotation_action'))}`; trim now **{_fmt(r.get('suggested_source_trim_pct_now'))}%**",
-            f"- Trigger: **{_fmt(r.get('trigger_price'))}**; Buy zone **{_fmt(r.get('buy_zone_low'))} – {_fmt(r.get('buy_zone_high'))}**; Invalidation **{_fmt(r.get('invalidation_price'))}**",
-            f"- Required before rotation: `{_fmt(r.get('entry_trigger_required'))}`",
-        ]
-    else:
-        lines.append("- **NO ROTATION NOW** — no destination simultaneously passes the canonical V2 opportunity + entry gate.")
     lines += [
         "",
         "V2 is shadow/advisory only. Exact levels are structure-derived conditional plans, not brokerage orders.",
@@ -130,16 +117,15 @@ def inject_block(old: str, block: str) -> str:
 
 def main() -> None:
     from canonical_evidence import assert_output_lineage
-    assert_output_lineage(["decision_packet.json", "global_alignment_v2.json", "entry_plans_v2.json", "portfolio_allocation_v2.json"])
+    assert_output_lineage(["decision_packet.json", "global_alignment_v2.json", "entry_plans_v2.json"])
     if not BOARD_PATH.exists():
         raise RuntimeError("ACTION_BOARD_MISSING")
     alignment = _load(ALIGN_PATH)
     entries = _load(ENTRY_PATH)
-    rotation = _load(ROTATION_PATH)
     old = BOARD_PATH.read_text(encoding="utf-8")
-    block = build_block(alignment, entries, rotation)
+    block = build_block(alignment, entries)
     BOARD_PATH.write_text(inject_block(old, block), encoding="utf-8")
-    print("Injected Entry V2 A-E action board summary")
+    print("Injected Entry V2 market action board summary")
 
 
 if __name__ == "__main__":

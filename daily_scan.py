@@ -258,14 +258,12 @@ if __name__ == "__main__":
     # Seal risk and entry prices with the scanner, before hashing the manifest.
     from risk_regime import build_risk_regime, download_ust2y
     from canonical_evidence import encode_histories
-    from position_cio_advisory import capture_position_trends
     risk_histories = dict(global_results["histories"])
     try:
         risk_histories["^UST2Y"] = download_ust2y()
     except Exception as exc:
         print(f"UST2Y UNKNOWN: FRED DGS2 {type(exc).__name__}")
     regime = build_risk_regime(risk_histories, run_id=run_id, validate_freshness=True)
-    regime["position_trends"] = capture_position_trends({**global_results["histories"], **tw["histories"]})
     (OUT / "risk_regime.json").write_text(json.dumps(regime, ensure_ascii=False, indent=2), encoding="utf-8")
     pipeline_checks["core_risk_evidence_ready"] = regime.get("status") == "READY"
     snapshot_path = OUT / "market_snapshot.json"

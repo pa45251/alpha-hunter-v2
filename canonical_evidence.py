@@ -62,8 +62,19 @@ def assert_output_lineage(names: list[str], out: Path = Path('output')) -> str:
         board = pd.read_csv(board_path)
         if 'run_id' not in board or set(board['run_id'].dropna().astype(str)) != {run_id}:
             raise RuntimeError('OUTPUT_LINEAGE_MISMATCH:decision_board.csv')
+    decision = json.loads((out / 'decision_packet.json').read_text()) if 'decision_packet.json' in names else {}
+    decision_id = (decision.get('decision_bridge') or {}).get('public_lineage_id')
+    if decision and board_path.exists():
+        if not decision_id or 'public_lineage_id' not in board or set(board['public_lineage_id'].dropna()) != {decision_id}:
+            raise RuntimeError('OUTPUT_DECISION_LINEAGE_MISMATCH:decision_board.csv')
     for name in names:
         p = json.loads((out / name).read_text(encoding='utf-8'))
         if p.get('source_run_id', p.get('run_id')) != run_id:
             raise RuntimeError(f'OUTPUT_LINEAGE_MISMATCH:{name}')
+        if name in {'global_alignment_v2.json', 'entry_plans_v2.json'}:
+            if not decision_id or p.get('public_lineage_id') != decision_id:
+                raise RuntimeError(f'OUTPUT_DECISION_LINEAGE_MISMATCH:{name}')
+            csv_path = out / name.replace('.json', '.csv')
+            if not csv_path.is_file() or hashlib.sha256(csv_path.read_bytes()).hexdigest() != p.get('csv_sha256'):
+                raise RuntimeError(f'OUTPUT_CONTENT_MISMATCH:{csv_path.name}')
     return run_id
