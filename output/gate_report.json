@@ -3,13 +3,13 @@
   "gate_version": "1.0",
   "gate_status": "PASS",
   "failure_code": null,
-  "validated_at_taipei": "2026-09-11T19:39:24.545881+08:00",
+  "validated_at_taipei": "2026-09-11T22:13:48.826898+08:00",
   "repository": "pa45251/alpha-hunter-v2",
   "branch": "main",
   "schema_version": "2.6",
-  "scanner_version": "2.6.0",
-  "run_id": "20260911T193650+0800-cd16558a",
-  "manifest_sha256": "1e737584c3029c0a58284c045c1b75dd13a82dea41a2645698ebb9a4f0c9c5c2",
+  "scanner_version": "2.6.1",
+  "run_id": "20260911T220954+0800-29a366dd",
+  "manifest_sha256": "925dca3008f541bc955d91824f9bf3ecbe264a645a0380e07070db8bd0e5cd41",
   "checks": [
     {
       "name": "repository_identity",
@@ -32,7 +32,7 @@
     {
       "name": "scanner_version",
       "passed": true,
-      "detail": "expected_prefix=2.6; actual=2.6.0",
+      "detail": "expected_prefix=2.6; actual=2.6.1",
       "severity": "HARD"
     },
     {
@@ -50,13 +50,13 @@
     {
       "name": "pipeline_checks",
       "passed": true,
-      "detail": "{\"causal_queue_rebuilt_this_run\": true, \"causal_taxonomy_snapshot_present\": true, \"core_risk_evidence_ready\": true, \"global_outputs_generated\": true, \"graph_audit_rebuilt_this_run\": true, \"structural_graph_snapshot_present\": true, \"structural_matches_rebuilt_this_run\": true, \"taiwan_outputs_generated\": true}",
+      "detail": "{\"causal_queue_rebuilt_this_run\": true, \"causal_taxonomy_snapshot_present\": true, \"core_risk_evidence_ready\": true, \"global_outputs_generated\": true, \"graph_audit_rebuilt_this_run\": true, \"reverse_discovery_rebuilt_this_run\": true, \"structural_graph_snapshot_present\": true, \"structural_matches_rebuilt_this_run\": true, \"taiwan_outputs_generated\": true}",
       "severity": "HARD"
     },
     {
       "name": "manifest_run_id",
       "passed": true,
-      "detail": "run_id=20260911T193650+0800-cd16558a",
+      "detail": "run_id=20260911T220954+0800-29a366dd",
       "severity": "HARD"
     },
     {
@@ -74,13 +74,13 @@
     {
       "name": "authoritative_file_hashes",
       "passed": true,
-      "detail": "verified=15",
+      "detail": "verified=16",
       "severity": "HARD"
     },
     {
       "name": "run_consistency",
       "passed": true,
-      "detail": "all=20260911T193650+0800-cd16558a",
+      "detail": "all=20260911T220954+0800-29a366dd",
       "severity": "HARD"
     },
     {

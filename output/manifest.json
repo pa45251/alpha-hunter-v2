@@ -1,20 +1,21 @@
 {
   "contract": "ALPHA_HUNTER_CANONICAL_DATA_CONTRACT",
   "schema_version": "2.6",
-  "scanner_version": "2.6.0",
-  "run_id": "20260911T193650+0800-cd16558a",
+  "scanner_version": "2.6.1",
+  "run_id": "20260911T220954+0800-29a366dd",
   "repository": "pa45251/alpha-hunter-v2",
   "branch": "main",
   "canonical_output_directory": "https://github.com/pa45251/alpha-hunter-v2/tree/main/output",
   "canonical_manifest_raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/manifest.json",
-  "generated_at_utc": "2026-09-11T11:39:24.519265+00:00",
-  "generated_at_taipei": "2026-09-11T19:39:24.519285+08:00",
+  "generated_at_utc": "2026-09-11T14:13:48.796472+00:00",
+  "generated_at_taipei": "2026-09-11T22:13:48.796491+08:00",
   "status": "PASS",
   "missing_required_files": [],
   "pipeline_checks": {
     "global_outputs_generated": true,
     "taiwan_outputs_generated": true,
     "causal_queue_rebuilt_this_run": true,
+    "reverse_discovery_rebuilt_this_run": true,
     "structural_matches_rebuilt_this_run": true,
     "graph_audit_rebuilt_this_run": true,
     "causal_taxonomy_snapshot_present": true,
@@ -22,7 +23,7 @@
     "core_risk_evidence_ready": true
   },
   "global": {
-    "scanned_count": 98,
+    "scanned_count": 97,
     "theme_count": 40,
     "latest_price_date": "2026-09-10",
     "earliest_price_date": "2026-09-10"
@@ -39,65 +40,69 @@
     "benchmark": "^TWII"
   },
   "causal_engine": {
-    "engine": "DYNAMIC_CAUSAL_TRANSMISSION_V2_6",
-    "research_queue_count": 18,
-    "structural_match_count": 43,
+    "engine": "DYNAMIC_CAUSAL_TRANSMISSION_V2_6_1",
+    "research_queue_count": 22,
+    "reverse_discovery_candidate_count": 18,
+    "reverse_discovery_driver_count": 14,
+    "structural_match_count": 58,
     "driver_activation_input_present": true,
     "active_research_validated_matches": 0,
     "price_can_create_causality": false,
     "broad_industry_causal_fallback": false,
     "decision_eligible_by_scanner": false,
-    "rule": "Price nominates research; it cannot activate a causal driver or create a structural edge. Structural exposure and dynamic driver activation are separate. Final investment decisions remain downstream."
+    "rule": "Global price structure and Taiwan price anomalies may nominate research; neither can activate a causal driver. Taiwan reverse discovery may only use pre-existing structural edges. Exact-driver evidence, local-catalyst alternatives, and downstream policy remain separate before any investment decision."
   },
   "known_model_risks": [
     "Dynamic driver research can hallucinate or become stale; activation requires explicit evidence and timestamping.",
     "Structural exposure graph can drift as customer/product mixes change; edges have review/provenance fields.",
-    "Price-derived global strength, Taiwan reaction and breadth are correlated; v2.6 does not combine them into a trade score.",
+    "Price-derived global strength, Taiwan reaction and breadth are correlated; v2.6.1 does not combine them into an expected-return score.",
+    "Taiwan reverse discovery can invite post-hoc storytelling; every nominee is constrained to a pre-existing edge and requires a local-catalyst counter-check.",
+    "Transmission-gap proxy is research prioritization only; it is not arbitrage, a probability, or a trade signal.",
     "Candidate funnels can create confirmation bias; structural matches are built from the full Taiwan scan, not only top candidates.",
-    "A company may have multiple simultaneous drivers or offsets; v2.5 preserves driver-level rows and polarity."
+    "A company may have multiple simultaneous drivers or offsets; driver-level rows and polarity are preserved."
   ],
   "authoritative_files": [
     {
       "name": "risk_regime.json",
       "relative_path": "output/risk_regime.json",
       "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/risk_regime.json",
-      "sha256": "a79d5a2d429d925aa550049f4e38eb30ff36e25beb29dab0664cd66b485bcc02",
-      "bytes": 2409
+      "sha256": "c1a121431e70d28e249b4b7a1bbf9a51c0c29863eefe985f6951d1e88c22e4d2",
+      "bytes": 2408
     },
     {
       "name": "market_snapshot.csv",
       "relative_path": "output/market_snapshot.csv",
       "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/market_snapshot.csv",
-      "sha256": "f728ed0e03025000df6d0e2d472f848b5cf93c8fb5db967d43e031a9d381bc1f",
-      "bytes": 68909
+      "sha256": "cc23180d701e860260996ebcdf2ed913ca9ac3982be08c19f2a2d5f65120e535",
+      "bytes": 68351
     },
     {
       "name": "theme_breadth.csv",
       "relative_path": "output/theme_breadth.csv",
       "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/theme_breadth.csv",
-      "sha256": "e423e8421ac7ed4d3befa3427843b83eb1b3686ddc9ac74dbd8221a6a4d7a99c",
-      "bytes": 4974
+      "sha256": "16dc0ffadea3ff66d324f75b1787f4c6522ce5306556ecf4bf37e4cb467d6a36",
+      "bytes": 4973
     },
     {
       "name": "leader_registry.csv",
       "relative_path": "output/leader_registry.csv",
       "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/leader_registry.csv",
-      "sha256": "af5d104ce1dc77e1d185f34edf2be23a2de5636fc21749caebfdb59c0fbd05cb",
-      "bytes": 19316
+      "sha256": "24ed457656180d97bac7ba2cf1298029450ff6cd423387f9be0e9122d144cb23",
+      "bytes": 19154
     },
     {
       "name": "feature_history.csv",
       "relative_path": "output/feature_history.csv",
       "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/feature_history.csv",
-      "sha256": "14f32a510585daf0b9f275e1bf9cdc69642e13cafac68a7784fd730b2e90763d",
-      "bytes": 263660
+      "sha256": "92f9ecded9e27336f496424eaf2e92b0e3876e3fb3dfaffcf586e49bf559f97d",
+      "bytes": 263674
     },
     {
       "name": "market_snapshot.json",
       "relative_path": "output/market_snapshot.json",
       "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/market_snapshot.json",
-      "sha256": "43d0259790aa734462d73cda48e786b60048a2646c36e0f0022489c9801dc768",
-      "bytes": 2208592
+      "sha256": "c8f5dcaefb26e1a351c012d905185272e42026791655ed0f2510c6a5ffcd7d82",
+      "bytes": 2299475
     },
     {
       "name": "taiwan_candidates.csv",
@@ -131,21 +136,28 @@
       "name": "causal_research_queue.csv",
       "relative_path": "output/causal_research_queue.csv",
       "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/causal_research_queue.csv",
-      "sha256": "c51638dd6525019dfe6cf5f910568f6b42db805f2257b102a468b9545fc38aa7",
-      "bytes": 11173
+      "sha256": "74445271c37f198cd1c0e0ae325b332cb565b9efc9b0c75c6a6a4fe0dc97ef66",
+      "bytes": 21553
+    },
+    {
+      "name": "reverse_transmission_candidates.csv",
+      "relative_path": "output/reverse_transmission_candidates.csv",
+      "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/reverse_transmission_candidates.csv",
+      "sha256": "00e05eccbe6b72049fca8372c8fc6fc703f8df9f6b64c9177d4b99fb8cf6b063",
+      "bytes": 14141
     },
     {
       "name": "structural_matches.csv",
       "relative_path": "output/structural_matches.csv",
       "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/structural_matches.csv",
-      "sha256": "7b340bef6dd3f1232a6172f5aadd5e171b9ea948567667bf4556bbb12b2e6883",
-      "bytes": 34755
+      "sha256": "356390f9c343502129ed4664b2ee58ddae0ef5c380c064d3259c8152e468de38",
+      "bytes": 44691
     },
     {
       "name": "causal_graph_audit.csv",
       "relative_path": "output/causal_graph_audit.csv",
       "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/causal_graph_audit.csv",
-      "sha256": "ad266e6c93b07ec6ec09e34b2cb67abfab6969fdacf2b1820bc32ba738c702aa",
+      "sha256": "f2c3480de08c1b1dd9a5a342f105364bcc9c9dcfa7992300cad87dc1758ab668",
       "bytes": 23551
     },
     {
@@ -165,7 +177,7 @@
   ],
   "hard_gate": {
     "instruction": "Research agents must read the exact canonical_manifest_raw_url first. If status is not PASS, repository/branch/schema identity mismatches, pipeline_checks are not all true, required files are missing, or freshness fails: DATA ACCESS FAILED / DATA QUALITY WARNING and STOP decision inference.",
-    "causal_rule": "Do not infer an active driver from price alone. causal_research_queue.csv contains unresolved research tasks. structural_matches.csv is not a buy list and is not causally activated unless external research validates the driver.",
+    "causal_rule": "Do not infer an active driver from price alone. causal_research_queue.csv contains unresolved research tasks from global-first and Taiwan-reverse nominations. reverse_transmission_candidates.csv is a research-priority surface, not a buy list. structural_matches.csv is not causally activated unless external research validates the driver.",
     "do_not_substitute": "Do not substitute similarly named repositories, Streamlit tables, search snippets, or external prices for scanner outputs."
   }
 }
