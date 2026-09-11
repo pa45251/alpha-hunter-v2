@@ -1,13 +1,14 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Iterable
 
 import numpy as np
 import pandas as pd
 
 from causal_engine import TIER_WEIGHT, theme_strength
 
+
+UNMAPPED_DRIVER_ID = "UNMAPPED_OPPORTUNITY"
 
 REVERSE_OUTPUT_COLUMNS = [
     "run_id",
@@ -50,13 +51,15 @@ REVERSE_OUTPUT_COLUMNS = [
 class ReverseDiscoveryConfig:
     """Research-only Taiwan-first discovery configuration.
 
-    These thresholds nominate work for causal research. They are not entry thresholds,
-    expected-return estimates, or frozen V2 decision parameters.
+    Thresholds nominate research only. They are not entry thresholds, expected-return
+    estimates, or frozen V2 decision parameters.
     """
 
     anomaly_percentile_gate: float = 0.85
+    unmapped_anomaly_percentile_gate: float = 0.985
     linkage_confidence_gate: float = 0.55
     max_candidates: int = 160
+    max_unmapped_candidates: int = 20
     max_driver_nominees: int = 5
     max_queue_rows: int = 80
 
@@ -72,6 +75,36 @@ def _rank01(series: pd.Series) -> pd.Series:
     return x.rank(pct=True, method="average").fillna(0.0).astype(float)
 
 
+def _empty_reverse_candidates() -> pd.DataFrame:
+    return pd.DataFrame(columns=[c for c in REVERSE_OUTPUT_COLUMNS if c != "run_id"])
+
+
+def _prepare_taiwan_features(taiwan_stocks: pd.DataFrame) -> pd.DataFrame:
+    st = taiwan_stocks.copy()
+    st["code"] = st["code"].map(_normalize_code)
+    for col in (
+        "taiwan_candidate_score_v1",
+        "taiwan_early_score_v2",
+        "rs_20d_vs_bench",
+        "acceleration",
+        "bias20",
+    ):
+        if col not in st.columns:
+            st[col] = np.nan
+    if "reaction_state" not in st.columns:
+        st["reaction_state"] = "UNKNOWN"
+
+    st["taiwan_candidate_percentile"] = _rank01(st["taiwan_candidate_score_v1"])
+    st["taiwan_early_percentile"] = _rank01(st["taiwan_early_score_v2"])
+    st["taiwan_rs20_percentile"] = _rank01(st["rs_20d_vs_bench"])
+    st["taiwan_acceleration_percentile"] = _rank01(st["acceleration"])
+    positive_bias = pd.to_numeric(st["bias20"], errors="coerce").clip(lower=0)
+    st["taiwan_positive_bias_percentile"] = _rank01(positive_bias)
+    st["taiwan_anomaly_score"] = st[["taiwan_candidate_percentile", "taiwan_early_percentile"]].max(axis=1)
+    st["taiwan_price_reaction_percentile"] = st[["taiwan_rs20_percentile", "taiwan_positive_bias_percentile"]].max(axis=1)
+    return st
+
+
 def _top_global_peers(global_stocks: pd.DataFrame, theme: str, n: int = 5) -> str:
     if global_stocks is None or global_stocks.empty or "theme" not in global_stocks.columns:
         return ""
@@ -80,22 +113,73 @@ def _top_global_peers(global_stocks: pd.DataFrame, theme: str, n: int = 5) -> st
         return ""
     if "leader_score_v1" in g.columns:
         g = g.sort_values("leader_score_v1", ascending=False)
-    g = g.head(n)
     rows: list[str] = []
-    for r in g.itertuples():
+    for r in g.head(n).itertuples():
         ticker = str(getattr(r, "ticker", ""))
         state = str(getattr(r, "raw_leader_state", getattr(r, "state", "")))
-        rs20 = getattr(r, "rs_20d_vs_bench", np.nan)
         try:
-            rs = f"{float(rs20):.3f}"
+            rs20 = f"{float(getattr(r, 'rs_20d_vs_bench', np.nan)):.3f}"
         except (TypeError, ValueError):
-            rs = "nan"
-        rows.append(f"{ticker}:{state}:RS20={rs}")
+            rs20 = "nan"
+        rows.append(f"{ticker}:{state}:RS20={rs20}")
     return "; ".join(rows)
 
 
-def _empty_reverse_candidates() -> pd.DataFrame:
-    return pd.DataFrame(columns=[c for c in REVERSE_OUTPUT_COLUMNS if c != "run_id"])
+def _eligible_graph(exposure_graph: pd.DataFrame, cfg: ReverseDiscoveryConfig) -> tuple[pd.DataFrame, set[str]]:
+    if exposure_graph is None or exposure_graph.empty:
+        return pd.DataFrame(), set()
+    eg = exposure_graph.copy()
+    if "enabled" in eg.columns:
+        eg = eg[eg["enabled"].fillna(0).astype(int) == 1]
+    eg["taiwan_code"] = eg["taiwan_code"].map(_normalize_code)
+    eg["linkage_tier"] = eg["linkage_tier"].astype(str).str.upper()
+    eg = eg[eg["linkage_tier"] != "SPECULATIVE"].copy()
+    all_mapped_codes = set(eg["taiwan_code"].dropna().astype(str))
+    eg["linkage_confidence"] = pd.to_numeric(eg["linkage_confidence"], errors="coerce").fillna(0.0)
+    eg = eg[eg["linkage_confidence"] >= cfg.linkage_confidence_gate].copy()
+    if not eg.empty:
+        eg["tier_weight"] = eg["linkage_tier"].map(TIER_WEIGHT).fillna(0.0)
+        eg["structural_linkage_score"] = eg["tier_weight"] * eg["linkage_confidence"]
+    return eg, all_mapped_codes
+
+
+def _build_unmapped(st: pd.DataFrame, mapped_codes: set[str], cfg: ReverseDiscoveryConfig) -> pd.DataFrame:
+    reaction = st["reaction_state"].fillna("UNKNOWN").astype(str)
+    x = st[
+        (st["taiwan_anomaly_score"] >= cfg.unmapped_anomaly_percentile_gate)
+        & reaction.ne("BROKEN")
+        & ~st["code"].isin(mapped_codes)
+    ].copy()
+    if x.empty:
+        return _empty_reverse_candidates()
+
+    x = x.sort_values("taiwan_anomaly_score", ascending=False).head(cfg.max_unmapped_candidates)
+    x["reverse_research_priority"] = x["taiwan_anomaly_score"]
+    x["driver_id"] = UNMAPPED_DRIVER_ID
+    x["driver_label"] = "Unmapped opportunity — research WHY"
+    x["driver_scope"] = "No pre-existing causal edge; determine the economic driver before any thesis is allowed."
+    x["global_theme"] = "UNMAPPED"
+    x["global_theme_strength_v2"] = np.nan
+    x["global_latest_price_date"] = ""
+    x["global_peer_evidence"] = ""
+    x["taiwan_code"] = x["code"]
+    x["economic_role"] = "UNKNOWN"
+    x["linkage_tier"] = "UNMAPPED"
+    x["linkage_confidence"] = 0.0
+    x["structural_linkage_score"] = 0.0
+    x["global_peer_vs_taiwan_gap"] = np.nan
+    x["transmission_gap_proxy"] = np.nan
+    x["pricing_state"] = "UNMAPPED_WHY"
+    x["local_catalyst_status"] = "UNRESOLVED_RESEARCH_REQUIRED"
+    x["local_catalyst_check_required"] = True
+    x["activation_state"] = "RESEARCH_WHY_REQUIRED"
+    x["price_cannot_activate_driver"] = True
+    x["decision_eligible"] = False
+    x["why_not_decision_eligible"] = (
+        "Strong Taiwan anomaly has no pre-existing causal edge. Research WHY first; price cannot create a driver."
+    )
+    cols = [c for c in REVERSE_OUTPUT_COLUMNS if c != "run_id" and c in x.columns]
+    return x[cols]
 
 
 def build_reverse_candidates(
@@ -105,113 +189,88 @@ def build_reverse_candidates(
     taxonomy: pd.DataFrame,
     cfg: ReverseDiscoveryConfig = ReverseDiscoveryConfig(),
 ) -> pd.DataFrame:
-    """Nominate Taiwan-first causal research candidates.
+    """Nominate Taiwan-first research without allowing price to create causality.
 
-    Taiwan price action is allowed to ask *why* a stock is moving, but it cannot activate
-    any causal driver. Candidate drivers come only from the pre-existing structural graph;
-    the scanner never invents a company-driver relationship from co-movement.
+    Mapped anomalies may nominate only pre-existing structural drivers. Extremely strong
+    anomalies with no pre-existing edge are retained as UNMAPPED_OPPORTUNITY / WHY? rows,
+    but they never enter the driver activation queue until a real edge is researched and added.
     """
-    if taiwan_stocks is None or taiwan_stocks.empty or exposure_graph is None or exposure_graph.empty:
+    if taiwan_stocks is None or taiwan_stocks.empty or "code" not in taiwan_stocks.columns:
         return _empty_reverse_candidates()
 
-    st = taiwan_stocks.copy()
-    if "code" not in st.columns:
+    st = _prepare_taiwan_features(taiwan_stocks)
+    eg, all_mapped_codes = _eligible_graph(exposure_graph, cfg)
+    mapped = _empty_reverse_candidates()
+
+    if not eg.empty:
+        m = eg.merge(st, left_on="taiwan_code", right_on="code", how="inner", suffixes=("_edge", ""))
+        if not m.empty:
+            if taxonomy is not None and not taxonomy.empty and "driver_id" in taxonomy.columns:
+                tax_cols = [
+                    c for c in [
+                        "driver_id", "driver_label", "driver_scope",
+                        "activation_evidence_required", "counter_evidence_required",
+                    ] if c in taxonomy.columns
+                ]
+                tax = taxonomy[tax_cols].drop_duplicates("driver_id")
+                m = m.merge(tax, on="driver_id", how="left", suffixes=("", "_taxonomy"))
+                for col in ("driver_label", "driver_scope"):
+                    tcol = f"{col}_taxonomy"
+                    if tcol in m.columns:
+                        if col not in m.columns:
+                            m[col] = m[tcol]
+                        else:
+                            m[col] = m[col].where(m[col].notna(), m[tcol])
+
+            ts = theme_strength(global_stocks) if global_stocks is not None and not global_stocks.empty else pd.DataFrame()
+            if not ts.empty:
+                m = m.merge(
+                    ts[["global_theme", "global_theme_strength_v2", "global_latest_price_date"]],
+                    on="global_theme",
+                    how="left",
+                )
+            else:
+                m["global_theme_strength_v2"] = np.nan
+                m["global_latest_price_date"] = ""
+
+            m["global_theme_strength_v2"] = pd.to_numeric(m["global_theme_strength_v2"], errors="coerce").fillna(0.0)
+            peer_map = {
+                str(theme): _top_global_peers(global_stocks, str(theme))
+                for theme in m["global_theme"].dropna().astype(str).unique()
+            }
+            m["global_peer_evidence"] = m["global_theme"].astype(str).map(peer_map).fillna("")
+
+            reaction = m["reaction_state"].fillna("UNKNOWN").astype(str)
+            m = m[(m["taiwan_anomaly_score"] >= cfg.anomaly_percentile_gate) & reaction.ne("BROKEN")].copy()
+            if not m.empty:
+                m["global_peer_vs_taiwan_gap"] = m["global_theme_strength_v2"] - m["taiwan_price_reaction_percentile"]
+                m["transmission_gap_proxy"] = m["global_peer_vs_taiwan_gap"] * m["structural_linkage_score"]
+                extension_penalty = np.where(m["reaction_state"].astype(str).eq("EXTENDED"), 0.72, 1.0)
+                m["reverse_research_priority"] = (
+                    0.45 * m["taiwan_anomaly_score"]
+                    + 0.30 * m["structural_linkage_score"]
+                    + 0.25 * m["global_theme_strength_v2"]
+                ) * extension_penalty
+                m["pricing_state"] = "MIXED_GAP"
+                m.loc[m["transmission_gap_proxy"] >= 0.15, "pricing_state"] = "POTENTIAL_UNDERREACTION"
+                m.loc[m["transmission_gap_proxy"] <= -0.15, "pricing_state"] = "POSSIBLY_PRICED_IN"
+                m.loc[m["reaction_state"].astype(str).eq("EXTENDED"), "pricing_state"] = "EXTENDED_REVIEW"
+                m["local_catalyst_status"] = "UNRESOLVED_RESEARCH_REQUIRED"
+                m["local_catalyst_check_required"] = True
+                m["activation_state"] = "UNRESOLVED_RESEARCH_REQUIRED"
+                m["price_cannot_activate_driver"] = True
+                m["decision_eligible"] = False
+                m["why_not_decision_eligible"] = (
+                    "Taiwan price anomaly only nominated research. Exact driver and local-catalyst alternatives require external validation."
+                )
+                cols = [c for c in REVERSE_OUTPUT_COLUMNS if c != "run_id" and c in m.columns]
+                mapped = m.sort_values("reverse_research_priority", ascending=False)[cols]
+
+    unmapped = _build_unmapped(st, all_mapped_codes, cfg)
+    out = pd.concat([mapped, unmapped], ignore_index=True, sort=False)
+    if out.empty:
         return _empty_reverse_candidates()
-    st["code"] = st["code"].map(_normalize_code)
-
-    for col in ("taiwan_candidate_score_v1", "taiwan_early_score_v2", "rs_20d_vs_bench", "acceleration", "bias20"):
-        if col not in st.columns:
-            st[col] = np.nan
-
-    st["taiwan_candidate_percentile"] = _rank01(st["taiwan_candidate_score_v1"])
-    st["taiwan_early_percentile"] = _rank01(st["taiwan_early_score_v2"])
-    st["taiwan_rs20_percentile"] = _rank01(st["rs_20d_vs_bench"])
-    st["taiwan_acceleration_percentile"] = _rank01(st["acceleration"])
-    st["taiwan_positive_bias_percentile"] = _rank01(pd.to_numeric(st["bias20"], errors="coerce").clip(lower=0))
-    st["taiwan_anomaly_score"] = st[["taiwan_candidate_percentile", "taiwan_early_percentile"]].max(axis=1)
-    st["taiwan_price_reaction_percentile"] = st[["taiwan_rs20_percentile", "taiwan_positive_bias_percentile"]].max(axis=1)
-
-    eg = exposure_graph.copy()
-    if "enabled" in eg.columns:
-        eg = eg[eg["enabled"].fillna(0).astype(int) == 1]
-    eg["taiwan_code"] = eg["taiwan_code"].map(_normalize_code)
-    eg["linkage_tier"] = eg["linkage_tier"].astype(str).str.upper()
-    eg["linkage_confidence"] = pd.to_numeric(eg["linkage_confidence"], errors="coerce").fillna(0.0)
-    eg = eg[(eg["linkage_tier"] != "SPECULATIVE") & (eg["linkage_confidence"] >= cfg.linkage_confidence_gate)].copy()
-    if eg.empty:
-        return _empty_reverse_candidates()
-    eg["tier_weight"] = eg["linkage_tier"].map(TIER_WEIGHT).fillna(0.0)
-    eg["structural_linkage_score"] = eg["tier_weight"] * eg["linkage_confidence"]
-
-    m = eg.merge(st, left_on="taiwan_code", right_on="code", how="inner", suffixes=("_edge", ""))
-    if m.empty:
-        return _empty_reverse_candidates()
-
-    if taxonomy is not None and not taxonomy.empty and "driver_id" in taxonomy.columns:
-        tax_cols = [
-            c for c in [
-                "driver_id", "driver_label", "driver_scope", "activation_evidence_required",
-                "counter_evidence_required",
-            ] if c in taxonomy.columns
-        ]
-        tax = taxonomy[tax_cols].drop_duplicates("driver_id")
-        m = m.merge(tax, on="driver_id", how="left", suffixes=("", "_taxonomy"))
-        for col in ("driver_label", "driver_scope"):
-            tax_col = f"{col}_taxonomy"
-            if tax_col in m.columns:
-                if col not in m.columns:
-                    m[col] = m[tax_col]
-                else:
-                    m[col] = m[col].where(m[col].notna(), m[tax_col])
-
-    ts = theme_strength(global_stocks) if global_stocks is not None and not global_stocks.empty else pd.DataFrame()
-    if not ts.empty:
-        m = m.merge(
-            ts[["global_theme", "global_theme_strength_v2", "global_latest_price_date"]],
-            on="global_theme",
-            how="left",
-        )
-    else:
-        m["global_theme_strength_v2"] = np.nan
-        m["global_latest_price_date"] = ""
-
-    m["global_theme_strength_v2"] = pd.to_numeric(m["global_theme_strength_v2"], errors="coerce").fillna(0.0)
-    peer_map = {
-        str(theme): _top_global_peers(global_stocks, str(theme))
-        for theme in m["global_theme"].dropna().astype(str).unique()
-    }
-    m["global_peer_evidence"] = m["global_theme"].astype(str).map(peer_map).fillna("")
-
-    reaction = m.get("reaction_state", pd.Series("UNKNOWN", index=m.index)).fillna("UNKNOWN").astype(str)
-    m = m[(m["taiwan_anomaly_score"] >= cfg.anomaly_percentile_gate) & reaction.ne("BROKEN")].copy()
-    if m.empty:
-        return _empty_reverse_candidates()
-
-    m["global_peer_vs_taiwan_gap"] = m["global_theme_strength_v2"] - m["taiwan_price_reaction_percentile"]
-    m["transmission_gap_proxy"] = m["global_peer_vs_taiwan_gap"] * m["structural_linkage_score"]
-    extension_penalty = np.where(m.get("reaction_state", "UNKNOWN").astype(str).eq("EXTENDED"), 0.72, 1.0)
-    m["reverse_research_priority"] = (
-        0.45 * m["taiwan_anomaly_score"]
-        + 0.30 * m["structural_linkage_score"]
-        + 0.25 * m["global_theme_strength_v2"]
-    ) * extension_penalty
-
-    m["pricing_state"] = "MIXED_GAP"
-    m.loc[m["transmission_gap_proxy"] >= 0.15, "pricing_state"] = "POTENTIAL_UNDERREACTION"
-    m.loc[m["transmission_gap_proxy"] <= -0.15, "pricing_state"] = "POSSIBLY_PRICED_IN"
-    m.loc[m.get("reaction_state", "UNKNOWN").astype(str).eq("EXTENDED"), "pricing_state"] = "EXTENDED_REVIEW"
-
-    m["local_catalyst_status"] = "UNRESOLVED_RESEARCH_REQUIRED"
-    m["local_catalyst_check_required"] = True
-    m["activation_state"] = "UNRESOLVED_RESEARCH_REQUIRED"
-    m["price_cannot_activate_driver"] = True
-    m["decision_eligible"] = False
-    m["why_not_decision_eligible"] = (
-        "Taiwan price anomaly only nominated research. Exact driver and local-catalyst alternatives require external validation."
-    )
-
-    cols = [c for c in REVERSE_OUTPUT_COLUMNS if c != "run_id" and c in m.columns]
-    return m.sort_values("reverse_research_priority", ascending=False)[cols].head(cfg.max_candidates)
+    return out.sort_values("reverse_research_priority", ascending=False).head(cfg.max_candidates).reset_index(drop=True)
 
 
 def build_reverse_driver_queue(
@@ -219,8 +278,17 @@ def build_reverse_driver_queue(
     taxonomy: pd.DataFrame,
     cfg: ReverseDiscoveryConfig = ReverseDiscoveryConfig(),
 ) -> pd.DataFrame:
-    """Aggregate Taiwan anomalies into canonical driver research tasks."""
+    """Aggregate mapped Taiwan anomalies into canonical driver research tasks.
+
+    UNMAPPED opportunities are intentionally excluded: first research WHY and create a real
+    structural edge; never let price manufacture a canonical driver id.
+    """
     if reverse_candidates is None or reverse_candidates.empty:
+        return pd.DataFrame()
+    reverse_candidates = reverse_candidates[
+        reverse_candidates["driver_id"].astype(str) != UNMAPPED_DRIVER_ID
+    ].copy()
+    if reverse_candidates.empty:
         return pd.DataFrame()
 
     tax = taxonomy.drop_duplicates("driver_id").set_index("driver_id") if taxonomy is not None and not taxonomy.empty else pd.DataFrame()
@@ -307,8 +375,6 @@ def merge_research_queues(
             base["local_catalyst_check_required"] = True
             base["transmission_gap_proxy_max"] = float(pd.to_numeric(reverse_rows["transmission_gap_proxy_max"], errors="coerce").max())
             base["taiwan_reverse_anomaly_max"] = float(pd.to_numeric(reverse_rows["taiwan_reverse_anomaly_max"], errors="coerce").max())
-            # Preserve the explicit local-catalyst counter-evidence requirement even when
-            # the global-first row had the higher research priority.
             reverse_counter = str(rr.get("counter_evidence_required", ""))
             if reverse_counter:
                 base["counter_evidence_required"] = reverse_counter
