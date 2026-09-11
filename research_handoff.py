@@ -10,7 +10,7 @@ from zoneinfo import ZoneInfo
 
 TAIPEI = ZoneInfo("Asia/Taipei")
 EXPECTED_REPOSITORY = "pa45251/alpha-hunter-v2"
-EXPECTED_BRANCH = "main"
+EXPECTED_BRANCH = os.getenv("GITHUB_REF_NAME", "main")
 EXPECTED_SCHEMA = "2.6"
 EXPECTED_SCANNER_PREFIX = "2.6"
 

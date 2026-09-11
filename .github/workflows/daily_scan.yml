@@ -52,6 +52,10 @@ jobs:
           if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ inputs.force }}" = "true" ]; then
             force_arg="--force"
           fi
+          # An older schema without sealed risk must be rebuilt during rollout.
+          if ! python -c 'import json; from pathlib import Path; m=json.loads(Path("output/manifest.json").read_text()); assert any(f.get("name")=="risk_regime.json" for f in m.get("authoritative_files", []))'; then
+            force_arg="--force"
+          fi
           python automation_guard_v4.py --mode scheduled-scan $force_arg
 
       - name: Install dependencies

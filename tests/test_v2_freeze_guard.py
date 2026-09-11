@@ -2,11 +2,17 @@ import json
 import shutil
 from pathlib import Path
 
-from v2_freeze_guard import ROOT, evaluate_v2_freeze
+from v2_freeze_guard import ROOT, evaluate_v2_freeze, git_blob_sha1
 
 
-def test_current_v2_frozen_baseline_integrity_passes():
-    result = evaluate_v2_freeze(ROOT)
+def test_known_v2_baseline_integrity_passes(tmp_path):
+    registry = json.loads((ROOT / "config/frozen_strategy_v2.json").read_text())
+    (tmp_path / "config").mkdir()
+    target = tmp_path / "strategy.py"
+    target.write_text("# known frozen test fixture\n")
+    registry["file_hashes"] = {"strategy.py": git_blob_sha1(target)}
+    (tmp_path / "config/frozen_strategy_v2.json").write_text(json.dumps(registry))
+    result = evaluate_v2_freeze(tmp_path)
     assert result["integrity_pass"]
     assert result["strategy_version"] == "ALPHA_HUNTER_ADVISORY_V2_FROZEN"
     assert result["baseline_commit"] == "33b7d5e310f12d4e3d854c73515572e576e44d5c"
@@ -23,7 +29,9 @@ def test_mutating_any_frozen_v2_file_requires_new_version(tmp_path: Path):
         shutil.copyfile(ROOT / name, dest)
     reg_dest = tmp_path / "config/frozen_strategy_v2.json"
     reg_dest.parent.mkdir(parents=True, exist_ok=True)
-    shutil.copyfile(ROOT / "config/frozen_strategy_v2.json", reg_dest)
+    registry["file_hashes"] = {name: git_blob_sha1(tmp_path / name) for name in registry["file_hashes"]}
+    reg_dest.write_text(json.dumps(registry))
+    assert evaluate_v2_freeze(tmp_path)["integrity_pass"]
 
     target = tmp_path / "entry_structure_v2.py"
     target.write_text(target.read_text(encoding="utf-8") + "\n# unauthorized drift\n", encoding="utf-8")

@@ -41,12 +41,16 @@ def load_histories(tickers: list[str], period: str = '6mo') -> dict[str, pd.Data
     saved = payload.get('entry_histories')
     if not isinstance(saved, dict):
         raise RuntimeError('CANONICAL_ENTRY_HISTORY_MISSING_RESCAN_REQUIRED')
+    cutoff = payload.get('canonical_closed_price_date')
+    if not cutoff:
+        raise RuntimeError('CANONICAL_ENTRY_CLOSED_DATE_MISSING')
     result = {}
     for ticker in tickers:
         item = saved.get(ticker)
         if item:
             frame = pd.DataFrame(item['data'], columns=item['columns'], index=pd.to_datetime(item['index']))
-            result[ticker] = frame
+            if not frame.empty and str(frame.index[-1].date()) == cutoff:
+                result[ticker] = frame
     return result
 
 

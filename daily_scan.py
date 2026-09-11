@@ -271,6 +271,7 @@ if __name__ == "__main__":
     snapshot_path = OUT / "market_snapshot.json"
     snapshot = json.loads(snapshot_path.read_text(encoding="utf-8"))
     snapshot["run_id"] = run_id
+    snapshot["canonical_closed_price_date"] = str(tw["stocks"]["last_price_date"].max())
     needed = set(structural.get("taiwan_ticker", structural.get("ticker", pd.Series(dtype=str))).dropna().astype(str))
     # Structural matches use taiwan_ticker; include nominated candidates as well.
     needed.update(tw["candidates"]["ticker"].astype(str))

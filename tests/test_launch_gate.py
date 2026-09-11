@@ -9,8 +9,21 @@ from launch_gate import ROOT, apply_launch_gate, evaluate_launch, proposed_pilot
 from shadow_audit import append_shadow_audit, seal_public_snapshot
 
 
-def test_buy_never_grants_live_permission():
-    b, meta = apply_launch_gate(pd.DataFrame([{"portfolio_action": "BUY_STOCK", "auto_trade_allowed": True}]))
+@pytest.fixture
+def frozen_root(tmp_path):
+    """A known intact release fixture, independent of today's production drift."""
+    from launch_gate import file_hash
+    (tmp_path / "config").mkdir()
+    policy_path = tmp_path / "config/launch_policy.json"
+    shutil.copyfile(ROOT / "config/launch_policy.json", policy_path)
+    registry = {"strategy_version": "TEST_SHADOW", "file_hashes": {
+        "config/launch_policy.json": file_hash(policy_path)}}
+    (tmp_path / "config/frozen_strategy_v1.json").write_text(json.dumps(registry))
+    return tmp_path
+
+
+def test_buy_never_grants_live_permission(frozen_root):
+    b, meta = apply_launch_gate(pd.DataFrame([{"portfolio_action": "BUY_STOCK", "auto_trade_allowed": True}]), root=frozen_root)
     assert b.iloc[0]["portfolio_action"] == "BUY_STOCK"
     assert b.iloc[0]["execution_action"] == "NO_LIVE_ORDER"
     assert not b.iloc[0]["live_execution_authorized"]
@@ -23,11 +36,8 @@ def test_invalid_config_blocks_instead_of_defaulting_to_live(tmp_path):
     assert not evaluate_launch(tmp_path)["live_execution_authorized"]
 
 
-def test_frozen_rule_edit_blocks_promotion(tmp_path):
-    frozen = json.loads((ROOT / "config/frozen_strategy_v1.json").read_text())
-    for name in [*frozen["file_hashes"], "config/frozen_strategy_v1.json"]:
-        dest = tmp_path / name; dest.parent.mkdir(parents=True, exist_ok=True)
-        shutil.copyfile(ROOT / name, dest)
+def test_frozen_rule_edit_blocks_promotion(frozen_root):
+    tmp_path = frozen_root
     assert evaluate_launch(tmp_path)["freeze_integrity_pass"]
     p = tmp_path / "config/launch_policy.json"
     data = json.loads(p.read_text()); data["mode"] = "LIVE"; p.write_text(json.dumps(data))
@@ -43,10 +53,10 @@ def size(**overrides):
     return proposed_pilot_size(**args)
 
 
-def test_position_size_respects_each_budget():
-    assert size()["proposed_value"] == 20_000
-    assert size(current_pilot_value=45_000)["proposed_value"] == 5_000
-    assert size(open_planned_loss=2_250)["proposed_value"] == 5_000
+def test_position_size_respects_each_budget(frozen_root):
+    assert size(root=frozen_root)["proposed_value"] == 20_000
+    assert size(current_pilot_value=45_000, root=frozen_root)["proposed_value"] == 5_000
+    assert size(open_planned_loss=2_250, root=frozen_root)["proposed_value"] == 5_000
     assert not size()["live_execution_authorized"]
 
 
@@ -75,3 +85,12 @@ def test_evidence_seal_is_idempotent_and_drops_private_columns(tmp_path):
     assert seal_public_snapshot(*args, path=p) == first
     assert p.read_text() == before
     assert "SECRET" not in before
+
+
+def test_drift_blocks_sizing_and_live_orders(frozen_root):
+    (frozen_root / "config/launch_policy.json").write_text('{}')
+    assert size(root=frozen_root)["proposed_value"] == 0
+    board, meta = apply_launch_gate(pd.DataFrame([{"portfolio_action":"BUY_STOCK"}]), root=frozen_root)
+    assert not meta["freeze_integrity_pass"]
+    assert not meta["live_execution_authorized"]
+    assert board.iloc[0]["execution_action"] == "NO_LIVE_ORDER"

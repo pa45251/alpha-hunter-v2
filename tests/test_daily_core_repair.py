@@ -76,7 +76,7 @@ def test_history_roundtrip_has_no_downstream_download(tmp_path, monkeypatch):
     monkeypatch.chdir(tmp_path)
     out=tmp_path/'output';out.mkdir()
     h=pd.DataFrame({'Close':[1.,2.], 'High':[1.5,2.5]},index=pd.to_datetime(['2026-09-09','2026-09-10']))
-    seal(out,'market_snapshot.json',{'run_id':'TODAY','entry_histories':ce.encode_histories({'XYZ.TW':h})})
+    seal(out,'market_snapshot.json',{'run_id':'TODAY','canonical_closed_price_date':'2026-09-10','entry_histories':ce.encode_histories({'XYZ.TW':h})})
     got=ce.load_histories(['XYZ.TW','MISSING'])
     pd.testing.assert_frame_equal(got['XYZ.TW'],h,check_like=True)
     assert 'MISSING' not in got
@@ -89,3 +89,12 @@ def test_daily_workflow_does_not_require_research_or_full_test_suite():
     assert 'python action_board_summary.py --refresh' in text
     assert 'git rebase' not in text
     assert 'python -m pytest -q\n' in Path('.github/workflows/pr_ci_v2.yml').read_text()
+
+
+def test_stale_instrument_history_is_unknown_not_a_current_entry(tmp_path, monkeypatch):
+    monkeypatch.chdir(tmp_path)
+    out=tmp_path/'output'; out.mkdir()
+    h=pd.DataFrame({'Close':[1.]}, index=pd.to_datetime(['2026-08-01']))
+    seal(out,'market_snapshot.json',{'run_id':'TODAY','canonical_closed_price_date':'2026-09-10',
+                                   'entry_histories':ce.encode_histories({'STALE.TW':h})})
+    assert ce.load_histories(['STALE.TW']) == {}
