@@ -139,7 +139,7 @@ No WATCH_ENTRY candidates.
 - System mapping counts: `{"SYSTEM_MAPPING_MISSING": 2, "SYSTEM_RISK_GROUP": 2, "SYSTEM_TICKER_EXPOSURE": 1}`
 - Portfolio-maintenance research lane: `PASS`
 - Maintenance drivers researched/targeted: `4/4`
-- Maintenance driver states (aggregate only): `{"UNKNOWN": 4}`
+- Maintenance driver states (aggregate only): `{"ACTIVE": 1, "UNKNOWN": 3}`
 - Maintenance targets truncated by safety cap: `0`
 - Optional user-thesis overlay: `NOT_CONFIGURED`
 - User/system disagreement count: `0`
