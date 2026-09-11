@@ -42,7 +42,7 @@ launch = packet.get("launch_layer") or {}
 lines = [
     "# Alpha Hunter — Action Board", "",
     f"- Run: `{run_id}`",
-    f"- Market session: `{regime.get('risk_snapshot_date', 'UNKNOWN')}`",
+    f"- Global risk session: `{regime.get('risk_snapshot_date', 'UNKNOWN')}`",
     f"- Risk regime: **{regime.get('regime', 'UNKNOWN')}**",
     f"- Causal evidence: `{activation.get('source', 'UNKNOWN')}`",
     "- Follow evidence-supported trends; use a valid entry; reduce risk when the thesis fails; otherwise WAIT / CASH.",

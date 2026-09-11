@@ -123,3 +123,10 @@ def test_market_workflows_do_not_read_personal_secrets():
         assert 'secrets.ALPHA_HUNTER_PORTFOLIO' not in source
         assert 'secrets.ALPHA_HUNTER_POSITION' not in source
         assert 'secrets.ALPHA_HUNTER_RISK_POLICY' not in source
+
+
+def test_nested_missing_evidence_is_valid_json_null():
+    from entry_plan_run_v2 import _json_safe
+    payload = {"all_plans": [{"global_confirmation": {"basket": float("nan"), "ratio": float("inf")}}]}
+    result = json.loads(json.dumps(_json_safe(payload), allow_nan=False))
+    assert result["all_plans"][0]["global_confirmation"] == {"basket": None, "ratio": None}
