@@ -1,12 +1,12 @@
 {
   "contract": "ALPHA_HUNTER_DECISION_PACKET",
   "decision_contract_version": "2.7.1",
-  "run_id": "20260911T193012+0800-1bcda699",
-  "generated_at": "2026-09-11T11:33:07.832974+00:00",
+  "run_id": "20260911T122401+0800-1e3f0c9d",
+  "generated_at": "2026-09-11T04:28:16.221483+00:00",
   "gate_first_score_second": true,
   "price_can_create_causality": false,
   "auto_trade_allowed": false,
-  "current_capability": "MARKET_OPPORTUNITY_ONLY",
+  "current_capability": "V2_GUARDED_DECISION_PLUS_PRIVATE_RISK_EXIT_PROSPECTIVE_SHADOW_VALIDATION",
   "missing_downstream_modules": [
     "COST_ADJUSTED_OUT_OF_SAMPLE_VALIDATION",
     "FORWARD_ACCEPTANCE_REVIEW"
@@ -16,7 +16,7 @@
   },
   "decision_focus": [],
   "entry_rule": "Only a PRE_CONFIRMATION/EARLY_CONFIRMATION -> CONFIRMING transition, or PULLBACK -> CONFIRMING recovery, can create an entry trigger. No fixed momentum threshold is invented.",
-  "rule": "No score can override causal/provenance/reaction gates. Canonical hashes/freshness are revalidated immediately before decisioning. Previous state must come from a strictly earlier Taiwan market session, so same-session reruns cannot consume triggers. Identical same-session shadow decisions are one prospective observation. Personal holdings never affect market decisions. Shadow outcomes can mature only from fully closed market sessions available by the evaluation cutoff. No brokerage/order execution exists and threshold tuning from prospective outcomes is forbidden.",
+  "rule": "No score can override causal/provenance/reaction gates. Canonical hashes/freshness are revalidated immediately before decisioning. Previous state must come from a strictly earlier Taiwan market session, so same-session reruns cannot consume triggers. Identical same-session shadow decisions are one prospective observation. Existing positions use the V2 BROKEN persistence guard. Shadow outcomes can mature only from fully closed market sessions available by the evaluation cutoff. No brokerage/order execution exists and threshold tuning from prospective outcomes is forbidden.",
   "state_lifecycle": {
     "contract": "ALPHA_HUNTER_DECISION_STATE_V2",
     "session_key": "TAIWAN_LAST_PRICE_DATE",
@@ -25,26 +25,26 @@
   },
   "decision_bridge": {
     "contract": "ALPHA_HUNTER_DECISION_BRIDGE_V2",
-    "public_lineage_id": "3d810b3943aef0147fd5b27a56524b16ff72977aed5b89e0644de7205439bd8f",
+    "public_lineage_id": "157c49cf6c62a54dbec3c0ca53839adc41ec2cb7731005b8cd0a618be7b102cd",
     "canonical_snapshot_revalidated_immediately_before_decision": true,
     "persisted_gate_reused_without_revalidation": false,
     "mixed_snapshot_allowed": false,
-    "public_evidence_hash_count": 6
+    "public_evidence_hash_count": 7
   },
   "snapshot_lineage_layer": {
     "contract": "ALPHA_HUNTER_SNAPSHOT_LINEAGE_V2",
-    "run_id": "20260911T193012+0800-1bcda699",
-    "manifest_sha256": "eae5451c02dc929cc46c969c5ada6938dc74f1d913d8ac38b92a44af18e38f86",
+    "run_id": "20260911T122401+0800-1e3f0c9d",
+    "manifest_sha256": "3101b7d6ce04a90ca8b4039d4809dc665de6ab8595bded934822257d27dcb7cd",
     "fresh_gate_status": "PASS",
     "persisted_gate_matches_current_files": true,
     "mixed_snapshot_allowed": false
   },
   "activation_layer": {
-    "source": "UNKNOWN_NO_CURRENT_RESEARCH",
-    "path": "output/no_validated_activation_for_this_snapshot.csv",
-    "same_snapshot_v3": false,
+    "source": "V3_AUTONOMOUS_RESEARCH",
+    "path": "output/driver_activation_v3.csv",
+    "same_snapshot_v3": true,
     "challenger_adjudicated": false,
-    "accepted_activation_rows": 0,
+    "accepted_activation_rows": 2,
     "active_driver_ids": [],
     "lineage_overwrite_enforced": true
   },
@@ -80,16 +80,70 @@
     ],
     "validation_evidence_status": "PENDING_ACCEPTANCE_REVIEW",
     "current_shadow_statistics_are_strategy_validation": false,
-    "sealed_snapshot_id": "32b417c3111349d9936c2b01c336a726531f8b8b1bf6bf7406cfbff9c128b49a"
+    "sealed_snapshot_id": "26217016d963102577d1e57d8002b2d0558ec0059d8c86658b4aeb1515694bb8"
+  },
+  "risk_layer": {
+    "risk_inputs_valid": true,
+    "risk_blockers": [],
+    "risk_policy_version": "1.1",
+    "auto_order_execution": false,
+    "privacy_rule": "Private holdings/balances/weights/risk groups and derived metrics are consumed in-memory only and never committed or printed."
+  },
+  "existing_position_layer": {
+    "position_inputs_valid": true,
+    "position_blockers": [],
+    "position_action_counts": {
+      "REVIEW_RESEARCH": 5
+    },
+    "system_mapping_counts": {
+      "SYSTEM_MAPPING_MISSING": 2,
+      "SYSTEM_RISK_GROUP": 2,
+      "SYSTEM_TICKER_EXPOSURE": 1
+    },
+    "user_thesis_overlay_status": "NOT_CONFIGURED",
+    "user_thesis_overlay_applied_count": 0,
+    "user_thesis_disagreement_count": 0,
+    "system_thesis_primary": true,
+    "existing_position_contract": "EXISTING_POSITION_V2",
+    "broken_requires_persistence_confirmation": true,
+    "private_position_details_committed": false,
+    "privacy_rule": "Per-position actions, tickers, balances, weights and P/L stay in-memory and are never committed or logged.",
+    "maintenance_research": {
+      "maintenance_lane_status": "PASS",
+      "maintenance_target_count": 4,
+      "maintenance_validated_count": 4,
+      "maintenance_target_truncated_count": 0,
+      "maintenance_private_artifact_committed": false,
+      "maintenance_privacy_rule": "Maintenance target/result artifacts remain ephemeral; only aggregate metadata may enter public decision_packet.json.",
+      "maintenance_state_counts": {
+        "UNKNOWN": 4
+      }
+    },
+    "legacy_frozen_v1_position_action_counts": {
+      "REVIEW_RESEARCH": 5
+    },
+    "broken_exit_guard": "ACTIVE_DRIVER_PLUS_BROKEN_REQUIRES_PERSISTENCE_CONFIRMATION",
+    "alias_output": {
+      "schema_version": "2.0",
+      "status": "READY",
+      "record_count": 5,
+      "contains_alias_level_actions": true,
+      "contains_tickers_names_balances_weights_or_pnl": false,
+      "alias_mapping_published": false,
+      "path": "output/position_alias_actions.json"
+    }
   },
   "shadow_validation_layer": {
     "validation_version": "2.0",
-    "matured_outcomes": 122,
+    "matured_outcomes": 0,
     "directional_scored_outcomes": 0,
     "directional_hit_rate": null,
     "execution_assumption": "NEXT_TRADING_SESSION_OPEN_AFTER_DECISION_DATE",
     "future_data_cutoff_enforced": true,
     "threshold_tuning_allowed": false
+  },
+  "portfolio_action_counts": {
+    "WATCH_RESEARCH": 43
   },
   "auto_order_execution": false
 }

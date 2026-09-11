@@ -8,8 +8,6 @@ import pandas as pd
 
 from causal_engine import CausalConfig, apply_driver_activation, validate_driver_activation_file
 from decision_engine import apply_edge_provenance, apply_exposure_map, write_decision_outputs
-from existing_position import apply_existing_position_engine
-from portfolio_risk import apply_portfolio_risk_gate
 from launch_gate import apply_launch_gate
 from shadow_audit import append_shadow_audit, seal_public_snapshot
 from shadow_validation import write_shadow_validation
@@ -98,6 +96,9 @@ def _apply_current_activation(structural: pd.DataFrame, activations: pd.DataFram
 
 
 def main() -> None:
+    # Historical runner only; market production imports helpers without portfolio dependencies.
+    from existing_position import apply_existing_position_engine
+    from portfolio_risk import apply_portfolio_risk_gate
     gate_path = OUT / "gate_report.json"
     manifest_path = OUT / "manifest.json"
     queue_path = OUT / "causal_research_queue.csv"

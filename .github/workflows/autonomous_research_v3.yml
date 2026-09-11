@@ -5,35 +5,9 @@ on:
   workflow_run:
     workflows: ["Alpha Hunter Daily Scan"]
     types: [completed]
-  push:
-    branches: [main]
-    paths:
-      - '.github/workflows/autonomous_research_v3.yml'
-      - '.github/agents/alpha-hunter-evidence-research.agent.md'
-      - 'RESEARCH_AGENT_PROMPT_V3.md'
-      - 'automation_guard_v4.py'
-      - 'research_source_prefetch_v3.py'
-      - 'research_ingest_v3.py'
-      - 'research_contract_v3.py'
-      - 'research_quality_gate_v3.py'
-      - 'research_decision_source_gate_v3.py'
-      - 'research_activation_bridge_v3.py'
-      - 'decision_run.py'
-      - 'decision_run_v2.py'
-      - 'snapshot_lineage_v2.py'
-      - 'decision_state_v2.py'
-      - 'shadow_audit_v2.py'
-      - 'shadow_validation_v2.py'
-      - 'tests/test_automation_guard_v4.py'
-      - 'tests/test_research_source_prefetch_v3.py'
-      - 'tests/test_research_quality_gate_v3.py'
-      - 'tests/test_snapshot_lineage_v2.py'
-      - 'tests/test_decision_state_v2.py'
-      - 'tests/test_shadow_audit_v2.py'
-      - 'tests/test_shadow_validation_v2.py'
 
 concurrency:
-  group: alpha-hunter-production-${{ github.ref_name }}
+  group: alpha-hunter-v3-research-main
   cancel-in-progress: false
 
 permissions:
@@ -310,9 +284,7 @@ jobs:
             output/decision_board.csv \
             output/decision_packet.json \
             output/decision_history.csv \
-            output/shadow_audit.csv \
-            output/shadow_validation.csv \
-            output/shadow_validation_report.json
+            output/shadow_audit.csv
           git add -A output/action_board.md output/global_alignment_v2.csv output/global_alignment_v2.json output/entry_plans_v2.csv output/entry_plans_v2.json
           if ! git diff --cached --quiet; then
             git commit -m "alpha hunter v3 research to guarded v2 decision $(date -u +%F)"

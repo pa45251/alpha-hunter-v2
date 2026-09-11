@@ -20,7 +20,7 @@ on:
     - cron: '0 23 * * 0-4'   # 07:00 Asia/Taipei final backup
 
 concurrency:
-  group: alpha-hunter-production-${{ github.ref_name }}
+  group: alpha-hunter-daily-${{ github.ref_name }}
   cancel-in-progress: false
 
 permissions:

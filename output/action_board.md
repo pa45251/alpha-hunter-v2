@@ -17,20 +17,34 @@
 ### D. Best Continuation Entry
 - **NONE** — no candidate currently has a valid canonical V2 plan.
 
+### E. Rotation / Exact Execution
+- **NO ROTATION NOW** — no destination simultaneously passes the canonical V2 opportunity + entry gate.
 
 V2 is shadow/advisory only. Exact levels are structure-derived conditional plans, not brokerage orders.
 <!-- ENTRY_V2_END -->
 
-- Run: `20260911T193012+0800-1bcda699`
+- Run: `20260911T122401+0800-1e3f0c9d`
 - Market session: `2026-09-10`
-- Risk regime: **CAUTION**
-- Causal evidence: `UNKNOWN_NO_CURRENT_RESEARCH`
+- Risk regime: **CAUTION**; target cash: **15.0%**
+- Causal evidence: `V3_AUTONOMOUS_RESEARCH`
 - Follow evidence-supported trends; use a valid entry; reduce risk when the thesis fails; otherwise WAIT / CASH.
 
+## Existing positions
+
+| Position | Instrument trend | Underlying support | Advisory | Risk control |
+|---|---|---|---|---|
+| 零碎部位 | DE_MINIMIS | NOT_APPLICABLE | IGNORE_RESIDUAL | — |
+| 標的A | MIXED | ADVERSE | REDUCE_BIAS | — |
+| 標的B | UPTREND | ADVERSE | REVIEW_HOLD | — |
+| 標的C | MIXED | ADVERSE | REDUCE_BIAS | — |
+| 標的D | UPTREND | ADVERSE | REVIEW_HOLD | — |
+
+Instrument trend uses the held instrument's sealed closed-session prices. Theme breadth supplies context and never replaces instrument trend.
 
 ## Evidence and execution boundary
 
 - Current validated drivers: NONE — WAIT / CASH
+- Private risk inputs valid: `True`
 - Frozen release integrity: `False`
-- Entry plans use the same canonical market evidence. No personal allocation or position management is performed.
+- Exact entry and rotation use the single canonical V2 plan shown above; independent legacy action lists are not published.
 - Automatic order execution is disabled. Frozen release drift never grants live permission.

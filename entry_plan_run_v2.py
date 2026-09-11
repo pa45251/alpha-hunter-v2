@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from datetime import datetime, timezone
+import hashlib
 import json
 from pathlib import Path
 
@@ -177,6 +178,7 @@ def write_outputs() -> tuple[pd.DataFrame, dict]:
         "strategy_version": STRATEGY_VERSION,
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "source_run_id": run_id,
+        "csv_sha256": hashlib.sha256(CSV_OUT.read_bytes()).hexdigest(),
         "public_lineage_id": json.loads((OUT / "decision_packet.json").read_text())["decision_bridge"]["public_lineage_id"],
         "status": "READY" if not plans.empty else "DATA_UNAVAILABLE",
         "canonical_driver_source": "GLOBAL_ALIGNMENT_V2",

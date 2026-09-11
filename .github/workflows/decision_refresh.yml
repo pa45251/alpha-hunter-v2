@@ -7,27 +7,9 @@ on:
     paths:
       - 'input/edge_provenance.csv'
       - 'output/driver_activation_adjudicated_v3.csv'
-      - 'decision_run.py'
-      - 'decision_run_v2.py'
-      - 'decision_state_v2.py'
-      - 'snapshot_lineage_v2.py'
-      - 'shadow_validation_v2.py'
-      - 'launch_gate.py'
-      - 'config/launch_policy.json'
-      - 'config/frozen_strategy_v1.json'
-      - 'config/frozen_strategy_v2.json'
-      - 'v2_freeze_guard.py'
-      - 'tests/test_v2_freeze_guard.py'
-      - 'config/portfolio_allocation_policy.json'
-      - 'risk_regime.py'
-      - 'global_alignment.py'
-      - 'global_alignment_summary.py'
-      - 'action_board_summary.py'
-      - '.github/workflows/action_board_publish.yml'
-      - '.github/workflows/decision_refresh.yml'
 
 concurrency:
-  group: alpha-hunter-production-${{ github.ref_name }}
+  group: alpha-hunter-decision-refresh-main
   cancel-in-progress: false
 
 permissions:
@@ -117,8 +99,6 @@ jobs:
             output/decision_packet.json \
             output/decision_history.csv \
             output/shadow_audit.csv \
-            output/shadow_validation.csv \
-            output/shadow_validation_report.json \
             output/risk_regime.json
           git add -A output/action_board.md output/global_alignment_v2.csv output/global_alignment_v2.json output/entry_plans_v2.csv output/entry_plans_v2.json
           if ! git diff --cached --quiet; then

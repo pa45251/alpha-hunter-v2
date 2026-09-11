@@ -12,7 +12,6 @@ from decision_state_v2 import write_decision_outputs_v2
 from launch_gate import apply_launch_gate
 from shadow_audit import seal_public_snapshot
 from shadow_audit_v2 import append_shadow_audit_v2
-from shadow_validation_v2 import write_shadow_validation_v2
 from snapshot_lineage_v2 import assert_decision_snapshot_current, build_public_lineage_id
 
 OUT = Path("output")
@@ -72,15 +71,12 @@ def main() -> None:
     sealed = seal_public_snapshot(board, run_id, launch_meta, evidence_paths)
     launch_meta["sealed_snapshot_id"] = sealed
 
+    # Historical outcome evaluation is offline; it must not download prices in Daily Core.
     audit = pd.DataFrame()
     validation = pd.DataFrame()
     validation_report = {"status": "UNAVAILABLE", "future_data_cutoff_enforced": False}
     try:
         audit = append_shadow_audit_v2(board, "output/shadow_audit.csv")
-        validation, validation_report = write_shadow_validation_v2(
-            "output/shadow_audit.csv", "output/shadow_validation.csv",
-            "output/shadow_validation_report.json",
-        )
     except Exception as exc:
         # Research outcome scoring must never suppress today's guarded decisions.
         for name in ["shadow_validation.csv", "shadow_validation_report.json"]:

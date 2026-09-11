@@ -100,7 +100,7 @@ with tabs[0]:
             st.error("🚨 MIXED_SNAPSHOT_DATA — decision packet run_id does not match manifest.")
         else:
             st.caption(
-                "This board is deliberately conservative. Until ETF-vs-stock, entry trigger, portfolio risk and shadow-audit modules are validated, "
+                "This board is deliberately conservative. Until live execution is separately validated, "
                 "automatic BUY/SELL is disabled. WATCH_ENTRY means the causal/provenance/reaction gates passed far enough to justify final-entry research."
             )
             st.warning("影子驗證模式：BUY／SELL 為研究訊號，尚未取得實盤資格。")
