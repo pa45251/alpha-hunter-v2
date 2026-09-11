@@ -1,8 +1,8 @@
 {
   "contract": "ALPHA_HUNTER_V3_VALIDATED_RESEARCH",
   "status": "PASS",
-  "research_run_id": "20260911T063144+0800-1b683761",
-  "validated_at_utc": "2026-09-10T23:16:23.017333+00:00",
+  "research_run_id": "20260911T122401+0800-1e3f0c9d",
+  "validated_at_utc": "2026-09-11T04:28:13.435782+00:00",
   "target_driver_ids": [
     "SPECIALTY_MEMORY_PRICING",
     "DRAM_PRICING",
@@ -15,59 +15,59 @@
     {
       "driver_id": "SPECIALTY_MEMORY_PRICING",
       "state": "UNKNOWN",
-      "confidence": 0.08,
-      "primary_cause": "No verifiable external evidence was found confirming or contradicting the exact specialty DRAM, NOR, or NAND pricing and utilization driver; pricing, demand, and utilization breadth remain unresolved.",
+      "confidence": 0.05,
+      "primary_cause": "No verifiable external source was identified confirming or contradicting the exact specialty DRAM/NOR/NAND pricing and utilization driver; current evidence is insufficient to distinguish an industry-wide cycle from company-specific conditions.",
       "industry_scope": "UNKNOWN",
       "supporting_evidence": [],
       "counter_evidence": [],
       "source_count": 0,
       "event_date": null,
       "source_dates": [],
-      "researched_at_utc": "2026-09-10T23:15:47Z",
-      "research_run_id": "20260911T063144+0800-1b683761"
+      "researched_at_utc": "2026-09-11T04:27:44Z",
+      "research_run_id": "20260911T122401+0800-1e3f0c9d"
     },
     {
       "driver_id": "DRAM_PRICING",
       "state": "UNKNOWN",
-      "confidence": 0.08,
-      "primary_cause": "No verifiable external evidence was found confirming or contradicting the exact commodity DRAM ASP, bit-demand, and inventory cycle; HBM evidence cannot be used as a substitute.",
+      "confidence": 0.05,
+      "primary_cause": "No verifiable external source was identified confirming or contradicting commodity DRAM ASP, bit demand, and inventory conditions without inferring from HBM or price action; exact-driver evidence is insufficient.",
       "industry_scope": "UNKNOWN",
       "supporting_evidence": [],
       "counter_evidence": [],
       "source_count": 0,
       "event_date": null,
       "source_dates": [],
-      "researched_at_utc": "2026-09-10T23:15:47Z",
-      "research_run_id": "20260911T063144+0800-1b683761"
+      "researched_at_utc": "2026-09-11T04:27:44Z",
+      "research_run_id": "20260911T122401+0800-1e3f0c9d"
     },
     {
       "driver_id": "MEMORY_IC_CYCLE",
       "state": "UNKNOWN",
-      "confidence": 0.08,
-      "primary_cause": "No verifiable external evidence was found confirming or contradicting the exact memory IC design-demand and ASP cycle.",
+      "confidence": 0.05,
+      "primary_cause": "No verifiable external source was identified confirming or contradicting a memory IC design-demand and ASP cycle; evidence does not establish the exact revenue and ASP scope.",
       "industry_scope": "UNKNOWN",
       "supporting_evidence": [],
       "counter_evidence": [],
       "source_count": 0,
       "event_date": null,
       "source_dates": [],
-      "researched_at_utc": "2026-09-10T23:15:47Z",
-      "research_run_id": "20260911T063144+0800-1b683761"
+      "researched_at_utc": "2026-09-11T04:27:44Z",
+      "research_run_id": "20260911T122401+0800-1e3f0c9d"
     },
     {
       "driver_id": "NAND_STORAGE_CYCLE",
       "state": "UNKNOWN",
-      "confidence": 0.34,
-      "primary_cause": "Evidence supports evolving SSD and NAND-controller demand at a company-specific level, but the available evidence does not establish a time-consistent industry-wide NAND pricing, controller/module demand, and inventory cycle; contradictory breadth and inventory evidence remain insufficient.",
-      "industry_scope": "COMPANY_SPECIFIC",
+      "confidence": 0.22,
+      "primary_cause": "Available reporting indicates evolving storage demand and NAND-controller relevance, but does not provide sufficiently reliable, time-consistent evidence covering NAND pricing, SSD/controller/module demand, and inventory together; contradictory exact-driver evidence remains unresolved.",
+      "industry_scope": "MIXED",
       "supporting_evidence": [
         {
-          "claim": "Phison Electronics is refining NAND flash controller and storage solutions as data growth and SSD adoption reshape demand across consumer devices and data centers.",
+          "claim": "Phison Electronics is described as a NAND flash controller supplier responding to evolving storage demand as data growth and SSD adoption affect consumer-device and data-center storage requirements.",
           "source_title": "Phison Electronics Corp highlights its NAND controller role as demand for storage keeps evolving",
           "source_url": "https://www.ad-hoc-news.de/boerse/news/ueberblick/phison-electronics-corp-highlights-its-nand-controller-role-as-demand-for/69725587",
           "published_at": "2026-07-08T12:14:00Z",
           "event_date": null,
-          "evidence_type": "HIGH_QUALITY_REPORTING"
+          "evidence_type": "OTHER_NONPRICE"
         }
       ],
       "counter_evidence": [],
@@ -76,52 +76,52 @@
       "source_dates": [
         "2026-07-08T12:14:00Z"
       ],
-      "researched_at_utc": "2026-09-10T23:15:47Z",
-      "research_run_id": "20260911T063144+0800-1b683761"
+      "researched_at_utc": "2026-09-11T04:27:44Z",
+      "research_run_id": "20260911T122401+0800-1e3f0c9d"
     },
     {
       "driver_id": "DRY_BULK_FREIGHT",
       "state": "UNKNOWN",
       "confidence": 0.48,
-      "primary_cause": "Evidence indicates stronger dry-bulk freight conditions and Capesize demand, but BIMCO-related reporting warns that apparent 2026 strength may be substantially driven by temporary rerouting and could reverse into a 2027 supply glut; the exact underlying commodity-volume freight cycle is therefore conflicting.",
+      "primary_cause": "Evidence shows stronger dry-bulk freight conditions and Capesize demand, but industry commentary also attributes part of the 2026 strength to forced rerouting and warns of a future supply glut; the persistence and commodity-volume breadth of the exact freight cycle are therefore unresolved.",
       "industry_scope": "INDUSTRY_WIDE",
       "supporting_evidence": [
         {
-          "claim": "A key measure of dry-bulk shipping rates reached its highest level since December 2023, driven by rising Capesize demand and tightening vessel supply for bulk commodities.",
+          "claim": "The Baltic Dry Index reportedly reached 2,732 points on July 31, 2026, rising approximately 9.2% during July, with conditions varying across dry-bulk segments.",
+          "source_title": "HTCO Highlights Strengthening Dry Bulk Market as BDI Rises Approximately 9.2% in July and Shipping Equities Gain Investor Attention",
+          "source_url": "https://www.nasdaq.com/press-release/htco-highlights-strengthening-dry-bulk-market-bdi-rises-approximately-92-july-and",
+          "published_at": "2026-08-13T05:00:00Z",
+          "event_date": "2026-07-31T00:00:00Z",
+          "evidence_type": "COMPANY_PRIMARY"
+        },
+        {
+          "claim": "A key dry-bulk freight-rate measure reached its highest level since December 2023, attributed to rising Capesize demand and tightening vessel supply.",
           "source_title": "Dry-Bulk Shipping Rates Hit Two-Year High on Capesize Demand",
           "source_url": "https://gcaptain.com/dry-bulk-shipping-rates-hit-two-year-high-on-capesize-demand/",
           "published_at": "2026-05-07T00:07:00Z",
           "event_date": "2026-05-07T00:00:00Z",
           "evidence_type": "HIGH_QUALITY_REPORTING"
-        },
-        {
-          "claim": "The Baltic Dry Index reached 2,732 points on July 31, 2026, increasing approximately 9.2% during July, with conditions differing across dry-bulk segments.",
-          "source_title": "HTCO Highlights Strengthening Dry Bulk Market as BDI Rises Approximately 9.2% in July and Shipping Equities Gain Investor Attention",
-          "source_url": "https://www.nasdaq.com/press-release/htco-highlights-strengthening-dry-bulk-market-bdi-rises-approximately-92-july-and",
-          "published_at": "2026-08-13T05:00:00Z",
-          "event_date": "2026-07-31T00:00:00Z",
-          "evidence_type": "OTHER_NONPRICE"
         }
       ],
       "counter_evidence": [
         {
-          "claim": "BIMCO warned that apparent 2026 dry-bulk market strength was substantially artificial because of forced rerouting and that the temporary boost could reverse into a 2027 supply glut.",
+          "claim": "BIMCO warned that apparent 2026 dry-bulk market strength was substantially artificial, driven by forced rerouting, and forecast that the effect would reverse alongside a potential 2027 supply glut.",
           "source_title": "Dry bulk shipping faces 2027 supply glut: BIMCO warns Hormuz rerouting boost will reverse",
           "source_url": "https://www.msn.com/en-us/news/other/dry-bulk-shipping-faces-2027-supply-glut-bimco-warns-hormuz-rerouting-boost-will-reverse/ar-AA29coQf",
           "published_at": "2026-08-01T10:36:00Z",
           "event_date": "2026-08-01T00:00:00Z",
-          "evidence_type": "HIGH_QUALITY_REPORTING"
+          "evidence_type": "INDUSTRY_DATA"
         }
       ],
       "source_count": 3,
       "event_date": "2026-08-01T00:00:00Z",
       "source_dates": [
-        "2026-05-07T00:07:00Z",
         "2026-08-13T05:00:00Z",
+        "2026-05-07T00:07:00Z",
         "2026-08-01T10:36:00Z"
       ],
-      "researched_at_utc": "2026-09-10T23:15:47Z",
-      "research_run_id": "20260911T063144+0800-1b683761"
+      "researched_at_utc": "2026-09-11T04:27:44Z",
+      "research_run_id": "20260911T122401+0800-1e3f0c9d"
     }
   ]
 }
