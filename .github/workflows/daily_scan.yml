@@ -109,6 +109,7 @@ jobs:
             output/taiwan_industry_breadth.csv \
             output/taiwan_universe.csv \
             output/causal_research_queue.csv \
+            output/reverse_transmission_candidates.csv \
             output/structural_matches.csv \
             output/causal_graph_audit.csv \
             output/causal_driver_taxonomy.csv \
