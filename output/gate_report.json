@@ -3,13 +3,13 @@
   "gate_version": "1.0",
   "gate_status": "PASS",
   "failure_code": null,
-  "validated_at_taipei": "2026-09-11T19:39:24.545881+08:00",
+  "validated_at_taipei": "2026-09-11T19:44:45.214537+08:00",
   "repository": "pa45251/alpha-hunter-v2",
-  "branch": "main",
+  "branch": "repair/market-only-core",
   "schema_version": "2.6",
   "scanner_version": "2.6.0",
-  "run_id": "20260911T193650+0800-cd16558a",
-  "manifest_sha256": "1e737584c3029c0a58284c045c1b75dd13a82dea41a2645698ebb9a4f0c9c5c2",
+  "run_id": "20260911T194213+0800-21e7e198",
+  "manifest_sha256": "735d6c3951a558f20ba87dc8a1eb5cd846575cc3b759c20f41df54dfc314fce1",
   "checks": [
     {
       "name": "repository_identity",
@@ -20,7 +20,7 @@
     {
       "name": "branch_identity",
       "passed": true,
-      "detail": "expected=main; actual=main",
+      "detail": "expected=repair/market-only-core; actual=repair/market-only-core",
       "severity": "HARD"
     },
     {
@@ -56,13 +56,13 @@
     {
       "name": "manifest_run_id",
       "passed": true,
-      "detail": "run_id=20260911T193650+0800-cd16558a",
+      "detail": "run_id=20260911T194213+0800-21e7e198",
       "severity": "HARD"
     },
     {
       "name": "canonical_manifest_url",
       "passed": true,
-      "detail": "expected=https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/manifest.json; actual=https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/manifest.json",
+      "detail": "expected=https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/repair/market-only-core/output/manifest.json; actual=https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/repair/market-only-core/output/manifest.json",
       "severity": "HARD"
     },
     {
@@ -80,7 +80,7 @@
     {
       "name": "run_consistency",
       "passed": true,
-      "detail": "all=20260911T193650+0800-cd16558a",
+      "detail": "all=20260911T194213+0800-21e7e198",
       "severity": "HARD"
     },
     {

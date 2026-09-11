@@ -24,6 +24,17 @@ CSV_OUT = OUT / "entry_plans_v2.csv"
 JSON_OUT = OUT / "entry_plans_v2.json"
 
 
+def _json_safe(value):
+    """Missing numeric evidence stays null, including nested confirmation fields."""
+    if isinstance(value, dict):
+        return {key: _json_safe(item) for key, item in value.items()}
+    if isinstance(value, (list, tuple)):
+        return [_json_safe(item) for item in value]
+    if isinstance(value, (float, np.floating)) and not np.isfinite(value):
+        return None
+    return value
+
+
 def _canonical_closed_price_date(path: Path = MANIFEST_PATH) -> str:
     """Return the scanner's canonical latest *closed* Taiwan price session.
 
@@ -192,7 +203,8 @@ def write_outputs() -> tuple[pd.DataFrame, dict]:
         "all_plans": plans.head(100).replace({np.nan: None}).to_dict(orient="records") if not plans.empty else [],
         "auto_trade_allowed": False,
     }
-    JSON_OUT.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+    payload = _json_safe(payload)
+    JSON_OUT.write_text(json.dumps(payload, ensure_ascii=False, indent=2, allow_nan=False), encoding="utf-8")
     return plans, payload
 
 
