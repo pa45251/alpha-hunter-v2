@@ -161,11 +161,16 @@ def build_structural_matches(
     exposure_graph: pd.DataFrame,
     taxonomy: pd.DataFrame,
     cfg: CausalConfig = CausalConfig(),
+    nominated_driver_ids: Optional[set[str]] = None,
 ) -> pd.DataFrame:
     """Join structural company-level economic exposures with live market state.
 
     Crucially, this does NOT require a stock to be in the top-150 candidate funnel. That avoids
     a confirmation/chasing bias and preserves possible pre-confirmation lead-lag opportunities.
+
+    A Taiwan-first reverse nomination may bypass the *global-theme price-strength* research gate
+    for an already-existing structural edge, but it still starts UNRESOLVED and cannot become a
+    causal or trading signal without external exact-driver validation.
     """
     if exposure_graph.empty or taiwan_stocks.empty:
         return pd.DataFrame()
@@ -192,7 +197,10 @@ def build_structural_matches(
     # Missing/unavailable securities remain visible through graph audit, not the live match table.
     m = m[m["ticker"].notna()].copy()
     m = m.merge(ts[["global_theme", "global_theme_strength_v2", "global_latest_price_date"]], on="global_theme", how="left")
-    m = m[m["global_theme_strength_v2"].fillna(0) >= cfg.theme_strength_gate].copy()
+    nominated = {str(x) for x in (nominated_driver_ids or set())}
+    m["reverse_nominated_driver"] = m["driver_id"].astype(str).isin(nominated)
+    global_price_gate = m["global_theme_strength_v2"].fillna(0) >= cfg.theme_strength_gate
+    m = m[global_price_gate | m["reverse_nominated_driver"]].copy()
     m = m[m["linkage_confidence"] >= cfg.edge_confidence_gate].copy()
     m = m[m["linkage_tier"] != "SPECULATIVE"].copy()
     if m.empty:
@@ -208,10 +216,11 @@ def build_structural_matches(
 
     # Rank for research workload only, not expected return. Keep ingredients visible.
     breadth_fill = m["taiwan_industry_breadth_support"].fillna(0.5)
+    global_strength_fill = m["global_theme_strength_v2"].fillna(0.0)
     extension_penalty = np.where(m["reaction_state"].eq("EXTENDED"), 0.78, 1.0)
     m["research_priority_score"] = (
         0.40 * m["structural_linkage_score"]
-        + 0.25 * m["global_theme_strength_v2"]
+        + 0.25 * global_strength_fill
         + 0.20 * m["price_state_weight"]
         + 0.15 * breadth_fill
     ) * extension_penalty
@@ -227,9 +236,10 @@ def build_structural_matches(
         "linkage_tier", "linkage_confidence", "structural_linkage_score", "polarity",
         "link_mechanism", "evidence_required", "edge_status", "provenance_status", "review_after",
         "last_price_date", "causal_time_state", "global_minus_taiwan_calendar_days",
-        "reaction_state", "in_top_candidate_funnel", "rs_20d_vs_bench", "rs_60d_vs_bench",
-        "acceleration", "keynes_v2", "bias20", "taiwan_industry_breadth_support",
-        "dynamic_driver_state", "causal_status", "decision_eligible", "why_not_decision_eligible",
+        "reaction_state", "in_top_candidate_funnel", "reverse_nominated_driver",
+        "rs_20d_vs_bench", "rs_60d_vs_bench", "acceleration", "keynes_v2", "bias20",
+        "taiwan_industry_breadth_support", "dynamic_driver_state", "causal_status",
+        "decision_eligible", "why_not_decision_eligible",
     ]
     cols = [c for c in cols if c in m.columns]
     return m.sort_values("research_priority_score", ascending=False)[cols].head(cfg.max_structural_matches)
