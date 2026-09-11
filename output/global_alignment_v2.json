@@ -1,8 +1,8 @@
 {
-  "source_run_id": "20260911T095945+0800-cda2acb0",
+  "source_run_id": "20260911T121337+0800-0fdfea4c",
   "contract": "ALPHA_HUNTER_GLOBAL_ALIGNMENT_V2",
   "schema_version": "2.0",
-  "generated_at": "2026-09-11T02:09:05.042949+00:00",
+  "generated_at": "2026-09-11T04:18:40.128544+00:00",
   "score_is_probability": false,
   "score_interpretation": "Relative alignment/evidence strength only; not a calibrated win probability.",
   "hard_rules": [

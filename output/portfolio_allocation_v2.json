@@ -1,7 +1,7 @@
 {
   "contract": "ALPHA_HUNTER_PORTFOLIO_ALLOCATION_V2",
   "schema_version": "2.0",
-  "generated_at": "2026-09-11T02:09:07.113767+00:00",
+  "generated_at": "2026-09-11T04:18:42.000071+00:00",
   "status": "READY",
   "risk_regime": "CAUTION",
   "risk_score": 46,
@@ -48,5 +48,5 @@
     "SCORES_ARE_RELATIVE_EVIDENCE_NOT_WIN_PROBABILITIES"
   ],
   "auto_trade_allowed": false,
-  "source_run_id": "20260911T095945+0800-cda2acb0"
+  "source_run_id": "20260911T121337+0800-0fdfea4c"
 }

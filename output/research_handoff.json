@@ -1,0 +1,52 @@
+{
+  "contract": "ALPHA_HUNTER_V2_6_1_RESEARCH_HANDOFF",
+  "handoff_version": "1.0",
+  "handoff_status": "PASS",
+  "generated_at_taipei": "2026-09-11T12:18:43.409121+08:00",
+  "repository": "pa45251/alpha-hunter-v2",
+  "branch": "repair/daily-core-canonical",
+  "schema_version": "2.6",
+  "scanner_version": "2.6.0",
+  "run_id": "20260911T121337+0800-0fdfea4c",
+  "gate_status": "PASS",
+  "causal_rule": "PRICE_CANNOT_CREATE_CAUSALITY",
+  "transport_policy": {
+    "source_identity": "GitHub repository pa45251/alpha-hunter-v2 branch main only",
+    "preferred_transport": "GitHub connector exact path output/research_handoff.json",
+    "fallback_transport": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/repair/daily-core-canonical/output/research_handoff.json",
+    "do_not_substitute": [
+      "Streamlit tables",
+      "GitHub search results",
+      "similarly named repositories",
+      "forks or alternate branches",
+      "cached or reconstructed scanner outputs"
+    ]
+  },
+  "artifacts": {
+    "manifest": {
+      "relative_path": "output/manifest.json",
+      "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/repair/daily-core-canonical/output/manifest.json",
+      "sha256": "01f4b8b794617fb7a41a3c89850383019f24828700ef7ceea5e901980d0c48fb",
+      "bytes": 8743
+    },
+    "gate_report": {
+      "relative_path": "output/gate_report.json",
+      "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/repair/daily-core-canonical/output/gate_report.json",
+      "sha256": "05238ebf0890b2fd24d6dc5ce94a34792cbbdf7df16eb7d778b543644fe9e404",
+      "bytes": 3896
+    },
+    "research_packet": {
+      "relative_path": "output/research_packet.json",
+      "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/repair/daily-core-canonical/output/research_packet.json",
+      "sha256": "2f27c98c548afa4583ed10c0f5cd29e3dc8235dbcbf72b9041e5476b02d781ce",
+      "bytes": 171181
+    }
+  },
+  "research_entrypoint": {
+    "relative_path": "output/research_packet.json",
+    "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/repair/daily-core-canonical/output/research_packet.json",
+    "sha256": "2f27c98c548afa4583ed10c0f5cd29e3dc8235dbcbf72b9041e5476b02d781ce",
+    "bytes": 171181
+  },
+  "research_rule": "Research may begin only when handoff_status=PASS, gate_status=PASS, run_id is consistent, and the fetched research_packet SHA256 matches this handoff."
+}

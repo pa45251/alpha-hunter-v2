@@ -41,7 +41,7 @@
 V2 is shadow/advisory only. Exact levels are structure-derived conditional plans, not brokerage orders.
 <!-- ENTRY_V2_END -->
 
-- Run: `20260911T095945+0800-cda2acb0`
+- Run: `20260911T121337+0800-0fdfea4c`
 - Causal source: `UNKNOWN_NO_CURRENT_RESEARCH`
 - Same snapshot: `False`
 - Active opportunity drivers: NONE

@@ -1,8 +1,8 @@
 {
   "contract": "ALPHA_HUNTER_RISK_REGIME",
   "schema_version": "1.2",
-  "source_run_id": "20260911T095945+0800-cda2acb0",
-  "generated_at": "2026-09-11T02:08:52.074756+00:00",
+  "source_run_id": "20260911T121337+0800-0fdfea4c",
+  "generated_at": "2026-09-11T04:18:23.935907+00:00",
   "status": "READY",
   "risk_snapshot_date": "2026-09-10",
   "regime": "CAUTION",
@@ -46,7 +46,7 @@
     "credit_hyg_lqd": {
       "price": 0.7533537973052067,
       "ma20": 0.7497780455105263,
-      "ma60": 0.742807569598077,
+      "ma60": 0.7428075795868297,
       "ret20": 0.00550180077633633,
       "above_ma20": true,
       "above_ma60": true
