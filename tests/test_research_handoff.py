@@ -4,7 +4,7 @@ from pathlib import Path
 
 import pytest
 
-from research_handoff import build_research_handoff
+from research_handoff import EXPECTED_BRANCH, build_research_handoff
 
 
 def sha(p: Path) -> str:
@@ -19,7 +19,7 @@ def build_valid_fixture(out: Path, run_id: str = "RUN-A") -> None:
     out.mkdir()
     manifest = {
         "repository": "pa45251/alpha-hunter-v2",
-        "branch": "main",
+        "branch": EXPECTED_BRANCH,
         "schema_version": "2.6",
         "scanner_version": "2.6.0",
         "run_id": run_id,
@@ -69,4 +69,14 @@ def test_handoff_rejects_manifest_hash_mismatch(tmp_path):
     gate["manifest_sha256"] = "bad"
     write_json(out / "gate_report.json", gate)
     with pytest.raises(RuntimeError, match="GATE_MANIFEST_HASH_MISMATCH"):
+        build_research_handoff(out)
+
+
+def test_handoff_rejects_wrong_branch(tmp_path):
+    out = tmp_path / "output"
+    build_valid_fixture(out)
+    manifest = json.loads((out / "manifest.json").read_text())
+    manifest["branch"] = EXPECTED_BRANCH + "-wrong"
+    write_json(out / "manifest.json", manifest)
+    with pytest.raises(RuntimeError, match="BRANCH_MISMATCH"):
         build_research_handoff(out)
