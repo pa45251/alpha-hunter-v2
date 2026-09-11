@@ -42,8 +42,8 @@ V2 is shadow/advisory only. Exact levels are structure-derived conditional plans
 <!-- ENTRY_V2_END -->
 
 ## 0. Portfolio allocation / cash regime
-- Global risk regime: `NORMAL` / score `32`
-- Target cash / dry-powder buffer: **5.0%**
+- Global risk regime: `CAUTION` / score `46`
+- Target cash / dry-powder buffer: **15.0%**
 - For leveraged portfolios, a higher buffer should generally be implemented by reducing gross exposure before accumulating idle cash.
 - Rotation: no source/destination pair currently clears the policy threshold, or the risk regime blocks redeployment.
 
@@ -104,8 +104,8 @@ The advisory lane may say BUY_BIAS/PREFER_ETF/WAIT_PULLBACK/AVOID even when exec
 | 零碎部位 | IGNORE_RESIDUAL | HIGH | DE_MINIMIS | RESIDUAL | REVIEW_RESEARCH | POSITION_BELOW_DE_MINIMIS_WEIGHT |
 | 標的A | REDUCE_BIAS | HIGH | MIXED | ETF_THEME | REVIEW_RESEARCH | MIXED_TREND_WITH_ADVERSE_MACRO_ETF_THEME_MIXED_THEME_SUPPORT |
 | 標的B | REVIEW_HOLD | MEDIUM | MIXED | ETF_THEME | REVIEW_RESEARCH | UPTREND_MACRO_NOT_FULLY_SUPPORTIVE_ETF_THEME_MIXED_THEME_SUPPORT |
-| 標的C | REVIEW_HOLD | HIGH | POSITIVE | ETF_THEME | REVIEW_RESEARCH | MIXED_OR_UNCERTAIN_TREND_ETF_THEME_POSITIVE_THEME_SUPPORT |
-| 標的D | HOLD_BIAS | MEDIUM | MIXED | STOCK_THEME_PROXY | REVIEW_RESEARCH | UPTREND_MACRO_SUPPORTIVE_STOCK_THEME_PROXY_MIXED_THEME_SUPPORT_COMPANY_TRANSMISSION_NOT_EXACT |
+| 標的C | REDUCE_BIAS | HIGH | POSITIVE | ETF_THEME | REVIEW_RESEARCH | MIXED_TREND_WITH_ADVERSE_MACRO_ETF_THEME_POSITIVE_THEME_SUPPORT |
+| 標的D | REVIEW_HOLD | MEDIUM | MIXED | STOCK_THEME_PROXY | REVIEW_RESEARCH | UPTREND_MACRO_NOT_FULLY_SUPPORTIVE_STOCK_THEME_PROXY_MIXED_THEME_SUPPORT_COMPANY_TRANSMISSION_NOT_EXACT |
 
 ETF holdings use global theme breadth; stocks use a theme proxy until company-level transmission is exact. This is advisory, not execution authorization.
 
