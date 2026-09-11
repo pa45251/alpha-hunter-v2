@@ -14,7 +14,6 @@ from entry_structure_v2 import (
     choose_plan,
 )
 from canonical_evidence import load_histories as _download_histories, assert_output_lineage
-from portfolio_risk_v2 import apply_entry_risk_gate_v2
 
 OUT = Path("output")
 BOARD_PATH = OUT / "decision_board.csv"
@@ -125,12 +124,13 @@ def build_canonical_plans(
     plans = pd.DataFrame(rows)
     if plans.empty:
         return plans
-    risked, meta = apply_entry_risk_gate_v2(plans)
-    risked["risk_v2_contract"] = meta.get("contract")
-    # EOD pipeline has no live executable quote; never emit BUY_NOW from a closed daily bar.
-    risked["entry_executable"] = False
-    risked["buy_now_blocker"] = "LIVE_EXECUTABLE_QUOTE_REQUIRED"
-    return risked
+    # Instrument liquidity is evidence; private balances and allocation are irrelevant.
+    turnover = pd.to_numeric(plans["avg_turnover20_twd"], errors="coerce")
+    plans["risk_v2_pass"] = plans["entry_structure_valid"].fillna(False) & np.isfinite(turnover) & turnover.gt(0)
+    plans["risk_v2_blockers"] = np.where(plans["risk_v2_pass"], "", "ENTRY_STRUCTURE_OR_LIQUIDITY_UNAVAILABLE")
+    plans["entry_executable"] = False
+    plans["buy_now_blocker"] = "LIVE_EXECUTABLE_QUOTE_REQUIRED"
+    return plans
 
 
 def _style_records(plans: pd.DataFrame, style: str) -> list[dict]:
@@ -177,6 +177,7 @@ def write_outputs() -> tuple[pd.DataFrame, dict]:
         "strategy_version": STRATEGY_VERSION,
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "source_run_id": run_id,
+        "public_lineage_id": json.loads((OUT / "decision_packet.json").read_text())["decision_bridge"]["public_lineage_id"],
         "status": "READY" if not plans.empty else "DATA_UNAVAILABLE",
         "canonical_driver_source": "GLOBAL_ALIGNMENT_V2",
         "canonical_closed_price_date": canonical_closed_date,

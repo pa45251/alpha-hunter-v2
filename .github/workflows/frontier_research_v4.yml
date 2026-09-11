@@ -16,7 +16,7 @@ on:
       - 'tests/test_openai_frontier_research_v4.py'
 
 concurrency:
-  group: alpha-hunter-v4-openai-frontier-main
+  group: alpha-hunter-production-${{ github.ref_name }}
   cancel-in-progress: false
 
 permissions:

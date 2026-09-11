@@ -9,9 +9,7 @@ from causal_engine import CausalConfig, validate_driver_activation_file
 from decision_engine import apply_edge_provenance, apply_exposure_map
 from decision_run import _activation_source_for_run, _apply_current_activation
 from decision_state_v2 import write_decision_outputs_v2
-from existing_position_v2 import apply_existing_position_engine
 from launch_gate import apply_launch_gate
-from portfolio_risk import apply_portfolio_risk_gate
 from shadow_audit import seal_public_snapshot
 from shadow_audit_v2 import append_shadow_audit_v2
 from shadow_validation_v2 import write_shadow_validation_v2
@@ -55,10 +53,8 @@ def main() -> None:
     structural = apply_exposure_map(structural, Path("config/decision_exposure_map.csv"))
 
     board, packet = write_decision_outputs_v2(structural, run_id, "output")
-    board, risk_meta = apply_portfolio_risk_gate(board)
     board, launch_meta = apply_launch_gate(board)
 
-    _private_position_actions, position_meta = apply_existing_position_engine(board)
 
     evidence_paths = [
         manifest_path,
@@ -120,8 +116,6 @@ def main() -> None:
         "lineage_overwrite_enforced": True,
     }
     packet["launch_layer"] = launch_meta
-    packet["risk_layer"] = risk_meta
-    packet["existing_position_layer"] = position_meta
     packet["shadow_validation_layer"] = {
         "validation_version": validation_report.get("validation_version"),
         "matured_outcomes": validation_report.get("matured_outcomes", 0),
@@ -131,20 +125,15 @@ def main() -> None:
         "future_data_cutoff_enforced": validation_report.get("future_data_cutoff_enforced", False),
         "threshold_tuning_allowed": False,
     }
-    packet["current_capability"] = "V2_GUARDED_DECISION_PLUS_PRIVATE_RISK_EXIT_PROSPECTIVE_SHADOW_VALIDATION"
+    packet["current_capability"] = "MARKET_OPPORTUNITY_ONLY"
     packet["missing_downstream_modules"] = [
         "COST_ADJUSTED_OUT_OF_SAMPLE_VALIDATION",
         "FORWARD_ACCEPTANCE_REVIEW",
     ]
-    if not risk_meta.get("risk_inputs_valid") or not position_meta.get("position_inputs_valid"):
-        packet["missing_downstream_modules"].append("PRIVATE_RISK_INPUTS_IF_NOT_CONFIGURED")
-    packet["portfolio_action_counts"] = {
-        str(k): int(v) for k, v in board["portfolio_action"].value_counts(dropna=False).to_dict().items()
-    } if "portfolio_action" in board.columns else {}
     packet["rule"] = (
         "No score can override causal/provenance/reaction gates. Canonical hashes/freshness are revalidated immediately before decisioning. "
         "Previous state must come from a strictly earlier Taiwan market session, so same-session reruns cannot consume triggers. "
-        "Identical same-session shadow decisions are one prospective observation. Existing positions use the V2 BROKEN persistence guard. "
+        "Identical same-session shadow decisions are one prospective observation. Personal holdings never affect market decisions. "
         "Shadow outcomes can mature only from fully closed market sessions available by the evaluation cutoff. "
         "No brokerage/order execution exists and threshold tuning from prospective outcomes is forbidden."
     )
@@ -152,7 +141,6 @@ def main() -> None:
     (OUT / "decision_packet.json").write_text(json.dumps(packet, ensure_ascii=False, indent=2), encoding="utf-8")
 
     edge_backed = int(board.get("gate_edge_source_backed", pd.Series(dtype=bool)).fillna(False).sum()) if not board.empty else 0
-    risk_pass = int(board.get("risk_gate_pass", pd.Series(dtype=bool)).fillna(False).sum()) if not board.empty else 0
     print(f"Decision V2 run_id: {run_id}")
     print(f"Public lineage id: {public_lineage_id}")
     print(f"Activation source: {activation_source}")
@@ -160,9 +148,6 @@ def main() -> None:
     print(f"Active driver ids: {activated_driver_ids}")
     print(f"Source-backed live structural rows: {edge_backed}")
     print(f"Decision board rows: {len(board)}")
-    print(f"Risk-gate PASS rows: {risk_pass}")
-    print(f"Portfolio action counts: {packet.get('portfolio_action_counts', {})}")
-    print(f"Existing-position contract: {position_meta.get('existing_position_contract')}")
     print(f"Shadow audit rows retained: {len(audit)}")
     print(f"Shadow validation matured outcomes: {len(validation)}")
     print("Prospective V2 guard active: no mixed snapshot, no same-session trigger consumption, no future daily-bar maturation.")

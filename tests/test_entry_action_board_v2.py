@@ -21,9 +21,9 @@ def _entries():
     }
 
 
-def test_action_board_has_a_through_e_and_exact_levels():
+def test_action_board_has_market_entries_and_exact_levels():
     block = build_block(_alignment(), _entries(), {"rotations": []})
-    for label in ["A. Strongest", "B. Best Fresh", "C. Best Pullback", "D. Best Continuation", "E. Rotation"]:
+    for label in ["A. Strongest", "B. Best Fresh", "C. Best Pullback", "D. Best Continuation"]:
         assert label in block
     assert "200" in block and "205" in block and "190" in block
 

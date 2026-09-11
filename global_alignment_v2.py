@@ -243,6 +243,7 @@ def write_outputs() -> tuple[pd.DataFrame, dict[str, Any]]:
     top = leaderboard[leaderboard["alignment_eligible"]].head(20) if not leaderboard.empty else leaderboard
     payload = {
         "source_run_id": run_id,
+        "public_lineage_id": json.loads((OUT / "decision_packet.json").read_text())["decision_bridge"]["public_lineage_id"],
         "contract": "ALPHA_HUNTER_GLOBAL_ALIGNMENT_V2",
         "schema_version": "2.0",
         "generated_at": datetime.now().astimezone().isoformat(),

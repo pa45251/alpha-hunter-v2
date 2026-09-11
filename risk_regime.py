@@ -10,7 +10,7 @@ from typing import Any
 import pandas as pd
 
 OUT = Path("output")
-POLICY_PATH = Path("config/portfolio_allocation_policy.json")
+POLICY_PATH = Path("config/market_risk_policy.json")
 MANIFEST_PATH = OUT / "manifest.json"
 OUTPUT_PATH = OUT / "risk_regime.json"
 
@@ -139,10 +139,10 @@ def _vol_points(price: float, ma20: float, ret5: float, bands: tuple[float, floa
 
 
 def _band_for(score: int, policy: dict[str, Any]) -> dict[str, Any]:
-    for band in policy["cash_regime"]["bands"]:
+    for band in policy["bands"]:
         if score <= int(band["max_score"]):
             return band
-    return policy["cash_regime"]["bands"][-1]
+    return policy["bands"][-1]
 
 
 def build_risk_regime(histories: dict[str, pd.DataFrame] | None = None, *, run_id: str | None = None, validate_freshness: bool = False) -> dict[str, Any]:
@@ -152,7 +152,7 @@ def build_risk_regime(histories: dict[str, pd.DataFrame] | None = None, *, run_i
         from canonical_evidence import read_evidence
         return read_evidence("risk_regime.json", OUT)
     f = {t: _features(histories.get(t, pd.DataFrame())) for t in RISK_TICKERS}
-    max_age = int(policy["cash_regime"].get("max_data_age_days", 5))
+    max_age = int(policy.get("max_data_age_days", 5))
     if validate_freshness:
         today = datetime.now().astimezone().date()
         for ticker, z in f.items():
@@ -169,8 +169,6 @@ def build_risk_regime(histories: dict[str, pd.DataFrame] | None = None, *, run_i
             "missing_core_signals": missing_core,
             "regime": "UNKNOWN",
             "risk_score": None,
-            "target_cash_pct": None,
-            "gross_multiplier": None,
             "auto_trade_allowed": False,
         }
 
@@ -248,8 +246,6 @@ def build_risk_regime(histories: dict[str, pd.DataFrame] | None = None, *, run_i
         "risk_snapshot_date": latest_date,
         "regime": band["label"],
         "risk_score": score,
-        "target_cash_pct": float(band["target_cash_pct"]),
-        "gross_multiplier": float(band["gross_multiplier"]),
         "components": components,
         "signals": {
             "vix": {k: f["^VIX"][k] for k in ["price", "ma20", "ret5", "last_date"]},

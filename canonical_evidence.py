@@ -62,8 +62,13 @@ def assert_output_lineage(names: list[str], out: Path = Path('output')) -> str:
         board = pd.read_csv(board_path)
         if 'run_id' not in board or set(board['run_id'].dropna().astype(str)) != {run_id}:
             raise RuntimeError('OUTPUT_LINEAGE_MISMATCH:decision_board.csv')
+    decision = json.loads((out / 'decision_packet.json').read_text()) if 'decision_packet.json' in names else {}
+    decision_id = (decision.get('decision_bridge') or {}).get('public_lineage_id')
     for name in names:
         p = json.loads((out / name).read_text(encoding='utf-8'))
         if p.get('source_run_id', p.get('run_id')) != run_id:
             raise RuntimeError(f'OUTPUT_LINEAGE_MISMATCH:{name}')
+        if name in {'global_alignment_v2.json', 'entry_plans_v2.json'}:
+            if not decision_id or p.get('public_lineage_id') != decision_id:
+                raise RuntimeError(f'OUTPUT_DECISION_LINEAGE_MISMATCH:{name}')
     return run_id
