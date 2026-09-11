@@ -18,6 +18,13 @@ from causal_engine import (
     graph_audit,
     validate_driver_activation_file,
 )
+from reverse_discovery import (
+    ReverseDiscoveryConfig,
+    build_reverse_candidates,
+    build_reverse_driver_queue,
+    merge_research_queues,
+    reverse_nominated_driver_ids,
+)
 from scanner_core import TAIPEI_TZ, ScanConfig, append_audit_log, run_scan, write_outputs
 from taiwan_sensor import TaiwanScanConfig, run_taiwan_scan
 from canonical_gate import run_gate
@@ -76,6 +83,7 @@ def build_manifest(
     global_results: dict,
     tw: dict,
     research_queue: pd.DataFrame,
+    reverse_candidates: pd.DataFrame,
     structural_matches: pd.DataFrame,
     graph_audit_df: pd.DataFrame,
     activations: pd.DataFrame,
@@ -88,8 +96,8 @@ def build_manifest(
         "risk_regime.json", "market_snapshot.csv", "theme_breadth.csv", "leader_registry.csv", "feature_history.csv",
         "market_snapshot.json", "taiwan_candidates.csv", "taiwan_candidate_history.csv",
         "taiwan_industry_breadth.csv", "taiwan_universe.csv", "causal_research_queue.csv",
-        "structural_matches.csv", "causal_graph_audit.csv", "causal_driver_taxonomy.csv",
-        "structural_exposure_graph.csv",
+        "reverse_transmission_candidates.csv", "structural_matches.csv", "causal_graph_audit.csv",
+        "causal_driver_taxonomy.csv", "structural_exposure_graph.csv",
     ]
     files, missing = [], []
     for name in required:
@@ -115,10 +123,14 @@ def build_manifest(
     if not structural_matches.empty and "dynamic_driver_state" in structural_matches.columns:
         active_count = int(structural_matches["dynamic_driver_state"].eq("ACTIVE_RESEARCH_VALIDATED").sum())
 
+    reverse_driver_count = 0
+    if not reverse_candidates.empty and "driver_id" in reverse_candidates.columns:
+        reverse_driver_count = int(reverse_candidates["driver_id"].nunique())
+
     manifest = {
         "contract": "ALPHA_HUNTER_CANONICAL_DATA_CONTRACT",
         "schema_version": "2.6",
-        "scanner_version": "2.6.0",
+        "scanner_version": "2.6.1",
         "run_id": run_id,
         "repository": repo,
         "branch": branch,
@@ -147,8 +159,10 @@ def build_manifest(
             "benchmark": "^TWII",
         },
         "causal_engine": {
-            "engine": "DYNAMIC_CAUSAL_TRANSMISSION_V2_6",
+            "engine": "DYNAMIC_CAUSAL_TRANSMISSION_V2_6_1",
             "research_queue_count": int(len(research_queue)),
+            "reverse_discovery_candidate_count": int(len(reverse_candidates)),
+            "reverse_discovery_driver_count": reverse_driver_count,
             "structural_match_count": int(len(structural_matches)),
             "driver_activation_input_present": bool(not activations.empty),
             "active_research_validated_matches": active_count,
@@ -156,16 +170,19 @@ def build_manifest(
             "broad_industry_causal_fallback": False,
             "decision_eligible_by_scanner": False,
             "rule": (
-                "Price nominates research; it cannot activate a causal driver or create a structural edge. "
-                "Structural exposure and dynamic driver activation are separate. Final investment decisions remain downstream."
+                "Global price structure and Taiwan price anomalies may nominate research; neither can activate a causal driver. "
+                "Taiwan reverse discovery may only use pre-existing structural edges. Exact-driver evidence, local-catalyst alternatives, "
+                "and downstream policy remain separate before any investment decision."
             ),
         },
         "known_model_risks": [
             "Dynamic driver research can hallucinate or become stale; activation requires explicit evidence and timestamping.",
             "Structural exposure graph can drift as customer/product mixes change; edges have review/provenance fields.",
-            "Price-derived global strength, Taiwan reaction and breadth are correlated; v2.6 does not combine them into a trade score.",
+            "Price-derived global strength, Taiwan reaction and breadth are correlated; v2.6.1 does not combine them into an expected-return score.",
+            "Taiwan reverse discovery can invite post-hoc storytelling; every nominee is constrained to a pre-existing edge and requires a local-catalyst counter-check.",
+            "Transmission-gap proxy is research prioritization only; it is not arbitrage, a probability, or a trade signal.",
             "Candidate funnels can create confirmation bias; structural matches are built from the full Taiwan scan, not only top candidates.",
-            "A company may have multiple simultaneous drivers or offsets; v2.5 preserves driver-level rows and polarity.",
+            "A company may have multiple simultaneous drivers or offsets; driver-level rows and polarity are preserved.",
         ],
         "authoritative_files": files,
         "hard_gate": {
@@ -174,8 +191,8 @@ def build_manifest(
                 "pipeline_checks are not all true, required files are missing, or freshness fails: DATA ACCESS FAILED / DATA QUALITY WARNING and STOP decision inference."
             ),
             "causal_rule": (
-                "Do not infer an active driver from price alone. causal_research_queue.csv contains unresolved research tasks. "
-                "structural_matches.csv is not a buy list and is not causally activated unless external research validates the driver."
+                "Do not infer an active driver from price alone. causal_research_queue.csv contains unresolved research tasks from global-first and Taiwan-reverse nominations. "
+                "reverse_transmission_candidates.csv is a research-priority surface, not a buy list. structural_matches.csv is not causally activated unless external research validates the driver."
             ),
             "do_not_substitute": "Do not substitute similarly named repositories, Streamlit tables, search snippets, or external prices for scanner outputs.",
         },
@@ -219,18 +236,31 @@ if __name__ == "__main__":
     write_taiwan_outputs(tw)
     append_taiwan_candidate_history(tw["candidates"], "output/taiwan_candidate_history.csv")
 
-    # 3) Causal architecture: broad price themes nominate research, but cannot select the driver.
+    # 3) Dual-lane causal discovery. Global-first and Taiwan-first price action may nominate research,
+    # but neither lane may activate the exact driver.
     taxonomy = pd.read_csv("config/causal_driver_taxonomy.csv")
     exposures = pd.read_csv("config/structural_exposure_graph.csv", dtype={"taiwan_code": str})
     ccfg = CausalConfig()
+    rcfg = ReverseDiscoveryConfig(max_queue_rows=ccfg.max_queue_rows)
 
-    research_queue = build_causal_research_queue(global_results["stocks"], taxonomy, ccfg)
+    global_queue = build_causal_research_queue(global_results["stocks"], taxonomy, ccfg)
+    reverse_candidates = build_reverse_candidates(
+        tw["stocks"], global_results["stocks"], exposures, taxonomy, rcfg
+    )
+    reverse_candidates.insert(0, "run_id", run_id)
+    reverse_candidates.to_csv(OUT / "reverse_transmission_candidates.csv", index=False)
+
+    reverse_queue = build_reverse_driver_queue(reverse_candidates, taxonomy, rcfg)
+    research_queue = merge_research_queues(global_queue, reverse_queue, max_rows=ccfg.max_queue_rows)
     research_queue.insert(0, "run_id", run_id)
     research_queue.to_csv(OUT / "causal_research_queue.csv", index=False)
 
     # Structural matching uses the full Taiwan scan, preventing top-candidate confirmation bias.
+    # Reverse nominations can make an existing edge visible for research even if its broad global
+    # theme has not crossed the price-strength gate; the edge remains unresolved and non-tradable.
     structural = build_structural_matches(
-        global_results["stocks"], tw["stocks"], tw["candidates"], tw["breadth"], exposures, taxonomy, ccfg
+        global_results["stocks"], tw["stocks"], tw["candidates"], tw["breadth"], exposures, taxonomy, ccfg,
+        nominated_driver_ids=reverse_nominated_driver_ids(reverse_queue),
     )
 
     # Optional future bridge: a Research Agent may write driver activations, but only canonical driver_ids are accepted.
@@ -245,10 +275,12 @@ if __name__ == "__main__":
     _copy_causal_configs_to_output()
 
     # Integration contract checks: prove the causal files were rebuilt in THIS run, not merely left over from an older snapshot.
+    reverse_current = reverse_candidates.empty or reverse_candidates["run_id"].eq(run_id).all()
     pipeline_checks = {
         "global_outputs_generated": (OUT / "market_snapshot.csv").exists() and len(global_results["stocks"]) > 0,
         "taiwan_outputs_generated": (OUT / "taiwan_candidates.csv").exists() and len(tw["stocks"]) > 0,
         "causal_queue_rebuilt_this_run": (not research_queue.empty) and research_queue["run_id"].eq(run_id).all(),
+        "reverse_discovery_rebuilt_this_run": (OUT / "reverse_transmission_candidates.csv").exists() and bool(reverse_current),
         "structural_matches_rebuilt_this_run": (not structural.empty) and structural["run_id"].eq(run_id).all(),
         "graph_audit_rebuilt_this_run": (not ga.empty) and ga["run_id"].eq(run_id).all(),
         "causal_taxonomy_snapshot_present": (OUT / "causal_driver_taxonomy.csv").exists(),
@@ -271,20 +303,23 @@ if __name__ == "__main__":
     snapshot["run_id"] = run_id
     snapshot["canonical_closed_price_date"] = str(tw["stocks"]["last_price_date"].max())
     needed = set(structural.get("taiwan_ticker", structural.get("ticker", pd.Series(dtype=str))).dropna().astype(str))
-    # Structural matches use taiwan_ticker; include nominated candidates as well.
+    # Structural matches, normal candidates, and reverse nominees need sealed histories for downstream audit.
     needed.update(tw["candidates"]["ticker"].astype(str))
+    if "ticker" in reverse_candidates.columns:
+        needed.update(reverse_candidates["ticker"].dropna().astype(str))
     snapshot["entry_histories"] = encode_histories({t: h for t, h in tw["histories"].items() if t in needed})
     snapshot_path.write_text(json.dumps(snapshot, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
-    build_manifest(global_results, tw, research_queue, structural, ga, activations, run_id, pipeline_checks)
+    build_manifest(global_results, tw, research_queue, reverse_candidates, structural, ga, activations, run_id, pipeline_checks)
 
     # 4) Deterministic hard gate. LLMs never validate identity, hashes, run consistency, or freshness.
     gate = run_gate("output")
     if gate.get("gate_status") != "PASS":
-        raise RuntimeError(f"V2.6 deterministic gate failed: {gate.get('failure_code')}")
+        raise RuntimeError(f"V2.6.1 deterministic gate failed: {gate.get('failure_code')}")
 
     print(f"Global: {len(global_results['stocks'])} securities / {global_results['stocks']['theme'].nunique()} themes")
     print(f"Taiwan: {len(tw['stocks'])}/{len(tw['universe'])} common stocks / {tw['stocks']['industry'].nunique()} industries")
     print(f"Taiwan candidates: {len(tw['candidates'])}")
+    print(f"Taiwan reverse candidates: {len(reverse_candidates)} across {reverse_candidates['driver_id'].nunique() if not reverse_candidates.empty else 0} drivers")
     print(f"Causal research queue: {len(research_queue)} unresolved driver tasks")
     print(f"Structural matches: {len(structural)}; activated by external research: {int(structural.get('dynamic_driver_state', pd.Series(dtype=str)).eq('ACTIVE_RESEARCH_VALIDATED').sum()) if not structural.empty else 0}")
     print(f"Taiwan universe source: {tw['universe_source_status']}")
