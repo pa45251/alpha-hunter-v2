@@ -1,8 +1,8 @@
 {
   "contract": "ALPHA_HUNTER_DECISION_PACKET",
   "decision_contract_version": "2.7.1",
-  "run_id": "20260911T220954+0800-29a366dd",
-  "generated_at": "2026-09-11T14:15:21.381379+00:00",
+  "run_id": "20260912T062257+0800-9958dac6",
+  "generated_at": "2026-09-11T22:26:04.522701+00:00",
   "gate_first_score_second": true,
   "price_can_create_causality": false,
   "auto_trade_allowed": false,
@@ -12,7 +12,7 @@
     "FORWARD_ACCEPTANCE_REVIEW"
   ],
   "action_counts": {
-    "WATCH_RESEARCH": 58
+    "WATCH_RESEARCH": 66
   },
   "decision_focus": [],
   "entry_rule": "Only a PRE_CONFIRMATION/EARLY_CONFIRMATION -> CONFIRMING transition, or PULLBACK -> CONFIRMING recovery, can create an entry trigger. No fixed momentum threshold is invented.",
@@ -25,26 +25,26 @@
   },
   "decision_bridge": {
     "contract": "ALPHA_HUNTER_DECISION_BRIDGE_V2",
-    "public_lineage_id": "9335cc49e11446da99d209a4e568b72d901168531bea217b33cbe3efe75e6d6e",
+    "public_lineage_id": "31c453beb65b9504314c75817ed8fbd7a1f7486e7131d1cefb2a38a55f4ae8e5",
     "canonical_snapshot_revalidated_immediately_before_decision": true,
     "persisted_gate_reused_without_revalidation": false,
     "mixed_snapshot_allowed": false,
-    "public_evidence_hash_count": 7
+    "public_evidence_hash_count": 6
   },
   "snapshot_lineage_layer": {
     "contract": "ALPHA_HUNTER_SNAPSHOT_LINEAGE_V2",
-    "run_id": "20260911T220954+0800-29a366dd",
-    "manifest_sha256": "925dca3008f541bc955d91824f9bf3ecbe264a645a0380e07070db8bd0e5cd41",
+    "run_id": "20260912T062257+0800-9958dac6",
+    "manifest_sha256": "9af139a8771c9136b7e183567fedaa5b60ff3cffc2eec0914fb4a9f84eb5b7ad",
     "fresh_gate_status": "PASS",
     "persisted_gate_matches_current_files": true,
     "mixed_snapshot_allowed": false
   },
   "activation_layer": {
-    "source": "V3_AUTONOMOUS_RESEARCH",
-    "path": "output/driver_activation_v3.csv",
-    "same_snapshot_v3": true,
+    "source": "UNKNOWN_NO_CURRENT_RESEARCH",
+    "path": "output/no_validated_activation_for_this_snapshot.csv",
+    "same_snapshot_v3": false,
     "challenger_adjudicated": false,
-    "accepted_activation_rows": 3,
+    "accepted_activation_rows": 0,
     "active_driver_ids": [],
     "lineage_overwrite_enforced": true
   },
@@ -80,7 +80,7 @@
     ],
     "validation_evidence_status": "PENDING_ACCEPTANCE_REVIEW",
     "current_shadow_statistics_are_strategy_validation": false,
-    "sealed_snapshot_id": "c8bc32dc93fdeb025b5a81447b8f5df5c9be0d7674cb19a0182583127b028100"
+    "sealed_snapshot_id": "3aa4199f4732bff319c3e947f0f442ce7c75bedde42cfd11c3b725c8fd399337"
   },
   "shadow_validation_layer": {
     "validation_version": null,
