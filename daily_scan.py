@@ -85,7 +85,7 @@ def build_manifest(
     repo = os.getenv("GITHUB_REPOSITORY", "pa45251/alpha-hunter-v2")
     branch = os.getenv("GITHUB_REF_NAME", "main")
     required = [
-        "market_snapshot.csv", "theme_breadth.csv", "leader_registry.csv", "feature_history.csv",
+        "risk_regime.json", "market_snapshot.csv", "theme_breadth.csv", "leader_registry.csv", "feature_history.csv",
         "market_snapshot.json", "taiwan_candidates.csv", "taiwan_candidate_history.csv",
         "taiwan_industry_breadth.csv", "taiwan_universe.csv", "causal_research_queue.csv",
         "structural_matches.csv", "causal_graph_audit.csv", "causal_driver_taxonomy.csv",
@@ -255,6 +255,27 @@ if __name__ == "__main__":
         "structural_graph_snapshot_present": (OUT / "structural_exposure_graph.csv").exists(),
     }
 
+    # Seal risk and entry prices with the scanner, before hashing the manifest.
+    from risk_regime import build_risk_regime, download_ust2y
+    from canonical_evidence import encode_histories
+    from position_cio_advisory import capture_position_trends
+    risk_histories = dict(global_results["histories"])
+    try:
+        risk_histories["^UST2Y"] = download_ust2y()
+    except Exception as exc:
+        print(f"UST2Y UNKNOWN: FRED DGS2 {type(exc).__name__}")
+    regime = build_risk_regime(risk_histories, run_id=run_id, validate_freshness=True)
+    regime["position_trends"] = capture_position_trends({**global_results["histories"], **tw["histories"]})
+    (OUT / "risk_regime.json").write_text(json.dumps(regime, ensure_ascii=False, indent=2), encoding="utf-8")
+    pipeline_checks["core_risk_evidence_ready"] = regime.get("status") == "READY"
+    snapshot_path = OUT / "market_snapshot.json"
+    snapshot = json.loads(snapshot_path.read_text(encoding="utf-8"))
+    snapshot["run_id"] = run_id
+    needed = set(structural.get("taiwan_ticker", structural.get("ticker", pd.Series(dtype=str))).dropna().astype(str))
+    # Structural matches use taiwan_ticker; include nominated candidates as well.
+    needed.update(tw["candidates"]["ticker"].astype(str))
+    snapshot["entry_histories"] = encode_histories({t: h for t, h in tw["histories"].items() if t in needed})
+    snapshot_path.write_text(json.dumps(snapshot, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
     build_manifest(global_results, tw, research_queue, structural, ga, activations, run_id, pipeline_checks)
 
     # 4) Deterministic hard gate. LLMs never validate identity, hashes, run consistency, or freshness.

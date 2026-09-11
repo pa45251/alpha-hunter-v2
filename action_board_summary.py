@@ -5,7 +5,25 @@ import json
 from collections import Counter
 from pathlib import Path
 
+import sys
+import subprocess
+
+if __name__ == "__main__" and "--refresh" in sys.argv:
+    for script in ["risk_regime.py", "cio_advisory.py", "position_cio_advisory.py",
+                   "global_alignment_v2.py", "entry_plan_run_v2.py", "portfolio_allocation_v2.py"]:
+        subprocess.run([sys.executable, script], check=True)
+    subprocess.run([sys.executable, __file__], check=True)
+    subprocess.run([sys.executable, "entry_action_board_v2.py"], check=True)
+    # Prospective trace is diagnostic, not permission to publish market evidence.
+    result = subprocess.run([sys.executable, "entry_plan_trace_v2.py"], check=False)
+    if result.returncode:
+        print("WARNING: optional entry trace failed; daily action board is intact")
+    raise SystemExit(0)
+
+from canonical_evidence import assert_output_lineage
+
 OUT = Path("output")
+assert_output_lineage(["decision_packet.json", "cio_advisory.json", "position_cio_advisory.json", "risk_regime.json"])
 packet = json.loads((OUT / "decision_packet.json").read_text(encoding="utf-8"))
 with (OUT / "decision_board.csv").open(encoding="utf-8", newline="") as f:
     rows = list(csv.DictReader(f))

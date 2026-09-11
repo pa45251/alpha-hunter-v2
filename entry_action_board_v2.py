@@ -127,6 +127,8 @@ def inject_block(old: str, block: str) -> str:
 
 
 def main() -> None:
+    from canonical_evidence import assert_output_lineage
+    assert_output_lineage(["decision_packet.json", "global_alignment_v2.json", "entry_plans_v2.json", "portfolio_allocation_v2.json"])
     if not BOARD_PATH.exists():
         raise RuntimeError("ACTION_BOARD_MISSING")
     alignment = _load(ALIGN_PATH)

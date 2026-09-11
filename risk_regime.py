@@ -1,12 +1,13 @@
 from __future__ import annotations
 
-from datetime import datetime
+from datetime import datetime, timedelta
 import json
+from io import StringIO
+import requests
 from pathlib import Path
 from typing import Any
 
 import pandas as pd
-import yfinance as yf
 
 OUT = Path("output")
 POLICY_PATH = Path("config/portfolio_allocation_policy.json")
@@ -44,20 +45,22 @@ def _close(hist: pd.DataFrame) -> pd.Series:
     return pd.Series(dtype=float)
 
 
-def _download(period: str = "1y") -> dict[str, pd.DataFrame]:
-    raw = yf.download(RISK_TICKERS, period=period, auto_adjust=False, group_by="ticker", progress=False, threads=True)
-    out: dict[str, pd.DataFrame] = {}
-    for ticker in RISK_TICKERS:
-        try:
-            if isinstance(raw.columns, pd.MultiIndex):
-                frame = raw[ticker].copy()
-            else:
-                frame = raw.copy() if len(RISK_TICKERS) == 1 else pd.DataFrame()
-            if not frame.empty:
-                out[ticker] = frame.dropna(how="all")
-        except Exception:
-            continue
-    return out
+def download_ust2y() -> pd.DataFrame:
+    """FRED DGS2, daily percent yield; missing observations are never forward-filled."""
+    url = "https://fred.stlouisfed.org/graph/fredgraph.csv"
+    start = (datetime.now().date() - timedelta(days=400)).isoformat()
+    response = requests.get(url, params={"id": "DGS2", "cosd": start}, timeout=30)
+    response.raise_for_status()
+    data = pd.read_csv(StringIO(response.text), na_values=["."])
+    if "DGS2" not in data or data.empty:
+        raise ValueError("FRED_DGS2_INVALID_RESPONSE")
+    dates = pd.to_datetime(data.iloc[:, 0], errors="coerce")
+    values = pd.to_numeric(data["DGS2"], errors="coerce")
+    frame = pd.DataFrame({"Close": values.to_numpy()}, index=dates)
+    frame = frame[frame.index.notna()].dropna().sort_index()
+    if frame.index.duplicated().any() or len(frame) < 65:
+        raise ValueError("FRED_DGS2_INSUFFICIENT_OR_DUPLICATE_DATA")
+    return frame
 
 
 def _features(hist: pd.DataFrame) -> dict[str, Any]:
@@ -142,12 +145,19 @@ def _band_for(score: int, policy: dict[str, Any]) -> dict[str, Any]:
     return policy["cash_regime"]["bands"][-1]
 
 
-def build_risk_regime(histories: dict[str, pd.DataFrame] | None = None) -> dict[str, Any]:
+def build_risk_regime(histories: dict[str, pd.DataFrame] | None = None, *, run_id: str | None = None, validate_freshness: bool = False) -> dict[str, Any]:
     policy = json.loads(POLICY_PATH.read_text(encoding="utf-8"))
-    source_run_id = _manifest_run_id()
-    live_download = histories is None
-    histories = histories or _download()
+    source_run_id = run_id if run_id is not None else _manifest_run_id()
+    if histories is None:
+        from canonical_evidence import read_evidence
+        return read_evidence("risk_regime.json", OUT)
     f = {t: _features(histories.get(t, pd.DataFrame())) for t in RISK_TICKERS}
+    max_age = int(policy["cash_regime"].get("max_data_age_days", 5))
+    if validate_freshness:
+        today = datetime.now().astimezone().date()
+        for ticker, z in f.items():
+            if z and not 0 <= (today - pd.Timestamp(z["last_date"]).date()).days <= max_age:
+                f[ticker] = {}
     missing_core = [t for t in CORE_TICKERS if not f.get(t)]
     if missing_core:
         return {
@@ -157,29 +167,6 @@ def build_risk_regime(histories: dict[str, pd.DataFrame] | None = None) -> dict[
             "generated_at": datetime.now().astimezone().isoformat(),
             "status": "DATA_UNAVAILABLE",
             "missing_core_signals": missing_core,
-            "regime": "UNKNOWN",
-            "risk_score": None,
-            "target_cash_pct": None,
-            "gross_multiplier": None,
-            "auto_trade_allowed": False,
-        }
-
-    max_age = int(policy["cash_regime"].get("max_data_age_days", 5))
-    stale_core: list[str] = []
-    if live_download:
-        today = datetime.now().astimezone().date()
-        for ticker in CORE_TICKERS:
-            d = pd.Timestamp(f[ticker]["last_date"]).date()
-            if (today - d).days > max_age:
-                stale_core.append(ticker)
-    if stale_core:
-        return {
-            "contract": "ALPHA_HUNTER_RISK_REGIME",
-            "schema_version": "1.2",
-            "source_run_id": source_run_id,
-            "generated_at": datetime.now().astimezone().isoformat(),
-            "status": "STALE_CORE_DATA",
-            "stale_core_signals": stale_core,
             "regime": "UNKNOWN",
             "risk_score": None,
             "target_cash_pct": None,
@@ -211,7 +198,7 @@ def build_risk_regime(histories: dict[str, pd.DataFrame] | None = None) -> dict[
             breadth_pts += pts
     components["US_BREADTH"] = breadth_pts
 
-    credit = _ratio_features(histories.get("HYG", pd.DataFrame()), histories.get("LQD", pd.DataFrame()))
+    credit = _ratio_features(histories.get("HYG", pd.DataFrame()), histories.get("LQD", pd.DataFrame())) if f.get("HYG") and f.get("LQD") else {}
     credit_pts = 0
     if credit:
         if credit["ret20"] < 0:
@@ -245,9 +232,9 @@ def build_risk_regime(histories: dict[str, pd.DataFrame] | None = None) -> dict[
     available_pressures = [x for x in [yield_pressure_2y, yield_pressure_10y] if x != "UNKNOWN"]
     if "ADVERSE" in available_pressures:
         rate_pressure = "ADVERSE"
-    elif available_pressures and all(x == "SUPPORTIVE" for x in available_pressures):
+    elif len(available_pressures) == 2 and all(x == "SUPPORTIVE" for x in available_pressures):
         rate_pressure = "SUPPORTIVE"
-    elif available_pressures:
+    elif len(available_pressures) == 2:
         rate_pressure = "NEUTRAL"
     else:
         rate_pressure = "UNKNOWN"
@@ -272,7 +259,7 @@ def build_risk_regime(histories: dict[str, pd.DataFrame] | None = None) -> dict[
             "credit_hyg_lqd": credit,
             "global_above_ma60_pct": global_above_ma60,
             "ust10y": ({**ust10y, "pressure_state": yield_pressure_10y} if ust10y else {"pressure_state": "UNKNOWN"}),
-            "ust2y": ({**ust2y, "pressure_state": yield_pressure_2y} if ust2y else {"pressure_state": "UNKNOWN"}),
+            "ust2y": ({**ust2y, "source": "FRED:DGS2", "units": "percent", "pressure_state": yield_pressure_2y} if ust2y else {"pressure_state": "UNKNOWN"}),
             "rate_pressure": rate_pressure,
         },
         "method": "Unfitted heuristic combining volatility, US trend, breadth, credit and global breadth. Treasury yields are macro-compatibility evidence, not a crash predictor. source_run_id binds this overlay to the canonical scanner snapshot used downstream.",
@@ -283,7 +270,7 @@ def build_risk_regime(histories: dict[str, pd.DataFrame] | None = None) -> dict[
 def main() -> None:
     OUT.mkdir(parents=True, exist_ok=True)
     payload = build_risk_regime()
-    OUTPUT_PATH.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+    # Evidence is sealed by daily_scan; downstream invocation is read-only.
     print(f"Risk regime: run_id={payload.get('source_run_id')} status={payload.get('status')} regime={payload.get('regime')} score={payload.get('risk_score')}")
 
 

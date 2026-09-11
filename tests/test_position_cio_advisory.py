@@ -54,7 +54,8 @@ def _write_manifest(tmp_path: Path, theme_path: Path, run_id: str = "RUN1") -> P
     path.write_text(json.dumps({
         "status":"PASS",
         "run_id":run_id,
-        "authoritative_files":[{"relative_path":"output/theme_breadth.csv","sha256":digest}],
+        "authoritative_files":[{"name":"theme_breadth.csv","relative_path":"output/theme_breadth.csv","sha256":digest},
+            {"name":"risk_regime.json","sha256":hashlib.sha256((tmp_path / "risk_regime.json").read_bytes()).hexdigest()}],
     }), encoding="utf-8")
     return path
 
@@ -69,8 +70,8 @@ def _patch_common(tmp_path: Path, monkeypatch, rate_pressure: str = "SUPPORTIVE"
         {"theme":"Energy","above_ma20_pct":1,"above_ma60_pct":1,"positive_rs5_pct":1,"positive_rs20_pct":1,"near_20d_high_pct":1,"breadth_confidence":"HIGH"},
     ]).to_csv(theme_path, index=False)
     monkeypatch.setattr(pca, "THEME_PATH", theme_path)
-    monkeypatch.setattr(pca, "MANIFEST_PATH", _write_manifest(tmp_path, theme_path))
     monkeypatch.setattr(pca, "REGIME_PATH", _write_regime(tmp_path, rate_pressure=rate_pressure))
+    monkeypatch.setattr(pca, "MANIFEST_PATH", _write_manifest(tmp_path, theme_path))
     monkeypatch.setattr(pca, "ALIAS_ACTION_PATH", tmp_path / "missing.json")
     monkeypatch.setattr(pca, "load_risk_policy", lambda: {"max_single_position_pct":65,"max_theme_exposure_pct":70,"max_gross_exposure_pct":216,"max_new_position_pct":3,"min_avg_turnover_twd":1,"max_position_loss_pct":10})
     monkeypatch.setattr(pca, "load_portfolio_state", lambda: {"market_value_twd":1000,"financing_debt_twd":0,"cash_twd":0,"positions":[{"ticker":"00898","market_value_twd":1000,"risk_groups":[risk_group]}]})
@@ -128,7 +129,7 @@ def test_lineage_mismatch_is_blocked(tmp_path: Path, monkeypatch):
     try:
         pca.build_position_cio_advisory()
     except RuntimeError as exc:
-        assert "LINEAGE_MISMATCH" in str(exc)
+        assert "HASH_MISMATCH" in str(exc)
     else:
         raise AssertionError("lineage mismatch must fail closed")
 

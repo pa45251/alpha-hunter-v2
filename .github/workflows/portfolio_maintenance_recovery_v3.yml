@@ -24,7 +24,7 @@ on:
 
 concurrency:
   group: alpha-hunter-v3-maintenance-main
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 permissions:
   contents: write
@@ -167,8 +167,6 @@ jobs:
           fi
           if ! git diff --cached --quiet; then
             git commit -m "refresh guarded v2 maintenance decision layer $(date -u +%F)"
-            git fetch origin main
-            git rebase origin/main
             git push origin HEAD:main
           fi
 

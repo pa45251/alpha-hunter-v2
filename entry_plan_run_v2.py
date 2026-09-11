@@ -11,9 +11,9 @@ from entry_structure_v2 import (
     CONTRACT,
     STRATEGY_VERSION,
     EntryPolicyV2,
-    _download_histories,
     choose_plan,
 )
+from canonical_evidence import load_histories as _download_histories, assert_output_lineage
 from portfolio_risk_v2 import apply_entry_risk_gate_v2
 
 OUT = Path("output")
@@ -152,6 +152,7 @@ def _style_records(plans: pd.DataFrame, style: str) -> list[dict]:
 
 
 def write_outputs() -> tuple[pd.DataFrame, dict]:
+    assert_output_lineage(["decision_packet.json", "global_alignment_v2.json"])
     if not BOARD_PATH.exists() or not ALIGN_CSV_PATH.exists():
         raise RuntimeError("ENTRY_PLAN_V2_INPUT_MISSING")
     board = pd.read_csv(BOARD_PATH, dtype={"taiwan_code": str})
@@ -215,6 +216,7 @@ def main() -> None:
         if CSV_OUT.exists():
             CSV_OUT.unlink()
         print(f"Canonical Entry Plan V2 status=DATA_UNAVAILABLE failure={type(exc).__name__}")
+        raise
 
 
 if __name__ == "__main__":

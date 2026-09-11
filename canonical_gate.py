@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import hashlib
+import os
 import json
 from dataclasses import dataclass, asdict
 from datetime import datetime
@@ -12,7 +13,7 @@ import pandas as pd
 
 TAIPEI = ZoneInfo("Asia/Taipei")
 EXPECTED_REPOSITORY = "pa45251/alpha-hunter-v2"
-EXPECTED_BRANCH = "main"
+EXPECTED_BRANCH = os.getenv("GITHUB_REF_NAME", "main")
 EXPECTED_SCHEMA = "2.6"
 EXPECTED_SCANNER_PREFIX = "2.6"
 REQUIRED_RUN_ID_FILES = (

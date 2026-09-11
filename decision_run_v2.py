@@ -76,12 +76,20 @@ def main() -> None:
     sealed = seal_public_snapshot(board, run_id, launch_meta, evidence_paths)
     launch_meta["sealed_snapshot_id"] = sealed
 
-    audit = append_shadow_audit_v2(board, "output/shadow_audit.csv")
-    validation, validation_report = write_shadow_validation_v2(
-        "output/shadow_audit.csv",
-        "output/shadow_validation.csv",
-        "output/shadow_validation_report.json",
-    )
+    audit = pd.DataFrame()
+    validation = pd.DataFrame()
+    validation_report = {"status": "UNAVAILABLE", "future_data_cutoff_enforced": False}
+    try:
+        audit = append_shadow_audit_v2(board, "output/shadow_audit.csv")
+        validation, validation_report = write_shadow_validation_v2(
+            "output/shadow_audit.csv", "output/shadow_validation.csv",
+            "output/shadow_validation_report.json",
+        )
+    except Exception as exc:
+        # Research outcome scoring must never suppress today's guarded decisions.
+        for name in ["shadow_validation.csv", "shadow_validation_report.json"]:
+            (OUT / name).unlink(missing_ok=True)
+        print(f"WARNING: optional shadow validation failed: {type(exc).__name__}")
 
     accepted = int(activations.get("activation_valid", pd.Series(dtype=bool)).fillna(False).sum()) if not activations.empty else 0
     activated_driver_ids = sorted(

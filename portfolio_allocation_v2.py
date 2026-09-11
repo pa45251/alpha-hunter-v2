@@ -186,9 +186,12 @@ def build_portfolio_allocation_v2(
 
 
 def write_outputs() -> dict[str, Any]:
+    from canonical_evidence import assert_output_lineage
+    run_id = assert_output_lineage(["position_cio_advisory.json", "cio_advisory.json", "risk_regime.json", "entry_plans_v2.json"])
     payload = build_portfolio_allocation_v2(
         _load(POLICY_PATH), _load(POSITION_PATH), _load(CANDIDATE_PATH), _load(REGIME_PATH), _load(ENTRY_PATH)
     )
+    payload["source_run_id"] = run_id
     OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)
     OUTPUT_PATH.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
     return payload

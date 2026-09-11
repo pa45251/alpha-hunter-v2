@@ -24,6 +24,19 @@ class ScanConfig:
 
 TAIPEI_TZ = ZoneInfo("Asia/Taipei")
 
+def closed_history(hist: pd.DataFrame, ticker: str) -> pd.DataFrame:
+    """Daily decisions exclude still-forming Taiwan/US sessions."""
+    if hist is None or hist.empty:
+        return hist
+    from datetime import timedelta
+    taiwan = ticker.endswith((".TW", ".TWO")) or ticker == "^TWII"
+    local = datetime.now(ZoneInfo("Asia/Taipei" if taiwan else "America/New_York"))
+    cutoff = local.date()
+    if local.hour < (14 if taiwan else 17):
+        cutoff -= timedelta(days=1)
+    return hist.loc[[pd.Timestamp(t).date() <= cutoff for t in hist.index]].copy()
+
+
 def _price_series(hist: pd.DataFrame) -> pd.Series:
     """Adjusted close for comparable returns; falls back to Close."""
     if "Adj Close" in hist.columns and hist["Adj Close"].notna().any():
@@ -409,7 +422,9 @@ def run_scan(universe_csv: str = "config/universe.csv", config: ScanConfig = Sca
     if config.benchmark not in tickers:
         tickers = [config.benchmark] + tickers
 
-    data = _download(tickers, config.lookback)
+    from risk_regime import RISK_TICKERS
+    data = _download(list(dict.fromkeys(tickers + [t for t in RISK_TICKERS if t != "^UST2Y"])), config.lookback)
+    data = {t: closed_history(h, t) for t, h in data.items()}
     bench_hist = data.get(config.benchmark)
     if bench_hist is None or bench_hist.empty:
         raise RuntimeError(f"Benchmark {config.benchmark} unavailable")
@@ -441,7 +456,7 @@ def run_scan(universe_csv: str = "config/universe.csv", config: ScanConfig = Sca
     registry_path = out_dir / "leader_registry.csv"
     registry = update_registry(stocks, registry_path)
 
-    return {"stocks": stocks, "breadth": breadth, "registry": registry}
+    return {"stocks": stocks, "breadth": breadth, "registry": registry, "histories": data}
 
 
 def write_outputs(results: Dict[str, pd.DataFrame], output_dir: str = "output") -> None:
