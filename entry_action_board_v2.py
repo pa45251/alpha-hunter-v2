@@ -37,7 +37,9 @@ def _best(rows: list[dict[str, Any]]) -> dict[str, Any] | None:
     if not rows:
         return None
     usable = [r for r in rows if bool(r.get("entry_structure_valid"))]
-    pool = usable or rows
+    if not usable:
+        return None
+    pool = usable
     def key(r: dict[str, Any]):
         status = str(r.get("entry_status", ""))
         order = 0 if status == "CONFIRMED_NEXT_SESSION_CONDITIONAL" else 1 if "WAITING" in status else 2

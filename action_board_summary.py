@@ -1,8 +1,6 @@
 from __future__ import annotations
 
-import csv
 import json
-from collections import Counter
 from pathlib import Path
 
 import sys
@@ -23,201 +21,62 @@ if __name__ == "__main__" and "--refresh" in sys.argv:
 from canonical_evidence import assert_output_lineage
 
 OUT = Path("output")
-assert_output_lineage(["decision_packet.json", "cio_advisory.json", "position_cio_advisory.json", "risk_regime.json"])
-packet = json.loads((OUT / "decision_packet.json").read_text(encoding="utf-8"))
-with (OUT / "decision_board.csv").open(encoding="utf-8", newline="") as f:
-    rows = list(csv.DictReader(f))
+run_id = assert_output_lineage([
+    "decision_packet.json", "cio_advisory.json", "position_cio_advisory.json", "risk_regime.json"
+])
 
-advisory_rows = []
-advisory_packet = {}
-advisory_csv = OUT / "cio_advisory.csv"
-advisory_json = OUT / "cio_advisory.json"
-if advisory_csv.exists():
-    with advisory_csv.open(encoding="utf-8", newline="") as f:
-        advisory_rows = list(csv.DictReader(f))
-if advisory_json.exists():
-    try:
-        advisory_packet = json.loads(advisory_json.read_text(encoding="utf-8"))
-    except Exception:
-        advisory_packet = {}
 
-run_id = packet.get("run_id", "UNKNOWN")
+def load(name):
+    return json.loads((OUT / name).read_text(encoding="utf-8"))
+
+
+def md(value):
+    return str(value if value is not None else "UNKNOWN").replace("|", "/").replace("\n", " ")
+
+
+packet = load("decision_packet.json")
+regime = load("risk_regime.json")
+positions = load("position_cio_advisory.json")
 activation = packet.get("activation_layer") or {}
-risk = packet.get("risk_layer") or {}
-pos = packet.get("existing_position_layer") or {}
-maintenance = pos.get("maintenance_research") or {}
-alias_meta = pos.get("alias_output") or {}
-alias_rows = []
+launch = packet.get("launch_layer") or {}
+strict = {}
 alias_path = OUT / "position_alias_actions.json"
-if alias_meta.get("status") == "READY" and alias_path.exists():
-    try:
-        alias_payload = json.loads(alias_path.read_text(encoding="utf-8"))
-        if (
-            alias_payload.get("contract") == "ALPHA_HUNTER_POSITION_ALIAS_ACTIONS"
-            and str(alias_payload.get("run_id", "")) == str(run_id)
-        ):
-            alias_rows = [r for r in (alias_payload.get("positions") or []) if isinstance(r, dict)]
-    except Exception:
-        alias_rows = []
-
-position_cio_rows = []
-position_cio_path = OUT / "position_cio_advisory.json"
-if position_cio_path.exists():
-    try:
-        position_cio_payload = json.loads(position_cio_path.read_text(encoding="utf-8"))
-        if position_cio_payload.get("contract") == "ALPHA_HUNTER_EXISTING_POSITION_CIO_ADVISORY":
-            position_cio_rows = [r for r in (position_cio_payload.get("positions") or []) if isinstance(r, dict)]
-    except Exception:
-        position_cio_rows = []
-
-focus = [r for r in rows if r.get("candidate_action") != "WATCH_RESEARCH"]
-now = [r for r in focus if r.get("portfolio_action") in {"BUY", "BUY_STOCK", "ADD", "REDUCE", "EXIT", "HOLD"}]
-near = [r for r in focus if r.get("candidate_action") == "WATCH_ENTRY"]
-stage_rank = {"GATE_5_ENTRY": 0, "GATE_4_REACTION": 1, "GATE_3_POSITIVE_EDGE": 2, "GATE_2_TRANSMISSION": 3}
-near.sort(key=lambda r: (stage_rank.get(r.get("decision_stage", ""), 9), -float(r.get("research_priority_score") or 0)))
-
-blockers = Counter()
-for r in rows:
-    b = (r.get("decision_blockers") or "").strip()
-    if b:
-        for item in b.replace("|", ";").split(";"):
-            item = item.strip()
-            if item:
-                blockers[item] += 1
-
-mapping_counts = pos.get("system_mapping_counts") or {}
-ticker_count = int(mapping_counts.get("SYSTEM_TICKER_EXPOSURE", 0) or 0)
-risk_group_count = int(mapping_counts.get("SYSTEM_RISK_GROUP", 0) or 0)
-missing_count = int(mapping_counts.get("SYSTEM_MAPPING_MISSING", 0) or 0)
-position_count = ticker_count + risk_group_count + missing_count
-if not pos.get("position_inputs_valid", False):
-    system_readiness = "BLOCKED_PRIVATE_INPUTS"
-elif missing_count > 0:
-    system_readiness = "PARTIAL"
-elif position_count == 0:
-    system_readiness = "NO_POSITIONS"
-elif risk_group_count > 0:
-    system_readiness = "COMPLETE_WITH_SYSTEM_INFERENCE"
-else:
-    system_readiness = "COMPLETE_EXACT_EXPOSURE"
-
-
-def _md(v) -> str:
-    return str(v or "").replace("|", "/").replace("\n", " ").strip()
-
+if alias_path.exists():
+    aliases = load("position_alias_actions.json")
+    if aliases.get("run_id") != run_id:
+        raise RuntimeError("OUTPUT_LINEAGE_MISMATCH:position_alias_actions.json")
+    strict = {r["alias"]: r for r in aliases.get("positions", [])}
 
 lines = [
     "# Alpha Hunter — Action Board", "",
     f"- Run: `{run_id}`",
-    f"- Causal source: `{activation.get('source', 'UNKNOWN')}`",
-    f"- Same snapshot: `{activation.get('same_snapshot_v3', False)}`",
-    f"- Active opportunity drivers: {', '.join(activation.get('active_driver_ids') or []) or 'NONE'}",
-    f"- Private risk inputs valid: `{risk.get('risk_inputs_valid', False)}`",
-    f"- Auto order execution: `{packet.get('auto_order_execution', False)}`", "",
-    "## Deployment status",
-    "- SHADOW ONLY: all BUY/SELL/HOLD signals are research outputs; no live order is authorized.",
-    f"- Frozen strategy: `{(packet.get('launch_layer') or {}).get('strategy_version', 'NOT_VERIFIED')}`",
-    f"- Freeze integrity: `{(packet.get('launch_layer') or {}).get('freeze_integrity_pass', False)}`",
-    "- CIO Advisory is deliberately separate from execution permission: it must express the best directional decision under uncertainty, while the frozen execution lane may still block an order.",
-    "- Existing-position identities are published only as user-defined aliases; ticker-to-alias mapping remains private.",
-    "- First review: 2026-11-29. Review does not automatically enable trading.",
-    "- Existing shadow statistics are gross signal outcomes, not validated strategy performance.",
-    "", "## 1. CIO advisory — new opportunities, directional decision not an order",
-]
-
-if advisory_rows:
-    advisory_rows.sort(key=lambda r: int(float(r.get("advisory_rank") or 9999)))
-    lines += ["", "| Rank | Exposure | Name | Advisory | Confidence | Driver | Why |", "|---:|---|---|---|---|---|---|"]
-    for r in advisory_rows[:15]:
-        preferred = (r.get("preferred_exposure") or "").upper()
-        exposure = r.get("etf_ticker") if preferred == "ETF" else r.get("ticker")
-        name = "Mapped ETF" if preferred == "ETF" else r.get("name")
-        lines.append(
-            f"| {r.get('advisory_rank')} | {_md(exposure)} | {_md(name)} | {_md(r.get('advisory_action'))} | "
-            f"{_md(r.get('advisory_confidence'))} | {_md(r.get('driver_id'))} | {_md(r.get('advisory_rationale'))} |"
-        )
-    lines += [
-        "",
-        f"Advisory counts: `{json.dumps(advisory_packet.get('action_counts') or {}, ensure_ascii=False, sort_keys=True)}`",
-        "The advisory lane may say BUY_BIAS/PREFER_ETF/WAIT_PULLBACK/AVOID even when execution remains blocked. That is intentional.",
-    ]
-else:
-    lines.append("\nCIO advisory artifact is not available for this run.")
-
-lines += ["", "## 2. Existing-position CIO advisory — alias only"]
-if position_cio_rows:
-    lines += ["", "| Alias | CIO bias | Confidence | State | Lane | Strict lane | Why |", "|---|---|---|---|---|---|---|"]
-    for r in position_cio_rows:
-        lines.append(
-            f"| {_md(r.get('alias'))} | {_md(r.get('advisory_action'))} | {_md(r.get('confidence'))} | "
-            f"{_md(r.get('signal_state'))} | {_md(r.get('lane'))} | {_md(r.get('execution_lane_action'))} | {_md(r.get('reason'))} |"
-        )
-    lines += ["", "ETF holdings use global theme breadth; stocks use a theme proxy until company-level transmission is exact. This is advisory, not execution authorization."]
-else:
-    lines.append("\nExisting-position CIO advisory artifact is not available for this run.")
-
-lines += ["", "## 3. Execution-lane research signals (not executable orders)"]
-if now:
-    lines += ["", "| Ticker | Name | Action | Driver | Stage |", "|---|---|---|---|---|"]
-    for r in now[:12]:
-        lines.append(f"| {_md(r.get('ticker'))} | {_md(r.get('name'))} | {_md(r.get('portfolio_action'))} | {_md(r.get('driver_id'))} | {_md(r.get('decision_stage'))} |")
-else:
-    lines.append("\nNo validated BUY/ADD/REDUCE/EXIT/HOLD action is currently emitted by the frozen execution lane.")
-
-lines += ["", "## 4. Closest to execution action"]
-if near:
-    lines += ["", "| Ticker | Name | Driver | Reaction | Stage | Blocker |", "|---|---|---|---|---|---|"]
-    for r in near[:15]:
-        lines.append(f"| {_md(r.get('ticker'))} | {_md(r.get('name'))} | {_md(r.get('driver_id'))} | {_md(r.get('reaction_state'))} | {_md(r.get('decision_stage'))} | {_md(r.get('decision_blockers'))} |")
-else:
-    lines.append("\nNo WATCH_ENTRY candidates.")
-
-lines += ["", "## 5. Main execution blockers"]
-for blocker, count in blockers.most_common(8):
-    lines.append(f"- `{blocker}`: {count}")
-if not blockers:
-    lines.append("- None")
-
-lines += ["", "## 6. Existing-position strict layer — privacy-safe alias view"]
-if alias_rows:
-    lines += ["", "| Alias | Action | Reason | Thesis mapping |", "|---|---|---|---|"]
-    for r in alias_rows:
-        lines.append(
-            f"| {_md(r.get('alias'))} | {_md(r.get('action'))} | {_md(r.get('reason'))} | {_md(r.get('thesis_mapping'))} |"
-        )
-else:
-    lines.append(f"\nAlias output unavailable: `{alias_meta.get('status', 'NOT_AVAILABLE')}`. No ticker identity is inferred or guessed.")
-
-lines += [
+    f"- Market session: `{regime.get('risk_snapshot_date', 'UNKNOWN')}`",
+    f"- Risk regime: **{regime.get('regime', 'UNKNOWN')}**; target cash: **{md(regime.get('target_cash_pct'))}%**",
+    f"- Causal evidence: `{activation.get('source', 'UNKNOWN')}`",
+    "- Follow evidence-supported trends; use a valid entry; reduce risk when the thesis fails; otherwise WAIT / CASH.",
     "",
-    f"- Inputs valid: `{pos.get('position_inputs_valid', False)}`",
-    f"- System thesis primary: `{pos.get('system_thesis_primary', False)}`",
-    f"- System mapping readiness: `{system_readiness}`",
-    f"- Position count: `{position_count}`",
-    f"- Position action counts: `{json.dumps(pos.get('position_action_counts') or {}, ensure_ascii=False, sort_keys=True)}`",
-    f"- System mapping counts: `{json.dumps(mapping_counts, ensure_ascii=False, sort_keys=True)}`",
-    f"- Portfolio-maintenance research lane: `{maintenance.get('maintenance_lane_status', 'NOT_AVAILABLE')}`",
-    f"- Maintenance drivers researched/targeted: `{maintenance.get('maintenance_validated_count', 0)}/{maintenance.get('maintenance_target_count', 0)}`",
-    f"- Maintenance driver states (aggregate only): `{json.dumps(maintenance.get('maintenance_state_counts') or {}, ensure_ascii=False, sort_keys=True)}`",
-    f"- Maintenance targets truncated by safety cap: `{maintenance.get('maintenance_target_truncated_count', 0)}`",
-    f"- Optional user-thesis overlay: `{pos.get('user_thesis_overlay_status', 'NOT_CONFIGURED')}`",
-    f"- User/system disagreement count: `{pos.get('user_thesis_disagreement_count', 0)}`",
-    "- Public alias outputs contain no ticker, company name, market value, weight, cost, P/L, cash or financing data.",
-    "- The ticker-to-alias map remains inside GitHub Secrets/private runtime and is never committed.",
-    "", "## 7. Interpretation",
-    "- Opportunity discovery, existing-position advisory, execution permission, and portfolio maintenance are separate layers.",
-    "- Existing-position CIO advisory is forced to express a directional bias from market evidence even when the frozen strict lane remains REVIEW_RESEARCH.",
-    "- ETF holdings are judged by global theme breadth; single stocks require more company-specific transmission before strict HOLD/EXIT can be validated.",
-    "- Weak or unverified Taiwan stock alpha should fall back to a mapped ETF or cash instead of forcing endless research.",
-    "- Existing-position strict HOLD/REDUCE/EXIT is driven by system-inferred economic exposure, not by the user's stated purchase reason.",
-    "- `SYSTEM_TICKER_EXPOSURE` is preferred; risk-group mapping is a fallback. Missing system mapping fails closed to `REVIEW_RESEARCH`.",
-    "- Alias-level existing-position actions may be public, but the underlying instrument mapping stays private.",
-    "- Automatic brokerage execution remains disabled.", "",
+    "## Existing positions", "",
 ]
-
+rows = positions.get("positions") or []
+if rows:
+    lines += ["| Position | Instrument trend | Underlying support | Advisory | Risk control |",
+              "|---|---|---|---|---|"]
+    for row in rows:
+        control = strict.get(row["alias"], {})
+        # Surface existing mandatory reductions/exits without presenting a second hold/buy list.
+        risk_control = control.get("action") if control.get("action") in {"REDUCE", "EXIT"} else "—"
+        lines.append("| " + " | ".join(md(v) for v in [row["alias"], row.get("trend_state"),
+                     row.get("macro_support"), row.get("advisory_action"), risk_control]) + " |")
+    lines += ["", "Instrument trend uses the held instrument's sealed closed-session prices. Theme breadth supplies context and never replaces instrument trend."]
+else:
+    lines += [f"Position assessment unavailable: `{positions.get('status', 'UNKNOWN')}`. No position action is inferred."]
+lines += [
+    "", "## Evidence and execution boundary", "",
+    f"- Current validated drivers: {', '.join(activation.get('active_driver_ids') or []) or 'NONE — WAIT / CASH'}",
+    f"- Private risk inputs valid: `{(packet.get('risk_layer') or {}).get('risk_inputs_valid', False)}`",
+    f"- Frozen release integrity: `{launch.get('freeze_integrity_pass', False)}`",
+    "- Exact entry and rotation use the single canonical V2 plan shown above; independent legacy action lists are not published.",
+    "- Automatic order execution is disabled. Frozen release drift never grants live permission.", "",
+]
 (OUT / "action_board.md").write_text("\n".join(lines), encoding="utf-8")
-print(
-    f"Wrote output/action_board.md: advisory={len(advisory_rows)} position_cio={len(position_cio_rows)} "
-    f"alias_positions={len(alias_rows)} focus={len(focus)} near={len(near)} now={len(now)} "
-    f"system_readiness={system_readiness} maintenance={maintenance.get('maintenance_lane_status', 'NOT_AVAILABLE')}"
-)
+print(f"Wrote canonical action board: run_id={run_id}; positions={len(rows)}")
