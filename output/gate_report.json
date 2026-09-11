@@ -3,13 +3,13 @@
   "gate_version": "1.0",
   "gate_status": "PASS",
   "failure_code": null,
-  "validated_at_taipei": "2026-09-11T06:35:16.404733+08:00",
+  "validated_at_taipei": "2026-09-11T12:26:25.660805+08:00",
   "repository": "pa45251/alpha-hunter-v2",
   "branch": "main",
   "schema_version": "2.6",
   "scanner_version": "2.6.0",
-  "run_id": "20260911T063144+0800-1b683761",
-  "manifest_sha256": "83f3e044efc48648849f4f653221823bd714dcbb87d238f144423246ea3525e3",
+  "run_id": "20260911T122401+0800-1e3f0c9d",
+  "manifest_sha256": "3101b7d6ce04a90ca8b4039d4809dc665de6ab8595bded934822257d27dcb7cd",
   "checks": [
     {
       "name": "repository_identity",
@@ -50,13 +50,13 @@
     {
       "name": "pipeline_checks",
       "passed": true,
-      "detail": "{\"causal_queue_rebuilt_this_run\": true, \"causal_taxonomy_snapshot_present\": true, \"global_outputs_generated\": true, \"graph_audit_rebuilt_this_run\": true, \"structural_graph_snapshot_present\": true, \"structural_matches_rebuilt_this_run\": true, \"taiwan_outputs_generated\": true}",
+      "detail": "{\"causal_queue_rebuilt_this_run\": true, \"causal_taxonomy_snapshot_present\": true, \"core_risk_evidence_ready\": true, \"global_outputs_generated\": true, \"graph_audit_rebuilt_this_run\": true, \"structural_graph_snapshot_present\": true, \"structural_matches_rebuilt_this_run\": true, \"taiwan_outputs_generated\": true}",
       "severity": "HARD"
     },
     {
       "name": "manifest_run_id",
       "passed": true,
-      "detail": "run_id=20260911T063144+0800-1b683761",
+      "detail": "run_id=20260911T122401+0800-1e3f0c9d",
       "severity": "HARD"
     },
     {
@@ -74,13 +74,13 @@
     {
       "name": "authoritative_file_hashes",
       "passed": true,
-      "detail": "verified=14",
+      "detail": "verified=15",
       "severity": "HARD"
     },
     {
       "name": "run_consistency",
       "passed": true,
-      "detail": "all=20260911T063144+0800-1b683761",
+      "detail": "all=20260911T122401+0800-1e3f0c9d",
       "severity": "HARD"
     },
     {
