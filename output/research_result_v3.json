@@ -1,8 +1,8 @@
 {
   "contract": "ALPHA_HUNTER_V3_VALIDATED_RESEARCH",
   "status": "PASS",
-  "research_run_id": "20260912T062257+0800-9958dac6",
-  "validated_at_utc": "2026-09-11T22:27:38.943975+00:00",
+  "research_run_id": "20260912T113840+0800-680a8d28",
+  "validated_at_utc": "2026-09-12T03:43:22.160884+00:00",
   "target_driver_ids": [
     "CONTAINER_FREIGHT",
     "DRY_BULK_FREIGHT",
@@ -15,64 +15,26 @@
     {
       "driver_id": "CONTAINER_FREIGHT",
       "state": "UNKNOWN",
-      "confidence": 0.62,
-      "primary_cause": "Available evidence is conflicting and does not provide sufficiently current, time-consistent confirmation of the exact container spot/contract freight and liner-utilization cycle as of the research date. Earlier analysis describes potential overcapacity and a downward spot-rate trajectory, while other reporting describes a changing post-Red Sea market.",
-      "industry_scope": "INDUSTRY_WIDE",
-      "supporting_evidence": [
-        {
-          "claim": "The container shipping market was described as facing uncertainty and potential overcapacity if Red Sea routing normalized, indicating a freight-cycle mechanism affecting industry capacity and rates.",
-          "source_title": "Container Shipping: Sailing Through Uncertainty And Looming Overcapacity",
-          "source_url": "https://seekingalpha.com/article/4765754-container-shipping-sailing-through-uncertainty-and-looming-overcapacity",
-          "published_at": "2025-03-07T09:44:00Z",
-          "event_date": null,
-          "evidence_type": "HIGH_QUALITY_REPORTING"
-        },
-        {
-          "claim": "The container shipping market in 2025 was described as resembling the pre-Red Sea-crisis market, indicating a material shift in container spot-rate conditions and liner-cycle dynamics.",
-          "source_title": "The rise and fall of container spot rates — and what it means for 2026",
-          "source_url": "https://www.lloydslist.com/LL1154942/The-rise-and-fall-of-container-spot-rates--and-what-it-means-for-2026",
-          "published_at": "2025-09-26T13:37:00Z",
-          "event_date": null,
-          "evidence_type": "HIGH_QUALITY_REPORTING"
-        }
-      ],
-      "counter_evidence": [
-        {
-          "claim": "Container freight spot rates were reported to be falling, with tariff uncertainty and demand failing to match supply; blank sailings only cushioned the decline.",
-          "source_title": "Blank Sailings Cushion Fall for Container Spot Rates",
-          "source_url": "https://gcaptain.com/blank-sailings-cushion-fall-for-container-spot-rates/",
-          "published_at": "2025-04-25T11:00:00Z",
-          "event_date": null,
-          "evidence_type": "HIGH_QUALITY_REPORTING"
-        }
-      ],
-      "source_count": 3,
+      "confidence": 0.12,
+      "primary_cause": "Exact current container spot or contract freight, liner utilization, and capacity evidence was insufficient after support and counter searches; no verifiable source established the current driver state.",
+      "industry_scope": "UNKNOWN",
+      "supporting_evidence": [],
+      "counter_evidence": [],
+      "source_count": 0,
       "event_date": null,
-      "source_dates": [
-        "2025-03-07T09:44:00Z",
-        "2025-09-26T13:37:00Z",
-        "2025-04-25T11:00:00Z"
-      ],
-      "researched_at_utc": "2026-09-11T22:27:14Z",
-      "research_run_id": "20260912T062257+0800-9958dac6"
+      "source_dates": [],
+      "researched_at_utc": "2026-09-12T03:42:48.165Z",
+      "research_run_id": "20260912T113840+0800-680a8d28"
     },
     {
       "driver_id": "DRY_BULK_FREIGHT",
-      "state": "ACTIVE",
-      "confidence": 0.78,
-      "primary_cause": "Current 2026 evidence reports strengthening dry-bulk freight conditions, including a higher Baltic Dry Index and elevated Capesize rates tied to commodity-vessel demand and tighter vessel supply. Counter-evidence indicates that part of the strength may be rerouting-related and could reverse, but it does not negate the currently observed freight-cycle activation.",
+      "state": "UNKNOWN",
+      "confidence": 0.58,
+      "primary_cause": "Evidence supports elevated Capesize freight rates and tightening supply, but counter-evidence warns that 2026 strength may be driven by temporary rerouting and could reverse into a supply glut; the exact durable cycle state remains conflicting.",
       "industry_scope": "INDUSTRY_WIDE",
       "supporting_evidence": [
         {
-          "claim": "The Baltic Dry Index reached 2,732 points on July 31, 2026, up approximately 9.2% during July, with dry-bulk market conditions strengthening across vessel segments.",
-          "source_title": "HTCO Highlights Strengthening Dry Bulk Market as BDI Rises Approximately 9.2% in July and Shipping Equities Gain Investor Attention",
-          "source_url": "https://www.nasdaq.com/press-release/htco-highlights-strengthening-dry-bulk-market-bdi-rises-approximately-92-july-and",
-          "published_at": "2026-08-13T05:00:00Z",
-          "event_date": "2026-07-31T00:00:00Z",
-          "evidence_type": "INDUSTRY_DATA"
-        },
-        {
-          "claim": "A key dry-bulk rate measure reached its highest level since December 2023, driven by rising Capesize demand and tightening supply of bulk carriers.",
+          "claim": "A key dry-bulk freight-rate measure reached its highest level since December 2023 in May 2026, driven by rising Capesize demand and tightening vessel supply.",
           "source_title": "Dry-Bulk Shipping Rates Hit Two-Year High on Capesize Demand",
           "source_url": "https://gcaptain.com/dry-bulk-shipping-rates-hit-two-year-high-on-capesize-demand/",
           "published_at": "2026-05-07T00:07:00Z",
@@ -82,65 +44,171 @@
       ],
       "counter_evidence": [
         {
-          "claim": "BIMCO warned that apparent 2026 dry-bulk strength was substantially artificial and driven by forced rerouting, with a potential 2027 supply glut as the rerouting effect reverses.",
+          "claim": "BIMCO warned in August 2026 that apparent 2026 dry-bulk strength was substantially influenced by forced rerouting and that a 2027 supply glut could reverse the benefit.",
           "source_title": "Dry bulk shipping faces 2027 supply glut: BIMCO warns Hormuz rerouting boost will reverse",
           "source_url": "https://www.msn.com/en-us/news/other/dry-bulk-shipping-faces-2027-supply-glut-bimco-warns-hormuz-rerouting-boost-will-reverse/ar-AA29coQf",
           "published_at": "2026-08-01T10:36:00Z",
-          "event_date": null,
-          "evidence_type": "OTHER_NONPRICE"
+          "event_date": "2026-08-01T00:00:00Z",
+          "evidence_type": "INDUSTRY_DATA"
         }
       ],
-      "source_count": 3,
-      "event_date": "2026-07-31T00:00:00Z",
+      "source_count": 2,
+      "event_date": "2026-08-01T00:00:00Z",
       "source_dates": [
-        "2026-08-13T05:00:00Z",
         "2026-05-07T00:07:00Z",
         "2026-08-01T10:36:00Z"
       ],
-      "researched_at_utc": "2026-09-11T22:27:14Z",
-      "research_run_id": "20260912T062257+0800-9958dac6"
+      "researched_at_utc": "2026-09-12T03:42:48.165Z",
+      "research_run_id": "20260912T113840+0800-680a8d28"
     },
     {
       "driver_id": "MATURE_NODE_FOUNDRY_UTILIZATION",
       "state": "UNKNOWN",
-      "confidence": 0.9,
-      "primary_cause": "Exact-driver support and counter searches did not yield a verifiable source confirming or contradicting current mature or specialty-node utilization, wafer pricing, customer inventory, or end-demand conditions. Leading-edge AI demand evidence cannot substitute for mature-node evidence.",
+      "confidence": 0.1,
+      "primary_cause": "Exact mature and specialty-node utilization, wafer pricing, inventory, and end-demand evidence was insufficient after support and counter searches; leading-edge evidence cannot establish this driver.",
       "industry_scope": "UNKNOWN",
       "supporting_evidence": [],
       "counter_evidence": [],
       "source_count": 0,
       "event_date": null,
       "source_dates": [],
-      "researched_at_utc": "2026-09-11T22:27:14Z",
-      "research_run_id": "20260912T062257+0800-9958dac6"
+      "researched_at_utc": "2026-09-12T03:42:48.165Z",
+      "research_run_id": "20260912T113840+0800-680a8d28"
     },
     {
       "driver_id": "LEADING_EDGE_FOUNDRY_AI_DEMAND",
       "state": "UNKNOWN",
-      "confidence": 0.9,
-      "primary_cause": "Exact-driver support and counter searches did not yield a verifiable source confirming or contradicting current leading-edge 3nm/2nm AI or HPC wafer demand, utilization, advanced-node pricing, or capacity. Mature-node recovery evidence cannot substitute for leading-edge evidence.",
-      "industry_scope": "UNKNOWN",
-      "supporting_evidence": [],
+      "confidence": 0.25,
+      "primary_cause": "A high-quality exact causal source confirming current leading-edge AI/HPC wafer demand or utilization was not verified; one search result described broad advanced-node demand but did not provide sufficient independent operating confirmation or a reliable counter-assessment.",
+      "industry_scope": "INDUSTRY_WIDE",
+      "supporting_evidence": [
+        {
+          "claim": "Reporting describes AI, HPC, advanced packaging, and next-generation memory as drivers of demand for cutting-edge chips as manufacturers push toward 2nm and smaller processes.",
+          "source_title": "Can Onto Innovation extend its winning streak in advanced nodes business?",
+          "source_url": "https://www.msn.com/en-us/technology/tech-companies/can-onto-innovation-extend-its-winning-streak-in-advanced-nodes-business/ar-AA283oNs",
+          "published_at": "2026-07-16T07:59:00Z",
+          "event_date": "2026-07-16T00:00:00Z",
+          "evidence_type": "HIGH_QUALITY_REPORTING"
+        }
+      ],
       "counter_evidence": [],
-      "source_count": 0,
-      "event_date": null,
-      "source_dates": [],
-      "researched_at_utc": "2026-09-11T22:27:14Z",
-      "research_run_id": "20260912T062257+0800-9958dac6"
+      "source_count": 1,
+      "event_date": "2026-07-16T00:00:00Z",
+      "source_dates": [
+        "2026-07-16T07:59:00Z"
+      ],
+      "researched_at_utc": "2026-09-12T03:42:48.165Z",
+      "research_run_id": "20260912T113840+0800-680a8d28"
     },
     {
       "driver_id": "MEMORY_IC_CYCLE",
       "state": "UNKNOWN",
-      "confidence": 0.9,
-      "primary_cause": "Exact-driver support and counter searches did not yield a verifiable source confirming or contradicting the current memory-IC design-demand and ASP cycle, including relevant revenue, pricing, inventory, or end-demand evidence.",
+      "confidence": 0.1,
+      "primary_cause": "Exact memory IC design revenue, ASP, inventory, and end-demand evidence was insufficient after support and counter searches; no verifiable source established the current cycle state.",
       "industry_scope": "UNKNOWN",
       "supporting_evidence": [],
       "counter_evidence": [],
       "source_count": 0,
       "event_date": null,
       "source_dates": [],
-      "researched_at_utc": "2026-09-11T22:27:14Z",
-      "research_run_id": "20260912T062257+0800-9958dac6"
+      "researched_at_utc": "2026-09-12T03:42:48.165Z",
+      "research_run_id": "20260912T113840+0800-680a8d28"
+    }
+  ],
+  "company_opportunities": [
+    {
+      "ticker": "2605.TW",
+      "driver_id": "DRY_BULK_FREIGHT",
+      "research_run_id": "20260912T113840+0800-680a8d28",
+      "why": "Official August 2026 revenue increased 58.75% year over year and the issuer remark attributes the increase to freight rates remaining high.",
+      "driver": "Higher dry-bulk freight rates increase vessel revenue and earnings through stronger charter and voyage economics.",
+      "driver_state": "DEVELOPING",
+      "scope": "GLOBAL",
+      "company_transmission": "The company’s official monthly revenue disclosure links its measured revenue improvement to persistently high freight rates, providing a direct company-specific transmission from the dry-bulk freight cycle to revenue.",
+      "rate_sensitive": false,
+      "local_scope_reason": "",
+      "fundamental_evidence": [
+        {
+          "ticker": "2605.TW",
+          "metric": "REVENUE",
+          "direction": "SUPPORTS",
+          "claim": "August 2026 monthly revenue was TWD 507.861 million, up 6.04% month over month and 58.75% year over year; cumulative revenue was up 38.72% year over year, with the issuer remark attributing the increase to freight rates remaining high.",
+          "source_title": "Official monthly revenue: 新興 11508",
+          "source_url": "https://mopsfin.twse.com.tw/opendata/t187ap05_L.csv",
+          "published_at": "2026-09-12T03:42:42.277578Z",
+          "available_at": "2026-09-12T03:42:42.277578Z"
+        }
+      ],
+      "international_evidence": [
+        {
+          "ticker": "2605.TW",
+          "driver_id": "DRY_BULK_FREIGHT",
+          "same_driver": true,
+          "metric": "FREIGHT_RATE",
+          "direction": "SUPPORTS",
+          "claim": "A key dry-bulk freight-rate measure reached its highest level since December 2023 in May 2026, driven by rising Capesize demand and tightening vessel supply.",
+          "source_title": "Dry-Bulk Shipping Rates Hit Two-Year High on Capesize Demand",
+          "source_url": "https://gcaptain.com/dry-bulk-shipping-rates-hit-two-year-high-on-capesize-demand/",
+          "published_at": "2026-05-07T00:07:00Z",
+          "available_at": "2026-09-12T03:42:48Z"
+        }
+      ],
+      "counter_evidence_reviewed": true,
+      "major_counter_evidence": true,
+      "main_counter_evidence": "BIMCO reporting cited in August 2026 warned that apparent 2026 dry-bulk strength was substantially influenced by forced rerouting and that a 2027 supply glut could reverse the benefit, limiting confidence in the durability and breadth of the cycle.",
+      "main_risk": "Dry-bulk rates may be elevated by temporary rerouting rather than durable commodity-volume demand; the company is not directly rate-sensitive to real interest yields, but financing costs and long-term vessel funding can still affect earnings and fleet economics.",
+      "what_would_make_us_wrong": "A sustained decline in Capesize/Panamax rates, weaker commodity volumes, or company disclosures showing revenue growth was unrelated to freight rates would falsify the transmission."
+    },
+    {
+      "ticker": "3044.TW",
+      "driver_id": "UNMAPPED_OPPORTUNITY",
+      "research_run_id": "20260912T113840+0800-680a8d28",
+      "why": "Official August 2026 revenue increased 65.48% year over year, and the issuer attributed the increase primarily to customer order demand and higher shipments.",
+      "driver": "Customer order growth and increased PCB shipments are the provisional company-specific economic mechanism; no global taxonomy driver is assigned.",
+      "driver_state": "DEVELOPING",
+      "scope": "LOCAL",
+      "company_transmission": "The official revenue disclosure directly attributes the measured increase to customer order demand and increased shipments, establishing a company-specific order-to-revenue transmission without relying on price action.",
+      "rate_sensitive": false,
+      "local_scope_reason": "This is a provisional UNMAPPED_OPPORTUNITY based on a distinct company-specific customer-order and shipment mechanism; no mapped global driver has been established.",
+      "fundamental_evidence": [
+        {
+          "ticker": "3044.TW",
+          "metric": "REVENUE",
+          "direction": "SUPPORTS",
+          "claim": "August 2026 monthly revenue was TWD 10,224.358 million, up 4.10% month over month and 65.48% year over year; cumulative revenue was up 38.72% year over year, with the issuer remark attributing the increase to customer order demand and increased shipments.",
+          "source_title": "Official monthly revenue: 健鼎 11508",
+          "source_url": "https://mopsfin.twse.com.tw/opendata/t187ap05_L.csv",
+          "published_at": "2026-09-12T03:42:42.277578Z",
+          "available_at": "2026-09-12T03:42:42.277578Z"
+        }
+      ],
+      "international_evidence": [],
+      "counter_evidence_reviewed": true,
+      "major_counter_evidence": false,
+      "main_counter_evidence": "The exact support and counter searches returned no additional usable company-specific sources; no stronger opposing operating fact was found, but the available disclosure does not identify customer, product, or end-market concentration.",
+      "main_risk": "Customer-order momentum may be concentrated or temporary, and the available disclosure does not establish durability; the company is not rate-sensitive in the defined real-yield sense, though higher financing costs could still pressure investment and demand.",
+      "what_would_make_us_wrong": "A subsequent revenue decline, order cancellation, shipment reduction, or disclosure showing the August increase was non-recurring would invalidate the provisional mechanism."
+    }
+  ],
+  "company_research_errors": [],
+  "company_research_coverage": [
+    {
+      "ticker": "4967.TW",
+      "driver_id": "NAND_STORAGE_CYCLE",
+      "status": "UNRESOLVED",
+      "reason": "Official August 2026 revenue supports measured shipment and selling-price improvement, but no independently verified international NAND pricing, SSD/controller demand, inventory, or peer evidence was found to establish the exact global driver or company transmission."
+    },
+    {
+      "ticker": "1609.TW",
+      "driver_id": "COPPER_COMMODITY_TRADE_INVENTORY",
+      "status": "UNRESOLVED",
+      "reason": "Official August 2026 revenue improved 34.84% year over year, but revenue growth alone does not establish copper commodity pricing, exchange inventories, regional premia, trade dislocation, physical tightness, or a company-specific copper transmission; no independently verified international evidence was found."
+    },
+    {
+      "ticker": "3176.TWO",
+      "driver_id": "UNMAPPED_OPPORTUNITY",
+      "status": "UNRESOLVED",
+      "reason": "Official August 2026 revenue increased 197.40% year over year and the issuer noted increased overseas revenue, but no specific product, project, order, contract, or measurable economic mechanism was verified to explain the increase."
     }
   ]
 }
