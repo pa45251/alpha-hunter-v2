@@ -159,7 +159,11 @@ def build_decision_board(structural_matches: pd.DataFrame, cfg: DecisionConfig =
         if not r.gate_positive_long_edge:
             b.append("NOT_POSITIVE_LONG_EDGE")
 
-        if not r.gate_driver_active:
+        price_state = getattr(r, 'international_price_state', None)
+        if price_state is not None and price_state not in {'DEVELOPING', 'CONFIRMED'}:
+            b.append('INTERNATIONAL_PRICE_' + str(price_state))
+            action, stage = 'WATCH_RESEARCH', 'GATE_0_INTERNATIONAL_PRICE'
+        elif not r.gate_driver_active:
             action, stage = "WATCH_RESEARCH", "GATE_1_CAUSAL"
         elif not r.gate_edge_source_backed or not r.gate_positive_long_edge:
             action, stage = "WATCH_RESEARCH", "GATE_2_TRANSMISSION"
@@ -202,7 +206,7 @@ def build_decision_board(structural_matches: pd.DataFrame, cfg: DecisionConfig =
     if sort_cols:
         x = x.sort_values(sort_cols, ascending=[True, False][:len(sort_cols)])
     preferred = [
-        "run_id", "decision_contract_version", "global_theme", "driver_id", "driver_label", "taiwan_code", "ticker", "name", "industry",
+        "run_id", "decision_contract_version", "international_price_state", "international_price_reason", "global_theme", "driver_id", "driver_label", "taiwan_code", "ticker", "name", "industry",
         "economic_role", "linkage_tier", "linkage_confidence", "polarity", "seed_provenance_status", "provenance_status", "edge_research_as_of_utc",
         "edge_source_count", "edge_source_summary", "edge_counter_evidence", "edge_source_urls", "dynamic_driver_state", "reaction_state",
         "previous_reaction_state", "entry_trigger_state", "etf_ticker", "etf_role", "exposure_purity", "comparison_policy", "stock_vs_etf_state",

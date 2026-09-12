@@ -57,8 +57,15 @@ def main() -> None:
 
     queue_ids = set(queue["driver_id"].astype(str))
     results = research.get("results")
-    if not isinstance(results, list) or not results:
+    if not isinstance(results, list):
         raise RuntimeError("V3 activation bridge research results missing")
+    if not results:
+        if not (research.get('company_opportunities') or research.get('company_research_coverage')):
+            raise RuntimeError('V3 activation bridge research results missing')
+        # Company-only research cannot activate a canonical global driver. Explicit
+        # UNKNOWN rows preserve same-run lineage without inventing driver evidence.
+        results = [dict(driver_id=d, state='UNKNOWN', confidence=0, source_count=0,
+                        research_run_id=run_id) for d in sorted(queue_ids)]
 
     # Freshness must be anchored to the deterministic validator clock, not a model-supplied
     # researched_at timestamp. Model output can be rounded a few seconds/minutes into the future,

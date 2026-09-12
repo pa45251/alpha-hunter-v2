@@ -12,7 +12,7 @@ import pandas as pd
 
 from entry_structure_v2 import simple_atr, tw_stock_tick, _round_up_tick, _round_down_tick
 
-VERSION = 'EARLY_OPPORTUNITY_1'
+VERSION = 'ORDERED_DRIVER_GATES_2'
 METRICS = {'REVENUE', 'EPS', 'BACKLOG', 'ASP', 'SHIPMENT', 'ORDER', 'CAPEX',
            'UTILIZATION', 'PROJECT_RECOGNITION', 'FREIGHT_RATE', 'POWER_DEMAND', 'PRODUCTION'}
 ACTIONS = {'BUY', 'EARLY BUY', 'WAIT', 'PASS'}
@@ -61,7 +61,7 @@ def validate_company_research(row, run_id, targets, as_of):
         raise ValueError('COMPANY_RESEARCH_NOT_NOMINATED')
     if row.get('driver_state') not in {'CONFIRMED', 'DEVELOPING', 'REJECTED'}:
         raise ValueError('COMPANY_DRIVER_STATE_INVALID')
-    if row.get('scope') not in {'LOCAL', 'GLOBAL'}:
+    if row.get('scope') not in {'LOCAL', 'GLOBAL', 'UNKNOWN'}:
         raise ValueError('COMPANY_SCOPE_INVALID')
     if row.get('rate_sensitive') not in {True, False} or not isinstance(row.get('rate_sensitive'), bool):
         raise ValueError('RATE_SENSITIVITY_REQUIRED')
@@ -74,6 +74,10 @@ def validate_company_research(row, run_id, targets, as_of):
         raise ValueError('GLOBAL_DRIVER_CANNOT_BYPASS_INTERNATIONAL_CHECK_AS_LOCAL')
     if row['scope'] == 'LOCAL' and not row.get('local_scope_reason'):
         raise ValueError('LOCAL_SCOPE_REASON_REQUIRED')
+    if row['scope'] == 'LOCAL':
+        from driver_gates import local_proven
+        if not local_proven(row, row, as_of):
+            raise ValueError('LOCAL_SCOPE_INDEPENDENCE_EVIDENCE_REQUIRED')
     if row['driver_state'] != 'REJECTED':
         if not any(evidence_valid(e, as_of, ticker=row['ticker']) for e in row.get('fundamental_evidence', [])):
             raise ValueError('TIMELY_COMPANY_FUNDAMENTAL_REQUIRED')
@@ -164,6 +168,8 @@ def price_plan(hist):
 
 
 def assess(candidate, research, risk, hist, as_of):
+    from driver_gates import thesis_gates
+    gates = thesis_gates(candidate, research, as_of)
     plan = price_plan(hist)
     if candidate.get('reaction_state') == 'EXTENDED' or number(candidate.get('bias20')) > 0.20 or number(candidate.get('ret_5d')) > 0.25:
         plan.update(extended=True, price_ok=False, price_reason='Extended price: wait for a new base; do not chase')
@@ -176,22 +182,21 @@ def assess(candidate, research, risk, hist, as_of):
                international='Unverified — same-driver evidence required', relative='UNVERIFIED',
                regime='UNKNOWN', action='WAIT', main_risk='Unverified causal interpretation',
                what_would_make_us_wrong='A price-only story or weak company transmission',
-               planned_position_fraction=0.0, auto_trade_allowed=False, **plan)
+               planned_position_fraction=0.0, auto_trade_allowed=False,
+               wait_reason=gates['missing_gate'], **plan, **gates)
     if not research:
-        if plan['severe'] or candidate.get('driver_rejected') is True:
+        if plan['severe'] or gates['missing_gate'] == 'GLOBAL_REJECTED':
             row['action'] = 'PASS'
         return row
     row.update({k:research[k] for k in ['why','driver','driver_state','main_risk','main_counter_evidence','what_would_make_us_wrong']})
     row['regime'] = regime_compatibility(risk, research)
     company_urls = {e.get('source_url') for e in research.get('fundamental_evidence', []) if isinstance(e, dict)}
-    if research.get('scope') == 'LOCAL':
+    if gates['driver_scope'] == 'LOCAL':
         row['relative'] = 'LOCAL DRIVER'
         row['international'] = 'Not required: ' + research.get('local_scope_reason', '')
-        international_ok = bool(research.get('local_scope_reason'))
     else:
         same = [e for e in research.get('international_evidence', [])
                 if evidence_valid(e, as_of, driver=research.get('driver_id')) and e.get('same_driver') is True and e.get('source_url') not in company_urls]
-        international_ok = bool(same)
         row['international_evidence'] = same
         row['international'] = '; '.join(e['claim'] for e in same) or 'Unverified — same-driver evidence required'
         gap = number(candidate.get('transmission_gap_proxy'), 0)
@@ -199,15 +204,19 @@ def assess(candidate, research, risk, hist, as_of):
     fundamental = [e for e in research.get('fundamental_evidence', []) if evidence_valid(e, as_of, ticker=row['ticker'])]
     row['evidence'] = fundamental
     row['company_transmission'] = research.get('company_transmission')
-    if (candidate.get('driver_rejected') is True or row['driver_state'] == 'REJECTED' or research.get('major_counter_evidence') is True
+    if (gates['missing_gate'] == 'GLOBAL_REJECTED' or row['driver_state'] == 'REJECTED' or research.get('major_counter_evidence') is True
             or row['regime'] == 'ADVERSE' or plan['severe'] or candidate.get('reaction_state') == 'BROKEN'):
         row['action'] = 'PASS'
-    elif (fundamental and international_ok and row['regime'] in {'SUPPORTIVE','NEUTRAL'}
+    elif (gates['missing_gate'] == 'ENTRY' and row['regime'] in {'SUPPORTIVE','NEUTRAL'}
           and research.get('counter_evidence_reviewed') is True and research.get('major_counter_evidence') is False
           and research.get('company_transmission') and plan['price_ok']):
         operating_confirmed = len({e.get('metric') for e in fundamental}) >= 2 and len({e.get('source_url') for e in fundamental}) >= 2
-        row['action'] = 'BUY' if row['driver_state'] == 'CONFIRMED' and (plan['confirmed'] or operating_confirmed) else 'EARLY BUY'
+        market_confirmed = gates['international_price_state'] in {'CONFIRMED', 'NOT_REQUIRED'}
+        row['action'] = 'BUY' if market_confirmed and row['driver_state'] == 'CONFIRMED' and (plan['confirmed'] or operating_confirmed) else 'EARLY BUY'
         row['planned_position_fraction'] = 0.35 if row['action'] == 'EARLY BUY' else 1.0
+    row['wait_reason'] = gates['missing_gate'] if row['action'] == 'WAIT' else None
+    if row['action'] == 'WAIT' and gates['missing_gate'] == 'ENTRY' and row['regime'] == 'UNKNOWN':
+        row['wait_reason'] = 'REGIME_UNVERIFIED'
     return row
 
 

@@ -119,7 +119,9 @@ if opportunities:
         lines += [f"### {i}. {md(row['ticker'])} {md(row['name'])} — {row['action']}", ""]
         for label, key in [('WHY', 'why'), ('Driver', 'driver'), ('Driver state', 'driver_state'),
                            ('Company transmission', 'company_transmission'),
-                           ('International confirmation', 'international'), ('Relative', 'relative'),
+                           ('International price', 'international_price_state'),
+                           ('International causal', 'international_causal_state'),
+                           ('Current gate', 'missing_gate'), ('International evidence', 'international'), ('Relative', 'relative'),
                            ('Regime', 'regime'), ('Technical state', 'technical'),
                            ('Why price', 'price_reason'), ('Entry', 'entry'),
                            ('Invalidation', 'invalidation'), ('Add trigger', 'add_trigger'),
