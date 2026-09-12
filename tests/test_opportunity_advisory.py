@@ -74,11 +74,14 @@ def test_unmapped_research_can_be_provisional_local_without_taxonomy():
 def test_mixed_snapshot_research_rejected():
     with pytest.raises(ValueError):validate_company_research(research(),'other',{('9999.TW','EXACT_DRIVER')},ASOF)
 
-def test_rank_before_truncation_and_dedup():
+def test_rank_preserves_all_candidates_and_dedup():
     rows=[dict(ticker=str(i),action='WAIT',research_priority=100,evidence=[]) for i in range(30)]
     rows += [dict(ticker='GOOD',action='EARLY BUY',research_priority=0,evidence=[evidence()])]
+    rows += [dict(ticker='GOOD',action='WAIT',research_priority=999,evidence=[])]
     result=rank_opportunities(rows)
-    assert result[0]['ticker']=='GOOD';assert len(result)==2
+    assert result[0]['ticker']=='GOOD'
+    assert len(result)==31
+    assert len({r['ticker'] for r in result})==31
 
 def test_extended_fillers_cannot_defeat_scanner_quota():
     x=pd.DataFrame([dict(ticker=str(i),avg_turnover20_twd=20e6,price=50,acceleration=.1,rs_20d_vs_bench=.1,keynes_v2=1,reaction_state='EXTENDED' if i else 'PRE_CONFIRMATION',taiwan_candidate_score_v1=1,taiwan_early_score_v2=1) for i in range(100)])
