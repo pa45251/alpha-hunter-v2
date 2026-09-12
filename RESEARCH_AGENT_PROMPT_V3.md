@@ -87,3 +87,21 @@ For GLOBAL, international_evidence must use the same schema with driver_id and s
 Official monthly revenue snapshots in company_targets are original TWSE/TPEx data. Their available_at is the retrieval time, not the original issuer announcement time. Preserve available_at; never backdate knowledge using the revenue month or export date. The row contains current monthly revenue, MoM/YoY changes, cumulative growth and issuer remarks. Use these operating facts to investigate WHY; revenue growth alone does not prove a particular global driver, an EPS increase, or a company project mechanism.
 
 For operating facts, the source prefetch uses official MOPS UTF-8 CSV exports for listed and OTC companies; use these observed rows even when a news search has no results. Investigate company transmission separately and do not call available revenue data missing.
+
+Before returning, check every company object against this literal template. All named fields are REQUIRED; in particular company_transmission is a nonempty explanation linking the measured company evidence to the mechanism. Do not rename it to transmission, company_evidence, or thesis. If a required causal fact cannot be supported, return UNRESOLVED coverage instead of an incomplete opportunity. Never drop a company silently.
+```json
+{
+  "ticker": "EXACT_NOMINATED_TICKER", "driver_id": "EXACT_NOMINATED_DRIVER",
+  "research_run_id": "EXACT_HANDOFF_RUN_ID",
+  "why": "Source-backed economic change", "driver": "Economic mechanism",
+  "driver_state": "DEVELOPING", "scope": "GLOBAL",
+  "company_transmission": "Company disclosure explains how this mechanism changes its orders, shipments, pricing or revenue",
+  "rate_sensitive": false, "local_scope_reason": "",
+  "fundamental_evidence": [{"ticker": "EXACT_NOMINATED_TICKER", "metric": "REVENUE", "direction": "SUPPORTS", "claim": "Actual measured operating fact", "source_title": "Original disclosure", "source_url": "https://actual-source", "published_at": "ACTUAL_TIMESTAMP", "available_at": "ACTUAL_OBSERVED_TIMESTAMP"}],
+  "international_evidence": [], "counter_evidence_reviewed": true,
+  "major_counter_evidence": false, "main_counter_evidence": "Strongest observed opposing fact, or what was searched with none found",
+  "main_risk": "Thesis risk and economic justification for rate sensitivity",
+  "what_would_make_us_wrong": "Observable thesis falsification"
+}
+```
+Replace every placeholder with supported facts. This template is a schema, not evidence. GLOBAL records with no independent international evidence remain WAIT. Do not manufacture missing evidence to obtain a buy.

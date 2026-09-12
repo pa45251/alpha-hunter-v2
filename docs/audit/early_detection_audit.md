@@ -1,6 +1,6 @@
 # Historical early detection audit
 
-Source main: `01b7a9005df409c5ceec7c85cafabeab1292c36a`. Rules fixed before audit; no six-stock tuning.
+Source main: `01b7a9005df409c5ceec7c85cafabeab1292c36a`. Generic policy; no thresholds fitted to these six stocks.
 
 Commit availability controls decision time. Missing evidence stays missing; later news and prices never establish past causality.
 

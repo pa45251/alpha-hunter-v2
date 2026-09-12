@@ -150,3 +150,12 @@ def test_rejected_exact_driver_overrides_positive_company_advisory():
 
 def test_company_disclosure_cannot_double_as_independent_international_confirmation():
     assert evaluate(research(international_evidence=[evidence()]))['action']=='WAIT'
+
+def test_old_revenue_period_cannot_be_laundered_by_new_retrieval_time(monkeypatch):
+    import research_source_prefetch_v3 as p
+    class Response:
+        content='公司代號,公司名稱,資料年月,出表日期\n9999,Company,11408,1150912\n'.encode('utf-8-sig')
+        def raise_for_status(self):pass
+    monkeypatch.setattr(p.requests,'get',lambda *a,**k:Response())
+    monkeypatch.setattr(p,'_utcnow',lambda:ASOF)
+    assert p.official_company_revenue([{'ticker':'9999.TW'}])=={}

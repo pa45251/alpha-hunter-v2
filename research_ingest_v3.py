@@ -95,6 +95,7 @@ def main() -> None:
     supplied: dict[str, dict] = {}
     company_opportunities = []
     company_errors = []
+    company_invalid_coverage = []
 
     try:
         raw_text = RAW.read_text(encoding="utf-8")
@@ -151,6 +152,8 @@ def main() -> None:
                 company_opportunities.append(row)
             except (ValueError, TypeError) as exc:
                 company_errors.append(str(exc))
+                if isinstance(row, dict) and (row.get('ticker'), row.get('driver_id')) in company_targets:
+                    company_invalid_coverage.append(dict(ticker=row['ticker'], driver_id=row['driver_id'], status='UNRESOLVED', reason='Research failed validation: ' + str(exc)))
 
     if status == 'PASS':
         covered = {(r.get('ticker'), r.get('driver_id')) for r in company_opportunities}
@@ -176,7 +179,7 @@ def main() -> None:
         "results": final_results,
         "company_opportunities": company_opportunities,
         "company_research_errors": company_errors,
-        "company_research_coverage": payload.get("company_research_coverage", []) if status == "PASS" else [],
+        "company_research_coverage": (payload.get("company_research_coverage", []) + company_invalid_coverage) if status == "PASS" else [],
     }
     OUT.write_text(json.dumps(out, ensure_ascii=False, indent=2), encoding="utf-8")
     print(f"v3 research ingest: {status}; valid={len(supplied)}/{len(target_ids)} company_opportunities={len(company_opportunities)} company_errors={company_errors}")

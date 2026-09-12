@@ -156,6 +156,14 @@ def official_company_revenue(targets: list[dict], timeout: float = 15.0) -> dict
                 code = str(row.get('公司代號', '')).strip()
                 if code not in wanted or not wanted[code].endswith(suffix):
                     continue
+                period = str(row.get('資料年月', '')).strip()
+                if not period.isdigit() or len(period) != 5:
+                    continue
+                year, month = int(period[:3]) + 1911, int(period[3:])
+                now = datetime.fromisoformat(observed.replace('Z', '+00:00'))
+                age_months = (now.year - year) * 12 + now.month - month
+                if not 1 <= month <= 12 or not 0 <= age_months <= 2:
+                    continue  # Retrieval time cannot make an old operating period fresh.
                 result[wanted[code]] = [{
                     'source_title': f"Official monthly revenue: {row.get('公司名稱')} {row.get('資料年月')}",
                     'source_url': url, 'published_at': observed, 'available_at': observed,

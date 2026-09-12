@@ -101,7 +101,7 @@ def run(ref='01b7a9005df409c5ceec7c85cafabeab1292c36a', out=Path('docs/audit')):
             first.setdefault(code,row)
     out.mkdir(parents=True,exist_ok=True)
     pd.DataFrame(observations).to_csv(out/'early_detection_observations.csv',index=False)
-    lines=['# Historical early detection audit','',f'Source main: `{ref}`. Rules fixed before audit; no six-stock tuning.',
+    lines=['# Historical early detection audit','',f'Source main: `{ref}`. Generic policy; no thresholds fitted to these six stocks.',
            '', 'Commit availability controls decision time. Missing evidence stays missing; later news and prices never establish past causality.',
            '', '| Stock | First archived nomination (UTC) | Price session | Reaction | EARLY BUY / ADD |', '|---|---|---|---|---|']
     for code,name in CASES.items():

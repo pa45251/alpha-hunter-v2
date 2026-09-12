@@ -177,7 +177,7 @@ def assess(candidate, research, risk, hist, as_of):
                driver=candidate.get('driver_label', 'UNMAPPED / WHY?'), driver_state='UNVERIFIED',
                unmapped=candidate.get('driver_id') == 'UNMAPPED_OPPORTUNITY',
                why='WHY unresolved: obtain company evidence before taking risk',
-               international='Unverified — same-driver evidence required', relative='TOGETHER',
+               international='Unverified — same-driver evidence required', relative='UNVERIFIED',
                regime='UNKNOWN', action='WAIT', main_risk='Unverified causal interpretation',
                what_would_make_us_wrong='A price-only story or weak company transmission',
                planned_position_fraction=0.0, auto_trade_allowed=False, **plan)
