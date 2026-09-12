@@ -114,7 +114,7 @@ jobs:
             output/causal_graph_audit.csv \
             output/causal_driver_taxonomy.csv \
             output/structural_exposure_graph.csv
-          git add -A output/decision_board.csv output/decision_packet.json output/decision_history.csv output/risk_regime.json output/global_alignment_v2.csv output/global_alignment_v2.json output/entry_plans_v2.json output/action_board.md output/shadow_journal.jsonl
+          git add -A output/opportunity_advisory.json output/decision_board.csv output/decision_packet.json output/decision_history.csv output/risk_regime.json output/global_alignment_v2.csv output/global_alignment_v2.json output/entry_plans_v2.json output/action_board.md output/shadow_journal.jsonl
           for path in output/research_handoff.json output/entry_plans_v2.csv output/entry_plan_trace_v2.csv output/shadow_audit.csv output/shadow_validation.csv output/shadow_validation_report.json; do
             if [ -e "$path" ] || git ls-files --error-unmatch "$path" >/dev/null 2>&1; then git add -A "$path"; fi
           done

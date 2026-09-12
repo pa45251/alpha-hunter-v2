@@ -85,3 +85,42 @@ def test_extended_fillers_cannot_defeat_scanner_quota():
     result=select_taiwan_candidates(x,TaiwanScanConfig(top_candidates=10))
     assert (result.reaction_state=='EXTENDED').sum()<=1
     assert '0' in set(result.ticker)
+
+def test_scanner_extension_veto_cannot_be_overridden_by_entry_history():
+    row=assess({'ticker':'9999.TW','reaction_state':'EXTENDED'},research(),risk(),history(),ASOF)
+    assert row['action']=='WAIT'
+    assert not row['price_ok']
+
+def test_legacy_archived_extension_is_still_identified_without_history():
+    row=assess({'ticker':'9999.TW','bias20':.45},None,{},None,ASOF)
+    assert row['action']=='PASS'
+
+def test_research_ingest_roundtrip_preserves_company_advisory_without_activating_local_driver(tmp_path,monkeypatch):
+    import json
+    import research_ingest_v3 as ingest
+    monkeypatch.chdir(tmp_path)
+    out=tmp_path/'output';out.mkdir()
+    (out/'manifest.json').write_text(json.dumps({'run_id':'run'}))
+    pd.DataFrame([dict(ticker='9999.TW',name='New company',driver_id='EXACT_DRIVER',reaction_state='PRE_CONFIRMATION',run_id='run',reverse_research_priority=.8)]).to_csv(out/'reverse_transmission_candidates.csv',index=False)
+    (out/'research_packet.json').write_text(json.dumps({'run_id':'run','research_queue_top30':[{'driver_id':'EXACT_DRIVER'}]}))
+    driver=dict(driver_id='EXACT_DRIVER',state='UNKNOWN',confidence=0,industry_scope='UNKNOWN',researched_at_utc=ASOF,research_run_id='run',source_count=0,supporting_evidence=[],counter_evidence=[])
+    (out/'research_result_v3.raw.txt').write_text(json.dumps({'contract':'ALPHA_HUNTER_V3_AUTONOMOUS_RESEARCH','research_run_id':'run','results':[driver],'company_opportunities':[research()]}))
+    monkeypatch.setattr(ingest,'_utcnow',lambda:ASOF)
+    ingest.main()
+    result=json.loads((out/'research_result_v3.json').read_text())
+    assert result['company_opportunities'][0]['driver_state']=='DEVELOPING'
+    assert result['results'][0]['state']=='UNKNOWN'
+    assert result['company_research_errors']==[]
+
+def test_company_prefetch_searches_unmapped_why_and_preserves_chinese_name(monkeypatch):
+    import research_source_prefetch_v3 as p
+    calls=[]
+    def search(query,**kwargs):
+        calls.append(query)
+        return [dict(source_title='Disclosure',source_url='https://example.com/company',published_at=ASOF,snippet='Backlog')],None
+    monkeypatch.setattr(p,'_search',search)
+    result=p.build_prefetch({'run_id':'run','research_targets':[{'driver_id':'D','driver_label':'DRAM pricing'}], 'company_research_targets':[{'driver_id':'UNMAPPED_OPPORTUNITY','ticker':'9999.TW','name':'測試公司'}]})
+    assert len(calls)==4
+    assert any('測試公司' in q and '9999' in q for q in calls)
+    assert result['target_count']==1
+    assert result['company_targets'][0]['ticker']=='9999.TW'

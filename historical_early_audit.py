@@ -90,6 +90,13 @@ def run(ref='01b7a9005df409c5ceec7c85cafabeab1292c36a', out=Path('docs/audit')):
                 future=future[future.index.date > publication.date()] if publication.hour >= 9 else future[future.index.date >= publication.date()]
                 for horizon in [1,3,5,10]:
                     row[f'outcome_{horizon}d']=float(future.Close.iloc[horizon-1]/future.Open.iloc[0]-1) if len(future)>=horizon and future.Open.iloc[0]>0 else None
+            publication = pd.Timestamp(available).tz_convert('Asia/Taipei')
+            session_ts = pd.to_datetime(session, errors='coerce')
+            row['closed_session_at_publication'] = bool(pd.notna(session_ts) and (session_ts.date() < publication.date() or (session_ts.date() == publication.date() and (publication.hour, publication.minute) >= (13,30))))
+            row['archived_global_driver_states'] = ';'.join(str(e.get('driver_id')) + ':' + str(e.get('state')) for e in research.get('results', [])) if research.get('research_run_id') == manifest.get('run_id') else 'MIXED_OR_MISSING'
+            if not row['closed_session_at_publication']:
+                row['status'] = 'OPEN_OR_UNDATED_BAR_NOT_A_CLOSED_SIGNAL'
+                row['hypothetical_action'] = 'WAIT'
             observations.append(row)
             first.setdefault(code,row)
     out.mkdir(parents=True,exist_ok=True)
@@ -100,6 +107,13 @@ def run(ref='01b7a9005df409c5ceec7c85cafabeab1292c36a', out=Path('docs/audit')):
     for code,name in CASES.items():
         r=first.get(code,{})
         lines.append(f"| {code} {name} | {r.get('available_at','NOT_FOUND')} | {r.get('price_session','UNKNOWN')} | {r.get('reaction','UNKNOWN')} | Not established from archived company evidence |")
+    lines += ['', '| Stock | First extended nomination (UTC) | 1D | 3D | 5D | 10D |', '|---|---|---|---|---|---|']
+    for code,name in CASES.items():
+        rows=[r for r in observations if r['code']==code]
+        extended=next((r for r in rows if pd.to_numeric(r.get('bias20'), errors='coerce') > .20 or pd.to_numeric(r.get('ret5'), errors='coerce') > .25),{})
+        initial=first.get(code,{})
+        returns=['UNAVAILABLE' if initial.get(f'outcome_{n}d') is None else f"{initial[f'outcome_{n}d']:.1%}" for n in [1,3,5,10]]
+        lines.append(f"| {code} {name} | {extended.get('available_at','NOT_ESTABLISHED')} | " + ' | '.join(returns) + ' |')
     lines += ['', 'No defensible claim of 1–3-session early tradability can be made from these archives. Scanner nomination and executable economic evidence are different events.',
               'Per-session metrics, extension state, missing-evidence flags, commit IDs and 1/3/5/10-session outcomes are in early_detection_observations.csv.',
               'Outcomes unavailable at the latest snapshot remain blank (right-censored). Indicative raw-price outcomes may include corporate-action effects and exclude costs, slippage and limit-up fill risk.',

@@ -100,7 +100,7 @@ jobs:
             output/decision_history.csv \
             output/shadow_audit.csv \
             output/risk_regime.json
-          git add -A output/action_board.md output/global_alignment_v2.csv output/global_alignment_v2.json output/entry_plans_v2.csv output/entry_plans_v2.json
+          git add -A output/opportunity_advisory.json output/action_board.md output/global_alignment_v2.csv output/global_alignment_v2.json output/entry_plans_v2.csv output/entry_plans_v2.json
           if ! git diff --cached --quiet; then
             git commit -m "refresh alpha hunter guarded v2 decision layer $(date -u +%F)"
             git push origin HEAD:main

@@ -77,7 +77,15 @@ def _select_opportunities(limit: int = 5) -> list[dict]:
         row = assess(candidate, evidence, load('risk_regime.json'), histories.get(candidate['ticker']), now)
         row['research_priority'] = candidate.get('research_priority', 0)
         rows.append(row)
-    return rank_opportunities(rows, limit)
+    top = rank_opportunities(rows, limit)
+    from opportunity_advisory import VERSION
+    payload = dict(policy_version=VERSION, source_run_id=run_id, generated_at_utc=now,
+                   public_lineage_id=(load('decision_packet.json').get('decision_bridge') or {}).get('public_lineage_id'),
+                   auto_trade_allowed=False, top_opportunities=top, all_candidates=rows)
+    # Git publication preserves all nominations for prospective audits, not just winners.
+    cleaned = json.loads(pd.Series([payload]).to_json(orient='values'))[0]
+    (OUT / 'opportunity_advisory.json').write_text(json.dumps(cleaned, ensure_ascii=False, indent=2), encoding='utf-8')
+    return top
 
 
 packet = load("decision_packet.json")
@@ -118,7 +126,7 @@ else:
 lines += [
     '', '- BUY / EARLY BUY are advisory views at the displayed entry zone, never brokerage orders.',
     '- A gap outside the zone or new thesis counter-evidence requires reassessment before taking risk.',
-    '- Prices and R/R use sealed closed sessions; 2R is an observed resistance comparison, not a return forecast.',
+    '- Prices and R/R use sealed closed sessions; upside references are resistance or disclosed base-height scenarios, not return forecasts.',
     '- Automatic order execution remains disabled. Frozen execution permissions are unchanged.', '',
 ]
 

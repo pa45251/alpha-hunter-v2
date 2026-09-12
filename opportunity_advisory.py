@@ -166,8 +166,13 @@ def price_plan(hist):
 
 def assess(candidate, research, risk, hist, as_of):
     plan = price_plan(hist)
+    # Sealed scanner extension flags are an additional veto, never overwritten by a plan.
+    if candidate.get('reaction_state') == 'EXTENDED' or number(candidate.get('bias20')) > 0.20 or number(candidate.get('ret_5d')) > 0.25:
+        plan.update(extended=True, price_ok=False, price_reason='Extended price: wait for a new base; do not chase')
+    if number(candidate.get('bias20')) >= 0.40 or number(candidate.get('ret_5d')) >= 0.40:
+        plan.update(severe=True, price_ok=False)
     row = dict(ticker=candidate.get('ticker'), name=candidate.get('name'),
-               driver=candidate.get('driver_label', 'UNMAPPED / WHY?'), driver_state='DEVELOPING',
+               driver=candidate.get('driver_label', 'UNMAPPED / WHY?'), driver_state='UNVERIFIED',
                why='WHY unresolved: obtain company evidence before taking risk',
                international='Unverified — same-driver evidence required', relative='TOGETHER',
                regime='UNKNOWN', action='WAIT', main_risk='Unverified causal interpretation',

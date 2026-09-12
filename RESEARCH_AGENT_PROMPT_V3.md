@@ -7,7 +7,7 @@ PRICE CANNOT CREATE CAUSALITY.
 Price, returns, relative strength, technical patterns, Taiwan price reaction, or scanner ranking may nominate a driver for research but may never be supporting causal evidence.
 
 ## Input
-The workflow appends an authoritative compact handoff containing exactly the first 5 canonical research targets. Research ONLY those targets, preserving their order. Do not invent or substitute driver IDs.
+The workflow appends an authoritative compact handoff containing exactly the first 5 canonical research targets. Research those driver targets in order, and the separately nominated company_research_targets for the advisory extension below. Do not invent or substitute driver IDs.
 
 ## Required search protocol
 For EACH target driver, you MUST make a real attempt to discover current external evidence before returning UNKNOWN.
@@ -74,9 +74,9 @@ Schema:
 
 For UNKNOWN, `primary_cause` must say what exact evidence is missing or conflicting. `source_count` is the count of unique source URLs across supporting and counter evidence. Do not fabricate a source or date.
 
-Operational note: reruns must evaluate the latest `main` snapshot so newly source-backed transmission edges are consumed by the downstream decision layer.
+Operational note: reruns must evaluate the exact checked-out branch snapshot so newly source-backed transmission edges are consumed by the downstream decision layer.
 Company opportunity advisory (separate from driver activation):
-Research each company_research_targets item, including UNMAPPED / WHY, using company_sources and primary company disclosures. Return a top-level company_opportunities list. Omit unresolved cases rather than invent a thesis. Do not add a taxonomy edge. Keep driver results unchanged.
+Research each company_research_targets item, including UNMAPPED / WHY, using company_targets in the source prefetch and primary company disclosures. Return a top-level company_opportunities list. Omit unresolved cases rather than invent a thesis. Do not add a taxonomy edge. Keep driver results unchanged.
 Each company object: ticker, driver_id (exact nominated ID, even UNMAPPED_OPPORTUNITY), research_run_id, why, driver (economic mechanism in words), driver_state (DEVELOPING|CONFIRMED|REJECTED), scope (LOCAL|GLOBAL), company_transmission, rate_sensitive (boolean with economic justification in main_risk), local_scope_reason (mandatory for LOCAL), fundamental_evidence, international_evidence, counter_evidence_reviewed (boolean), major_counter_evidence (boolean), main_risk, what_would_make_us_wrong.
 DEVELOPING means at least one measured fundamental improvement already supports the causal chain; it does not require every confirmation. CONFIRMED requires independent further operating confirmation. Never label evidence percentages as probabilities. A LOCAL classification requires a specific company project/order/earnings mechanism; lack of international evidence alone is not a reason to declare LOCAL.
 Each fundamental evidence: ticker, claim, metric (REVENUE|EPS|BACKLOG|ASP|SHIPMENT|ORDER|CAPEX|UTILIZATION|PROJECT_RECOGNITION|FREIGHT_RATE|POWER_DEMAND|PRODUCTION), direction (SUPPORTS), source_title, source_url, published_at, available_at. Cite an actual measured improvement, not a generic macro narrative or price movement. Publication and availability must precede research time; prefer recent original disclosures. Evidence older than 120 days is not entry support.
