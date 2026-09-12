@@ -2,7 +2,7 @@
   "contract": "ALPHA_HUNTER_DECISION_PACKET",
   "decision_contract_version": "2.7.1",
   "run_id": "20260912T102038+0800-dd11a682",
-  "generated_at": "2026-09-12T02:40:47.396288+00:00",
+  "generated_at": "2026-09-12T02:48:26.465491+00:00",
   "gate_first_score_second": true,
   "price_can_create_causality": false,
   "auto_trade_allowed": false,
@@ -12,83 +12,9 @@
     "FORWARD_ACCEPTANCE_REVIEW"
   ],
   "action_counts": {
-    "WATCH_RESEARCH": 62,
-    "WATCH_ENTRY": 4
+    "WATCH_RESEARCH": 66
   },
-  "decision_focus": [
-    {
-      "global_theme": "Shipping",
-      "driver_id": "DRY_BULK_FREIGHT",
-      "taiwan_code": "2606",
-      "ticker": "2606.TW",
-      "name": "裕民",
-      "reaction_state": "PERSISTENT",
-      "previous_reaction_state": "PERSISTENT",
-      "entry_trigger_state": "NOT_TRIGGERED",
-      "etf_ticker": "BOAT",
-      "exposure_purity": "MEDIUM",
-      "stock_vs_etf_state": "STOCK_ALPHA_RESEARCH",
-      "provenance_status": "SOURCE_BACKED",
-      "dynamic_driver_state": "ACTIVE_RESEARCH_VALIDATED",
-      "decision_stage": "GATE_4_REACTION",
-      "candidate_action": "WATCH_ENTRY",
-      "decision_blockers": "INFORMATION_MAY_BE_PRICED"
-    },
-    {
-      "global_theme": "Shipping",
-      "driver_id": "DRY_BULK_FREIGHT",
-      "taiwan_code": "2637",
-      "ticker": "2637.TW",
-      "name": "慧洋-KY",
-      "reaction_state": "PERSISTENT",
-      "previous_reaction_state": "PERSISTENT",
-      "entry_trigger_state": "NOT_TRIGGERED",
-      "etf_ticker": "BOAT",
-      "exposure_purity": "MEDIUM",
-      "stock_vs_etf_state": "STOCK_ALPHA_RESEARCH",
-      "provenance_status": "SOURCE_BACKED",
-      "dynamic_driver_state": "ACTIVE_RESEARCH_VALIDATED",
-      "decision_stage": "GATE_4_REACTION",
-      "candidate_action": "WATCH_ENTRY",
-      "decision_blockers": "INFORMATION_MAY_BE_PRICED"
-    },
-    {
-      "global_theme": "Shipping",
-      "driver_id": "DRY_BULK_FREIGHT",
-      "taiwan_code": "2605",
-      "ticker": "2605.TW",
-      "name": "新興",
-      "reaction_state": "PERSISTENT",
-      "previous_reaction_state": "PERSISTENT",
-      "entry_trigger_state": "NOT_TRIGGERED",
-      "etf_ticker": "BOAT",
-      "exposure_purity": "MEDIUM",
-      "stock_vs_etf_state": "STOCK_ALPHA_RESEARCH",
-      "provenance_status": "SOURCE_BACKED",
-      "dynamic_driver_state": "ACTIVE_RESEARCH_VALIDATED",
-      "decision_stage": "GATE_4_REACTION",
-      "candidate_action": "WATCH_ENTRY",
-      "decision_blockers": "INFORMATION_MAY_BE_PRICED"
-    },
-    {
-      "global_theme": "Shipping",
-      "driver_id": "DRY_BULK_FREIGHT",
-      "taiwan_code": "2617",
-      "ticker": "2617.TW",
-      "name": "台航",
-      "reaction_state": "PERSISTENT",
-      "previous_reaction_state": "PERSISTENT",
-      "entry_trigger_state": "NOT_TRIGGERED",
-      "etf_ticker": "BOAT",
-      "exposure_purity": "MEDIUM",
-      "stock_vs_etf_state": "STOCK_ALPHA_RESEARCH",
-      "provenance_status": "SOURCE_BACKED",
-      "dynamic_driver_state": "ACTIVE_RESEARCH_VALIDATED",
-      "decision_stage": "GATE_4_REACTION",
-      "candidate_action": "WATCH_ENTRY",
-      "decision_blockers": "INFORMATION_MAY_BE_PRICED"
-    }
-  ],
+  "decision_focus": [],
   "entry_rule": "Only a PRE_CONFIRMATION/EARLY_CONFIRMATION -> CONFIRMING transition, or PULLBACK -> CONFIRMING recovery, can create an entry trigger. No fixed momentum threshold is invented.",
   "rule": "No score can override causal/provenance/reaction gates. Canonical hashes/freshness are revalidated immediately before decisioning. Previous state must come from a strictly earlier Taiwan market session, so same-session reruns cannot consume triggers. Identical same-session shadow decisions are one prospective observation. Personal holdings never affect market decisions. Shadow outcomes can mature only from fully closed market sessions available by the evaluation cutoff. No brokerage/order execution exists and threshold tuning from prospective outcomes is forbidden.",
   "state_lifecycle": {
@@ -99,7 +25,7 @@
   },
   "decision_bridge": {
     "contract": "ALPHA_HUNTER_DECISION_BRIDGE_V2",
-    "public_lineage_id": "5965a604e598ce72fe46a0dc2aaa97ce6e23a710e2d4413d57f4e7cb80e516b3",
+    "public_lineage_id": "6cebf5987b05c9936362fb43fffae863f518610cf0edd84da230691b25f12811",
     "canonical_snapshot_revalidated_immediately_before_decision": true,
     "persisted_gate_reused_without_revalidation": false,
     "mixed_snapshot_allowed": false,
@@ -118,10 +44,8 @@
     "path": "output/driver_activation_v3.csv",
     "same_snapshot_v3": true,
     "challenger_adjudicated": false,
-    "accepted_activation_rows": 3,
-    "active_driver_ids": [
-      "DRY_BULK_FREIGHT"
-    ],
+    "accepted_activation_rows": 2,
+    "active_driver_ids": [],
     "lineage_overwrite_enforced": true
   },
   "launch_layer": {
@@ -156,7 +80,7 @@
     ],
     "validation_evidence_status": "PENDING_ACCEPTANCE_REVIEW",
     "current_shadow_statistics_are_strategy_validation": false,
-    "sealed_snapshot_id": "ff5a7e247e25ac808f996c9f2cb6b9f664e355af976ddaf4b85513afa888c13a"
+    "sealed_snapshot_id": "b0d8cc464e01ab7a943be6a5f92c340ebbdb9b5ef17e6c02a1b74fab32520b4e"
   },
   "shadow_validation_layer": {
     "validation_version": null,

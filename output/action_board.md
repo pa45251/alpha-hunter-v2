@@ -10,12 +10,12 @@
 
 ### 1. 3176.TWO 基亞 — WAIT
 
-- **WHY:** Official August 2026 revenue increased and the issuer cited higher overseas revenue, but the specific product, customer, project, and durable economic mechanism behind that increase remain unverified.
+- **WHY:** No economic driver was identified from the available company searches or source prefetch. No recent measured fundamental improvement and no specific project, order, shipment, pricing, or revenue mechanism could be verified.
 - **Driver:** Unmapped opportunity — research WHY
 - **Driver state:** UNVERIFIED
 - **Company transmission:** Unverified
 - **International confirmation:** Unverified — same-driver evidence required
-- **Relative:** TOGETHER
+- **Relative:** UNVERIFIED
 - **Regime:** UNKNOWN
 - **Technical state:** Early strength / support recovery
 - **Why price:** Observed 120-session resistance offers at least 2R before costs; support defines <=8% price risk
@@ -26,14 +26,32 @@
 - **Main risk:** Exact company / driver transmission remains unverified; no entry recommendation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 2. 4967.TW 十銓 — WAIT
+### 2. 2605.TW 新興 — WAIT
 
-- **WHY:** Official August 2026 revenue data supports higher shipments and selling prices, but the required international NAND/storage-cycle evidence and independent company transmission confirmation were not available in the supplied prefetch.
+- **WHY:** The available company searches returned no usable original disclosure. No measured operating improvement within the last 120 days or company-specific transmission from dry-bulk freight rates to orders, utilization, pricing, or revenue could be verified.
+- **Driver:** Dry-bulk freight / commodity shipping cycle
+- **Driver state:** UNVERIFIED
+- **Company transmission:** Unverified
+- **International confirmation:** Unverified — same-driver evidence required
+- **Relative:** UNVERIFIED
+- **Regime:** UNKNOWN
+- **Technical state:** Early strength / support recovery
+- **Why price:** Observed 120-session resistance offers at least 2R before costs; support defines <=8% price risk
+- **Entry:** 36.15–36.5
+- **Invalidation:** Exit on loss of 34.05; thesis failure also invalidates
+- **Add trigger:** Close above 39.6 with volume >=1.2x prior median; thesis still supported and recheck R/R
+- **Main counter-evidence:** Unverified
+- **Main risk:** Exact company / driver transmission remains unverified; no entry recommendation
+- **What would make us wrong:** A price-only story or weak company transmission
+
+### 3. 4967.TW 十銓 — WAIT
+
+- **WHY:** The available company searches returned no usable original disclosure. No measured operating improvement within the last 120 days or company-specific transmission from NAND/storage conditions to shipments, ASP, backlog, or revenue could be verified.
 - **Driver:** NAND / storage controller and module cycle
 - **Driver state:** UNVERIFIED
 - **Company transmission:** Unverified
 - **International confirmation:** Unverified — same-driver evidence required
-- **Relative:** TOGETHER
+- **Relative:** UNVERIFIED
 - **Regime:** UNKNOWN
 - **Technical state:** Early strength / support recovery
 - **Why price:** Observed 120-session resistance offers at least 2R before costs; support defines <=8% price risk
@@ -44,14 +62,14 @@
 - **Main risk:** Exact company / driver transmission remains unverified; no entry recommendation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 3. 1609.TW 大亞 — WAIT
+### 4. 1609.TW 大亞 — WAIT
 
-- **WHY:** Official August 2026 revenue increased, but no verified evidence links the improvement specifically to LME/COMEX pricing, inventories, regional premia, tariffs, or physical copper tightness; cable revenue alone cannot establish the nominated copper driver.
+- **WHY:** The available company searches returned no usable original disclosure. No measured operating improvement within the last 120 days or company-specific transmission from copper pricing, inventories, premia, or trade dislocation to wire/cable revenue could be verified.
 - **Driver:** Copper commodity price / trade-inventory cycle
 - **Driver state:** UNVERIFIED
 - **Company transmission:** Unverified
 - **International confirmation:** Unverified — same-driver evidence required
-- **Relative:** TOGETHER
+- **Relative:** UNVERIFIED
 - **Regime:** UNKNOWN
 - **Technical state:** Early strength / support recovery
 - **Why price:** Observed 120-session resistance offers at least 2R before costs; support defines <=8% price risk
@@ -62,24 +80,6 @@
 - **Main risk:** Exact company / driver transmission remains unverified; no entry recommendation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 4. 2605.TW 新興 — WAIT
-
-- **WHY:** WHY unresolved: obtain company evidence before taking risk
-- **Driver:** Dry-bulk freight / commodity shipping cycle
-- **Driver state:** UNVERIFIED
-- **Company transmission:** Unverified
-- **International confirmation:** Unverified — same-driver evidence required
-- **Relative:** TOGETHER
-- **Regime:** UNKNOWN
-- **Technical state:** Early strength / support recovery
-- **Why price:** Observed 120-session resistance offers at least 2R before costs; support defines <=8% price risk
-- **Entry:** 36.15–36.5
-- **Invalidation:** Exit on loss of 34.05; thesis failure also invalidates
-- **Add trigger:** Close above 39.6 with volume >=1.2x prior median; thesis still supported and recheck R/R
-- **Main counter-evidence:** Unverified
-- **Main risk:** Unverified causal interpretation
-- **What would make us wrong:** A price-only story or weak company transmission
-
 ### 5. 2609.TW 陽明 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
@@ -87,7 +87,7 @@
 - **Driver state:** UNVERIFIED
 - **Company transmission:** Unverified
 - **International confirmation:** Unverified — same-driver evidence required
-- **Relative:** TOGETHER
+- **Relative:** UNVERIFIED
 - **Regime:** UNKNOWN
 - **Technical state:** Early strength / support recovery
 - **Why price:** Wait for a supported pullback with >=2R to observed resistance and <=8% stop distance

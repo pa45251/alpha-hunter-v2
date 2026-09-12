@@ -2,7 +2,7 @@
   "contract": "ALPHA_HUNTER_V3_VALIDATED_RESEARCH",
   "status": "PASS",
   "research_run_id": "20260912T102038+0800-dd11a682",
-  "validated_at_utc": "2026-09-12T02:40:44.916945+00:00",
+  "validated_at_utc": "2026-09-12T02:48:24.008470+00:00",
   "target_driver_ids": [
     "CONTAINER_FREIGHT",
     "DRY_BULK_FREIGHT",
@@ -15,13 +15,13 @@
     {
       "driver_id": "CONTAINER_FREIGHT",
       "state": "UNKNOWN",
-      "confidence": 0.24,
-      "primary_cause": "The search produced no usable support confirming current container spot or contract freight and liner-utilization conditions. A company-specific container-cycle source was not verified, while the available counter-lane result was an indirect company exposure description rather than direct freight or utilization evidence.",
+      "confidence": 0.2,
+      "primary_cause": "The exact container spot or contract freight and liner-utilization evidence is insufficient. The required support search yielded no usable source, while the available counter-oriented result discusses exposure to the container cycle without establishing a contradictory current freight or utilization condition.",
       "industry_scope": "UNKNOWN",
       "supporting_evidence": [],
       "counter_evidence": [
         {
-          "claim": "Danaos is exposed to the container shipping cycle through long-term charters, fleet strategy, and balance-sheet management, but the source does not establish current container freight rates or liner utilization.",
+          "claim": "Danaos is exposed to the container shipping cycle but emphasizes long-term charters, fleet management, balance-sheet discipline, and shareholder returns; this does not establish current container freight-rate or liner-utilization strength.",
           "source_title": "DAC stock reflects container shipping cycle as Danaos focuses on fleet, debt and shareholder returns",
           "source_url": "https://www.ad-hoc-news.de/boerse/news/ueberblick/dac-stock-reflects-container-shipping-cycle-as-danaos-focuses-on-fleet/69738333",
           "published_at": "2026-07-10T10:22:00Z",
@@ -34,131 +34,119 @@
       "source_dates": [
         "2026-07-10T10:22:00Z"
       ],
-      "researched_at_utc": "2026-09-12T02:40:09Z",
+      "researched_at_utc": "2026-09-12T02:48:02Z",
       "research_run_id": "20260912T102038+0800-dd11a682"
     },
     {
       "driver_id": "DRY_BULK_FREIGHT",
-      "state": "ACTIVE",
-      "confidence": 0.78,
-      "primary_cause": "Current dry-bulk freight conditions are supported by higher Capesize demand and tightening vessel supply, although the strength may be partly temporary and vulnerable to future fleet oversupply.",
+      "state": "UNKNOWN",
+      "confidence": 0.55,
+      "primary_cause": "Evidence is conflicting: Capesize rates reached a two-year high on demand and tightening supply, but BIMCO reporting indicates that apparent 2026 strength may be substantially driven by temporary rerouting and could reverse into a 2027 supply glut. The durability and exact breadth of the cycle remain unresolved.",
       "industry_scope": "INDUSTRY_WIDE",
       "supporting_evidence": [
         {
-          "claim": "A key dry-bulk freight measure reached its highest level since December 2023 in May 2026, driven by rising Capesize demand and tightening ship supply.",
+          "claim": "A key dry-bulk rate measure reached its highest level since December 2023, driven by rising Capesize demand and tightening vessel supply.",
           "source_title": "Dry-Bulk Shipping Rates Hit Two-Year High on Capesize Demand",
           "source_url": "https://gcaptain.com/dry-bulk-shipping-rates-hit-two-year-high-on-capesize-demand/",
           "published_at": "2026-05-07T00:07:00Z",
           "event_date": "2026-05-07T00:00:00Z",
           "evidence_type": "HIGH_QUALITY_REPORTING"
-        },
-        {
-          "claim": "BIMCO warned that apparent 2026 dry-bulk strength was substantially affected by forced rerouting and could reverse as conditions normalize.",
-          "source_title": "Dry bulk shipping faces 2027 supply glut: BIMCO warns Hormuz rerouting boost will reverse",
-          "source_url": "https://www.msn.com/en-us/news/other/dry-bulk-shipping-faces-2027-supply-glut-bimco-warns-hormuz-rerouting-boost-will-reverse/ar-AA29coQf",
-          "published_at": "2026-08-01T10:36:00Z",
-          "event_date": "2026-08-01T00:00:00Z",
-          "evidence_type": "INDUSTRY_DATA"
         }
       ],
       "counter_evidence": [
         {
-          "claim": "The reported 2026 dry-bulk strength may be substantially artificial because of forced rerouting, with a potential 2027 supply glut reversing the improvement.",
-          "source_title": "Dry bulk shipping faces 2027 supply glut: BIMCO warns Hormuz rerouting boost will reverse",
+          "claim": "BIMCO warned that the apparent strength of the 2026 dry-bulk market was substantially artificial from forced rerouting and could reverse into a 2027 supply glut.",
+          "source_title": "Dry Bulk Shipping Faces 2027 Supply Glut: BIMCO Warns Hormuz Rerouting Boost Will Reverse",
           "source_url": "https://www.techtimes.com/articles/322617/20260801/dry-bulk-shipping-faces-2027-supply-glut-bimco-warns-hormuz-rerouting-boost-will-reverse.htm",
           "published_at": "2026-08-01T10:36:00Z",
           "event_date": "2026-08-01T00:00:00Z",
           "evidence_type": "HIGH_QUALITY_REPORTING"
         }
       ],
-      "source_count": 3,
+      "source_count": 2,
       "event_date": "2026-08-01T00:00:00Z",
       "source_dates": [
-        "2026-05-07T00:00:00Z",
-        "2026-08-01T00:00:00Z"
+        "2026-05-07T00:07:00Z",
+        "2026-08-01T10:36:00Z"
       ],
-      "researched_at_utc": "2026-09-12T02:40:09Z",
+      "researched_at_utc": "2026-09-12T02:48:02Z",
       "research_run_id": "20260912T102038+0800-dd11a682"
     },
     {
       "driver_id": "MATURE_NODE_FOUNDRY_UTILIZATION",
       "state": "UNKNOWN",
-      "confidence": 0.08,
-      "primary_cause": "Repeated support and counter searches did not yield a verifiable current source on mature or specialty-node utilization, wafer pricing, customer inventory, or end-demand.",
+      "confidence": 0.15,
+      "primary_cause": "No usable time-consistent evidence confirming mature or specialty-node utilization, wafer pricing, customer inventory, or end-demand was found. No reliable contradictory evidence specific to mature-node conditions was found either; leading-edge AI demand would not establish this driver.",
       "industry_scope": "UNKNOWN",
       "supporting_evidence": [],
       "counter_evidence": [],
       "source_count": 0,
       "event_date": null,
       "source_dates": [],
-      "researched_at_utc": "2026-09-12T02:40:09Z",
+      "researched_at_utc": "2026-09-12T02:48:02Z",
       "research_run_id": "20260912T102038+0800-dd11a682"
     },
     {
       "driver_id": "LEADING_EDGE_FOUNDRY_AI_DEMAND",
       "state": "UNKNOWN",
-      "confidence": 0.36,
-      "primary_cause": "The search found broad reporting that AI, HPC, advanced packaging, and next-generation memory are driving advanced-node demand, but it did not provide sufficiently specific independent confirmation of current <=3nm/2nm utilization, wafer demand, pricing, or capacity; the evidence remains incomplete rather than contradictory enough for INACTIVE.",
-      "industry_scope": "INDUSTRY_WIDE",
-      "supporting_evidence": [
-        {
-          "claim": "AI, HPC, advanced packaging, and next-generation memory were reported as drivers of demand for cutting-edge chips as manufacturers pursue 2nm and smaller processes.",
-          "source_title": "Can Onto Innovation extend its winning streak in advanced nodes business?",
-          "source_url": "https://www.msn.com/en-us/money/other/can-onto-innovation-extend-its-winning-streak-in-advanced-nodes-business/ar-AA283oNs",
-          "published_at": "2026-07-16T07:59:00Z",
-          "event_date": "2026-07-16T00:00:00Z",
-          "evidence_type": "HIGH_QUALITY_REPORTING"
-        }
-      ],
-      "counter_evidence": [],
-      "source_count": 1,
-      "event_date": "2026-07-16T00:00:00Z",
-      "source_dates": [
-        "2026-07-16T07:59:00Z"
-      ],
-      "researched_at_utc": "2026-09-12T02:40:09Z",
-      "research_run_id": "20260912T102038+0800-dd11a682"
-    },
-    {
-      "driver_id": "MEMORY_IC_CYCLE",
-      "state": "UNKNOWN",
-      "confidence": 0.08,
-      "primary_cause": "Repeated support and counter searches did not yield a verifiable current source confirming or contradicting the exact memory IC design revenue and ASP cycle.",
+      "confidence": 0.3,
+      "primary_cause": "The exact leading-edge AI/HPC wafer-demand and advanced-node utilization or pricing evidence is insufficient. The available result describes broad demand for advanced nodes and AI/HPC but does not provide a sufficiently verified company or industry operating measure for the nominated driver, and no reliable contradictory evidence was found.",
       "industry_scope": "UNKNOWN",
       "supporting_evidence": [],
       "counter_evidence": [],
       "source_count": 0,
       "event_date": null,
       "source_dates": [],
-      "researched_at_utc": "2026-09-12T02:40:09Z",
+      "researched_at_utc": "2026-09-12T02:48:02Z",
+      "research_run_id": "20260912T102038+0800-dd11a682"
+    },
+    {
+      "driver_id": "MEMORY_IC_CYCLE",
+      "state": "UNKNOWN",
+      "confidence": 0.15,
+      "primary_cause": "No usable time-consistent evidence confirming the exact memory IC design-demand or ASP cycle was found. No reliable contradictory evidence specific to memory IC design demand or ASPs was found either.",
+      "industry_scope": "UNKNOWN",
+      "supporting_evidence": [],
+      "counter_evidence": [],
+      "source_count": 0,
+      "event_date": null,
+      "source_dates": [],
+      "researched_at_utc": "2026-09-12T02:48:02Z",
       "research_run_id": "20260912T102038+0800-dd11a682"
     }
   ],
   "company_opportunities": [],
-  "company_research_errors": [
-    "COMPANY_RESEARCH_MISSING_company_transmission",
-    "COMPANY_RESEARCH_MISSING_company_transmission",
-    "COMPANY_RESEARCH_NOT_RETURNED:('2605.TW', 'DRY_BULK_FREIGHT')",
-    "COMPANY_RESEARCH_NOT_RETURNED:('3044.TW', 'UNMAPPED_OPPORTUNITY')"
-  ],
+  "company_research_errors": [],
   "company_research_coverage": [
+    {
+      "ticker": "2605.TW",
+      "driver_id": "DRY_BULK_FREIGHT",
+      "status": "UNRESOLVED",
+      "reason": "The available company searches returned no usable original disclosure. No measured operating improvement within the last 120 days or company-specific transmission from dry-bulk freight rates to orders, utilization, pricing, or revenue could be verified."
+    },
     {
       "ticker": "4967.TW",
       "driver_id": "NAND_STORAGE_CYCLE",
       "status": "UNRESOLVED",
-      "reason": "Official August 2026 revenue data supports higher shipments and selling prices, but the required international NAND/storage-cycle evidence and independent company transmission confirmation were not available in the supplied prefetch."
+      "reason": "The available company searches returned no usable original disclosure. No measured operating improvement within the last 120 days or company-specific transmission from NAND/storage conditions to shipments, ASP, backlog, or revenue could be verified."
     },
     {
       "ticker": "1609.TW",
       "driver_id": "COPPER_COMMODITY_TRADE_INVENTORY",
       "status": "UNRESOLVED",
-      "reason": "Official August 2026 revenue increased, but no verified evidence links the improvement specifically to LME/COMEX pricing, inventories, regional premia, tariffs, or physical copper tightness; cable revenue alone cannot establish the nominated copper driver."
+      "reason": "The available company searches returned no usable original disclosure. No measured operating improvement within the last 120 days or company-specific transmission from copper pricing, inventories, premia, or trade dislocation to wire/cable revenue could be verified."
     },
     {
       "ticker": "3176.TWO",
       "driver_id": "UNMAPPED_OPPORTUNITY",
       "status": "UNRESOLVED",
-      "reason": "Official August 2026 revenue increased and the issuer cited higher overseas revenue, but the specific product, customer, project, and durable economic mechanism behind that increase remain unverified."
+      "reason": "No economic driver was identified from the available company searches or source prefetch. No recent measured fundamental improvement and no specific project, order, shipment, pricing, or revenue mechanism could be verified."
+    },
+    {
+      "ticker": "3044.TW",
+      "driver_id": "UNMAPPED_OPPORTUNITY",
+      "status": "UNRESOLVED",
+      "reason": "No economic driver was identified from the available company searches or source prefetch. No recent measured fundamental improvement and no specific project, order, shipment, pricing, or revenue mechanism could be verified."
     }
   ]
 }
