@@ -70,7 +70,7 @@ def test_E_valid_thesis_with_extended_entry_needs_no_fundamental_research():
     c = candidate(); c['reaction_state'] = 'EXTENDED'
     row = assess(c, research(), risk(), history(), ASOF)
     assert row['action'] == 'WAIT'
-    assert row['wait_reason'] == 'ENTRY'
+    assert row['wait_reason'] == 'WAIT_FOR_ENTRY'
     assert row['research_task'] == 'NONE'
 
 

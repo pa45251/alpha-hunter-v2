@@ -11,8 +11,9 @@ from urllib.parse import urlparse
 import pandas as pd
 
 from entry_structure_v2 import simple_atr, tw_stock_tick, _round_up_tick, _round_down_tick
+from entry_risk import entry_risk, risk_narrative
 
-VERSION = 'ORDERED_DRIVER_GATES_2'
+VERSION = 'ORDERED_DRIVER_GATES_CANONICAL_RISK_3'
 METRICS = {'REVENUE', 'EPS', 'BACKLOG', 'ASP', 'SHIPMENT', 'ORDER', 'CAPEX',
            'UTILIZATION', 'PROJECT_RECOGNITION', 'FREIGHT_RATE', 'POWER_DEMAND', 'PRODUCTION'}
 ACTIONS = {'BUY', 'EARLY BUY', 'WAIT', 'PASS'}
@@ -113,7 +114,8 @@ def price_plan(hist):
     """
     out = dict(price_ok=False, confirmed=False, early_signal=False, severe=False,
                extended=False, technical='Price history unavailable', entry='Unavailable',
-               invalidation='Unavailable', add_trigger='Unavailable', price_reason='Need sealed OHLCV')
+               invalidation='Unavailable', add_trigger='Unavailable', price_reason='Need sealed OHLCV',
+               entry_state='WAIT_FOR_ENTRY', **entry_risk(None, None, None, None))
     if hist is None or len(hist) < 80:
         return out
     h = hist.sort_index().copy()
@@ -139,8 +141,7 @@ def price_plan(hist):
     stop = _round_down_tick(support - 0.25 * atr, tw_stock_tick(support))
     entry_low = _round_up_tick(max(stop + atr, close - 0.25 * atr), tick)
     entry_high = _round_down_tick(close, tick)
-    risk = entry_high - stop
-    rr = (target - entry_high) / risk if risk > 0 else -1
+    metrics = entry_risk(entry_low, entry_high, stop, target)
     confirmed = close > pivot and volume >= 1.2
     recovery = close > float(c.iloc[-2]) and float(h.Low.iloc[-1]) >= support and close >= ma20
     improving = close > float(c.iloc[-6]) and close >= ma20
@@ -148,21 +149,21 @@ def price_plan(hist):
     extended = bias > 0.20 or ret5 > 0.25 or close > pivot + 0.75 * atr
     severe = bias >= 0.40 or ret5 >= 0.40
     liquid = float((h.Close * h.Volume).tail(20).mean()) >= 10_000_000
-    valid = early and liquid and not extended and 0 < risk / close <= 0.08 and rr >= 2 and entry_low <= entry_high
+    valid = early and liquid and not extended and metrics['entry_risk_eligible']
     add = _round_up_tick(pivot + 0.25 * atr, tw_stock_tick(pivot))
-    reason = (target_basis + ' offers at least 2R before costs; support defines <=8% price risk' if valid
-              else 'Wait for a supported pullback with >=2R to observed resistance and <=8% stop distance')
-    if target <= close:
-        reason = 'No observed upside reference above price; reward/risk is unverified'
+    reason = risk_narrative(metrics, target_basis)
+    if not valid and metrics['entry_risk_eligible']:
+        reason += ' WAIT_FOR_ENTRY: price signal, liquidity or extension gate is not ready.'
     if extended:
-        reason = 'Extended price: wait for a new base; do not chase'
-    out.update(price_ok=bool(valid), confirmed=bool(confirmed), early_signal=bool(early),
+        reason += ' Extended price: wait for a new base; do not chase.'
+    out.update(**metrics)
+    out.update(price_ok=bool(valid), entry_state='ENTRY_READY' if valid else 'WAIT_FOR_ENTRY', confirmed=bool(confirmed), early_signal=bool(early),
                severe=bool(severe), extended=bool(extended), technical='Confirmed breakout' if confirmed else 'Early strength / support recovery' if early else 'No early strength',
-               entry=f'{entry_low:g}–{entry_high:g}' if risk > 0 else 'Unavailable',
+               entry=f'{entry_low:g}–{entry_high:g}' if metrics['risk_pct'] is not None else 'Unavailable',
                invalidation=f'Exit on loss of {stop:g}; thesis failure also invalidates',
                add_trigger=f'Close above {add:g} with volume >=1.2x prior median; thesis still supported and recheck R/R',
                price_reason=reason, entry_low=entry_low, entry_high=entry_high, stop=stop,
-               reference_target=target, target_basis=target_basis, reward_risk=rr, current_price=close, bias20=bias,
+               reference_target=target, target_basis=target_basis, current_price=close, bias20=bias,
                ret_5d=ret5, volume_ratio=volume)
     return out
 
@@ -172,9 +173,10 @@ def assess(candidate, research, risk, hist, as_of):
     gates = thesis_gates(candidate, research, as_of)
     plan = price_plan(hist)
     if candidate.get('reaction_state') == 'EXTENDED' or number(candidate.get('bias20')) > 0.20 or number(candidate.get('ret_5d')) > 0.25:
-        plan.update(extended=True, price_ok=False, price_reason='Extended price: wait for a new base; do not chase')
+        plan.update(extended=True, price_ok=False, entry_state='WAIT_FOR_ENTRY',
+                    price_reason=plan['price_reason'] + ' Extended price: wait for a new base; do not chase.')
     if number(candidate.get('bias20')) >= 0.40 or number(candidate.get('ret_5d')) >= 0.40:
-        plan.update(severe=True, price_ok=False)
+        plan.update(severe=True, price_ok=False, entry_state='WAIT_FOR_ENTRY')
     row = dict(ticker=candidate.get('ticker'), name=candidate.get('name'),
                driver=candidate.get('driver_label', 'UNMAPPED / WHY?'), driver_state='UNVERIFIED',
                unmapped=candidate.get('driver_id') == 'UNMAPPED_OPPORTUNITY',
@@ -215,6 +217,8 @@ def assess(candidate, research, risk, hist, as_of):
         row['action'] = 'BUY' if market_confirmed and row['driver_state'] == 'CONFIRMED' and (plan['confirmed'] or operating_confirmed) else 'EARLY BUY'
         row['planned_position_fraction'] = 0.35 if row['action'] == 'EARLY BUY' else 1.0
     row['wait_reason'] = gates['missing_gate'] if row['action'] == 'WAIT' else None
+    if row['action'] == 'WAIT' and gates['missing_gate'] == 'ENTRY' and not plan['price_ok']:
+        row['wait_reason'] = 'WAIT_FOR_ENTRY'
     if row['action'] == 'WAIT' and gates['missing_gate'] == 'ENTRY' and row['regime'] == 'UNKNOWN':
         row['wait_reason'] = 'REGIME_UNVERIFIED'
     return row
