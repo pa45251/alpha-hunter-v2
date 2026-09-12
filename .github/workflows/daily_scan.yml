@@ -67,7 +67,7 @@ jobs:
         env:
           PYTHONPATH: ${{ github.workspace }}
           GITHUB_REF_NAME: main
-        run: python -m pytest -q tests/test_canonical_gate.py tests/test_snapshot_lineage_v2.py tests/test_risk_regime.py tests/test_daily_core_repair.py tests/test_v2_end_to_end_acceptance.py
+        run: python -m pytest -q tests/test_canonical_gate.py tests/test_snapshot_lineage_v2.py tests/test_risk_regime.py tests/test_daily_core_repair.py tests/test_v2_end_to_end_acceptance.py tests/test_market_data.py tests/test_global_sensors.py tests/test_broad_discovery.py
 
       - name: Run Alpha Hunter v2.6 scanner
         if: steps.freshness_guard.outputs.should_run == 'true'
@@ -96,6 +96,11 @@ jobs:
           done
           # Publish the complete same-snapshot Daily Core atomically.
           git add \
+            config/discovery_universe.csv \
+            config/discovery_universe.json \
+            output/global_scan_quality.json \
+            output/discovery_snapshot.csv \
+            output/discovery_research_queue.csv \
             output/manifest.json \
             output/gate_report.json \
             output/research_packet.json \

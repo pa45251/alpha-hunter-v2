@@ -93,6 +93,7 @@ def build_manifest(
     repo = os.getenv("GITHUB_REPOSITORY", "pa45251/alpha-hunter-v2")
     branch = os.getenv("GITHUB_REF_NAME", "main")
     required = [
+        "global_scan_quality.json", "discovery_snapshot.csv", "discovery_research_queue.csv",
         "risk_regime.json", "market_snapshot.csv", "theme_breadth.csv", "leader_registry.csv", "feature_history.csv",
         "market_snapshot.json", "taiwan_candidates.csv", "taiwan_candidate_history.csv",
         "taiwan_industry_breadth.csv", "taiwan_universe.csv", "causal_research_queue.csv",
@@ -117,7 +118,9 @@ def build_manifest(
     t = tw["stocks"]
     coverage = len(t) / max(1, len(tw["universe"]))
     checks_pass = all(bool(v) for v in pipeline_checks.values())
-    status = "PASS" if not missing and len(g) >= 90 and coverage >= 0.97 and checks_pass else "WARNING"
+    core_quality = global_results.get("core_quality", {})
+    core_coverage = len(g) / max(1, core_quality.get("universe_count", len(g)))
+    status = "PASS" if not missing and len(g) >= 90 and core_coverage >= 0.90 and coverage >= 0.97 and checks_pass else "WARNING"
 
     active_count = 0
     if not structural_matches.empty and "dynamic_driver_state" in structural_matches.columns:
@@ -142,6 +145,9 @@ def build_manifest(
         "missing_required_files": missing,
         "pipeline_checks": {k: bool(v) for k, v in pipeline_checks.items()},
         "global": {
+            "core_universe_count": core_quality.get("universe_count", len(g)),
+            "core_coverage_pct": core_coverage,
+            "discovery": global_results.get("discovery_quality", {}),
             "scanned_count": int(len(g)),
             "theme_count": int(g["theme"].nunique()),
             "latest_price_date": str(g["last_price_date"].max()),
@@ -222,7 +228,8 @@ if __name__ == "__main__":
     run_id = f"{datetime.now(TAIPEI_TZ).strftime('%Y%m%dT%H%M%S%z')}-{uuid.uuid4().hex[:8]}"
 
     # 1) Global market-structure sensor
-    gcfg = ScanConfig(lookback="2y", min_obs=140, benchmark="SPY", output_dir="output")
+    gcfg = ScanConfig(lookback="2y", min_obs=140, benchmark="SPY", output_dir="output",
+                      discovery_csv="config/discovery_universe.csv")
     global_results = run_scan("config/universe.csv", gcfg)
     write_outputs(global_results, gcfg.output_dir)
     append_audit_log(global_results, "output/feature_history.csv")
@@ -277,6 +284,8 @@ if __name__ == "__main__":
     # Integration contract checks: prove the causal files were rebuilt in THIS run, not merely left over from an older snapshot.
     reverse_current = reverse_candidates.empty or reverse_candidates["run_id"].eq(run_id).all()
     pipeline_checks = {
+        "core_discovery_disjoint": not bool(set(global_results["stocks"].ticker) & set(global_results["discovery"].ticker)),
+        "formal_snapshot_core_only": global_results["stocks"].universe_layer.eq("CORE").all(),
         "global_outputs_generated": (OUT / "market_snapshot.csv").exists() and len(global_results["stocks"]) > 0,
         "taiwan_outputs_generated": (OUT / "taiwan_candidates.csv").exists() and len(tw["stocks"]) > 0,
         "causal_queue_rebuilt_this_run": (not research_queue.empty) and research_queue["run_id"].eq(run_id).all(),

@@ -6,6 +6,7 @@ import numpy as np
 import pandas as pd
 
 from causal_engine import TIER_WEIGHT, theme_strength
+from global_universe import core_only
 
 
 UNMAPPED_DRIVER_ID = "UNMAPPED_OPPORTUNITY"
@@ -108,6 +109,7 @@ def _prepare_taiwan_features(taiwan_stocks: pd.DataFrame) -> pd.DataFrame:
 def _top_global_peers(global_stocks: pd.DataFrame, theme: str, n: int = 5) -> str:
     if global_stocks is None or global_stocks.empty or "theme" not in global_stocks.columns:
         return ""
+    global_stocks = core_only(global_stocks)
     g = global_stocks[global_stocks["theme"].astype(str) == str(theme)].copy()
     if g.empty:
         return ""
