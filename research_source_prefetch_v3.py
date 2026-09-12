@@ -116,13 +116,17 @@ def _search(query: str, timeout: float = 15.0, limit: int = 6) -> tuple[list[dic
 
 
 def _query_for(target: dict, lane: str) -> str:
+    if target.get('ticker'):
+        company = str(target.get('name') or '') + ' ' + str(target['ticker']).split('.')[0]
+        terms = '營收 訂單 在手訂單 財報' if lane == 'SUPPORT' else '衰退 延遲 毛利 下修'
+        return f'{company} {terms} {datetime.now(timezone.utc).year}'
     label = _compact_terms(target.get("driver_label") or target.get("driver_id"), 120)
     scope = _compact_terms(target.get("driver_scope"), 120)
     if lane == "SUPPORT":
         requirement = _compact_terms(target.get("activation_evidence_required"), 160)
     else:
         requirement = _compact_terms(target.get("counter_evidence_required"), 160)
-    parts = [f'"{label}"' if label else "", scope, requirement]
+    parts = [label, " ".join(requirement.split()[:7]), str(datetime.now(timezone.utc).year)]
     query = " ".join(x for x in parts if x).strip()
     return query[:420]
 
@@ -174,6 +178,7 @@ def build_prefetch(handoff: dict, *, timeout: float = 15.0, per_query: int = 5) 
         out_targets.append(
             {
                 "driver_id": driver_id,
+                "ticker": target.get("ticker"),
                 "queries": queries,
                 "candidate_sources": target_candidates,
                 "candidate_source_count": len(target_candidates),
@@ -190,7 +195,12 @@ def build_prefetch(handoff: dict, *, timeout: float = 15.0, per_query: int = 5) 
         and sourced_target_count > 0
         else "FAIL_CLOSED"
     )
+    company_sources = []
+    if handoff.get('company_research_targets'):
+        extra = build_prefetch({'run_id': run_id, 'research_targets': handoff['company_research_targets']}, timeout=timeout, per_query=per_query)
+        company_sources = extra['targets']
     return {
+        'company_targets': company_sources,
         "contract": CONTRACT,
         "status": status,
         "research_run_id": run_id,

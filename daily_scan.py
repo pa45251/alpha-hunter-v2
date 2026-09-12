@@ -49,7 +49,7 @@ def append_taiwan_candidate_history(candidates: pd.DataFrame, path: str = "outpu
         "code", "ticker", "name", "exchange", "industry", "price", "ret_5d", "ret_20d", "ret_60d",
         "rs_20d_vs_bench", "rs_60d_vs_bench", "acceleration", "er20", "vol20", "maxdd20",
         "keynes_legacy", "keynes_v2", "bias20", "avg_turnover20_twd", "taiwan_candidate_score_v1",
-        "taiwan_early_score_v2",
+        "taiwan_early_score_v2", "volume_ratio20",
     ]
     x = x[[c for c in keep if c in x.columns]]
     p = Path(path)

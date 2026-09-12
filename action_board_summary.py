@@ -17,7 +17,7 @@ if __name__ == "__main__" and "--refresh" in sys.argv:
     for script in ["risk_regime.py", "global_alignment_v2.py", "entry_plan_run_v2.py"]:
         subprocess.run([sys.executable, script], check=True)
     subprocess.run([sys.executable, __file__], check=True)
-    subprocess.run([sys.executable, "entry_action_board_v2.py"], check=True)
+    # Keep exact V2 plans as diagnostics; the daily brief exposes only four advisory actions.
     result = subprocess.run([sys.executable, "entry_plan_trace_v2.py"], check=False)
     if result.returncode:
         print("WARNING: optional entry trace failed; daily action board is intact")
@@ -53,119 +53,31 @@ def md(value) -> str:
     return str(value if value is not None else "UNKNOWN").replace("|", "/").replace("\n", " ")
 
 
-def _valid_entry_tickers() -> set[str]:
-    entries = load("entry_plans_v2.json")
-    if str(entries.get("source_run_id") or "") != run_id:
-        return set()
-    valid: set[str] = set()
-    for bucket in ("fresh", "pullback", "continuation"):
-        for row in entries.get(bucket) or []:
-            if not isinstance(row, dict):
-                continue
-            if bool(row.get("entry_structure_valid")) and bool(row.get("risk_v2_pass", True)):
-                ticker = str(row.get("ticker") or "")
-                if ticker:
-                    valid.add(ticker)
-    return valid
-
-
-def _driver_states() -> dict[str, str]:
-    a = read_csv("driver_activation_v3.csv")
-    if a.empty or "driver_id" not in a.columns:
-        return {}
-    if "research_run_id" in a.columns:
-        a = a[a["research_run_id"].astype(str) == run_id]
-    states: dict[str, str] = {}
-    for row in a.itertuples():
-        driver_id = str(getattr(row, "driver_id", ""))
-        state = str(getattr(row, "activation_state", "UNKNOWN")).upper()
-        if driver_id:
-            states[driver_id] = state
-    return states
-
-
-def _driver_status(driver_id: str, states: dict[str, str]) -> str:
-    if driver_id == "UNMAPPED_OPPORTUNITY":
-        return "UNCLEAR"
-    state = states.get(driver_id, "UNKNOWN")
-    if state == "ACTIVE":
-        return "CONFIRMED"
-    if state == "INACTIVE":
-        return "REJECTED"
-    return "UNCLEAR"
-
-
-def _relative_state(row: pd.Series) -> str:
-    if str(row.get("driver_id", "")) == "UNMAPPED_OPPORTUNITY":
-        return "UNMAPPED / WHY?"
-    try:
-        global_strength = float(row.get("global_theme_strength_v2"))
-    except (TypeError, ValueError):
-        global_strength = float("nan")
-    if pd.isna(global_strength) or global_strength < 0.55:
-        return "NO GLOBAL SUPPORT"
-    try:
-        gap = float(row.get("transmission_gap_proxy"))
-    except (TypeError, ValueError):
-        gap = float("nan")
-    if pd.isna(gap):
-        return "TOGETHER"
-    if gap > 0.08:
-        return "GLOBAL AHEAD"
-    if gap < -0.08:
-        return "TAIWAN AHEAD"
-    return "TOGETHER"
-
-
-def _simple_action(row: pd.Series, driver_status: str, relative_state: str, valid_entries: set[str]) -> str:
-    ticker = str(row.get("ticker", ""))
-    reaction = str(row.get("reaction_state", "UNKNOWN")).upper()
-    if driver_status == "REJECTED":
-        return "PASS"
-    if relative_state in {"TAIWAN AHEAD", "NO GLOBAL SUPPORT"} or reaction == "EXTENDED":
-        return "PASS" if driver_status != "CONFIRMED" else "WAIT"
-    if driver_status == "CONFIRMED" and ticker in valid_entries:
-        return "BUY SETUP"
-    return "WAIT"
-
-
 def _select_opportunities(limit: int = 5) -> list[dict]:
-    reverse = read_csv("reverse_transmission_candidates.csv")
-    if reverse.empty or "ticker" not in reverse.columns:
-        return []
-    if "run_id" in reverse.columns:
-        reverse = reverse[reverse["run_id"].astype(str) == run_id]
-    if reverse.empty:
-        return []
-
-    reverse["reverse_research_priority"] = pd.to_numeric(
-        reverse.get("reverse_research_priority"), errors="coerce"
-    ).fillna(0.0)
-    reverse = reverse.sort_values("reverse_research_priority", ascending=False)
-    reverse = reverse.drop_duplicates("ticker", keep="first")
-
-    top = reverse.head(limit).copy()
-    unmapped = reverse[reverse["driver_id"].astype(str).eq("UNMAPPED_OPPORTUNITY")]
-    if not unmapped.empty and not top["driver_id"].astype(str).eq("UNMAPPED_OPPORTUNITY").any():
-        top = pd.concat([top.head(max(0, limit - 1)), unmapped.head(1)], ignore_index=True)
-        top = top.sort_values("reverse_research_priority", ascending=False).head(limit)
-
-    states = _driver_states()
-    valid_entries = _valid_entry_tickers()
-    rows: list[dict] = []
-    for _, row in top.iterrows():
-        driver_id = str(row.get("driver_id", ""))
-        status = _driver_status(driver_id, states)
-        relative = _relative_state(row)
-        rows.append({
-            "ticker": str(row.get("ticker", "")),
-            "name": str(row.get("name", "")),
-            "driver": str(row.get("driver_label", driver_id)),
-            "driver_status": status,
-            "relative": relative,
-            "action": _simple_action(row, status, relative, valid_entries),
-        })
-    return rows
+    from opportunity_advisory import assess, rank_opportunities, validate_company_research
+    from canonical_evidence import load_histories
+    from research_handoff import company_research_targets
+    from datetime import datetime, timezone
+    candidates = company_research_targets(OUT, limit=None)
+    histories = load_histories(list({r['ticker'] for r in candidates}))
+    research = load('research_result_v3.json')
+    now = datetime.now(timezone.utc).isoformat()
+    accepted = {}
+    targets = {(r['ticker'], r['driver_id']) for r in candidates}
+    if (research.get('status') == 'PASS' and research.get('research_run_id') == run_id):
+        for r in research.get('company_opportunities') or []:
+            try:
+                validate_company_research(r, run_id, targets, now)
+                accepted[(r['ticker'], r['driver_id'])] = r
+            except (ValueError, TypeError):
+                continue
+    rows = []
+    for candidate in candidates:
+        evidence = accepted.get((candidate['ticker'], candidate['driver_id']))
+        row = assess(candidate, evidence, load('risk_regime.json'), histories.get(candidate['ticker']), now)
+        row['research_priority'] = candidate.get('research_priority', 0)
+        rows.append(row)
+    return rank_opportunities(rows, limit)
 
 
 packet = load("decision_packet.json")
@@ -186,29 +98,28 @@ lines = [
 ]
 
 if opportunities:
-    lines += [
-        "| Stock | Bottom-up driver | Driver status | Relative position | Action |",
-        "|---|---|---|---|---|",
-    ]
-    for row in opportunities:
-        stock = f"{md(row['ticker'])} {md(row['name'])}".strip()
-        lines.append(
-            f"| {stock} | {md(row['driver'])} | **{row['driver_status']}** | {row['relative']} | **{row['action']}** |"
-        )
+    for i, row in enumerate(opportunities, 1):
+        lines += [f"### {i}. {md(row['ticker'])} {md(row['name'])} — {row['action']}", ""]
+        for label, key in [('WHY', 'why'), ('Driver', 'driver'), ('Driver state', 'driver_state'),
+                           ('Company transmission', 'company_transmission'),
+                           ('International confirmation', 'international'), ('Relative', 'relative'),
+                           ('Regime', 'regime'), ('Technical state', 'technical'),
+                           ('Why price', 'price_reason'), ('Entry', 'entry'),
+                           ('Invalidation', 'invalidation'), ('Add trigger', 'add_trigger'),
+                           ('Main risk', 'main_risk'), ('What would make us wrong', 'what_would_make_us_wrong')]:
+            lines.append(f"- **{label}:** {md(row.get(key, 'Unverified'))}")
+        if row['action'] == 'EARLY BUY':
+            lines.append('- **Initial size:** 35% of planned position; reassess before adding.')
+        for evidence in row.get('evidence', []):
+            lines.append(f"- Evidence: {md(evidence['claim'])} [{md(evidence['source_title'])}]({evidence['source_url']})")
+        lines.append('')
 else:
-    lines.append("- **NONE** — no reverse-discovery opportunity is available for this snapshot.")
-
+    lines.append('- No sufficiently researched opportunity in this snapshot.')
 lines += [
-    "",
-    "- `CONFIRMED / UNCLEAR / REJECTED` is the only user-facing causal verdict; raw confidence scores remain background diagnostics.",
-    "- `UNMAPPED / WHY?` means the stock is unusually strong but the system has no pre-existing economic edge; research comes before any thesis.",
-    "- `BUY SETUP` is allowed only when the driver is CONFIRMED and the canonical V2 entry/risk plan is valid. Otherwise WAIT or PASS.",
-    "",
-    "## Evidence and execution boundary", "",
-    f"- Current validated drivers: {', '.join(activation.get('active_driver_ids') or []) or 'NONE — WAIT / CASH'}",
-    f"- Frozen release integrity: `{launch.get('freeze_integrity_pass', False)}`",
-    "- Engineering gates, hashes, lineage, frontier/challenger and shadow validation remain background safety plumbing.",
-    "- Automatic order execution is disabled.", "",
+    '', '- BUY / EARLY BUY are advisory views at the displayed entry zone, never brokerage orders.',
+    '- A gap outside the zone or new thesis counter-evidence requires reassessment before taking risk.',
+    '- Prices and R/R use sealed closed sessions; 2R is an observed resistance comparison, not a return forecast.',
+    '- Automatic order execution remains disabled. Frozen execution permissions are unchanged.', '',
 ]
 
 (OUT / "action_board.md").write_text("\n".join(lines), encoding="utf-8")

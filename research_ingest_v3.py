@@ -93,6 +93,8 @@ def main() -> None:
     status = "PASS"
     errors: list[str] = []
     supplied: dict[str, dict] = {}
+    company_opportunities = []
+    company_errors = []
 
     try:
         raw_text = RAW.read_text(encoding="utf-8")
@@ -133,6 +135,23 @@ def main() -> None:
         status = "RESEARCH_UNAVAILABLE"
         errors.append(str(exc))
 
+    # Optional company intelligence is independently validated and never activates V2 edges.
+    from research_handoff import company_research_targets
+    from opportunity_advisory import validate_company_research
+    company_targets = {(r['ticker'], r['driver_id']) for r in company_research_targets()}
+    if status == 'PASS':
+        seen_company = set()
+        for row in payload.get('company_opportunities') or []:
+            try:
+                validate_company_research(row, run_id, company_targets, _utcnow())
+                key = (row['ticker'], row['driver_id'])
+                if key in seen_company:
+                    raise ValueError('DUPLICATE_COMPANY_RESEARCH')
+                seen_company.add(key)
+                company_opportunities.append(row)
+            except (ValueError, TypeError) as exc:
+                company_errors.append(str(exc))
+
     final_results = []
     for driver_id in target_ids:
         if driver_id in supplied:
@@ -149,6 +168,8 @@ def main() -> None:
         "target_driver_ids": target_ids,
         "errors": errors,
         "results": final_results,
+        "company_opportunities": company_opportunities,
+        "company_research_errors": company_errors,
     }
     OUT.write_text(json.dumps(out, ensure_ascii=False, indent=2), encoding="utf-8")
     print(f"v3 research ingest: {status}; valid={len(supplied)}/{len(target_ids)}")
