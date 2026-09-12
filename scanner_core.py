@@ -10,7 +10,8 @@ from typing import Dict, Iterable, Optional
 
 import numpy as np
 import pandas as pd
-import yfinance as yf
+from market_data import download_histories
+from global_universe import core_only, load_core, local_benchmark, market_policy
 
 TRADING_DAYS = 252
 
@@ -20,6 +21,13 @@ class ScanConfig:
     min_obs: int = 140
     benchmark: str = "SPY"
     output_dir: str = "output"
+    batch_size: int = 40
+    retries: int = 2
+    provider: object = None
+    discovery_csv: str | None = None
+    refresh_discovery: bool = True
+    core_download_seconds: float = 300
+    discovery_download_seconds: float = 180
 
 
 TAIPEI_TZ = ZoneInfo("Asia/Taipei")
@@ -29,10 +37,10 @@ def closed_history(hist: pd.DataFrame, ticker: str) -> pd.DataFrame:
     if hist is None or hist.empty:
         return hist
     from datetime import timedelta
-    taiwan = ticker.endswith((".TW", ".TWO")) or ticker == "^TWII"
-    local = datetime.now(ZoneInfo("Asia/Taipei" if taiwan else "America/New_York"))
+    _, zone, close_hour, _ = market_policy(ticker)
+    local = datetime.now(ZoneInfo(zone))
     cutoff = local.date()
-    if local.hour < (14 if taiwan else 17):
+    if local.hour < close_hour:
         cutoff -= timedelta(days=1)
     return hist.loc[[pd.Timestamp(t).date() <= cutoff for t in hist.index]].copy()
 
@@ -236,22 +244,7 @@ def extract_features(hist: pd.DataFrame, benchmark_close: Optional[pd.Series] = 
 
 
 def _download(tickers: Iterable[str], period: str = "2y") -> Dict[str, pd.DataFrame]:
-    tickers = list(dict.fromkeys([t for t in tickers if t]))
-    if not tickers:
-        return {}
-    raw = yf.download(tickers, period=period, auto_adjust=False, group_by="ticker", progress=False, threads=True)
-    result: Dict[str, pd.DataFrame] = {}
-    if len(tickers) == 1:
-        result[tickers[0]] = raw.copy()
-        return result
-    for t in tickers:
-        try:
-            df = raw[t].copy()
-            if not df.empty:
-                result[t] = df
-        except Exception:
-            continue
-    return result
+    return download_histories(tickers, period).histories
 
 
 def _pct_rank(s: pd.Series) -> pd.Series:
@@ -263,7 +256,7 @@ def add_cross_section_scores(df: pd.DataFrame) -> pd.DataFrame:
 
     We deliberately avoid optimization. Score weights are simple priors and are intended for audit.
     """
-    x = df.copy()
+    x = core_only(df).copy()
     for col in ["rs_20d_vs_bench", "rs_60d_vs_bench", "ret_5d", "ma20_slope", "volume_ratio20", "dist_52w_high", "keynes_v2"]:
         if col not in x:
             x[col] = np.nan
@@ -315,6 +308,7 @@ def classify_leader(row: pd.Series) -> str:
 
 def compute_theme_breadth(stock_df: pd.DataFrame) -> pd.DataFrame:
     rows = []
+    stock_df = core_only(stock_df)
     if stock_df.empty:
         return pd.DataFrame()
     for theme, g in stock_df.groupby("theme", dropna=False):
@@ -345,6 +339,7 @@ def update_registry(current: pd.DataFrame, previous_path: Path) -> pd.DataFrame:
     Re-running the workflow against the same market close must NOT advance confirmation
     or weakening streaks. Only a new last_price_date can advance a streak.
     """
+    current = core_only(current)
     now = datetime.now(timezone.utc).isoformat()
     prev = pd.DataFrame()
     if previous_path.exists():
@@ -413,30 +408,55 @@ def update_registry(current: pd.DataFrame, previous_path: Path) -> pd.DataFrame:
 
 
 def run_scan(universe_csv: str = "config/universe.csv", config: ScanConfig = ScanConfig()) -> Dict[str, pd.DataFrame]:
-    uni = pd.read_csv(universe_csv)
-    required = {"ticker", "theme"}
-    if not required.issubset(uni.columns):
-        raise ValueError(f"universe.csv must contain {required}")
-
+    uni = load_core(universe_csv)
     tickers = uni["ticker"].dropna().astype(str).unique().tolist()
     if config.benchmark not in tickers:
         tickers = [config.benchmark] + tickers
 
     from risk_regime import RISK_TICKERS
-    data = _download(list(dict.fromkeys(tickers + [t for t in RISK_TICKERS if t != "^UST2Y"])), config.lookback)
+    benchmarks = uni.apply(local_benchmark, axis=1).unique().tolist()
+    downloaded = download_histories(tickers + benchmarks + [t for t in RISK_TICKERS if t != "^UST2Y"],
+                                    config.lookback, provider=config.provider,
+                                    batch_size=config.batch_size, retries=config.retries, max_seconds=config.core_download_seconds)
+    data = downloaded.histories
     data = {t: closed_history(h, t) for t, h in data.items()}
     bench_hist = data.get(config.benchmark)
     if bench_hist is None or bench_hist.empty:
-        raise RuntimeError(f"Benchmark {config.benchmark} unavailable")
+        out = Path(config.output_dir); out.mkdir(parents=True, exist_ok=True)
+        (out / "global_scan_failure.json").write_text(json.dumps({
+            "status":"FAILED_MISSING_GLOBAL_BENCHMARK", "benchmark":config.benchmark,
+            "download":downloaded.diagnostics,
+        }, indent=2))
+        raise RuntimeError(f"Benchmark {config.benchmark} unavailable; see global_scan_failure.json")
     bench_close = _price_series(bench_hist)
 
     rows = []
     for _, meta in uni.iterrows():
         t = str(meta["ticker"])
         hist = data.get(t)
-        if hist is None or hist.empty or len(hist.dropna(subset=["Close"])) < config.min_obs:
+        if hist is None or hist.empty or not {"High", "Low", "Close"}.issubset(hist) or len(hist.dropna(subset=["Close"])) < config.min_obs:
             continue
-        f = extract_features(hist, bench_close)
+        local_ticker = local_benchmark(meta)
+        local_hist = data.get(local_ticker)
+        local_close = _price_series(local_hist) if local_hist is not None and not local_hist.empty else None
+        if local_close is not None:
+            asset_date = pd.Timestamp(hist.index[-1]).date()
+            bench_date = pd.Timestamp(local_close.dropna().index[-1]).date()
+            if abs((asset_date - bench_date).days) > 5:
+                local_close = None
+        f = extract_features(hist, local_close)
+        if not f:
+            continue
+        gf = extract_features(hist, bench_close)
+        for n in (5, 20, 60):
+            f[f"rs_{n}d_vs_local"] = f.get(f"rs_{n}d_vs_bench", np.nan)
+            f[f"rs_{n}d_vs_bench"] = f[f"rs_{n}d_vs_local"]
+            f[f"rs_{n}d_vs_global"] = gf.get(f"rs_{n}d_vs_bench", np.nan)
+        f["local_benchmark"] = local_ticker
+        f["global_benchmark"] = config.benchmark
+        f["local_rs_status"] = "AVAILABLE" if np.isfinite(f["rs_60d_vs_local"]) else "MISSING_OR_SHORT_BENCHMARK"
+        f["global_rs_basis"] = "LOCAL_CURRENCY_ASSET_VS_USD_BENCHMARK_NOT_FX_HEDGED"
+
         if not f:
             continue
         row = meta.to_dict()
@@ -456,13 +476,54 @@ def run_scan(universe_csv: str = "config/universe.csv", config: ScanConfig = Sca
     registry_path = out_dir / "leader_registry.csv"
     registry = update_registry(stocks, registry_path)
 
-    return {"stocks": stocks, "breadth": breadth, "registry": registry, "histories": data}
+    # Separate download and feature surface: no discovery history, ranks or registry
+    # may enter any Core consumer, including risk and reverse transmission.
+    from broad_discovery import load_discovery, research_clusters
+    discovery_uni, discovery_quality = load_discovery(config.discovery_csv, set(uni.ticker), refresh=config.refresh_discovery)
+    discovery_rows = []
+    discovery_download = download_histories(discovery_uni.ticker.tolist(), config.lookback,
+                                           provider=config.provider, batch_size=config.batch_size,
+                                           retries=config.retries, max_seconds=config.discovery_download_seconds)
+    for _, meta in discovery_uni.iterrows():
+        hist = discovery_download.histories.get(meta.ticker)
+        if hist is None:
+            continue
+        hist = closed_history(hist, meta.ticker)
+        if len(hist) < config.min_obs or not {"High", "Low", "Close"}.issubset(hist):
+            continue
+        features = extract_features(hist, bench_close)
+        if features:
+            discovery_rows.append({**meta.to_dict(), **features, "decision_eligible": False,
+                                   "activation_state": "RESEARCH_WHY_REQUIRED"})
+    discovery = pd.DataFrame(discovery_rows, columns=None if discovery_rows else list(discovery_uni.columns))
+    discovery_quality["membership_status"] = discovery_quality["status"]
+    if not discovery_uni.empty and len(discovery) < len(discovery_uni):
+        discovery_quality["status"] = "PARTIAL_PRICE_DATA" if len(discovery) else "NO_PRICE_DATA"
+    discovery_quality["scanned_count"] = len(discovery)
+    discovery_quality["missing_feature_tickers"] = sorted(set(discovery_uni.ticker) - set(discovery.ticker))
+    discovery_quality["download"] = discovery_download.diagnostics
+    discovery_queue = research_clusters(discovery, discovery_uni)
+
+    return {"stocks": stocks, "breadth": breadth, "registry": registry, "histories": data, "download_quality": downloaded.diagnostics,
+            "core_quality": {"universe_count":len(uni), "scanned_count":len(stocks),
+                             "missing_feature_tickers":sorted(set(uni.ticker) - set(stocks.ticker)),
+                             "local_rs_missing_tickers":stocks.loc[stocks.local_rs_status.ne("AVAILABLE"), "ticker"].tolist()},
+            "discovery":discovery, "discovery_queue":discovery_queue,
+            "discovery_quality":discovery_quality}
 
 
 def write_outputs(results: Dict[str, pd.DataFrame], output_dir: str = "output") -> None:
     out = Path(output_dir)
     out.mkdir(parents=True, exist_ok=True)
     ts = datetime.now(timezone.utc).isoformat()
+    if "discovery" in results:
+        results["discovery"].to_csv(out / "discovery_snapshot.csv", index=False)
+        results["discovery_queue"].to_csv(out / "discovery_research_queue.csv", index=False)
+        (out / "global_scan_quality.json").write_text(json.dumps({
+            "generated_at_utc":ts, "core":results["core_quality"],
+            "core_download":results["download_quality"], "discovery":results["discovery_quality"],
+            "discovery_can_activate_driver":False,
+        }, indent=2), encoding="utf-8")
     results["stocks"].to_csv(out / "market_snapshot.csv", index=False)
     results["breadth"].to_csv(out / "theme_breadth.csv", index=False)
     results["registry"].to_csv(out / "leader_registry.csv", index=False)
@@ -494,7 +555,10 @@ def append_audit_log(results: Dict[str, pd.DataFrame], path: str = "output/featu
     keep = [
         "snapshot_date_taipei","last_price_date","ticker","theme","price","ret_1d","ret_5d","ret_20d","ret_60d",
         "rs_5d_vs_bench","rs_20d_vs_bench","rs_60d_vs_bench","acceleration","er20","vol20","maxdd20",
-        "keynes_legacy","keynes_v2","leader_score_v1","raw_leader_state"
+        "keynes_legacy","keynes_v2","leader_score_v1","raw_leader_state",
+        "universe_layer","local_benchmark","global_benchmark","local_rs_status",
+        "rs_5d_vs_local","rs_20d_vs_local","rs_60d_vs_local",
+        "rs_5d_vs_global","rs_20d_vs_global","rs_60d_vs_global","global_rs_basis"
     ]
     stocks = stocks[[c for c in keep if c in stocks.columns]]
     p = Path(path)

@@ -7,6 +7,7 @@ from typing import Optional
 
 import numpy as np
 import pandas as pd
+from global_universe import core_only
 
 
 TIER_WEIGHT = {
@@ -38,6 +39,7 @@ class CausalConfig:
 
 
 def theme_strength(global_stocks: pd.DataFrame) -> pd.DataFrame:
+    global_stocks = core_only(global_stocks)
     rows = []
     for theme, g in global_stocks.groupby("theme", dropna=False):
         if g.empty:
@@ -73,6 +75,7 @@ def theme_strength(global_stocks: pd.DataFrame) -> pd.DataFrame:
 
 
 def _top_global_leaders(global_stocks: pd.DataFrame, theme: str, n: int = 5) -> str:
+    global_stocks = core_only(global_stocks)
     g = global_stocks[global_stocks["theme"].astype(str) == str(theme)].copy()
     if g.empty:
         return ""

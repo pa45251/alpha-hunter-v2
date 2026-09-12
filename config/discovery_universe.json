@@ -1,0 +1,6 @@
+{
+  "source": "https://raw.githubusercontent.com/datasets/s-and-p-500-companies/main/data/constituents.csv",
+  "fetched_at_utc": "2026-09-12T08:05:37.539572+00:00",
+  "member_count": 503,
+  "sha256": "2f340b4557af4525bb170c7e349251fd922bb1622eb2508940a472e4edf943cc"
+}
