@@ -2,18 +2,18 @@
   "contract": "ALPHA_HUNTER_V2_6_1_RESEARCH_HANDOFF",
   "handoff_version": "1.0",
   "handoff_status": "PASS",
-  "generated_at_taipei": "2026-09-12T19:46:31.272801+08:00",
+  "generated_at_taipei": "2026-09-12T20:00:14.291375+08:00",
   "repository": "pa45251/alpha-hunter-v2",
-  "branch": "repair/driver-gate-veto",
+  "branch": "main",
   "schema_version": "2.6",
   "scanner_version": "2.6.1",
-  "run_id": "20260912T194313+0800-dcbec670",
+  "run_id": "20260912T195614+0800-012a9809",
   "gate_status": "PASS",
   "causal_rule": "PRICE_CANNOT_CREATE_CAUSALITY",
   "transport_policy": {
     "source_identity": "GitHub repository pa45251/alpha-hunter-v2 branch main only",
     "preferred_transport": "GitHub connector exact path output/research_handoff.json",
-    "fallback_transport": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/repair/driver-gate-veto/output/research_handoff.json",
+    "fallback_transport": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/research_handoff.json",
     "do_not_substitute": [
       "Streamlit tables",
       "GitHub search results",
@@ -25,28 +25,28 @@
   "artifacts": {
     "manifest": {
       "relative_path": "output/manifest.json",
-      "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/repair/driver-gate-veto/output/manifest.json",
-      "sha256": "5092a27e6e16b1ccea8b31f9c207ea9cc760d12f4620b3ca26da2aadc6ed93d7",
-      "bytes": 20485
+      "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/manifest.json",
+      "sha256": "c27c7cda149188e476f39e50cfada3b47e942e8a0af0f6379b69d66b12c0c6c7",
+      "bytes": 20067
     },
     "gate_report": {
       "relative_path": "output/gate_report.json",
-      "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/repair/driver-gate-veto/output/gate_report.json",
-      "sha256": "a419fe569efb4ad2a26571c92f451145fdbcd70ff69c8d20731d4ff7b66e94c1",
-      "bytes": 3994
+      "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/gate_report.json",
+      "sha256": "7628adf6387af196414dbbb5b917ffca66bb789520d299fc279ed23209b411aa",
+      "bytes": 3899
     },
     "research_packet": {
       "relative_path": "output/research_packet.json",
-      "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/repair/driver-gate-veto/output/research_packet.json",
-      "sha256": "ef1b8689c5e42cde398668fe6eb21fa51a1150263a95bff806ffdd633520f172",
-      "bytes": 236515
+      "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/research_packet.json",
+      "sha256": "73e68904fc8b009266fa0abc4222832f1110dd39d4649cf794b746c5e73113e6",
+      "bytes": 236135
     }
   },
   "research_entrypoint": {
     "relative_path": "output/research_packet.json",
-    "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/repair/driver-gate-veto/output/research_packet.json",
-    "sha256": "ef1b8689c5e42cde398668fe6eb21fa51a1150263a95bff806ffdd633520f172",
-    "bytes": 236515
+    "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/research_packet.json",
+    "sha256": "73e68904fc8b009266fa0abc4222832f1110dd39d4649cf794b746c5e73113e6",
+    "bytes": 236135
   },
   "research_rule": "Research may begin only when handoff_status=PASS, gate_status=PASS, run_id is consistent, and the fetched research_packet SHA256 matches this handoff."
 }
