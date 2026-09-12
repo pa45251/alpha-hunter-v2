@@ -3,7 +3,7 @@
 - Run: `20260912T102038+0800-dd11a682`
 - Market session: `2026-09-11`
 - Risk regime: **NORMAL**
-- Causal evidence: `UNKNOWN_NO_CURRENT_RESEARCH`
+- Causal evidence: `V3_AUTONOMOUS_RESEARCH`
 - Core rule: find the anomaly -> understand WHY -> validate the same driver globally -> act only if price still offers a setup.
 
 ## Simple Opportunity Brief
@@ -12,7 +12,7 @@
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** Unmapped opportunity — research WHY
-- **Driver state:** DEVELOPING
+- **Driver state:** UNVERIFIED
 - **Company transmission:** Unverified
 - **International confirmation:** Unverified — same-driver evidence required
 - **Relative:** TOGETHER
@@ -28,5 +28,5 @@
 
 - BUY / EARLY BUY are advisory views at the displayed entry zone, never brokerage orders.
 - A gap outside the zone or new thesis counter-evidence requires reassessment before taking risk.
-- Prices and R/R use sealed closed sessions; 2R is an observed resistance comparison, not a return forecast.
+- Prices and R/R use sealed closed sessions; upside references are resistance or disclosed base-height scenarios, not return forecasts.
 - Automatic order execution remains disabled. Frozen execution permissions are unchanged.
