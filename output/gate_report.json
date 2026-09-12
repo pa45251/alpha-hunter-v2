@@ -3,13 +3,13 @@
   "gate_version": "1.0",
   "gate_status": "PASS",
   "failure_code": null,
-  "validated_at_taipei": "2026-09-12T11:41:34.369228+08:00",
+  "validated_at_taipei": "2026-09-12T16:16:28.560380+08:00",
   "repository": "pa45251/alpha-hunter-v2",
-  "branch": "main",
+  "branch": "repair/global-sensor-layers",
   "schema_version": "2.6",
   "scanner_version": "2.6.1",
-  "run_id": "20260912T113840+0800-680a8d28",
-  "manifest_sha256": "b113220bf4ebb4464c753c75036e7408c4637a27dc74dca9b17a210cfe05f5d3",
+  "run_id": "20260912T161248+0800-0132d3e4",
+  "manifest_sha256": "543ff7a5bead5d58f10f2f053976e1416ed7f14d2a34d1517d501644f917d5ed",
   "checks": [
     {
       "name": "repository_identity",
@@ -20,7 +20,7 @@
     {
       "name": "branch_identity",
       "passed": true,
-      "detail": "expected=main; actual=main",
+      "detail": "expected=repair/global-sensor-layers; actual=repair/global-sensor-layers",
       "severity": "HARD"
     },
     {
@@ -50,19 +50,19 @@
     {
       "name": "pipeline_checks",
       "passed": true,
-      "detail": "{\"causal_queue_rebuilt_this_run\": true, \"causal_taxonomy_snapshot_present\": true, \"core_risk_evidence_ready\": true, \"global_outputs_generated\": true, \"graph_audit_rebuilt_this_run\": true, \"reverse_discovery_rebuilt_this_run\": true, \"structural_graph_snapshot_present\": true, \"structural_matches_rebuilt_this_run\": true, \"taiwan_outputs_generated\": true}",
+      "detail": "{\"causal_queue_rebuilt_this_run\": true, \"causal_taxonomy_snapshot_present\": true, \"core_discovery_disjoint\": true, \"core_risk_evidence_ready\": true, \"formal_snapshot_core_only\": true, \"global_outputs_generated\": true, \"graph_audit_rebuilt_this_run\": true, \"reverse_discovery_rebuilt_this_run\": true, \"structural_graph_snapshot_present\": true, \"structural_matches_rebuilt_this_run\": true, \"taiwan_outputs_generated\": true}",
       "severity": "HARD"
     },
     {
       "name": "manifest_run_id",
       "passed": true,
-      "detail": "run_id=20260912T113840+0800-680a8d28",
+      "detail": "run_id=20260912T161248+0800-0132d3e4",
       "severity": "HARD"
     },
     {
       "name": "canonical_manifest_url",
       "passed": true,
-      "detail": "expected=https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/manifest.json; actual=https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/manifest.json",
+      "detail": "expected=https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/repair/global-sensor-layers/output/manifest.json; actual=https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/repair/global-sensor-layers/output/manifest.json",
       "severity": "HARD"
     },
     {
@@ -74,13 +74,13 @@
     {
       "name": "authoritative_file_hashes",
       "passed": true,
-      "detail": "verified=16",
+      "detail": "verified=19",
       "severity": "HARD"
     },
     {
       "name": "run_consistency",
       "passed": true,
-      "detail": "all=20260912T113840+0800-680a8d28",
+      "detail": "all=20260912T161248+0800-0132d3e4",
       "severity": "HARD"
     },
     {
