@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import argparse
+import csv
+import io
 import html
 import json
 import re
@@ -139,19 +141,19 @@ def official_company_revenue(targets: list[dict], timeout: float = 15.0) -> dict
     """
     result = {}
     wanted = {str(t.get('ticker', '')).split('.')[0]: str(t.get('ticker')) for t in targets}
-    for suffix, url in [('.TW', 'https://openapi.twse.com.tw/v1/opendata/t187ap05_L'),
-                        ('.TWO', 'https://www.tpex.org.tw/openapi/v1/mopsfin_t187ap05_O')]:
+    for suffix, url in [('.TW', 'https://mopsfin.twse.com.tw/opendata/t187ap05_L.csv'),
+                        ('.TWO', 'https://mopsfin.twse.com.tw/opendata/t187ap05_O.csv')]:
         if not any(str(t.get('ticker', '')).endswith(suffix) for t in targets):
             continue
         try:
             response = requests.get(url, timeout=timeout, headers={'User-Agent': USER_AGENT})
             response.raise_for_status()
-            rows = response.json()
-            if not isinstance(rows, list):
-                continue
+            rows = list(csv.DictReader(io.StringIO(response.content.decode("utf-8-sig"))))
+            if not rows or "公司代號" not in rows[0]:
+                raise ValueError("OFFICIAL_REVENUE_SCHEMA_MISMATCH")
             observed = _utcnow()
             for row in rows:
-                code = str(row.get('公司代號', ''))
+                code = str(row.get('公司代號', '')).strip()
                 if code not in wanted or not wanted[code].endswith(suffix):
                     continue
                 result[wanted[code]] = [{

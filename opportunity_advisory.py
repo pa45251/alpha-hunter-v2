@@ -65,7 +65,7 @@ def validate_company_research(row, run_id, targets, as_of):
         raise ValueError('COMPANY_SCOPE_INVALID')
     if row.get('rate_sensitive') not in {True, False} or not isinstance(row.get('rate_sensitive'), bool):
         raise ValueError('RATE_SENSITIVITY_REQUIRED')
-    for field in ['why', 'driver', 'company_transmission', 'main_risk', 'what_would_make_us_wrong']:
+    for field in ['why', 'driver', 'company_transmission', 'main_risk', 'main_counter_evidence', 'what_would_make_us_wrong']:
         if not isinstance(row.get(field), str) or not row[field].strip():
             raise ValueError('COMPANY_RESEARCH_MISSING_' + field)
     if not isinstance(row.get('counter_evidence_reviewed'), bool) or not isinstance(row.get('major_counter_evidence'), bool):
@@ -175,24 +175,26 @@ def assess(candidate, research, risk, hist, as_of):
         plan.update(severe=True, price_ok=False)
     row = dict(ticker=candidate.get('ticker'), name=candidate.get('name'),
                driver=candidate.get('driver_label', 'UNMAPPED / WHY?'), driver_state='UNVERIFIED',
+               unmapped=candidate.get('driver_id') == 'UNMAPPED_OPPORTUNITY',
                why='WHY unresolved: obtain company evidence before taking risk',
                international='Unverified — same-driver evidence required', relative='TOGETHER',
                regime='UNKNOWN', action='WAIT', main_risk='Unverified causal interpretation',
                what_would_make_us_wrong='A price-only story or weak company transmission',
                planned_position_fraction=0.0, auto_trade_allowed=False, **plan)
     if not research:
-        if plan['severe']:
+        if plan['severe'] or candidate.get('driver_rejected') is True:
             row['action'] = 'PASS'
         return row
-    row.update({k:research[k] for k in ['why','driver','driver_state','main_risk','what_would_make_us_wrong']})
+    row.update({k:research[k] for k in ['why','driver','driver_state','main_risk','main_counter_evidence','what_would_make_us_wrong']})
     row['regime'] = regime_compatibility(risk, research)
+    company_urls = {e.get('source_url') for e in research.get('fundamental_evidence', []) if isinstance(e, dict)}
     if research.get('scope') == 'LOCAL':
         row['relative'] = 'LOCAL DRIVER'
         row['international'] = 'Not required: ' + research.get('local_scope_reason', '')
         international_ok = bool(research.get('local_scope_reason'))
     else:
         same = [e for e in research.get('international_evidence', [])
-                if evidence_valid(e, as_of, driver=research.get('driver_id')) and e.get('same_driver') is True]
+                if evidence_valid(e, as_of, driver=research.get('driver_id')) and e.get('same_driver') is True and e.get('source_url') not in company_urls]
         international_ok = bool(same)
         row['international'] = '; '.join(e['claim'] for e in same) or 'Unverified — same-driver evidence required'
         gap = number(candidate.get('transmission_gap_proxy'), 0)
@@ -200,13 +202,14 @@ def assess(candidate, research, risk, hist, as_of):
     fundamental = [e for e in research.get('fundamental_evidence', []) if evidence_valid(e, as_of, ticker=row['ticker'])]
     row['evidence'] = fundamental
     row['company_transmission'] = research.get('company_transmission')
-    if (row['driver_state'] == 'REJECTED' or research.get('major_counter_evidence') is True
+    if (candidate.get('driver_rejected') is True or row['driver_state'] == 'REJECTED' or research.get('major_counter_evidence') is True
             or row['regime'] == 'ADVERSE' or plan['severe'] or candidate.get('reaction_state') == 'BROKEN'):
         row['action'] = 'PASS'
     elif (fundamental and international_ok and row['regime'] in {'SUPPORTIVE','NEUTRAL'}
           and research.get('counter_evidence_reviewed') is True and research.get('major_counter_evidence') is False
           and research.get('company_transmission') and plan['price_ok']):
-        row['action'] = 'BUY' if row['driver_state'] == 'CONFIRMED' and plan['confirmed'] else 'EARLY BUY'
+        operating_confirmed = len({e.get('metric') for e in fundamental}) >= 2 and len({e.get('source_url') for e in fundamental}) >= 2
+        row['action'] = 'BUY' if row['driver_state'] == 'CONFIRMED' and (plan['confirmed'] or operating_confirmed) else 'EARLY BUY'
         row['planned_position_fraction'] = 0.35 if row['action'] == 'EARLY BUY' else 1.0
     return row
 
@@ -214,13 +217,14 @@ def assess(candidate, research, risk, hist, as_of):
 def rank_opportunities(rows, limit=5):
     # Evidence/action first; score only breaks ties. At most one unresolved WHY in Top 5.
     ordered = sorted(rows, key=lambda r: ({'BUY':0,'EARLY BUY':1,'WAIT':2,'PASS':3}[r['action']],
-                     0 if r.get('evidence') else 1, r.get('extended', False),
+                     0 if r.get('evidence') else 1, 0 if r.get('research_completed') else 1,
+                     0 if r.get('price_ok') else 1, r.get('extended', False),
                      -number(r.get('research_priority'),0), str(r.get('ticker'))))
     result=[]; seen=set(); unresolved=0
     for row in ordered:
         if row['ticker'] in seen:
             continue
-        no_evidence = not row.get('evidence')
+        no_evidence = row.get('unmapped', not row.get('evidence')) and not row.get('evidence')
         if no_evidence and unresolved >= 1:
             continue
         result.append(row); seen.add(row['ticker']); unresolved += int(no_evidence)

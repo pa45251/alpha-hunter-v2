@@ -63,18 +63,27 @@ def _select_opportunities(limit: int = 5) -> list[dict]:
     research = load('research_result_v3.json')
     now = datetime.now(timezone.utc).isoformat()
     accepted = {}
+    coverage = {}
     targets = {(r['ticker'], r['driver_id']) for r in candidates}
     if (research.get('status') == 'PASS' and research.get('research_run_id') == run_id):
+        coverage = {(r.get('ticker'), r.get('driver_id')): r for r in research.get('company_research_coverage', []) if isinstance(r, dict)}
         for r in research.get('company_opportunities') or []:
             try:
                 validate_company_research(r, run_id, targets, now)
                 accepted[(r['ticker'], r['driver_id'])] = r
             except (ValueError, TypeError):
                 continue
+    rejected = {r.get('driver_id') for r in research.get('results', []) if r.get('state') == 'INACTIVE'} if research.get('research_run_id') == run_id and research.get('status') == 'PASS' else set()
     rows = []
     for candidate in candidates:
+        candidate['driver_rejected'] = candidate['driver_id'] in rejected
         evidence = accepted.get((candidate['ticker'], candidate['driver_id']))
         row = assess(candidate, evidence, load('risk_regime.json'), histories.get(candidate['ticker']), now)
+        checked = coverage.get((candidate['ticker'], candidate['driver_id']))
+        row['research_completed'] = bool(evidence or checked)
+        if checked and not evidence:
+            row['why'] = str(checked.get('reason') or row['why'])
+            row['main_risk'] = 'Exact company / driver transmission remains unverified; no entry recommendation'
         row['research_priority'] = candidate.get('research_priority', 0)
         rows.append(row)
     top = rank_opportunities(rows, limit)
@@ -114,7 +123,7 @@ if opportunities:
                            ('Regime', 'regime'), ('Technical state', 'technical'),
                            ('Why price', 'price_reason'), ('Entry', 'entry'),
                            ('Invalidation', 'invalidation'), ('Add trigger', 'add_trigger'),
-                           ('Main risk', 'main_risk'), ('What would make us wrong', 'what_would_make_us_wrong')]:
+                           ('Main counter-evidence', 'main_counter_evidence'), ('Main risk', 'main_risk'), ('What would make us wrong', 'what_would_make_us_wrong')]:
             lines.append(f"- **{label}:** {md(row.get(key, 'Unverified'))}")
         if row['action'] == 'EARLY BUY':
             lines.append('- **Initial size:** 35% of planned position; reassess before adding.')

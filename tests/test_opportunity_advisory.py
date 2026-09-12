@@ -16,7 +16,7 @@ def evidence(**changes):
     e.update(changes);return e
 
 def research(**changes):
-    r=dict(ticker='9999.TW',driver_id='EXACT_DRIVER',research_run_id='run',driver_state='DEVELOPING',scope='GLOBAL',why='Backlog enters recognized project revenue',driver='Project recognition',company_transmission='Signed company contracts generate revenue',rate_sensitive=False,fundamental_evidence=[evidence()],international_evidence=[evidence()],counter_evidence_reviewed=True,major_counter_evidence=False,main_risk='Project delays',what_would_make_us_wrong='Contract cancellation')
+    r=dict(ticker='9999.TW',driver_id='EXACT_DRIVER',research_run_id='run',driver_state='DEVELOPING',scope='GLOBAL',why='Backlog enters recognized project revenue',driver='Project recognition',company_transmission='Signed company contracts generate revenue',rate_sensitive=False,fundamental_evidence=[evidence()],international_evidence=[evidence(source_url='https://example.com/independent-industry')],counter_evidence_reviewed=True,major_counter_evidence=False,main_risk='Project delays',main_counter_evidence='No cancellations found in checked company releases',what_would_make_us_wrong='Contract cancellation')
     r.update(changes);return r
 
 def risk(**changes):
@@ -134,9 +134,19 @@ def test_official_revenue_available_time_is_not_backdated(monkeypatch):
     import research_source_prefetch_v3 as p
     class Response:
         def raise_for_status(self):pass
-        def json(self):return [{'公司代號':'9999','公司名稱':'Company','資料年月':'11508','出表日期':'1150911','營業收入-去年同月增減(%)':'25'}]
+        content='公司代號,公司名稱,資料年月,出表日期,營業收入-去年同月增減(%)\n9999,Company,11508,1150911,25\n'.encode('utf-8-sig')
     monkeypatch.setattr(p.requests,'get',lambda *a,**k:Response())
     monkeypatch.setattr(p,'_utcnow',lambda:ASOF)
     e=p.official_company_revenue([{'ticker':'9999.TW'}])['9999.TW'][0]
     assert e['available_at']==ASOF and e['published_at']==ASOF
     assert 'original issuer publication time unknown' in e['date_basis']
+
+def test_independent_operating_confirmation_can_add_without_waiting_for_another_breakout():
+    r=research(driver_state='CONFIRMED',fundamental_evidence=[evidence(),evidence(metric='EPS',source_url='https://example.com/earnings')])
+    assert evaluate(r)['action']=='BUY'
+
+def test_rejected_exact_driver_overrides_positive_company_advisory():
+    assert evaluate(driver_rejected=True)['action']=='PASS'
+
+def test_company_disclosure_cannot_double_as_independent_international_confirmation():
+    assert evaluate(research(international_evidence=[evidence()]))['action']=='WAIT'
