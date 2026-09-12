@@ -7,7 +7,7 @@ PRICE CANNOT CREATE CAUSALITY.
 Price, returns, relative strength, technical patterns, Taiwan price reaction, or scanner ranking may nominate a driver for research but may never be supporting causal evidence.
 
 ## Input
-The workflow appends an authoritative compact handoff containing exactly the first 5 canonical research targets. Research ONLY those targets, preserving their order. Do not invent or substitute driver IDs.
+The workflow appends an authoritative compact handoff containing exactly the first 5 canonical research targets. Research those driver targets in order, and the separately nominated company_research_targets for the advisory extension below. Do not invent or substitute driver IDs.
 
 ## Required search protocol
 For EACH target driver, you MUST make a real attempt to discover current external evidence before returning UNKNOWN.
@@ -54,6 +54,8 @@ Schema:
 {
   "contract": "ALPHA_HUNTER_V3_AUTONOMOUS_RESEARCH",
   "research_run_id": "<copy input run_id>",
+  "company_opportunities": [],
+  "company_research_coverage": [],
   "results": [
     {
       "driver_id": "...",
@@ -74,4 +76,36 @@ Schema:
 
 For UNKNOWN, `primary_cause` must say what exact evidence is missing or conflicting. `source_count` is the count of unique source URLs across supporting and counter evidence. Do not fabricate a source or date.
 
-Operational note: reruns must evaluate the latest `main` snapshot so newly source-backed transmission edges are consumed by the downstream decision layer.
+Operational note: reruns must evaluate the exact checked-out branch snapshot so newly source-backed transmission edges are consumed by the downstream decision layer.
+Company opportunity advisory (separate from driver activation):
+Research each company_research_targets item, including UNMAPPED / WHY, using company_targets in the source prefetch and primary company disclosures. Return a top-level company_opportunities list. For unresolved cases, return company_research_coverage entries with ticker, driver_id, status=UNRESOLVED, and a specific missing-evidence reason; do not invent a thesis. Every nominated company must appear either in company_opportunities or company_research_coverage. Do not add a taxonomy edge. Keep driver results unchanged.
+Each company object: ticker, driver_id (exact nominated ID, even UNMAPPED_OPPORTUNITY), research_run_id, why, driver (economic mechanism in words), driver_state (DEVELOPING|CONFIRMED|REJECTED), scope (LOCAL|GLOBAL), company_transmission, rate_sensitive (boolean with economic justification in main_risk), local_scope_reason (mandatory for LOCAL), fundamental_evidence, international_evidence, counter_evidence_reviewed (boolean), major_counter_evidence (boolean), main_risk, main_counter_evidence, what_would_make_us_wrong. main_counter_evidence must state the strongest observed opposing fact or explicitly state what was searched and that none was found; do not substitute an invented fact or generic hypothetical risk.
+DEVELOPING means at least one measured fundamental improvement already supports the causal chain; it does not require every confirmation. CONFIRMED requires independent further operating confirmation. Never label evidence percentages as probabilities. Known mapped global driver IDs cannot be classified LOCAL to bypass international checks. LOCAL is reserved for a provisional UNMAPPED_OPPORTUNITY with a distinct company-specific economic mechanism. A LOCAL classification requires a specific company project/order/earnings mechanism; lack of international evidence alone is not a reason to declare LOCAL.
+Each fundamental evidence: ticker, claim, metric (REVENUE|EPS|BACKLOG|ASP|SHIPMENT|ORDER|CAPEX|UTILIZATION|PROJECT_RECOGNITION|FREIGHT_RATE|POWER_DEMAND|PRODUCTION), direction (SUPPORTS), source_title, source_url, published_at, available_at. Cite an actual measured improvement, not a generic macro narrative or price movement. Publication and availability must precede research time; prefer recent original disclosures. Evidence older than 120 days is not entry support.
+For GLOBAL, international_evidence must use the same schema with driver_id and same_driver=true and describe the EXACT economic mechanism. HBM is not commodity DRAM; dry bulk is not containers; a vendor beat is not automatically a Taiwan reseller benefit. Company transmission needs its own source-backed evidence. Price/entry/size/action are computed deterministically, never supplied by the model.
+
+Official monthly revenue snapshots in company_targets are original TWSE/TPEx data. Their available_at is the retrieval time, not the original issuer announcement time. Preserve available_at; never backdate knowledge using the revenue month or export date. The row contains current monthly revenue, MoM/YoY changes, cumulative growth and issuer remarks. Use these operating facts to investigate WHY; revenue growth alone does not prove a particular global driver, an EPS increase, or a company project mechanism.
+
+For operating facts, the source prefetch uses official MOPS UTF-8 CSV exports for listed and OTC companies; use these observed rows even when a news search has no results. Investigate company transmission separately and do not call available revenue data missing.
+
+Before returning, check every company object against this literal template. All named fields are REQUIRED; in particular company_transmission is a nonempty explanation linking the measured company evidence to the mechanism. Do not rename it to transmission, company_evidence, or thesis. If a required causal fact cannot be supported, return UNRESOLVED coverage instead of an incomplete opportunity. Never drop a company silently.
+```json
+{
+  "ticker": "EXACT_NOMINATED_TICKER", "driver_id": "EXACT_NOMINATED_DRIVER",
+  "research_run_id": "EXACT_HANDOFF_RUN_ID",
+  "why": "Source-backed economic change", "driver": "Economic mechanism",
+  "driver_state": "DEVELOPING", "scope": "GLOBAL",
+  "company_transmission": "Company disclosure explains how this mechanism changes its orders, shipments, pricing or revenue",
+  "rate_sensitive": false, "local_scope_reason": "",
+  "fundamental_evidence": [{"ticker": "EXACT_NOMINATED_TICKER", "metric": "REVENUE", "direction": "SUPPORTS", "claim": "Actual measured operating fact", "source_title": "Original disclosure", "source_url": "https://actual-source", "published_at": "ACTUAL_TIMESTAMP", "available_at": "ACTUAL_OBSERVED_TIMESTAMP"}],
+  "international_evidence": [], "counter_evidence_reviewed": true,
+  "major_counter_evidence": false, "main_counter_evidence": "Strongest observed opposing fact, or what was searched with none found",
+  "main_risk": "Thesis risk and economic justification for rate sensitivity",
+  "what_would_make_us_wrong": "Observable thesis falsification"
+}
+```
+Replace every placeholder with supported facts. This template is a schema, not evidence. GLOBAL records with no independent international evidence remain WAIT. Do not manufacture missing evidence to obtain a buy.
+
+If an official endpoint is unavailable after its bounded retry, report that transport limitation explicitly. An endpoint timeout is not negative fundamental evidence.
+
+rate_sensitive means sensitivity to real interest yields, long-end Treasury yields, liquidity and financing costs. It does NOT mean sensitivity to freight rates, commodity prices or product selling prices. Explain the chosen interest-rate sensitivity in main_risk for both true and false.

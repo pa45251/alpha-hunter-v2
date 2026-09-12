@@ -93,6 +93,9 @@ def main() -> None:
     status = "PASS"
     errors: list[str] = []
     supplied: dict[str, dict] = {}
+    company_opportunities = []
+    company_errors = []
+    company_invalid_coverage = []
 
     try:
         raw_text = RAW.read_text(encoding="utf-8")
@@ -133,6 +136,31 @@ def main() -> None:
         status = "RESEARCH_UNAVAILABLE"
         errors.append(str(exc))
 
+    # Optional company intelligence is independently validated and never activates V2 edges.
+    from research_handoff import company_research_targets
+    from opportunity_advisory import validate_company_research
+    company_targets = {(r['ticker'], r['driver_id']) for r in company_research_targets()}
+    if status == 'PASS':
+        seen_company = set()
+        for row in payload.get('company_opportunities') or []:
+            try:
+                validate_company_research(row, run_id, company_targets, _utcnow())
+                key = (row['ticker'], row['driver_id'])
+                if key in seen_company:
+                    raise ValueError('DUPLICATE_COMPANY_RESEARCH')
+                seen_company.add(key)
+                company_opportunities.append(row)
+            except (ValueError, TypeError) as exc:
+                company_errors.append(str(exc))
+                if isinstance(row, dict) and (row.get('ticker'), row.get('driver_id')) in company_targets:
+                    company_invalid_coverage.append(dict(ticker=row['ticker'], driver_id=row['driver_id'], status='UNRESOLVED', reason='Research failed validation: ' + str(exc)))
+
+    if status == 'PASS':
+        covered = {(r.get('ticker'), r.get('driver_id')) for r in company_opportunities}
+        covered.update((r.get('ticker'), r.get('driver_id')) for r in payload.get('company_research_coverage', []) if isinstance(r, dict) and r.get('reason'))
+        for key in sorted(company_targets - covered):
+            company_errors.append('COMPANY_RESEARCH_NOT_RETURNED:' + str(key))
+
     final_results = []
     for driver_id in target_ids:
         if driver_id in supplied:
@@ -149,9 +177,12 @@ def main() -> None:
         "target_driver_ids": target_ids,
         "errors": errors,
         "results": final_results,
+        "company_opportunities": company_opportunities,
+        "company_research_errors": company_errors,
+        "company_research_coverage": (payload.get("company_research_coverage", []) + company_invalid_coverage) if status == "PASS" else [],
     }
     OUT.write_text(json.dumps(out, ensure_ascii=False, indent=2), encoding="utf-8")
-    print(f"v3 research ingest: {status}; valid={len(supplied)}/{len(target_ids)}")
+    print(f"v3 research ingest: {status}; valid={len(supplied)}/{len(target_ids)} company_opportunities={len(company_opportunities)} company_errors={company_errors}")
     if errors:
         for err in errors[:8]:
             print(f"research ingest diagnostic: {err}")

@@ -52,8 +52,8 @@ jobs:
           if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ inputs.force }}" = "true" ]; then
             force_arg="--force"
           fi
-          # An older schema without sealed risk must be rebuilt during rollout.
-          if ! python -c 'import json; from pathlib import Path; m=json.loads(Path("output/manifest.json").read_text()); assert any(f.get("name")=="risk_regime.json" for f in m.get("authoritative_files", [])); r=json.loads(Path("output/risk_regime.json").read_text()); assert "position_trends" not in r'; then
+          # A rollout missing sealed risk or the current snapshot advisory must rebuild once.
+          if ! python -c 'import json; from pathlib import Path; m=json.loads(Path("output/manifest.json").read_text()); assert any(f.get("name")=="risk_regime.json" for f in m.get("authoritative_files", [])); r=json.loads(Path("output/risk_regime.json").read_text()); assert "position_trends" not in r; a=json.loads(Path("output/opportunity_advisory.json").read_text()); assert a.get("source_run_id")==m.get("run_id") and a.get("policy_version")'; then
             force_arg="--force"
           fi
           python automation_guard_v4.py --mode scheduled-scan $force_arg
@@ -114,7 +114,7 @@ jobs:
             output/causal_graph_audit.csv \
             output/causal_driver_taxonomy.csv \
             output/structural_exposure_graph.csv
-          git add -A output/decision_board.csv output/decision_packet.json output/decision_history.csv output/risk_regime.json output/global_alignment_v2.csv output/global_alignment_v2.json output/entry_plans_v2.json output/action_board.md output/shadow_journal.jsonl
+          git add -A output/opportunity_advisory.json output/decision_board.csv output/decision_packet.json output/decision_history.csv output/risk_regime.json output/global_alignment_v2.csv output/global_alignment_v2.json output/entry_plans_v2.json output/action_board.md output/shadow_journal.jsonl
           for path in output/research_handoff.json output/entry_plans_v2.csv output/entry_plan_trace_v2.csv output/shadow_audit.csv output/shadow_validation.csv output/shadow_validation_report.json; do
             if [ -e "$path" ] || git ls-files --error-unmatch "$path" >/dev/null 2>&1; then git add -A "$path"; fi
           done

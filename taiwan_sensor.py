@@ -241,8 +241,8 @@ def select_taiwan_candidates(stocks: pd.DataFrame, cfg: TaiwanScanConfig) -> pd.
     x = x[x["candidate_eligible"]].copy()
 
     n = int(cfg.top_candidates)
-    n_early = max(20, int(n * 0.30))
-    n_extended = max(10, int(n * 0.15))
+    n_early = max(1, int(n * 0.30))
+    n_extended = max(0, int(n * 0.15))
     n_confirmed = max(1, n - n_early - n_extended)
 
     confirmed = x[x["reaction_state"].isin(["CONFIRMING", "PERSISTENT", "PULLBACK"])].sort_values(
@@ -257,7 +257,7 @@ def select_taiwan_candidates(stocks: pd.DataFrame, cfg: TaiwanScanConfig) -> pd.
 
     out = pd.concat([confirmed, early, extended], ignore_index=True).drop_duplicates("ticker", keep="first")
     if len(out) < n:
-        filler = x[~x["ticker"].isin(out["ticker"])].sort_values("taiwan_candidate_score_v1", ascending=False).head(n-len(out))
+        filler = x[~x["ticker"].isin(out["ticker"]) & x["reaction_state"].ne("EXTENDED")].sort_values("taiwan_candidate_score_v1", ascending=False).head(n-len(out))
         out = pd.concat([out, filler], ignore_index=True)
     out["candidate_bucket"] = out["reaction_state"].map({
         "PRE_CONFIRMATION": "EARLY", "UNKNOWN": "EARLY", "EXTENDED": "EXTENDED",

@@ -1,0 +1,13 @@
+# Early opportunity acceptance
+
+Policy: `EARLY_OPPORTUNITY_1`. Upgrade base: `01b7a9005df409c5ceec7c85cafabeab1292c36a`.
+
+- Full regression: 223 passed. The added cases exercise developing-to-early entry, confirmation, adverse and neutral regimes, extension, wrong-driver/circular evidence, timestamps, local provisional evidence, ranking, source freshness and malformed company research.
+- Frozen V2 files and registry are byte-identical to the upgrade base. Six pre-existing registry hash mismatches remain: global_alignment_v2.py, entry_plan_run_v2.py, portfolio_allocation_v2.py, entry_action_board_v2.py, decision_run_v2.py, decision_run_with_maintenance_v2.py. They were not rebaselined. Live execution remains unauthorized.
+- Full production chain on the validation branch: [Daily Scan 34667366695](https://github.com/pa45251/alpha-hunter-v2/actions/runs/34667366695), 1,970 usable Taiwan stocks of 1,975, 150 candidates, 38 reverse candidates across 15 drivers. Canonical integrity, sealed risk, decision, entry, lineage and action publication passed for the September 11 closed session.
+- Live research was iterated after inspecting actual outputs, catching an unavailable listed-company endpoint, missing company transmission fields and intermittent official-source timeouts. MOPS UTF-8 CSV exports now supply observed operating facts with a bounded retry; stale operating months are rejected. Invalid company research stays unresolved and cannot authorize an advisory buy.
+- Validated branch research [34668732392](https://github.com/pa45251/alpha-hunter-v2/actions/runs/34668732392) fetched all five company revenue sources, accepted two complete company interpretations with zero schema errors, and produced 健鼎 EARLY BUY (35%, entry 504–508, invalidation 470, add above 521 with volume). 新興 was PASS on major counter-evidence; 十銓 and 大亞 remained unresolved on exact-driver transmission. This is a live advisory observation, not a realized-return claim.
+- Streamlit AppTest: no exceptions. Human Top opportunities consume the same lineage-bound JSON as the Markdown brief.
+- Historical audit: six requested cases, 30 point-in-time observations. Only commit-available evidence is admitted. See [early_detection_audit.md](early_detection_audit.md). Missing historical company evidence prevents a defensible claim of actionable 1–3-session early detection; 10-session outcomes are not mature.
+
+The branch's generated output is validation evidence, not a main snapshot. Promotion retains main's authoritative output unchanged; its next canonical run regenerates advisory output on main. All historical and live decisions remain advisory. Neither R/R scenarios nor internal ranking heuristics are calibrated probabilities or expected-value estimates.

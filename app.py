@@ -9,8 +9,8 @@ import streamlit as st
 TAIPEI = ZoneInfo("Asia/Taipei")
 OUT = Path("output")
 
-st.set_page_config(page_title="Alpha Hunter v2.7", page_icon="🌎", layout="wide")
-st.title("🌎 Alpha Hunter v2.7 — Causal Research → Decision Bridge")
+st.set_page_config(page_title="Alpha Hunter", page_icon="🌎", layout="wide")
+st.title("🌎 Alpha Hunter — Early Opportunities")
 st.caption(
     "Global price structure nominates research. Research validates the exact causal driver. "
     "Structural exposure, Taiwan reaction, ETF-vs-stock, entry, risk and exit remain separate auditable layers."
@@ -66,6 +66,34 @@ elif status == "WARNING":
 else:
     st.error(f"🚨 DATA STATUS: STALE — {reason}")
 
+# The daily advisory is the primary human view; legacy tables below are diagnostics.
+advisory_path = OUT / 'opportunity_advisory.json'
+if status == 'FRESH' and advisory_path.exists():
+    from canonical_evidence import assert_output_lineage
+    try:
+        current_run = assert_output_lineage(['decision_packet.json', 'risk_regime.json'])
+        advisory = json.loads(advisory_path.read_text(encoding='utf-8'))
+        decision = json.loads((OUT / 'decision_packet.json').read_text(encoding='utf-8'))
+        assert advisory.get('source_run_id') == current_run
+        assert advisory.get('public_lineage_id') == decision['decision_bridge']['public_lineage_id']
+        st.subheader('Top opportunities')
+        for row in advisory.get('top_opportunities', [])[:5]:
+            st.markdown(f"### {row['ticker']} {row.get('name', '')} — {row['action']}")
+            for label, key in [('WHY','why'), ('Driver','driver'), ('Driver state','driver_state'),
+                               ('Company transmission','company_transmission'), ('International','international'),
+                               ('Relative','relative'), ('Regime','regime'), ('Technical','technical'),
+                               ('Why price','price_reason'), ('Entry','entry'), ('Invalidation','invalidation'),
+                               ('Add','add_trigger'), ('Main counter-evidence','main_counter_evidence'), ('Main risk','main_risk'),
+                               ('What would make us wrong','what_would_make_us_wrong')]:
+                st.markdown(f"**{label}:** {row.get(key, 'Unverified')}")
+            for evidence in row.get('evidence', []) + row.get('international_evidence', []):
+                st.markdown(f"Evidence: {evidence['claim']} [{evidence['source_title']}]({evidence['source_url']})")
+            if row['action'] == 'EARLY BUY':
+                st.caption('Initial position: 35% of planned size. Reassess evidence and price before adding.')
+        st.caption('Advisory only. Automatic execution is disabled.')
+    except (ValueError, KeyError, AssertionError, RuntimeError):
+        st.warning('Current opportunity advisory is unavailable; refresh the canonical chain.')
+
 G = manifest.get("global", {})
 T = manifest.get("taiwan", {})
 C = manifest.get("causal_engine", {})
@@ -86,7 +114,7 @@ with st.expander("Canonical contract / known model risks"):
     st.json(manifest)
 
 tabs = st.tabs([
-    "Decision Board", "Global Leaders", "Taiwan Candidates", "Causal Research Queue",
+    "V2 Diagnostics", "Global Leaders", "Taiwan Candidates", "Causal Research Queue",
     "Structural Matches", "Breadth", "Graph Audit"
 ])
 

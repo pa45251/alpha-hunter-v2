@@ -139,6 +139,64 @@ def build_research_handoff(out_dir: str | Path = "output") -> dict[str, Any]:
     return handoff
 
 
+def company_research_targets(out: Path = Path('output'), limit: int | None = 5) -> list[dict]:
+    """Both entry points share company research; no provisional taxonomy mutation."""
+    import pandas as pd
+    manifest = _read_json(out / 'manifest.json')
+    run_id = manifest['run_id']
+    frames = []
+    for name in ['reverse_transmission_candidates.csv', 'structural_matches.csv']:
+        path = out / name
+        if not path.exists():
+            continue
+        x = pd.read_csv(path, dtype={'taiwan_code': str})
+        if 'run_id' in x:
+            x = x[x.run_id.astype(str).eq(run_id)]
+        if 'ticker' not in x and 'taiwan_ticker' in x:
+            x['ticker'] = x['taiwan_ticker']
+        if 'ticker' in x:
+            frames.append(x)
+    candidates_path = out / 'taiwan_candidates.csv'
+    if candidates_path.exists():
+        candidates = pd.read_csv(candidates_path)
+        mapped = {str(t) for f in frames for t in f['ticker']}
+        candidates = candidates[~candidates.ticker.astype(str).isin(mapped)].copy()
+        candidates['driver_id'] = 'UNMAPPED_OPPORTUNITY'
+        candidates['driver_label'] = 'UNMAPPED / WHY?'
+        candidates['research_priority_score'] = candidates.get('taiwan_early_score_v2', 0)
+        frames.append(candidates)
+    if not frames:
+        return []
+    x = pd.concat(frames, ignore_index=True)
+    x['research_priority'] = pd.to_numeric(x.get('reverse_research_priority', pd.Series(index=x.index, dtype=float)), errors='coerce').fillna(
+        pd.to_numeric(x.get('research_priority_score', pd.Series(index=x.index, dtype=float)), errors='coerce')).fillna(0)
+    x['_extended'] = x['reaction_state'].isin(['EXTENDED', 'BROKEN'])
+    x = x.sort_values(['_extended','research_priority'], ascending=[True,False]).drop_duplicates(['ticker','driver_id'])
+    if limit is not None:
+        # Spend bounded research on prices that could actually support risk now.
+        # Price nominates research only; it cannot supply company evidence.
+        from opportunity_advisory import price_plan
+        snapshot_path = out / 'market_snapshot.json'
+        saved = (_read_json(snapshot_path).get('entry_histories') or {}) if snapshot_path.exists() else {}
+        price_ready = {}
+        for ticker in x.ticker.drop_duplicates():
+            item = saved.get(ticker)
+            hist = pd.DataFrame(item['data'], columns=item['columns'], index=pd.to_datetime(item['index'])) if item else None
+            price_ready[ticker] = price_plan(hist)['price_ok']
+        x['_price_ready'] = x.ticker.map(price_ready)
+        x = x.sort_values(['_price_ready','_extended','research_priority'], ascending=[False,True,False])
+        # Avoid spending the whole bounded budget on repeated mappings of one stock.
+        unique = x.drop_duplicates('ticker')
+        mapped = unique[unique.driver_id.ne('UNMAPPED_OPPORTUNITY')]
+        why = unique[unique.driver_id.eq('UNMAPPED_OPPORTUNITY')]
+        x = pd.concat([mapped.head(max(0, limit - 2)), why.head(min(2, limit))])
+        if len(x) < limit:
+            x = pd.concat([x, unique[~unique.ticker.isin(x.ticker)].head(limit-len(x))])
+    cols = ['ticker','name','driver_id','driver_label','driver_scope','reaction_state',
+            'global_peer_evidence','transmission_gap_proxy','economic_role','research_priority']
+    return x[[c for c in cols if c in x]].astype(object).where(pd.notna(x[[c for c in cols if c in x]]), None).to_dict('records')
+
+
 if __name__ == "__main__":
     result = build_research_handoff("output")
     print(json.dumps(result, ensure_ascii=False, indent=2))

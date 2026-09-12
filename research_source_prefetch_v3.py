@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import argparse
+import csv
+import io
 import html
 import json
 import re
@@ -116,15 +118,69 @@ def _search(query: str, timeout: float = 15.0, limit: int = 6) -> tuple[list[dic
 
 
 def _query_for(target: dict, lane: str) -> str:
+    if target.get('ticker'):
+        company = str(target.get('name') or '') + ' ' + str(target['ticker']).split('.')[0]
+        terms = '營收' if lane == 'SUPPORT' else '衰退'
+        return f'{company} {terms} {datetime.now(timezone.utc).year}'
     label = _compact_terms(target.get("driver_label") or target.get("driver_id"), 120)
     scope = _compact_terms(target.get("driver_scope"), 120)
     if lane == "SUPPORT":
         requirement = _compact_terms(target.get("activation_evidence_required"), 160)
     else:
         requirement = _compact_terms(target.get("counter_evidence_required"), 160)
-    parts = [f'"{label}"' if label else "", scope, requirement]
+    parts = [label, " ".join(requirement.split()[:7]), str(datetime.now(timezone.utc).year)]
     query = " ".join(x for x in parts if x).strip()
     return query[:420]
+
+
+def official_company_revenue(targets: list[dict], timeout: float = 15.0) -> dict[str, list[dict]]:
+    """Current official snapshots are evidence candidates, never historical backfills.
+
+    retrieved_at/available_at bind availability to this run. Export date does not
+    pretend the individual company's original announcement was known at midnight.
+    """
+    result = {}
+    wanted = {str(t.get('ticker', '')).split('.')[0]: str(t.get('ticker')) for t in targets}
+    for suffix, url in [('.TW', 'https://mopsfin.twse.com.tw/opendata/t187ap05_L.csv'),
+                        ('.TWO', 'https://mopsfin.twse.com.tw/opendata/t187ap05_O.csv')]:
+        if not any(str(t.get('ticker', '')).endswith(suffix) for t in targets):
+            continue
+        try:
+            for attempt in range(2):
+                try:
+                    response = requests.get(url, timeout=timeout, headers={'User-Agent': USER_AGENT})
+                    response.raise_for_status()
+                    break
+                except requests.RequestException:
+                    if attempt == 1:
+                        raise
+            rows = list(csv.DictReader(io.StringIO(response.content.decode("utf-8-sig"))))
+            if not rows or "公司代號" not in rows[0]:
+                raise ValueError("OFFICIAL_REVENUE_SCHEMA_MISMATCH")
+            observed = _utcnow()
+            for row in rows:
+                code = str(row.get('公司代號', '')).strip()
+                if code not in wanted or not wanted[code].endswith(suffix):
+                    continue
+                period = str(row.get('資料年月', '')).strip()
+                if not period.isdigit() or len(period) != 5:
+                    continue
+                year, month = int(period[:3]) + 1911, int(period[3:])
+                now = datetime.fromisoformat(observed.replace('Z', '+00:00'))
+                age_months = (now.year - year) * 12 + now.month - month
+                if not 1 <= month <= 12 or not 0 <= age_months <= 2:
+                    continue  # Retrieval time cannot make an old operating period fresh.
+                result[wanted[code]] = [{
+                    'source_title': f"Official monthly revenue: {row.get('公司名稱')} {row.get('資料年月')}",
+                    'source_url': url, 'published_at': observed, 'available_at': observed,
+                    'date_basis': 'CURRENT_DATASET_OBSERVED_AT; original issuer publication time unknown',
+                    'export_date_roc': row.get('出表日期'),
+                    'snippet': json.dumps(row, ensure_ascii=False),
+                    'search_lane': 'OFFICIAL_COMPANY_REVENUE',
+                }]
+        except (requests.RequestException, ValueError, TypeError) as exc:
+            print(f'Official revenue unavailable: {suffix} {type(exc).__name__}')
+    return result
 
 
 def build_prefetch(handoff: dict, *, timeout: float = 15.0, per_query: int = 5) -> dict:
@@ -174,6 +230,7 @@ def build_prefetch(handoff: dict, *, timeout: float = 15.0, per_query: int = 5) 
         out_targets.append(
             {
                 "driver_id": driver_id,
+                "ticker": target.get("ticker"),
                 "queries": queries,
                 "candidate_sources": target_candidates,
                 "candidate_source_count": len(target_candidates),
@@ -190,7 +247,16 @@ def build_prefetch(handoff: dict, *, timeout: float = 15.0, per_query: int = 5) 
         and sourced_target_count > 0
         else "FAIL_CLOSED"
     )
+    company_sources = []
+    if handoff.get('company_research_targets'):
+        extra = build_prefetch({'run_id': run_id, 'research_targets': handoff['company_research_targets']}, timeout=timeout, per_query=per_query)
+        company_sources = extra['targets']
+        official = official_company_revenue(handoff['company_research_targets'], timeout)
+        for target in company_sources:
+            target['candidate_sources'] = official.get(target.get('ticker'), []) + target['candidate_sources']
+            target['candidate_source_count'] = len(target['candidate_sources'])
     return {
+        'company_targets': company_sources,
         "contract": CONTRACT,
         "status": status,
         "research_run_id": run_id,
@@ -227,7 +293,8 @@ def main() -> None:
         "research source prefetch: "
         f"status={payload['status']} targets={payload['target_count']} "
         f"queries={payload['query_attempt_count']} successful_queries={payload['successful_query_count']} "
-        f"candidate_sources={payload['candidate_source_count']} sourced_targets={payload['sourced_target_count']}"
+        f"candidate_sources={payload['candidate_source_count']} sourced_targets={payload['sourced_target_count']} "
+        f"company_sources={sum(x['candidate_source_count'] for x in payload.get('company_targets', []))}"
     )
     if payload["status"] != "PASS":
         raise SystemExit(2)

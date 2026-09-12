@@ -17,3 +17,5 @@ Prefer regulator/government/exchange/industry-body sources, company filings/IR, 
 If evidence is conflicting or insufficient, classify UNKNOWN, but preserve any verifiable non-price sources you found in the evidence arrays. Return source_count=0 only when repeated support and counter searches genuinely yield no usable verifiable source.
 
 Return ONLY the exact JSON schema requested by the caller. Do not add Markdown fences, commentary, summaries, or prose outside that JSON.
+
+Also research every company_research_targets nomination in the handoff, including UNMAPPED / WHY. Use the company_targets prefetch sources and original company disclosures. Return the caller's company_opportunities extension or an explicit company_research_coverage unresolved reason for each company; never silently omit this part. A provisional company interpretation does not activate a global driver or alter the structural taxonomy.
