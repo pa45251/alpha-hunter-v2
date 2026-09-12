@@ -52,8 +52,8 @@ jobs:
           if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ inputs.force }}" = "true" ]; then
             force_arg="--force"
           fi
-          # An older schema without sealed risk must be rebuilt during rollout.
-          if ! python -c 'import json; from pathlib import Path; m=json.loads(Path("output/manifest.json").read_text()); assert any(f.get("name")=="risk_regime.json" for f in m.get("authoritative_files", [])); r=json.loads(Path("output/risk_regime.json").read_text()); assert "position_trends" not in r'; then
+          # A rollout missing sealed risk or the current snapshot advisory must rebuild once.
+          if ! python -c 'import json; from pathlib import Path; m=json.loads(Path("output/manifest.json").read_text()); assert any(f.get("name")=="risk_regime.json" for f in m.get("authoritative_files", [])); r=json.loads(Path("output/risk_regime.json").read_text()); assert "position_trends" not in r; a=json.loads(Path("output/opportunity_advisory.json").read_text()); assert a.get("source_run_id")==m.get("run_id") and a.get("policy_version")'; then
             force_arg="--force"
           fi
           python automation_guard_v4.py --mode scheduled-scan $force_arg

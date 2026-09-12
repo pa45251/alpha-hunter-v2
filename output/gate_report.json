@@ -3,13 +3,13 @@
   "gate_version": "1.0",
   "gate_status": "PASS",
   "failure_code": null,
-  "validated_at_taipei": "2026-09-12T10:22:51.617052+08:00",
+  "validated_at_taipei": "2026-09-12T06:26:02.997430+08:00",
   "repository": "pa45251/alpha-hunter-v2",
-  "branch": "repair/early-opportunity-advisory",
+  "branch": "main",
   "schema_version": "2.6",
   "scanner_version": "2.6.1",
-  "run_id": "20260912T102038+0800-dd11a682",
-  "manifest_sha256": "d87568bc53e6207b0d7b5073c7803b63f61fe5efdccd1c35ab20e197b4e21fb5",
+  "run_id": "20260912T062257+0800-9958dac6",
+  "manifest_sha256": "9af139a8771c9136b7e183567fedaa5b60ff3cffc2eec0914fb4a9f84eb5b7ad",
   "checks": [
     {
       "name": "repository_identity",
@@ -20,7 +20,7 @@
     {
       "name": "branch_identity",
       "passed": true,
-      "detail": "expected=repair/early-opportunity-advisory; actual=repair/early-opportunity-advisory",
+      "detail": "expected=main; actual=main",
       "severity": "HARD"
     },
     {
@@ -56,13 +56,13 @@
     {
       "name": "manifest_run_id",
       "passed": true,
-      "detail": "run_id=20260912T102038+0800-dd11a682",
+      "detail": "run_id=20260912T062257+0800-9958dac6",
       "severity": "HARD"
     },
     {
       "name": "canonical_manifest_url",
       "passed": true,
-      "detail": "expected=https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/repair/early-opportunity-advisory/output/manifest.json; actual=https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/repair/early-opportunity-advisory/output/manifest.json",
+      "detail": "expected=https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/manifest.json; actual=https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/manifest.json",
       "severity": "HARD"
     },
     {
@@ -80,7 +80,7 @@
     {
       "name": "run_consistency",
       "passed": true,
-      "detail": "all=20260912T102038+0800-dd11a682",
+      "detail": "all=20260912T062257+0800-9958dac6",
       "severity": "HARD"
     },
     {

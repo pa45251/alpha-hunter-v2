@@ -107,3 +107,5 @@ Before returning, check every company object against this literal template. All 
 Replace every placeholder with supported facts. This template is a schema, not evidence. GLOBAL records with no independent international evidence remain WAIT. Do not manufacture missing evidence to obtain a buy.
 
 If an official endpoint is unavailable after its bounded retry, report that transport limitation explicitly. An endpoint timeout is not negative fundamental evidence.
+
+rate_sensitive means sensitivity to real interest yields, long-end Treasury yields, liquidity and financing costs. It does NOT mean sensitivity to freight rates, commodity prices or product selling prices. Explain the chosen interest-rate sensitivity in main_risk for both true and false.
