@@ -97,3 +97,126 @@ WMT,Walmart,Consumer,US,SPY
 005930.KS,Samsung Electronics,Memory,KR,SPY
 000660.KS,SK Hynix,Memory,KR,SPY
 009150.KS,Samsung Electro-Mechanics,MLCC,KR,SPY
+ACWI,MSCI ACWI ETF,Market_Global,US,SPY
+VT,Vanguard Total World ETF,Market_Global,US,SPY
+EEM,Emerging Markets ETF,Market_EM,US,SPY
+EWJ,Japan ETF,Market_JP,US,SPY
+EWY,South Korea ETF,Market_KR,US,SPY
+EWH,Hong Kong ETF,Market_HK,US,SPY
+MCHI,China ETF,Market_CN,US,SPY
+FXI,China Large-Cap ETF,Market_CN,US,SPY
+KWEB,China Internet ETF,Internet_AI,US,SPY
+VGK,Europe ETF,Market_EU,US,SPY
+FEZ,Eurozone ETF,Market_EU,US,SPY
+EWG,Germany ETF,Market_EU,US,SPY
+EWQ,France ETF,Market_EU,US,SPY
+EWU,United Kingdom ETF,Market_EU,US,SPY
+CIBR,Cybersecurity ETF,Cybersecurity,US,SPY
+SKYY,Cloud Computing ETF,Cloud_AI,US,SPY
+CLOU,Cloud Computing ETF,Cloud_AI,US,SPY
+WCLD,Cloud Software ETF,Software,US,SPY
+PAVE,US Infrastructure ETF,Power_Grid,US,SPY
+GRID,Smart Grid ETF,Power_Grid,US,SPY
+IFRA,US Infrastructure ETF,Power_Grid,US,SPY
+XAR,Aerospace Defense ETF,Defense,US,SPY
+BOTZ,Robotics AI ETF,Industrials,US,SPY
+ROBO,Robotics Automation ETF,Industrials,US,SPY
+LIT,Lithium Battery Tech ETF,EV,US,SPY
+DRIV,Autonomous EV ETF,EV,US,SPY
+ARM,Arm Holdings,AI_Semiconductor,US,SPY
+MRVL,Marvell Technology,AI_Networking,US,SPY
+MCHP,Microchip Technology,Analog_Semiconductor,US,SPY
+NXPI,NXP Semiconductors,Analog_Semiconductor,US,SPY
+ON,ON Semiconductor,Analog_Semiconductor,US,SPY
+TER,Teradyne,Semiconductor_Equipment,US,SPY
+GFS,GlobalFoundries,Foundry,US,SPY
+SNDK,SanDisk,Memory,US,SPY
+WDC,Western Digital,Memory,US,SPY
+COHR,Coherent,AI_Networking,US,SPY
+LITE,Lumentum,AI_Networking,US,SPY
+CIEN,Ciena,AI_Networking,US,SPY
+EQIX,Equinix,AI_Infrastructure,US,SPY
+DLR,Digital Realty,AI_Infrastructure,US,SPY
+NVT,nVent Electric,Power_Grid,US,SPY
+EMR,Emerson Electric,Power_Grid,US,SPY
+ABB,ABB ADR,Power_Grid,EU,SPY
+CHKP,Check Point,Cybersecurity,US,SPY
+CYBR,CyberArk,Cybersecurity,US,SPY
+S,SentinelOne,Cybersecurity,US,SPY
+GD,General Dynamics,Defense,US,SPY
+HII,Huntington Ingalls,Defense,US,SPY
+MATX,Matson,Shipping,US,SPY
+ALB,Albemarle,EV,US,SPY
+SU.PA,Schneider Electric,Power_Grid,EU,SPY
+ENR.DE,Siemens Energy,Power_Grid,EU,SPY
+SIE.DE,Siemens,Industrials,EU,SPY
+PRY.MI,Prysmian,Power_Grid,EU,SPY
+NEX.PA,Nexans,Power_Grid,EU,SPY
+IFX.DE,Infineon Technologies,Semiconductor,EU,SPY
+STM.PA,STMicroelectronics,Semiconductor,EU,SPY
+ASM.AS,ASM International,Semiconductor_Equipment,EU,SPY
+BESI.AS,BE Semiconductor Industries,Semiconductor_Equipment,EU,SPY
+RHM.DE,Rheinmetall,Defense,EU,SPY
+AIR.PA,Airbus,Defense,EU,SPY
+SAF.PA,Safran,Defense,EU,SPY
+LDO.MI,Leonardo,Defense,EU,SPY
+SAP.DE,SAP,Software,EU,SPY
+MAERSK-B.CO,Maersk,Shipping,EU,SPY
+HLAG.DE,Hapag-Lloyd,Shipping,EU,SPY
+ROG.SW,Roche,Biotech,EU,SPY
+NOVN.SW,Novartis,Biotech,EU,SPY
+SAN.PA,Sanofi,Biotech,EU,SPY
+6723.T,Renesas Electronics,Semiconductor,JP,SPY
+7735.T,SCREEN Holdings,Semiconductor_Equipment,JP,SPY
+4063.T,Shin-Etsu Chemical,Semiconductor_Materials,JP,SPY
+4004.T,Resonac Holdings,Semiconductor_Materials,JP,SPY
+5801.T,Furukawa Electric,AI_Networking,JP,SPY
+5803.T,Fujikura,AI_Networking,JP,SPY
+5802.T,Sumitomo Electric,Power_Grid,JP,SPY
+6501.T,Hitachi,Power_Grid,JP,SPY
+6503.T,Mitsubishi Electric,Power_Grid,JP,SPY
+6645.T,Omron,Industrials,JP,SPY
+6861.T,Keyence,Industrials,JP,SPY
+6954.T,FANUC,Industrials,JP,SPY
+6506.T,Yaskawa Electric,Industrials,JP,SPY
+6273.T,SMC,Industrials,JP,SPY
+9101.T,Nippon Yusen,Shipping,JP,SPY
+9104.T,Mitsui OSK Lines,Shipping,JP,SPY
+9107.T,Kawasaki Kisen,Shipping,JP,SPY
+7011.T,Mitsubishi Heavy Industries,Defense,JP,SPY
+7012.T,Kawasaki Heavy Industries,Defense,JP,SPY
+7013.T,IHI,Defense,JP,SPY
+4519.T,Chugai Pharmaceutical,Biotech,JP,SPY
+4568.T,Daiichi Sankyo,Biotech,JP,SPY
+4502.T,Takeda Pharmaceutical,Biotech,JP,SPY
+4503.T,Astellas Pharma,Biotech,JP,SPY
+7203.T,Toyota Motor,EV,JP,SPY
+7267.T,Honda Motor,EV,JP,SPY
+373220.KS,LG Energy Solution,EV,KR,SPY
+006400.KS,Samsung SDI,EV,KR,SPY
+051910.KS,LG Chem,EV,KR,SPY
+005380.KS,Hyundai Motor,EV,KR,SPY
+000270.KS,Kia,EV,KR,SPY
+012450.KS,Hanwha Aerospace,Defense,KR,SPY
+079550.KS,LIG Nex1,Defense,KR,SPY
+064350.KS,Hyundai Rotem,Defense,KR,SPY
+207940.KS,Samsung Biologics,Biotech,KR,SPY
+068270.KS,Celltrion,Biotech,KR,SPY
+356680.KQ,AXGATE,Cybersecurity,KR,SPY
+053800.KQ,AhnLab,Cybersecurity,KR,SPY
+0700.HK,Tencent,Internet_AI,HK,SPY
+9988.HK,Alibaba,Cloud_AI,HK,SPY
+9888.HK,Baidu,Cloud_AI,HK,SPY
+1810.HK,Xiaomi,Consumer_Tech,HK,SPY
+1211.HK,BYD,EV,HK,SPY
+9868.HK,XPeng,EV,HK,SPY
+2015.HK,Li Auto,EV,HK,SPY
+0981.HK,SMIC,Foundry,HK,SPY
+1347.HK,Hua Hong Semiconductor,Foundry,HK,SPY
+1919.HK,COSCO Shipping Holdings,Shipping,HK,SPY
+1548.HK,Genscript Biotech,Biotech,HK,SPY
+2269.HK,WuXi Biologics,Biotech,HK,SPY
+2359.HK,WuXi AppTec,Biotech,HK,SPY
+1801.HK,Innovent Biologics,Biotech,HK,SPY
+1177.HK,Sino Biopharmaceutical,Biotech,HK,SPY
+1093.HK,CSPC Pharmaceutical,Biotech,HK,SPY
