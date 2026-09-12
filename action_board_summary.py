@@ -79,6 +79,8 @@ def _select_opportunities(limit: int = 5) -> list[dict]:
         candidate['driver_rejected'] = candidate['driver_id'] in rejected
         evidence = accepted.get((candidate['ticker'], candidate['driver_id']))
         row = assess(candidate, evidence, load('risk_regime.json'), histories.get(candidate['ticker']), now)
+        from entry_risk import validate_plan
+        validate_plan(row)
         checked = coverage.get((candidate['ticker'], candidate['driver_id']))
         row['research_completed'] = bool(evidence or checked)
         if checked and not evidence:
@@ -88,7 +90,8 @@ def _select_opportunities(limit: int = 5) -> list[dict]:
         rows.append(row)
     top = rank_opportunities(rows, limit)
     from opportunity_advisory import VERSION
-    payload = dict(policy_version=VERSION, source_run_id=run_id, generated_at_utc=now,
+    from entry_risk import RISK_CONTRACT
+    payload = dict(policy_version=VERSION, risk_contract=RISK_CONTRACT, source_run_id=run_id, generated_at_utc=now,
                    public_lineage_id=(load('decision_packet.json').get('decision_bridge') or {}).get('public_lineage_id'),
                    auto_trade_allowed=False, top_opportunities=top, all_candidates=rows)
     # Git publication preserves all nominations for prospective audits, not just winners.
@@ -123,7 +126,8 @@ if opportunities:
                            ('International causal', 'international_causal_state'),
                            ('Current gate', 'missing_gate'), ('International evidence', 'international'), ('Relative', 'relative'),
                            ('Regime', 'regime'), ('Technical state', 'technical'),
-                           ('Why price', 'price_reason'), ('Entry', 'entry'),
+                           ('Why price', 'price_reason'), ('Entry state', 'entry_state'), ('Entry', 'entry'),
+                           ('Actual price risk', 'risk_summary'),
                            ('Invalidation', 'invalidation'), ('Add trigger', 'add_trigger'),
                            ('Main counter-evidence', 'main_counter_evidence'), ('Main risk', 'main_risk'), ('What would make us wrong', 'what_would_make_us_wrong')]:
             lines.append(f"- **{label}:** {md(row.get(key, 'Unverified'))}")

@@ -135,3 +135,5 @@ need company fundamentals. Credit/time bounds are transport limits, not Top-N
 stock rankings. Return explicit unresolved coverage when evidence is insufficient.
 
 Research nominations come from the full sealed canonical queue, not its Top-30 presentation summary.
+
+Entry prices, invalidation, risk_pct and reference R/R belong to the canonical deterministic entry-risk contract. Research cannot overwrite these prices or relax its risk limit.
