@@ -133,3 +133,5 @@ is non-price causal evidence, not international price confirmation.
 Do not research deferred_candidates. GLOBAL_REJECTED and ENTRY-only gaps do not
 need company fundamentals. Credit/time bounds are transport limits, not Top-N
 stock rankings. Return explicit unresolved coverage when evidence is insufficient.
+
+Research nominations come from the full sealed canonical queue, not its Top-30 presentation summary.

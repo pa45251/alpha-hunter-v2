@@ -97,7 +97,7 @@ def sealed_fixture(out, weak=False, count=1, extended=False):
 
 def test_F_rejected_global_is_not_sent_to_company_or_driver_research(tmp_path):
     out = sealed_fixture(tmp_path/'output', weak=True)
-    all_rows = company_research_targets(out, limit=None)
+    all_rows = company_research_targets(out, research_only=False)
     assert all_rows[0]['missing_gate'] == 'GLOBAL_REJECTED'
     plan = decision_research_handoff(out)
     assert not plan['company_research_targets'] and not plan['research_targets']
@@ -120,7 +120,7 @@ def test_entry_blocked_candidates_do_not_consume_research(tmp_path):
 def test_tampered_price_evidence_cannot_authorize_entry(tmp_path):
     out = sealed_fixture(tmp_path/'output')
     with (out/'theme_breadth.csv').open('a') as f: f.write('\n')
-    c = company_research_targets(out, limit=None)[0]
+    c = company_research_targets(out, research_only=False)[0]
     assert c['international_price_state'] == 'UNKNOWN'
     assert not c['research_eligible']
     assert assess(c, research(), risk(), history(), ASOF)['action'] == 'WAIT'
@@ -147,3 +147,38 @@ def test_v2_causal_active_cannot_override_attached_price_veto():
     board=build_decision_board(pd.DataFrame([row]))
     assert board.iloc[0].decision_stage == 'GATE_0_INTERNATIONAL_PRICE'
     assert 'ENTRY_TRIGGERED' not in board.iloc[0].candidate_action
+
+
+def test_company_only_bridge_never_creates_global_activation(tmp_path, monkeypatch):
+    import research_activation_bridge_v3 as bridge
+    from test_research_activation_bridge_v3 import _write_fixture, _patch_paths
+    out = _write_fixture(tmp_path)
+    payload = json.loads((out/'research_result_v3.json').read_text())
+    payload['results'] = []
+    payload['company_research_coverage'] = [dict(ticker='9999.TW', status='UNRESOLVED', reason='Unknown driver')]
+    (out/'research_result_v3.json').write_text(json.dumps(payload))
+    _patch_paths(monkeypatch, out)
+    bridge.main()
+    activation = pd.read_csv(out/'driver_activation_v3.csv')
+    assert activation.activation_state.eq('UNKNOWN').all()
+    assert activation.source_count.eq(0).all()
+
+
+def test_completed_transmission_is_not_researched_again_same_snapshot(tmp_path):
+    out = sealed_fixture(tmp_path/'output')
+    (out/'research_result_v3.json').write_text(json.dumps(dict(
+        contract='ALPHA_HUNTER_V3_VALIDATED_RESEARCH',status='PASS',research_run_id='run',
+        company_opportunities=[research()], results=[])))
+    plan = decision_research_handoff(out)
+    assert not plan['company_research_targets']
+    assert plan['deferred_candidates'][0]['missing_gate'] == 'ENTRY'
+
+
+def test_driver_outside_packet_top30_is_still_researched_if_decision_changing(tmp_path):
+    out = sealed_fixture(tmp_path/'output')
+    pd.DataFrame([dict(driver_id='EXACT_DRIVER',run_id='run')]).to_csv(out/'causal_research_queue.csv',index=False)
+    manifest=json.loads((out/'manifest.json').read_text())
+    manifest['authoritative_files'].append(dict(name='causal_research_queue.csv',sha256=hashlib.sha256((out/'causal_research_queue.csv').read_bytes()).hexdigest()))
+    (out/'manifest.json').write_text(json.dumps(manifest))
+    (out/'research_packet.json').write_text(json.dumps(dict(run_id='run',research_queue_top30=[])))
+    assert decision_research_handoff(out)['research_targets'][0]['driver_id']=='EXACT_DRIVER'

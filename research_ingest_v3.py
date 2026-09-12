@@ -86,6 +86,9 @@ def main() -> None:
     packet = json.loads(PACKET.read_text(encoding="utf-8"))
     run_id = str(packet["run_id"])
     queue = packet.get("research_queue_top30") or []
+    if (PACKET.parent / 'causal_research_queue.csv').exists():
+        from driver_gates import sealed_csv
+        queue = sealed_csv('causal_research_queue.csv', PACKET.parent).to_dict('records')
     from research_handoff import decision_research_handoff
     selection_path = os.getenv('ALPHA_HUNTER_RESEARCH_SELECTION_PATH')
     selection = json.loads(Path(selection_path).read_text()) if selection_path else decision_research_handoff(PACKET.parent)

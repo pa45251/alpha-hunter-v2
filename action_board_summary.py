@@ -58,7 +58,7 @@ def _select_opportunities(limit: int = 5) -> list[dict]:
     from canonical_evidence import load_histories
     from research_handoff import company_research_targets
     from datetime import datetime, timezone
-    candidates = company_research_targets(OUT, limit=None)
+    candidates = company_research_targets(OUT, research_only=False)
     histories = load_histories(list({r['ticker'] for r in candidates}))
     research = load('research_result_v3.json')
     now = datetime.now(timezone.utc).isoformat()

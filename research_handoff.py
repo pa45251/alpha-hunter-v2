@@ -139,8 +139,8 @@ def build_research_handoff(out_dir: str | Path = "output") -> dict[str, Any]:
     return handoff
 
 
-def company_research_targets(out: Path = Path('output'), limit: int | None = 5) -> list[dict]:
-    """Both entry points share company research; no provisional taxonomy mutation."""
+def company_research_targets(out: Path = Path('output'), limit: int | None = None, *, research_only: bool = True) -> list[dict]:
+    """Select decision-changing gaps; legacy limit never truncates nominations."""
     import pandas as pd
     manifest = _read_json(out / 'manifest.json')
     run_id = manifest['run_id']
@@ -229,17 +229,20 @@ def company_research_targets(out: Path = Path('output'), limit: int | None = 5) 
         c['research_eligible'] = c['entry_research_ready'] and c['research_task'] not in {'NONE','WAIT_FOR_MARKET_DATA'}
         if not c['entry_research_ready'] and c['missing_gate'] != 'GLOBAL_REJECTED':
             c['research_task'] = 'WAIT_FOR_ENTRY'
-    # None exposes all states to the board; the research lane uses decision-changing
-    # gaps only. The legacy numeric limit no longer silently drops eligible names.
-    return records if limit is None else [c for c in records if c['research_eligible']]
+    # The board retains all states; the research lane consumes only actionable gaps.
+    return [c for c in records if c['research_eligible']] if research_only else records
 
 
 def decision_research_handoff(out: Path = Path('output')) -> dict:
     packet = _read_json(out / 'research_packet.json')
-    all_candidates = company_research_targets(out, limit=None)
+    all_candidates = company_research_targets(out, research_only=False)
     eligible = [c for c in all_candidates if c['research_eligible']]
     driver_ids = {c['driver_id'] for c in eligible if c['missing_gate'] == 'CAUSAL_UNVERIFIED'}
-    drivers = [r for r in packet.get('research_queue_top30', []) if r['driver_id'] in driver_ids]
+    from driver_gates import sealed_csv
+    # The packet's Top-30 is a presentation summary, not a nomination authority.
+    queue = (sealed_csv('causal_research_queue.csv', out).to_dict('records')
+             if (out / 'causal_research_queue.csv').exists() else packet.get('research_queue_top30', []))
+    drivers = [r for r in queue if r['driver_id'] in driver_ids]
     return dict(contract='ALPHA_HUNTER_DECISION_GAP_HANDOFF', run_id=packet['run_id'],
                 research_targets=drivers, company_research_targets=eligible,
                 deferred_candidates=[dict(ticker=c['ticker'], driver_id=c['driver_id'],
