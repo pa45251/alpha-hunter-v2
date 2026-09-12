@@ -3,13 +3,13 @@
   "gate_version": "1.0",
   "gate_status": "PASS",
   "failure_code": null,
-  "validated_at_taipei": "2026-09-12T17:59:08.829377+08:00",
+  "validated_at_taipei": "2026-09-12T19:46:23.689858+08:00",
   "repository": "pa45251/alpha-hunter-v2",
-  "branch": "main",
+  "branch": "repair/driver-gate-veto",
   "schema_version": "2.6",
   "scanner_version": "2.6.1",
-  "run_id": "20260912T175525+0800-1432f3ae",
-  "manifest_sha256": "5b5508a3c371bf2218eaa829a02256b848232e16507297161870d1d7bbf1d77f",
+  "run_id": "20260912T194313+0800-dcbec670",
+  "manifest_sha256": "5092a27e6e16b1ccea8b31f9c207ea9cc760d12f4620b3ca26da2aadc6ed93d7",
   "checks": [
     {
       "name": "repository_identity",
@@ -20,7 +20,7 @@
     {
       "name": "branch_identity",
       "passed": true,
-      "detail": "expected=main; actual=main",
+      "detail": "expected=repair/driver-gate-veto; actual=repair/driver-gate-veto",
       "severity": "HARD"
     },
     {
@@ -56,13 +56,13 @@
     {
       "name": "manifest_run_id",
       "passed": true,
-      "detail": "run_id=20260912T175525+0800-1432f3ae",
+      "detail": "run_id=20260912T194313+0800-dcbec670",
       "severity": "HARD"
     },
     {
       "name": "canonical_manifest_url",
       "passed": true,
-      "detail": "expected=https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/manifest.json; actual=https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/manifest.json",
+      "detail": "expected=https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/repair/driver-gate-veto/output/manifest.json; actual=https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/repair/driver-gate-veto/output/manifest.json",
       "severity": "HARD"
     },
     {
@@ -80,7 +80,7 @@
     {
       "name": "run_consistency",
       "passed": true,
-      "detail": "all=20260912T175525+0800-1432f3ae",
+      "detail": "all=20260912T194313+0800-dcbec670",
       "severity": "HARD"
     },
     {
