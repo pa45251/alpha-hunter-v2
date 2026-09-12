@@ -79,5 +79,8 @@
     "rate_pressure": "ADVERSE"
   },
   "method": "Unfitted heuristic combining volatility, US trend, breadth, credit and global breadth. Treasury yields are macro-compatibility evidence, not a crash predictor. source_run_id binds this overlay to the canonical scanner snapshot used downstream.",
-  "auto_trade_allowed": false
+  "auto_trade_allowed": false,
+  "position_trends": {
+    "force_rebuild": true
+  }
 }
