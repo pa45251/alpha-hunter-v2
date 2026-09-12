@@ -3,14 +3,14 @@
 - Run: `20260913T075247+0800-234de76c`
 - Market session: `2026-09-11`
 - Risk regime: **NORMAL**
-- Causal evidence: `UNKNOWN_NO_CURRENT_RESEARCH`
+- Causal evidence: `V3_AUTONOMOUS_RESEARCH`
 - Core rule: find the anomaly -> understand WHY -> validate the same driver globally -> act only if price still offers a setup.
 
 ## Simple Opportunity Brief
 
 ### 1. 3176.TWO 基亞 — WAIT
 
-- **WHY:** WHY unresolved: obtain company evidence before taking risk
+- **WHY:** Official MOPS data shows August 2026 revenue of TWD 329.175 million, up 197.4% year over year, with the issuer remarking that overseas revenue increased. No verifiable company-specific project, contract, product, or global industry mechanism was identified to explain why this represents a distinct investable causal opportunity; support and counter searches returned no usable sources.
 - **Driver:** Unmapped opportunity — research WHY
 - **Driver state:** UNVERIFIED
 - **Company transmission:** Unverified
@@ -28,12 +28,12 @@
 - **Invalidation:** Exit on loss of 34.05; thesis failure also invalidates
 - **Add trigger:** Close above 41 with volume >=1.2x prior median; thesis still supported and recheck R/R
 - **Main counter-evidence:** Unverified
-- **Main risk:** Unverified causal interpretation
+- **Main risk:** Exact company / driver transmission remains unverified; no entry recommendation
 - **What would make us wrong:** A price-only story or weak company transmission
 
 ### 2. 2605.TW 新興 — WAIT
 
-- **WHY:** WHY unresolved: obtain company evidence before taking risk
+- **WHY:** Official MOPS data shows August 2026 revenue up 58.8% year over year and explicitly attributes the increase to freight rates remaining high, but external evidence is conflicting: a May 2026 report described a Capesize rate surge while an August 2026 BIMCO warning characterized 2026 strength as substantially rerouting-driven and warned of a 2027 supply glut. The global causal gate therefore remains unresolved.
 - **Driver:** Dry-bulk freight / commodity shipping cycle
 - **Driver state:** UNVERIFIED
 - **Company transmission:** Unverified
@@ -51,12 +51,12 @@
 - **Invalidation:** Exit on loss of 34.05; thesis failure also invalidates
 - **Add trigger:** Close above 39.6 with volume >=1.2x prior median; thesis still supported and recheck R/R
 - **Main counter-evidence:** Unverified
-- **Main risk:** Unverified causal interpretation
+- **Main risk:** Exact company / driver transmission remains unverified; no entry recommendation
 - **What would make us wrong:** A price-only story or weak company transmission
 
 ### 3. 4967.TW 十銓 — WAIT
 
-- **WHY:** WHY unresolved: obtain company evidence before taking risk
+- **WHY:** Official MOPS data shows August 2026 revenue up 275.1% year over year, with increased shipments and higher selling prices, but no independent international evidence was verified that links the measured company improvement specifically to a current NAND/storage-controller cycle rather than company-specific volume or pricing factors.
 - **Driver:** NAND / storage controller and module cycle
 - **Driver state:** UNVERIFIED
 - **Company transmission:** Unverified
@@ -74,12 +74,12 @@
 - **Invalidation:** Exit on loss of 268; thesis failure also invalidates
 - **Add trigger:** Close above 294 with volume >=1.2x prior median; thesis still supported and recheck R/R
 - **Main counter-evidence:** Unverified
-- **Main risk:** Unverified causal interpretation
+- **Main risk:** Exact company / driver transmission remains unverified; no entry recommendation
 - **What would make us wrong:** A price-only story or weak company transmission
 
 ### 4. 1609.TW 大亞 — WAIT
 
-- **WHY:** WHY unresolved: obtain company evidence before taking risk
+- **WHY:** Official MOPS data shows August 2026 revenue up 34.8% year over year, but the required support and counter searches produced no verifiable external evidence on current copper inventories, physical premiums, trade dislocations, or commodity tightness. Company revenue growth alone cannot establish this driver.
 - **Driver:** Copper commodity price / trade-inventory cycle
 - **Driver state:** UNVERIFIED
 - **Company transmission:** Unverified
@@ -97,7 +97,7 @@
 - **Invalidation:** Exit on loss of 36.5; thesis failure also invalidates
 - **Add trigger:** Close above 38.95 with volume >=1.2x prior median; thesis still supported and recheck R/R
 - **Main counter-evidence:** Unverified
-- **Main risk:** Unverified causal interpretation
+- **Main risk:** Exact company / driver transmission remains unverified; no entry recommendation
 - **What would make us wrong:** A price-only story or weak company transmission
 
 ### 5. 6179.TWO 亞通 — WAIT

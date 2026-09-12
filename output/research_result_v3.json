@@ -1,8 +1,8 @@
 {
   "contract": "ALPHA_HUNTER_V3_VALIDATED_RESEARCH",
   "status": "PASS",
-  "research_run_id": "20260912T220554+0800-e5731284",
-  "validated_at_utc": "2026-09-12T14:11:16.774895+00:00",
+  "research_run_id": "20260913T075247+0800-234de76c",
+  "validated_at_utc": "2026-09-12T23:58:09.396752+00:00",
   "target_driver_ids": [
     "DRY_BULK_FREIGHT",
     "NAND_STORAGE_CYCLE",
@@ -13,12 +13,12 @@
     {
       "driver_id": "DRY_BULK_FREIGHT",
       "state": "UNKNOWN",
-      "confidence": 0.67,
-      "primary_cause": "Evidence is conflicting: Capesize freight rates were reported at a two-year high because of stronger demand and tighter vessel supply, while BIMCO-linked reporting warned that apparent 2026 strength was substantially driven by forced rerouting and could reverse into a 2027 supply glut. Exact industry-wide persistence of the nominated dry-bulk freight and commodity-volume cycle is therefore unresolved.",
+      "confidence": 0.72,
+      "primary_cause": "Evidence confirms a recent Capesize freight-rate and demand improvement, but the exact durability and breadth of the dry-bulk commodity-volume cycle are unresolved because BIMCO reporting attributes apparent 2026 strength partly to forced rerouting and warns of a future supply glut.",
       "industry_scope": "INDUSTRY_WIDE",
       "supporting_evidence": [
         {
-          "claim": "A key dry-bulk rate measure reached its highest level since December 2023, with the move attributed to rising Capesize demand and tightening vessel supply.",
+          "claim": "A key dry-bulk rate measure reached its highest level since December 2023, driven by rising Capesize demand and tightening vessel supply.",
           "source_title": "Dry-Bulk Shipping Rates Hit Two-Year High on Capesize Demand",
           "source_url": "https://gcaptain.com/dry-bulk-shipping-rates-hit-two-year-high-on-capesize-demand/",
           "published_at": "2026-05-07T00:07:00Z",
@@ -28,78 +28,71 @@
       ],
       "counter_evidence": [
         {
-          "claim": "BIMCO warned that apparent 2026 dry-bulk strength was substantially artificial, driven by forced rerouting, and could reverse into a 2027 supply glut.",
+          "claim": "BIMCO warned that dry-bulk market strength in 2026 was substantially artificial because of forced rerouting and that a 2027 supply glut could reverse the benefit.",
           "source_title": "Dry bulk shipping faces 2027 supply glut: BIMCO warns Hormuz rerouting boost will reverse",
           "source_url": "https://www.msn.com/en-us/news/other/dry-bulk-shipping-faces-2027-supply-glut-bimco-warns-hormuz-rerouting-boost-will-reverse/ar-AA29coQf",
           "published_at": "2026-08-01T10:36:00Z",
           "event_date": "2026-08-01T00:00:00Z",
           "evidence_type": "INDUSTRY_DATA"
-        },
-        {
-          "claim": "Reporting on the BIMCO outlook described the market's 2026 strength as substantially an artifact of forced rerouting, with the effect expected to reverse.",
-          "source_title": "Dry Bulk Shipping Faces 2027 Supply Glut: BIMCO Warns Hormuz Rerouting Boost Will Reverse",
-          "source_url": "https://www.techtimes.com/articles/322617/20260801/dry-bulk-shipping-faces-2027-supply-glut-bimco-warns-hormuz-rerouting-boost-will-reverse.htm",
-          "published_at": "2026-08-01T10:36:00Z",
-          "event_date": "2026-08-01T00:00:00Z",
-          "evidence_type": "HIGH_QUALITY_REPORTING"
         }
       ],
-      "source_count": 3,
+      "source_count": 2,
       "event_date": "2026-08-01T00:00:00Z",
       "source_dates": [
         "2026-05-07T00:07:00Z",
         "2026-08-01T10:36:00Z"
       ],
-      "researched_at_utc": "2026-09-12T14:10:57Z",
-      "research_run_id": "20260912T220554+0800-e5731284"
+      "researched_at_utc": "2026-09-12T23:57:45Z",
+      "research_run_id": "20260913T075247+0800-234de76c"
     },
     {
       "driver_id": "NAND_STORAGE_CYCLE",
       "state": "UNKNOWN",
-      "confidence": 0.58,
-      "primary_cause": "Current sources indicate storage and memory demand growth, but they do not establish a sufficiently exact, time-consistent NAND pricing, controller/module demand, and inventory-cycle signal. The available evidence is therefore insufficient to distinguish a broad storage-demand improvement from the nominated NAND cycle.",
+      "confidence": 0.61,
+      "primary_cause": "Recent reporting supports continued storage and memory growth, but the evidence does not establish a time-consistent industry-wide NAND pricing, inventory, and controller/module cycle; available commentary also questions whether historical NAND cyclicality remains applicable.",
       "industry_scope": "INDUSTRY_WIDE",
       "supporting_evidence": [
         {
-          "claim": "The 2026 Future of Memory and Storage Conference highlighted continued growth in storage and memory markets, including demand associated with AI.",
+          "claim": "The 2026 Future of Memory and Storage Conference highlighted continued growth in storage and memory demand, including AI-related storage requirements.",
           "source_title": "2026 FMS Shows Storage And Memory Market Continued Growth",
           "source_url": "https://www.forbes.com/sites/tomcoughlin/2026/08/16/2026-fms-shows-storage-and-memory-market-continued-growth/",
           "published_at": "2026-08-16T16:45:00Z",
           "event_date": "2026-08-16T00:00:00Z",
           "evidence_type": "HIGH_QUALITY_REPORTING"
-        },
-        {
-          "claim": "Phison described continued evolution of storage demand across consumer devices and data centers, including NAND-controller applications.",
-          "source_title": "Phison Electronics Corp highlights its NAND controller role as demand for storage keeps evolving",
-          "source_url": "https://www.ad-hoc-news.de/boerse/news/ueberblick/phison-electronics-corp-highlights-its-nand-controller-role-as-demand-for/69725587",
-          "published_at": "2026-07-08T12:14:00Z",
-          "event_date": "2026-07-08T00:00:00Z",
-          "evidence_type": "COMPANY_PRIMARY"
         }
       ],
-      "counter_evidence": [],
+      "counter_evidence": [
+        {
+          "claim": "Industry commentary argues that NAND supply may not respond to demand through the familiar historical cycle, weakening the inference that current growth represents a conventional NAND cycle.",
+          "source_title": "The Next NAND Decade: Why Supply Can’t Catch Demand The Way It Used To",
+          "source_url": "https://www.forbes.com/councils/forbestechcouncil/2026/05/01/the-next-nand-decade-why-supply-cant-catch-demand-the-way-it-used-to/",
+          "published_at": "2026-05-01T03:45:00Z",
+          "event_date": "2026-05-01T00:00:00Z",
+          "evidence_type": "HIGH_QUALITY_REPORTING"
+        }
+      ],
       "source_count": 2,
       "event_date": "2026-08-16T00:00:00Z",
       "source_dates": [
-        "2026-07-08T12:14:00Z",
+        "2026-05-01T03:45:00Z",
         "2026-08-16T16:45:00Z"
       ],
-      "researched_at_utc": "2026-09-12T14:10:57Z",
-      "research_run_id": "20260912T220554+0800-e5731284"
+      "researched_at_utc": "2026-09-12T23:57:45Z",
+      "research_run_id": "20260913T075247+0800-234de76c"
     },
     {
       "driver_id": "COPPER_COMMODITY_TRADE_INVENTORY",
       "state": "UNKNOWN",
-      "confidence": 0.05,
-      "primary_cause": "No verifiable current source was found confirming or contradicting the exact combination of copper pricing, exchange inventories, regional physical premia, tariffs or trade dislocations, and physical tightness required for this driver.",
-      "industry_scope": "UNKNOWN",
+      "confidence": 0.98,
+      "primary_cause": "No verifiable current external evidence was found establishing the required combination of copper pricing, exchange inventories, physical premiums, tariffs or trade dislocations; downstream cable or grid demand evidence would not by itself establish this commodity driver.",
+      "industry_scope": "INDUSTRY_WIDE",
       "supporting_evidence": [],
       "counter_evidence": [],
       "source_count": 0,
       "event_date": null,
       "source_dates": [],
-      "researched_at_utc": "2026-09-12T14:10:57Z",
-      "research_run_id": "20260912T220554+0800-e5731284"
+      "researched_at_utc": "2026-09-12T23:57:45Z",
+      "research_run_id": "20260913T075247+0800-234de76c"
     }
   ],
   "company_opportunities": [],
@@ -109,25 +102,25 @@
       "ticker": "3176.TWO",
       "driver_id": "UNMAPPED_OPPORTUNITY",
       "status": "UNRESOLVED",
-      "reason": "Official MOPS data shows August 2026 revenue of TWD 329.175 million, up 241.4% month over month and 197.4% year over year, with the issuer remarking that overseas revenue increased. No verifiable company-specific event or causal mechanism was found linking this improvement to a nominated driver, and exact-driver and alternative-driver searches returned no usable external sources."
+      "reason": "Official MOPS data shows August 2026 revenue of TWD 329.175 million, up 197.4% year over year, with the issuer remarking that overseas revenue increased. No verifiable company-specific project, contract, product, or global industry mechanism was identified to explain why this represents a distinct investable causal opportunity; support and counter searches returned no usable sources."
     },
     {
       "ticker": "2605.TW",
       "driver_id": "DRY_BULK_FREIGHT",
       "status": "UNRESOLVED",
-      "reason": "Official MOPS data shows August 2026 revenue up 58.8% year over year and states that high freight rates drove the increase, but the nominated global dry-bulk causal driver remains unresolved because evidence is mixed: reported Capesize rate strength is offset by BIMCO-linked warnings that 2026 strength may be artificial and followed by a supply glut. Company transmission is therefore not independently confirmed."
+      "reason": "Official MOPS data shows August 2026 revenue up 58.8% year over year and explicitly attributes the increase to freight rates remaining high, but external evidence is conflicting: a May 2026 report described a Capesize rate surge while an August 2026 BIMCO warning characterized 2026 strength as substantially rerouting-driven and warned of a 2027 supply glut. The global causal gate therefore remains unresolved."
     },
     {
       "ticker": "4967.TW",
       "driver_id": "NAND_STORAGE_CYCLE",
       "status": "UNRESOLVED",
-      "reason": "Official MOPS data shows August 2026 revenue up 275.1% year over year and cumulative revenue up 87.0%, attributed to higher shipments and selling prices. No independent evidence establishes that the measured improvement is caused by the exact global NAND/storage-controller cycle rather than company-specific volume or pricing, and the global causal evidence remains insufficient."
+      "reason": "Official MOPS data shows August 2026 revenue up 275.1% year over year, with increased shipments and higher selling prices, but no independent international evidence was verified that links the measured company improvement specifically to a current NAND/storage-controller cycle rather than company-specific volume or pricing factors."
     },
     {
       "ticker": "1609.TW",
       "driver_id": "COPPER_COMMODITY_TRADE_INVENTORY",
       "status": "UNRESOLVED",
-      "reason": "Official MOPS data shows August 2026 revenue up 34.8% year over year and cumulative revenue up 20.0%, but no verifiable current external evidence was found confirming the exact copper pricing, exchange-inventory, trade-dislocation, or physical-tightness mechanism or connecting it to the company's results."
+      "reason": "Official MOPS data shows August 2026 revenue up 34.8% year over year, but the required support and counter searches produced no verifiable external evidence on current copper inventories, physical premiums, trade dislocations, or commodity tightness. Company revenue growth alone cannot establish this driver."
     }
   ]
 }
