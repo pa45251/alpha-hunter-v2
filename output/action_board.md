@@ -3,14 +3,14 @@
 - Run: `20260912T195614+0800-012a9809`
 - Market session: `2026-09-11`
 - Risk regime: **NORMAL**
-- Causal evidence: `UNKNOWN_NO_CURRENT_RESEARCH`
+- Causal evidence: `V3_AUTONOMOUS_RESEARCH`
 - Core rule: find the anomaly -> understand WHY -> validate the same driver globally -> act only if price still offers a setup.
 
 ## Simple Opportunity Brief
 
 ### 1. 3176.TWO 基亞 — WAIT
 
-- **WHY:** WHY unresolved: obtain company evidence before taking risk
+- **WHY:** The official August 2026 disclosure reports increased overseas revenue and a 197.40% year-over-year monthly revenue increase, while cumulative revenue remains down 10.45% year over year. No specific product, project, order, licensing, clinical, or other economic mechanism was identified to explain the opportunity.
 - **Driver:** Unmapped opportunity — research WHY
 - **Driver state:** UNVERIFIED
 - **Company transmission:** Unverified
@@ -23,30 +23,12 @@
 - **Invalidation:** Exit on loss of 34.05; thesis failure also invalidates
 - **Add trigger:** Close above 41 with volume >=1.2x prior median; thesis still supported and recheck R/R
 - **Main counter-evidence:** Unverified
-- **Main risk:** Unverified causal interpretation
+- **Main risk:** Exact company / driver transmission remains unverified; no entry recommendation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 2. 2605.TW 新興 — WAIT
+### 2. 4967.TW 十銓 — WAIT
 
-- **WHY:** WHY unresolved: obtain company evidence before taking risk
-- **Driver:** Dry-bulk freight / commodity shipping cycle
-- **Driver state:** UNVERIFIED
-- **Company transmission:** Unverified
-- **International confirmation:** Unverified — same-driver evidence required
-- **Relative:** UNVERIFIED
-- **Regime:** UNKNOWN
-- **Technical state:** Early strength / support recovery
-- **Why price:** Observed 120-session resistance offers at least 2R before costs; support defines <=8% price risk
-- **Entry:** 36.15–36.5
-- **Invalidation:** Exit on loss of 34.05; thesis failure also invalidates
-- **Add trigger:** Close above 39.6 with volume >=1.2x prior median; thesis still supported and recheck R/R
-- **Main counter-evidence:** Unverified
-- **Main risk:** Unverified causal interpretation
-- **What would make us wrong:** A price-only story or weak company transmission
-
-### 3. 4967.TW 十銓 — WAIT
-
-- **WHY:** WHY unresolved: obtain company evidence before taking risk
+- **WHY:** The official August 2026 disclosure shows revenue up 275.06% year over year and attributes the increase to higher shipment volume and selling prices, but the available evidence does not establish that NAND pricing, SSD/controller/module demand, or inventory normalization caused the improvement. No usable independent exact-driver support or counter source was found in the prefetch searches.
 - **Driver:** NAND / storage controller and module cycle
 - **Driver state:** UNVERIFIED
 - **Company transmission:** Unverified
@@ -59,12 +41,12 @@
 - **Invalidation:** Exit on loss of 268; thesis failure also invalidates
 - **Add trigger:** Close above 294 with volume >=1.2x prior median; thesis still supported and recheck R/R
 - **Main counter-evidence:** Unverified
-- **Main risk:** Unverified causal interpretation
+- **Main risk:** Exact company / driver transmission remains unverified; no entry recommendation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 4. 3044.TW 健鼎 — WAIT
+### 3. 3044.TW 健鼎 — WAIT
 
-- **WHY:** WHY unresolved: obtain company evidence before taking risk
+- **WHY:** The official August 2026 disclosure reports revenue up 65.48% year over year and attributes the increase to customer order demand and shipments, but does not identify the product, end market, customer program, or distinct company-specific mechanism needed to form an unmapped causal thesis.
 - **Driver:** UNMAPPED / WHY?
 - **Driver state:** UNVERIFIED
 - **Company transmission:** Unverified
@@ -77,7 +59,25 @@
 - **Invalidation:** Exit on loss of 470; thesis failure also invalidates
 - **Add trigger:** Close above 521 with volume >=1.2x prior median; thesis still supported and recheck R/R
 - **Main counter-evidence:** Unverified
-- **Main risk:** Unverified causal interpretation
+- **Main risk:** Exact company / driver transmission remains unverified; no entry recommendation
+- **What would make us wrong:** A price-only story or weak company transmission
+
+### 4. 1609.TW 大亞 — WAIT
+
+- **WHY:** The official August 2026 disclosure shows revenue up 34.84% year over year, but provides no copper-price, exchange-inventory, regional-premium, tariff, or physical-tightness attribution. Revenue growth alone cannot establish the nominated copper commodity trade-inventory mechanism, and no usable independent exact-driver source was found in the prefetch searches.
+- **Driver:** Copper commodity price / trade-inventory cycle
+- **Driver state:** UNVERIFIED
+- **Company transmission:** Unverified
+- **International confirmation:** Unverified — same-driver evidence required
+- **Relative:** UNVERIFIED
+- **Regime:** UNKNOWN
+- **Technical state:** Early strength / support recovery
+- **Why price:** Observed 120-session resistance offers at least 2R before costs; support defines <=8% price risk
+- **Entry:** 37.7–37.8
+- **Invalidation:** Exit on loss of 36.5; thesis failure also invalidates
+- **Add trigger:** Close above 38.95 with volume >=1.2x prior median; thesis still supported and recheck R/R
+- **Main counter-evidence:** Unverified
+- **Main risk:** Exact company / driver transmission remains unverified; no entry recommendation
 - **What would make us wrong:** A price-only story or weak company transmission
 
 ### 5. 2636.TW 台驊控股 — WAIT
@@ -98,25 +98,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 6. 1609.TW 大亞 — WAIT
-
-- **WHY:** WHY unresolved: obtain company evidence before taking risk
-- **Driver:** Copper commodity price / trade-inventory cycle
-- **Driver state:** UNVERIFIED
-- **Company transmission:** Unverified
-- **International confirmation:** Unverified — same-driver evidence required
-- **Relative:** UNVERIFIED
-- **Regime:** UNKNOWN
-- **Technical state:** Early strength / support recovery
-- **Why price:** Observed 120-session resistance offers at least 2R before costs; support defines <=8% price risk
-- **Entry:** 37.7–37.8
-- **Invalidation:** Exit on loss of 36.5; thesis failure also invalidates
-- **Add trigger:** Close above 38.95 with volume >=1.2x prior median; thesis still supported and recheck R/R
-- **Main counter-evidence:** Unverified
-- **Main risk:** Unverified causal interpretation
-- **What would make us wrong:** A price-only story or weak company transmission
-
-### 7. 4915.TW 致伸 — WAIT
+### 6. 4915.TW 致伸 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -134,7 +116,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 8. 6150.TWO 撼訊 — WAIT
+### 7. 6150.TWO 撼訊 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -152,7 +134,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 9. 4951.TWO 精拓科 — WAIT
+### 8. 4951.TWO 精拓科 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -170,7 +152,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 10. 5609.TWO 中菲行 — WAIT
+### 9. 5609.TWO 中菲行 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -188,7 +170,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 11. 2838.TW 聯邦銀 — WAIT
+### 10. 2838.TW 聯邦銀 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -206,7 +188,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 12. 2023.TW 燁輝 — WAIT
+### 11. 2023.TW 燁輝 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -224,7 +206,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 13. 2548.TW 華固 — WAIT
+### 12. 2548.TW 華固 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -242,7 +224,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 14. 2449.TW 京元電子 — WAIT
+### 13. 2449.TW 京元電子 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -260,7 +242,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 15. 6742.TW 澤米 — WAIT
+### 14. 6742.TW 澤米 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -278,7 +260,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 16. 6112.TW 邁達特 — WAIT
+### 15. 6112.TW 邁達特 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -296,7 +278,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 17. 6894.TWO 衛司特 — WAIT
+### 16. 6894.TWO 衛司特 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -314,7 +296,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 18. 6179.TWO 亞通 — WAIT
+### 17. 6179.TWO 亞通 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** Unmapped opportunity — research WHY
@@ -332,7 +314,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 19. 2409.TW 友達 — WAIT
+### 18. 2409.TW 友達 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** Unmapped opportunity — research WHY
@@ -350,7 +332,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 20. 6739.TWO 竹陞科技 — WAIT
+### 19. 6739.TWO 竹陞科技 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** Unmapped opportunity — research WHY
@@ -368,7 +350,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 21. 2069.TW 運錩 — WAIT
+### 20. 2069.TW 運錩 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** Unmapped opportunity — research WHY
@@ -386,7 +368,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 22. 6426.TW 統新 — WAIT
+### 21. 6426.TW 統新 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** Unmapped opportunity — research WHY
@@ -404,7 +386,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 23. 5340.TWO 建榮 — WAIT
+### 22. 5340.TWO 建榮 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** Unmapped opportunity — research WHY
@@ -422,7 +404,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 24. 3623.TWO 富晶通 — WAIT
+### 23. 3623.TWO 富晶通 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** Unmapped opportunity — research WHY
@@ -440,7 +422,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 25. 6505.TW 台塑化 — WAIT
+### 24. 6505.TW 台塑化 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** Unmapped opportunity — research WHY
@@ -458,7 +440,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 26. 6885.TW 全福生技 — WAIT
+### 25. 6885.TW 全福生技 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** Unmapped opportunity — research WHY
@@ -476,7 +458,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 27. 7717.TWO 萊德光電-KY — WAIT
+### 26. 7717.TWO 萊德光電-KY — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** Unmapped opportunity — research WHY
@@ -494,7 +476,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 28. 2609.TW 陽明 — WAIT
+### 27. 2609.TW 陽明 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** Container freight / liner shipping cycle
@@ -512,7 +494,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 29. 2617.TW 台航 — WAIT
+### 28. 2617.TW 台航 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** Dry-bulk freight / commodity shipping cycle
@@ -530,7 +512,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 30. 3006.TW 晶豪科 — WAIT
+### 29. 3006.TW 晶豪科 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** Memory IC design demand / ASP cycle
@@ -548,7 +530,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 31. 2603.TW 長榮 — WAIT
+### 30. 2603.TW 長榮 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** Container freight / liner shipping cycle
@@ -566,7 +548,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 32. 2606.TW 裕民 — WAIT
+### 31. 2606.TW 裕民 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** Dry-bulk freight / commodity shipping cycle
@@ -584,7 +566,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 33. 2637.TW 慧洋-KY — WAIT
+### 32. 2637.TW 慧洋-KY — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** Dry-bulk freight / commodity shipping cycle
@@ -602,7 +584,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 34. 8996.TW 高力 — WAIT
+### 33. 8996.TW 高力 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** AI server thermal density / liquid cooling
@@ -620,7 +602,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 35. 2303.TW 聯電 — WAIT
+### 34. 2303.TW 聯電 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** Mature-node foundry utilization / pricing
@@ -638,7 +620,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 36. 2330.TW 台積電 — WAIT
+### 35. 2330.TW 台積電 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** Leading-edge foundry AI/HPC node demand
@@ -656,7 +638,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 37. 2886.TW 兆豐金 — WAIT
+### 36. 2886.TW 兆豐金 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** Financials rate / credit / margin cycle
@@ -674,7 +656,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 38. 6706.TW 惠特 — WAIT
+### 37. 6706.TW 惠特 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -692,7 +674,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 39. 2412.TW 中華電 — WAIT
+### 38. 2412.TW 中華電 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -710,7 +692,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 40. 7825.TWO 和亞智慧 — WAIT
+### 39. 7825.TWO 和亞智慧 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -728,7 +710,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 41. 2413.TW 環科 — WAIT
+### 40. 2413.TW 環科 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -746,7 +728,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 42. 6416.TW 瑞祺電通 — WAIT
+### 41. 6416.TW 瑞祺電通 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -764,7 +746,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 43. 7799.TW 禾榮科 — WAIT
+### 42. 7799.TW 禾榮科 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -782,7 +764,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 44. 6770.TW 力積電 — WAIT
+### 43. 6770.TW 力積電 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** Mature-node foundry utilization / pricing
@@ -800,7 +782,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 45. 2466.TW 冠西電 — WAIT
+### 44. 2466.TW 冠西電 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -818,7 +800,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 46. 3443.TW 創意 — WAIT
+### 45. 3443.TW 創意 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -836,7 +818,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 47. 2254.TW 巨鎧精密-創 — WAIT
+### 46. 2254.TW 巨鎧精密-創 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -854,7 +836,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 48. 2881.TW 富邦金 — WAIT
+### 47. 2881.TW 富邦金 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** Financials rate / credit / margin cycle
@@ -872,7 +854,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 49. 2882.TW 國泰金 — WAIT
+### 48. 2882.TW 國泰金 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** Financials rate / credit / margin cycle
@@ -890,7 +872,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 50. 2801.TW 彰銀 — WAIT
+### 49. 2801.TW 彰銀 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -908,7 +890,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 51. 4303.TWO 信立 — WAIT
+### 50. 4303.TWO 信立 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -926,7 +908,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 52. 6870.TWO 騰雲 — WAIT
+### 51. 6870.TWO 騰雲 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -944,7 +926,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 53. 2243.TW 宏旭-KY — WAIT
+### 52. 2243.TW 宏旭-KY — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -962,7 +944,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 54. 2884.TW 玉山金 — WAIT
+### 53. 2884.TW 玉山金 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -980,7 +962,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 55. 1815.TWO 富喬 — WAIT
+### 54. 1815.TWO 富喬 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -998,7 +980,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 56. 3532.TW 台勝科 — WAIT
+### 55. 3532.TW 台勝科 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -1016,7 +998,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 57. 4714.TWO 永捷 — WAIT
+### 56. 4714.TWO 永捷 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -1034,7 +1016,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 58. 1528.TW 恩德 — WAIT
+### 57. 1528.TW 恩德 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -1052,7 +1034,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 59. 1709.TW 和益 — WAIT
+### 58. 1709.TW 和益 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -1070,7 +1052,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 60. 6133.TW 金橋 — WAIT
+### 59. 6133.TW 金橋 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -1088,7 +1070,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 61. 6531.TW 愛普* — WAIT
+### 60. 6531.TW 愛普* — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -1106,7 +1088,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 62. 2033.TW 佳大 — WAIT
+### 61. 2033.TW 佳大 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -1124,7 +1106,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 63. 5876.TW 上海商銀 — WAIT
+### 62. 5876.TW 上海商銀 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -1142,7 +1124,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 64. 7709.TWO 榮田 — WAIT
+### 63. 7709.TWO 榮田 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -1160,7 +1142,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 65. 7714.TWO 創泓科技 — WAIT
+### 64. 7714.TWO 創泓科技 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -1178,7 +1160,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 66. 2834.TW 臺企銀 — WAIT
+### 65. 2834.TW 臺企銀 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -1196,7 +1178,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 67. 6957.TW 裕慶-KY — WAIT
+### 66. 6957.TW 裕慶-KY — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -1214,7 +1196,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 68. 9933.TW 中鼎 — WAIT
+### 67. 9933.TW 中鼎 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -1232,7 +1214,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 69. 2454.TW 聯發科 — WAIT
+### 68. 2454.TW 聯發科 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -1250,7 +1232,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 70. 1309.TW 台達化 — WAIT
+### 69. 1309.TW 台達化 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -1268,7 +1250,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 71. 3024.TW 憶聲 — WAIT
+### 70. 3024.TW 憶聲 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -1286,7 +1268,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 72. 1721.TW 國慶科技 — WAIT
+### 71. 1721.TW 國慶科技 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -1304,7 +1286,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 73. 2615.TW 萬海 — WAIT
+### 72. 2615.TW 萬海 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** Container freight / liner shipping cycle
@@ -1322,7 +1304,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 74. 3034.TW 聯詠 — WAIT
+### 73. 3034.TW 聯詠 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -1340,7 +1322,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 75. 2892.TW 第一金 — WAIT
+### 74. 2892.TW 第一金 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -1358,7 +1340,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 76. 2820.TW 華票 — WAIT
+### 75. 2820.TW 華票 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -1376,7 +1358,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 77. 2890.TW 永豐金 — WAIT
+### 76. 2890.TW 永豐金 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -1394,7 +1376,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 78. 2812.TW 台中銀 — WAIT
+### 77. 2812.TW 台中銀 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -1412,7 +1394,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 79. 4119.TW 旭富 — WAIT
+### 78. 4119.TW 旭富 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -1430,7 +1412,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 80. 2492.TW 華新科 — WAIT
+### 79. 2492.TW 華新科 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** MLCC demand / pricing cycle
@@ -1448,7 +1430,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 81. 7703.TWO 銳澤 — WAIT
+### 80. 7703.TWO 銳澤 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -1466,7 +1448,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 82. 4105.TWO 東洋 — WAIT
+### 81. 4105.TWO 東洋 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -1484,7 +1466,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 83. 3016.TW 嘉晶 — WAIT
+### 82. 3016.TW 嘉晶 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -1502,7 +1484,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 84. 2855.TW 統一證 — WAIT
+### 83. 2855.TW 統一證 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -1520,7 +1502,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 85. 6667.TWO 信紘科 — WAIT
+### 84. 6667.TWO 信紘科 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -1538,7 +1520,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 86. 7610.TW 聯友金屬-創 — WAIT
+### 85. 7610.TW 聯友金屬-創 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -1556,7 +1538,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 87. 4961.TW 天鈺 — WAIT
+### 86. 4961.TW 天鈺 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -1574,7 +1556,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 88. 6152.TW 百一 — WAIT
+### 87. 6152.TW 百一 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -1592,7 +1574,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 89. 6669.TW 緯穎 — WAIT
+### 88. 6669.TW 緯穎 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** AI server shipment / ODM cycle
@@ -1610,7 +1592,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 90. 3324.TWO 雙鴻 — WAIT
+### 89. 3324.TWO 雙鴻 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** AI server thermal density / liquid cooling
@@ -1628,7 +1610,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 91. 2540.TW 愛山林 — WAIT
+### 90. 2540.TW 愛山林 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -1646,7 +1628,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 92. 6834.TW 天二科技 — WAIT
+### 91. 6834.TW 天二科技 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -1664,7 +1646,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 93. 8040.TWO 九暘 — WAIT
+### 92. 8040.TWO 九暘 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -1682,7 +1664,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 94. 5209.TWO 新鼎 — WAIT
+### 93. 5209.TWO 新鼎 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -1700,7 +1682,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 95. 6292.TWO 迅德 — WAIT
+### 94. 6292.TWO 迅德 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -1718,7 +1700,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 96. 8064.TWO 東捷 — WAIT
+### 95. 8064.TWO 東捷 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -1736,7 +1718,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 97. 2880.TW 華南金 — WAIT
+### 96. 2880.TW 華南金 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -1754,7 +1736,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 98. 4770.TW 上品 — WAIT
+### 97. 4770.TW 上品 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -1772,7 +1754,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 99. 2360.TW 致茂 — WAIT
+### 98. 2360.TW 致茂 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -1790,7 +1772,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 100. 3605.TW 宏致 — WAIT
+### 99. 3605.TW 宏致 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -1808,7 +1790,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 101. 3017.TW 奇鋐 — WAIT
+### 100. 3017.TW 奇鋐 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** AI server thermal density / liquid cooling
@@ -1826,7 +1808,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 102. 6214.TW 精誠 — WAIT
+### 101. 6214.TW 精誠 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -1844,7 +1826,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 103. 2408.TW 南亞科 — WAIT
+### 102. 2408.TW 南亞科 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** Commodity DRAM pricing / bit demand
@@ -1862,7 +1844,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 104. 2206.TW 三陽工業 — WAIT
+### 103. 2206.TW 三陽工業 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -1880,7 +1862,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 105. 1215.TW 卜蜂 — WAIT
+### 104. 1215.TW 卜蜂 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -1898,7 +1880,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 106. 2633.TW 台灣高鐵 — WAIT
+### 105. 2633.TW 台灣高鐵 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -1916,7 +1898,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 107. 3693.TWO 營邦 — WAIT
+### 106. 3693.TWO 營邦 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** AI rack / server system buildout
@@ -1934,7 +1916,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 108. 2480.TW 敦陽科 — WAIT
+### 107. 2480.TW 敦陽科 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -1952,7 +1934,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 109. 6116.TW 彩晶 — WAIT
+### 108. 6116.TW 彩晶 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -1970,7 +1952,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 110. 1569.TWO 濱川 — WAIT
+### 109. 1569.TWO 濱川 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -1988,7 +1970,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 111. 2468.TW 華經 — WAIT
+### 110. 2468.TW 華經 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -2006,7 +1988,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 112. 1558.TW 伸興 — WAIT
+### 111. 1558.TW 伸興 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -2024,7 +2006,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 113. 1409.TW 新纖 — WAIT
+### 112. 1409.TW 新纖 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -2042,7 +2024,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 114. 2436.TW 偉詮電 — WAIT
+### 113. 2436.TW 偉詮電 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -2060,7 +2042,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 115. 3026.TW 禾伸堂 — WAIT
+### 114. 3026.TW 禾伸堂 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** MLCC demand / pricing cycle
@@ -2078,7 +2060,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 116. 4904.TW 遠傳 — WAIT
+### 115. 4904.TW 遠傳 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -2096,7 +2078,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 117. 2382.TW 廣達 — WAIT
+### 116. 2382.TW 廣達 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** AI server shipment / ODM cycle
@@ -2114,7 +2096,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 118. 3231.TW 緯創 — WAIT
+### 117. 3231.TW 緯創 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** AI server shipment / ODM cycle
@@ -2132,7 +2114,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 119. 3380.TW 明泰 — WAIT
+### 118. 3380.TW 明泰 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -2150,7 +2132,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 120. 7795.TW 長廣 — WAIT
+### 119. 7795.TW 長廣 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -2168,7 +2150,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 121. 1612.TW 宏泰 — WAIT
+### 120. 1612.TW 宏泰 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -2186,7 +2168,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 122. 6207.TWO 雷科 — WAIT
+### 121. 6207.TWO 雷科 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -2204,7 +2186,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 123. 6026.TWO 福邦證 — WAIT
+### 122. 6026.TWO 福邦證 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -2222,7 +2204,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 124. 9917.TW 中保科 — WAIT
+### 123. 9917.TW 中保科 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -2240,7 +2222,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 125. 6510.TWO 精測 — WAIT
+### 124. 6510.TWO 精測 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** Advanced packaging / test capex
@@ -2258,7 +2240,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 126. 6291.TWO 沛亨 — WAIT
+### 125. 6291.TWO 沛亨 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -2276,7 +2258,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 127. 1304.TW 台聚 — WAIT
+### 126. 1304.TW 台聚 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -2294,7 +2276,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 128. 1313.TW 聯成 — WAIT
+### 127. 1313.TW 聯成 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -2312,7 +2294,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 129. 2504.TW 國產 — WAIT
+### 128. 2504.TW 國產 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -2330,7 +2312,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 130. 6670.TW 復盛應用 — WAIT
+### 129. 6670.TW 復盛應用 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -2348,7 +2330,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 131. 1305.TW 華夏 — WAIT
+### 130. 1305.TW 華夏 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -2366,7 +2348,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 132. 3029.TW 零壹 — WAIT
+### 131. 3029.TW 零壹 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** Enterprise cybersecurity spending
@@ -2384,7 +2366,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 133. 3005.TW 神基 — WAIT
+### 132. 3005.TW 神基 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -2402,7 +2384,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 134. 2891.TW 中信金 — WAIT
+### 133. 2891.TW 中信金 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** Financials rate / credit / margin cycle
@@ -2420,7 +2402,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 135. 2912.TW 統一超 — WAIT
+### 134. 2912.TW 統一超 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -2438,7 +2420,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 136. 6257.TW 矽格 — WAIT
+### 135. 6257.TW 矽格 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -2456,7 +2438,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 137. 4590.TW 富田-創 — WAIT
+### 136. 4590.TW 富田-創 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -2474,7 +2456,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 138. 7728.TWO 光焱科技 — WAIT
+### 137. 7728.TWO 光焱科技 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -2492,7 +2474,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 139. 1314.TW 中石化 — WAIT
+### 138. 1314.TW 中石化 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -2510,7 +2492,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 140. 7828.TWO 創新服務 — WAIT
+### 139. 7828.TWO 創新服務 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -2528,7 +2510,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 141. 9907.TW 統一實 — WAIT
+### 140. 9907.TW 統一實 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -2546,7 +2528,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 142. 2428.TW 興勤 — WAIT
+### 141. 2428.TW 興勤 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -2564,7 +2546,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 143. 3437.TW 榮創 — WAIT
+### 142. 3437.TW 榮創 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -2582,7 +2564,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 144. 2345.TW 智邦 — WAIT
+### 143. 2345.TW 智邦 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** 800G/1.6T AI networking upgrade
@@ -2600,7 +2582,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 145. 5351.TWO 鈺創 — WAIT
+### 144. 5351.TWO 鈺創 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** Memory IC design demand / ASP cycle
@@ -2618,7 +2600,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 146. 2344.TW 華邦電 — WAIT
+### 145. 2344.TW 華邦電 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** Specialty DRAM / NOR / NAND pricing
@@ -2636,7 +2618,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 147. 2337.TW 旺宏 — WAIT
+### 146. 2337.TW 旺宏 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** Specialty DRAM / NOR / NAND pricing
@@ -2654,7 +2636,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 148. 8299.TWO 群聯 — WAIT
+### 147. 8299.TWO 群聯 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** NAND / storage controller and module cycle
@@ -2672,7 +2654,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 149. 2376.TW 技嘉 — WAIT
+### 148. 2376.TW 技嘉 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** AI rack / server system buildout
@@ -2690,7 +2672,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 150. 1519.TW 華城 — WAIT
+### 149. 1519.TW 華城 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** Grid modernization / transformer and cable capex
@@ -2708,7 +2690,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 151. 3260.TWO 威剛 — WAIT
+### 150. 3260.TWO 威剛 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** NAND / storage controller and module cycle
@@ -2726,7 +2708,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 152. 2317.TW 鴻海 — WAIT
+### 151. 2317.TW 鴻海 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** AI server shipment / ODM cycle
@@ -2744,7 +2726,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 153. 5289.TWO 宜鼎 — WAIT
+### 152. 5289.TWO 宜鼎 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** NAND / storage controller and module cycle
@@ -2762,7 +2744,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 154. 6640.TWO 均華 — WAIT
+### 153. 6640.TWO 均華 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** Advanced packaging / test capex
@@ -2780,7 +2762,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 155. 1608.TW 華榮 — WAIT
+### 154. 1608.TW 華榮 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** Copper commodity price / trade-inventory cycle
@@ -2798,7 +2780,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 156. 2356.TW 英業達 — WAIT
+### 155. 2356.TW 英業達 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** AI server shipment / ODM cycle
@@ -2816,7 +2798,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 157. 1513.TW 中興電 — WAIT
+### 156. 1513.TW 中興電 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** Grid modernization / transformer and cable capex
@@ -2834,7 +2816,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 158. 6230.TW 尼得科超眾 — WAIT
+### 157. 6230.TW 尼得科超眾 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** AI server thermal density / liquid cooling
@@ -2852,7 +2834,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 159. 5347.TWO 世界 — WAIT
+### 158. 5347.TWO 世界 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** Mature-node foundry utilization / pricing
@@ -2870,7 +2852,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 160. 1503.TW 士電 — WAIT
+### 159. 1503.TW 士電 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** Grid modernization / transformer and cable capex
@@ -2888,7 +2870,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 161. 6285.TW 啟碁 — WAIT
+### 160. 6285.TW 啟碁 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** 800G/1.6T AI networking upgrade
@@ -2906,7 +2888,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 162. 3596.TW 智易 — WAIT
+### 161. 3596.TW 智易 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** 800G/1.6T AI networking upgrade
@@ -2924,7 +2906,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 163. 5388.TW 中磊 — WAIT
+### 162. 5388.TW 中磊 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** 800G/1.6T AI networking upgrade
@@ -2942,7 +2924,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 164. 2327.TW 國巨* — WAIT
+### 163. 2327.TW 國巨* — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** MLCC demand / pricing cycle
@@ -2960,7 +2942,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 165. 2308.TW 台達電 — WAIT
+### 164. 2308.TW 台達電 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** Power equipment / electronics capex
@@ -2978,7 +2960,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 166. 6446.TW 藥華藥 — WAIT
+### 165. 6446.TW 藥華藥 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** Biopharma risk appetite / clinical-commercial cycle
@@ -2996,7 +2978,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 167. 1605.TW 華新 — WAIT
+### 166. 1605.TW 華新 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** Copper commodity price / trade-inventory cycle
@@ -3014,7 +2996,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 168. 4938.TW 和碩 — WAIT
+### 167. 4938.TW 和碩 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** Consumer electronics demand cycle
@@ -3032,7 +3014,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 169. 3704.TW 合勤控 — WAIT
+### 168. 3704.TW 合勤控 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** 800G/1.6T AI networking upgrade
@@ -3050,7 +3032,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 170. 6223.TWO 旺矽 — WAIT
+### 169. 6223.TWO 旺矽 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** Advanced packaging / test capex
@@ -3068,7 +3050,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 171. 6472.TW 保瑞 — WAIT
+### 170. 6472.TW 保瑞 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** Biopharma risk appetite / clinical-commercial cycle
@@ -3086,7 +3068,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 172. 6140.TWO 訊達 — WAIT
+### 171. 6140.TWO 訊達 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** Enterprise cybersecurity spending
@@ -3104,7 +3086,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 173. 3624.TWO 光頡 — WAIT
+### 172. 3624.TWO 光頡 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** Unmapped opportunity — research WHY
@@ -3122,7 +3104,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 174. 2305.TW 全友 — WAIT
+### 173. 2305.TW 全友 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** Unmapped opportunity — research WHY
@@ -3140,7 +3122,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 175. 3055.TW 蔚華科 — WAIT
+### 174. 3055.TW 蔚華科 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** Unmapped opportunity — research WHY
@@ -3158,7 +3140,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 176. 6173.TWO 信昌電 — WAIT
+### 175. 6173.TWO 信昌電 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** Unmapped opportunity — research WHY
@@ -3176,7 +3158,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 177. 3354.TWO 律勝 — WAIT
+### 176. 3354.TWO 律勝 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** Unmapped opportunity — research WHY
@@ -3194,7 +3176,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 178. 3229.TW 晟鈦 — WAIT
+### 177. 3229.TW 晟鈦 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** Unmapped opportunity — research WHY
@@ -3212,7 +3194,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 179. 7772.TWO 耀穎 — WAIT
+### 178. 7772.TWO 耀穎 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** Unmapped opportunity — research WHY
@@ -3230,7 +3212,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 180. 5464.TWO 霖宏 — WAIT
+### 179. 5464.TWO 霖宏 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -3248,7 +3230,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 181. 1560.TW 中砂 — WAIT
+### 180. 1560.TW 中砂 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -3266,7 +3248,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 182. 2338.TW 光罩 — WAIT
+### 181. 2338.TW 光罩 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -3284,7 +3266,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 183. 5386.TWO 青雲 — WAIT
+### 182. 5386.TWO 青雲 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -3302,7 +3284,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 184. 6620.TWO 漢達 — WAIT
+### 183. 6620.TWO 漢達 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -3320,7 +3302,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 185. 5880.TW 合庫金 — WAIT
+### 184. 5880.TW 合庫金 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -3338,7 +3320,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 186. 4556.TWO 旭然 — WAIT
+### 185. 4556.TWO 旭然 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -3356,7 +3338,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 187. 3374.TWO 精材 — WAIT
+### 186. 3374.TWO 精材 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -3374,7 +3356,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 188. 5314.TWO 世紀* — WAIT
+### 187. 5314.TWO 世紀* — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -3392,7 +3374,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 189. 3441.TWO 聯一光 — WAIT
+### 188. 3441.TWO 聯一光 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -3410,7 +3392,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 190. 3406.TW 玉晶光 — WAIT
+### 189. 3406.TW 玉晶光 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -3428,7 +3410,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 191. 4908.TWO 前鼎 — WAIT
+### 190. 4908.TWO 前鼎 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -3446,7 +3428,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 192. 2221.TWO 大甲 — WAIT
+### 191. 2221.TWO 大甲 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -3464,7 +3446,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 193. 6225.TW 天瀚 — WAIT
+### 192. 6225.TW 天瀚 — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -3482,7 +3464,7 @@
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 194. 6933.TW AMAX-KY — WAIT
+### 193. 6933.TW AMAX-KY — WAIT
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -3499,6 +3481,25 @@
 - **Main counter-evidence:** Unverified
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
+
+### 194. 2605.TW 新興 — PASS
+
+- **WHY:** 新興's August 2026 revenue increased 58.75% year over year, and the official MOPS remark attributes the increase to freight rates remaining high.
+- **Driver:** Higher dry-bulk freight rates improve vessel earning power and revenue for dry-bulk operators.
+- **Driver state:** DEVELOPING
+- **Company transmission:** The company's official monthly disclosure directly links its revenue increase to sustained high freight rates, providing company-specific transmission from the dry-bulk freight cycle to revenue.
+- **International confirmation:** Unverified — same-driver evidence required
+- **Relative:** TOGETHER
+- **Regime:** NEUTRAL
+- **Technical state:** Early strength / support recovery
+- **Why price:** Observed 120-session resistance offers at least 2R before costs; support defines <=8% price risk
+- **Entry:** 36.15–36.5
+- **Invalidation:** Exit on loss of 34.05; thesis failure also invalidates
+- **Add trigger:** Close above 39.6 with volume >=1.2x prior median; thesis still supported and recheck R/R
+- **Main counter-evidence:** BIMCO reporting warned that apparent 2026 dry-bulk strength was substantially driven by forced rerouting and could reverse into a 2027 supply glut, indicating that current high rates may be temporary rather than a durable cycle.
+- **Main risk:** Dry-bulk earnings can reverse if rerouting normalizes, commodity volumes weaken, or fleet supply expands. The business is not classified as rate-sensitive under the required definition because the cited mechanism is freight-rate exposure rather than sensitivity to real interest rates, long-end Treasury yields, liquidity, or financing costs.
+- **What would make us wrong:** A sustained decline in dry-bulk freight rates accompanied by weaker vessel utilization and a subsequent reversal in 新興's revenue would falsify the transmission.
+- Evidence: August 2026 monthly revenue was TWD 507.861 million, up 58.75% year over year and 6.04% month over month; cumulative revenue was up 38.72% year over year. The issuer remark states that high freight rates materially increased revenue. [Official monthly revenue: 新興 11508](https://mopsfin.twse.com.tw/opendata/t187ap05_L.csv)
 
 ### 195. 8227.TWO 巨有科技 — PASS
 
