@@ -1,8 +1,8 @@
 {
   "contract": "ALPHA_HUNTER_V3_VALIDATED_RESEARCH",
   "status": "PASS",
-  "research_run_id": "20260912T163101+0800-2861eef0",
-  "validated_at_utc": "2026-09-12T08:36:14.015457+00:00",
+  "research_run_id": "20260912T164858+0800-8dfc4d15",
+  "validated_at_utc": "2026-09-12T08:54:16.030333+00:00",
   "target_driver_ids": [
     "CONTAINER_FREIGHT",
     "DRY_BULK_FREIGHT",
@@ -15,37 +15,26 @@
     {
       "driver_id": "CONTAINER_FREIGHT",
       "state": "UNKNOWN",
-      "confidence": 0.42,
-      "primary_cause": "The search produced no sufficiently specific current primary or high-quality source confirming the container spot/contract freight and liner-utilization cycle. One counter-oriented result described container-shipping-cycle exposure but did not establish a contradictory industry condition, leaving the exact driver unresolved.",
+      "confidence": 0.18,
+      "primary_cause": "Current exact-driver evidence is insufficient: searches produced no verifiable time-consistent source establishing the present container spot or contract freight and liner-utilization cycle, and no resolved counter-evidence assessment.",
       "industry_scope": "UNKNOWN",
       "supporting_evidence": [],
-      "counter_evidence": [
-        {
-          "claim": "Danaos is exposed to the container-shipping cycle through long-term charters, fleet strategy, balance-sheet discipline, and selective growth, but the source does not establish a current industry-wide freight-rate or utilization reversal.",
-          "source_title": "DAC stock reflects container shipping cycle as Danaos focuses on fleet, debt and shareholder returns",
-          "source_url": "https://www.ad-hoc-news.de/boerse/news/ueberblick/dac-stock-reflects-container-shipping-cycle-as-danaos-focuses-on-fleet/69738333",
-          "published_at": "2026-07-10T10:22:00Z",
-          "event_date": null,
-          "evidence_type": "HIGH_QUALITY_REPORTING"
-        }
-      ],
-      "source_count": 1,
+      "counter_evidence": [],
+      "source_count": 0,
       "event_date": null,
-      "source_dates": [
-        "2026-07-10T10:22:00Z"
-      ],
-      "researched_at_utc": "2026-09-12T08:35:45Z",
-      "research_run_id": "20260912T163101+0800-2861eef0"
+      "source_dates": [],
+      "researched_at_utc": "2026-09-12T08:53:41.050Z",
+      "research_run_id": "20260912T164858+0800-8dfc4d15"
     },
     {
       "driver_id": "DRY_BULK_FREIGHT",
       "state": "UNKNOWN",
       "confidence": 0.58,
-      "primary_cause": "Evidence confirms elevated dry-bulk rates and Capesize demand, but opposing industry evidence attributes much of the apparent 2026 strength to forced rerouting and warns of a future supply glut. The durability and exact causal scope of the cycle therefore remain conflicting.",
+      "primary_cause": "Evidence is conflicting on durability: reporting indicates Capesize rates reached a two-year high on stronger demand and tighter supply, while BIMCO-related reporting warns that 2026 strength was partly temporary rerouting and may reverse into a 2027 supply glut.",
       "industry_scope": "INDUSTRY_WIDE",
       "supporting_evidence": [
         {
-          "claim": "A key dry-bulk freight-rate measure reached its highest level since December 2023, driven by rising Capesize demand and tightening vessel supply.",
+          "claim": "A key dry-bulk shipping-rate measure reached its highest level since December 2023, driven by rising Capesize demand and tightening vessel supply.",
           "source_title": "Dry-Bulk Shipping Rates Hit Two-Year High on Capesize Demand",
           "source_url": "https://gcaptain.com/dry-bulk-shipping-rates-hit-two-year-high-on-capesize-demand/",
           "published_at": "2026-05-07T00:07:00Z",
@@ -55,7 +44,7 @@
       ],
       "counter_evidence": [
         {
-          "claim": "BIMCO warned that apparent 2026 dry-bulk strength was substantially artificial because of forced rerouting and could reverse into a 2027 supply glut.",
+          "claim": "BIMCO warned that apparent 2026 dry-bulk strength was substantially artificial, reflecting forced rerouting, and could reverse into a 2027 supply glut.",
           "source_title": "Dry bulk shipping faces 2027 supply glut: BIMCO warns Hormuz rerouting boost will reverse",
           "source_url": "https://www.msn.com/en-us/news/other/dry-bulk-shipping-faces-2027-supply-glut-bimco-warns-hormuz-rerouting-boost-will-reverse/ar-AA29coQf",
           "published_at": "2026-08-01T10:36:00Z",
@@ -67,20 +56,20 @@
       "event_date": "2026-08-01T00:00:00Z",
       "source_dates": [
         "2026-05-07T00:00:00Z",
-        "2026-08-01T10:36:00Z"
+        "2026-08-01T00:00:00Z"
       ],
-      "researched_at_utc": "2026-09-12T08:35:45Z",
-      "research_run_id": "20260912T163101+0800-2861eef0"
+      "researched_at_utc": "2026-09-12T08:53:41.050Z",
+      "research_run_id": "20260912T164858+0800-8dfc4d15"
     },
     {
       "driver_id": "AI_SERVER_THERMAL_DENSITY",
       "state": "ACTIVE",
-      "confidence": 0.82,
-      "primary_cause": "High-density AI and HPC racks are exceeding the practical capability of traditional air cooling, driving adoption of direct-to-chip and other liquid-cooling systems.",
+      "confidence": 0.76,
+      "primary_cause": "High-performance AI workloads are pushing rack power density beyond conventional air-cooling capability, increasing adoption of liquid-cooling systems including direct-to-chip solutions.",
       "industry_scope": "INDUSTRY_WIDE",
       "supporting_evidence": [
         {
-          "claim": "AI and high-performance-computing workloads are pushing server and rack power densities beyond traditional air-cooled facility capability, making high-density cooling a strategic requirement.",
+          "claim": "AI and high-performance-computing workloads are pushing server and rack power densities beyond traditional air-cooled facilities, making high-density liquid cooling increasingly strategic.",
           "source_title": "Scaling AI data center cooling for high-density servers",
           "source_url": "https://www.techtarget.com/it-infrastructure/tip/Scaling-AI-data-center-cooling-for-high-density-servers",
           "published_at": "2026-06-11T07:42:00Z",
@@ -88,56 +77,47 @@
           "evidence_type": "HIGH_QUALITY_REPORTING"
         },
         {
-          "claim": "AI rack densities above 120 kW are described as exceeding the practical limits of legacy air cooling, increasing the need for direct-to-chip and immersion solutions.",
-          "source_title": "Why AI rack densities make liquid cooling nonnegotiable",
-          "source_url": "https://www.networkworld.com/article/4149069/why-ai-rack-densities-make-liquid-cooling-nonnegotiable.html",
-          "published_at": "2026-03-25T10:52:00Z",
-          "event_date": "2026-03-25T00:00:00Z",
-          "evidence_type": "HIGH_QUALITY_REPORTING"
-        },
-        {
-          "claim": "A turnkey direct-to-chip liquid-cooled server platform was launched to simplify enterprise deployment of high-density AI compute.",
-          "source_title": "JetCool Launches Turnkey Liquid-Cooled Server Solution to Accelerate Enterprise AI Adoption",
-          "source_url": "https://www.morningstar.com/news/pr-newswire/20260625sf92637/jetcool-launches-turnkey-liquid-cooled-server-solution-to-accelerate-enterprise-ai-adoption",
-          "published_at": "2026-06-25T06:05:00Z",
-          "event_date": "2026-06-25T00:00:00Z",
+          "claim": "A Taiwan server-chassis and cooling specialist increased its strategic exposure to liquid cooling for AI server racks through an acquisition of a stake in Jochu Technology.",
+          "source_title": "Ablecom acquires Jochu stake: Liquid cooling now mandatory for AI server racks",
+          "source_url": "https://www.msn.com/en-us/money/general/ablecom-acquires-jochu-stake-liquid-cooling-now-mandatory-for-ai-server-racks/ar-AA2b3Rns",
+          "published_at": "2026-08-27T10:28:00Z",
+          "event_date": "2026-08-26T00:00:00Z",
           "evidence_type": "COMPANY_PRIMARY"
         }
       ],
       "counter_evidence": [],
-      "source_count": 3,
-      "event_date": "2026-06-25T00:00:00Z",
+      "source_count": 2,
+      "event_date": "2026-08-26T00:00:00Z",
       "source_dates": [
-        "2026-03-25T10:52:00Z",
-        "2026-06-11T07:42:00Z",
-        "2026-06-25T06:05:00Z"
+        "2026-06-11T00:00:00Z",
+        "2026-08-26T00:00:00Z"
       ],
-      "researched_at_utc": "2026-09-12T08:35:45Z",
-      "research_run_id": "20260912T163101+0800-2861eef0"
+      "researched_at_utc": "2026-09-12T08:53:41.050Z",
+      "research_run_id": "20260912T164858+0800-8dfc4d15"
     },
     {
       "driver_id": "AI_SERVER_SHIPMENTS",
       "state": "UNKNOWN",
-      "confidence": 0.08,
-      "primary_cause": "Exact current evidence for AI server units, rack shipments, ODM backlog, or hyperscaler deployment volumes was not found after support and counter searches.",
+      "confidence": 0.18,
+      "primary_cause": "Exact current evidence for AI server units, rack shipments, ODM backlog, or hyperscaler deployment was not verified from usable external sources; therefore the driver cannot be activated.",
       "industry_scope": "UNKNOWN",
       "supporting_evidence": [],
       "counter_evidence": [],
       "source_count": 0,
       "event_date": null,
       "source_dates": [],
-      "researched_at_utc": "2026-09-12T08:35:45Z",
-      "research_run_id": "20260912T163101+0800-2861eef0"
+      "researched_at_utc": "2026-09-12T08:53:41.050Z",
+      "research_run_id": "20260912T164858+0800-8dfc4d15"
     },
     {
       "driver_id": "AI_SERVER_RACK_BUILD",
       "state": "ACTIVE",
-      "confidence": 0.79,
-      "primary_cause": "Rack-scale AI systems are moving from product announcement to customer deployment, supporting an active AI rack and server-system buildout driver.",
+      "confidence": 0.7,
+      "primary_cause": "Rack-scale AI systems are entering deployment with named hyperscaler and enterprise customers, although manufacturing delays for some next-generation rack platforms create a meaningful counter-signal.",
       "industry_scope": "INDUSTRY_WIDE",
       "supporting_evidence": [
         {
-          "claim": "Microsoft announced deployment of AMD Helios rack-scale AI systems in Azure data centers, alongside early customers including Meta, OpenAI, and Oracle.",
+          "claim": "AMD's Helios rack-scale AI system launched with Microsoft identified as a buyer and deployment planned for Azure data centers, alongside other early customers.",
           "source_title": "AMD launches Helios, its first rack AI system to rival Nvidia, adding Microsoft as newest buyer",
           "source_url": "https://www.cnbc.com/2026/07/20/amd-helios-microsoft-ai-nvidia.html",
           "published_at": "2026-07-20T05:59:00Z",
@@ -145,65 +125,78 @@
           "evidence_type": "HIGH_QUALITY_REPORTING"
         },
         {
-          "claim": "A Taiwan server-chassis and cooling specialist acquired a stake in a listed manufacturer, with the transaction described in the context of liquid-cooled AI server racks.",
-          "source_title": "Ablecom acquires Jochu stake: Liquid cooling now mandatory for AI server racks",
-          "source_url": "https://www.msn.com/en-us/money/general/ablecom-acquires-jochu-stake-liquid-cooling-now-mandatory-for-ai-server-racks/ar-AA2b3Rns",
-          "published_at": "2026-08-27T10:28:00Z",
-          "event_date": "2026-08-27T00:00:00Z",
+          "claim": "AMD's Helios AI rack system was reported to be on track for initial shipments in the third quarter of 2026.",
+          "source_title": "AMD Helios AI rack system on track for initial shipments in Q3 2026",
+          "source_url": "https://www.shacknews.com/article/150249/amd-helios-ai-system-shipping-q3-2026",
+          "published_at": "2026-08-04T07:45:00Z",
+          "event_date": "2026-08-04T00:00:00Z",
           "evidence_type": "HIGH_QUALITY_REPORTING"
         }
       ],
-      "counter_evidence": [],
-      "source_count": 2,
-      "event_date": "2026-08-27T00:00:00Z",
-      "source_dates": [
-        "2026-07-20T05:59:00Z",
-        "2026-08-27T10:28:00Z"
+      "counter_evidence": [
+        {
+          "claim": "Nvidia's next-generation Kyber NVL144 rack system was reportedly delayed to 2028 because of manufacturing difficulties involving a key circuit board.",
+          "source_title": "Nvidia's next-gen AI rack system delayed to 2028 on manufacturing snags, SemiAnalysis says",
+          "source_url": "https://www.cnbc.com/2026/07/06/nvidia-kyber-rack-system-delays-manufacturing-taiwan-rubin-chips-.html",
+          "published_at": "2026-07-06T10:26:00Z",
+          "event_date": "2026-07-06T00:00:00Z",
+          "evidence_type": "HIGH_QUALITY_REPORTING"
+        }
       ],
-      "researched_at_utc": "2026-09-12T08:35:45Z",
-      "research_run_id": "20260912T163101+0800-2861eef0"
+      "source_count": 3,
+      "event_date": "2026-08-04T00:00:00Z",
+      "source_dates": [
+        "2026-07-06T00:00:00Z",
+        "2026-07-20T00:00:00Z",
+        "2026-08-04T00:00:00Z"
+      ],
+      "researched_at_utc": "2026-09-12T08:53:41.050Z",
+      "research_run_id": "20260912T164858+0800-8dfc4d15"
     }
   ],
   "company_opportunities": [
     {
       "ticker": "2605.TW",
       "driver_id": "DRY_BULK_FREIGHT",
-      "research_run_id": "20260912T163101+0800-2861eef0",
-      "why": "Official August 2026 revenue increased 58.75% year over year and the issuer dataset attributes the increase to freight rates remaining high.",
-      "driver": "Higher dry-bulk freight rates increase vessel revenue and earnings for dry-bulk operators through improved charter economics.",
+      "research_run_id": "20260912T164858+0800-8dfc4d15",
+      "why": "新興's August 2026 official monthly revenue rose 58.75% year over year, and the issuer remark attributes the increase to freight rates remaining high.",
+      "driver": "Higher dry-bulk freight rates increase vessel revenue and cash generation for dry-bulk operators.",
       "driver_state": "DEVELOPING",
       "scope": "GLOBAL",
-      "company_transmission": "The official monthly revenue record reports that 新興's August 2026 revenue rose to 507861 thousand TWD, up 58.75% year over year, specifically noting that high freight rates materially contributed to the increase.",
-      "rate_sensitive": false,
+      "company_transmission": "新興's official monthly revenue disclosure explicitly links the measured revenue improvement to persistently high freight rates, while industry reporting attributes elevated Capesize rates to stronger demand and tighter vessel supply.",
+      "rate_sensitive": true,
       "local_scope_reason": "",
       "fundamental_evidence": [
         {
           "ticker": "2605.TW",
           "metric": "REVENUE",
           "direction": "SUPPORTS",
-          "claim": "August 2026 monthly revenue was 507861 thousand TWD, up 6.04% month over month and 58.75% year over year; the issuer remark states that sustained high freight rates caused the significant year-over-year increase.",
+          "claim": "August 2026 monthly revenue was NT$507.861 million, up 58.75% year over year and 6.04% month over month; the issuer remark states that high freight rates caused the significant year-over-year increase.",
           "source_title": "Official monthly revenue: 新興 11508",
           "source_url": "https://mopsfin.twse.com.tw/opendata/t187ap05_L.csv",
-          "published_at": "2026-09-12T08:35:38.638694Z",
-          "available_at": "2026-09-12T08:35:38.638694Z"
+          "published_at": "2026-09-12T08:53:35.937748Z",
+          "available_at": "2026-09-12T08:53:35.937748Z"
         }
       ],
       "international_evidence": [
         {
+          "ticker": "2605.TW",
           "driver_id": "DRY_BULK_FREIGHT",
           "same_driver": true,
-          "claim": "A key dry-bulk freight-rate measure reached its highest level since December 2023 in May 2026, with the report attributing the increase to stronger Capesize demand and tightening vessel supply.",
+          "metric": "FREIGHT_RATE",
+          "direction": "SUPPORTS",
+          "claim": "A key dry-bulk rate measure reached its highest level since December 2023, driven by stronger Capesize demand and tightening vessel supply.",
           "source_title": "Dry-Bulk Shipping Rates Hit Two-Year High on Capesize Demand",
           "source_url": "https://gcaptain.com/dry-bulk-shipping-rates-hit-two-year-high-on-capesize-demand/",
           "published_at": "2026-05-07T00:07:00Z",
-          "available_at": "2026-09-12T08:35:45Z"
+          "available_at": "2026-09-12T08:53:41Z"
         }
       ],
       "counter_evidence_reviewed": true,
       "major_counter_evidence": true,
-      "main_counter_evidence": "BIMCO warned in August 2026 that apparent dry-bulk market strength was substantially influenced by forced rerouting and could reverse into a 2027 supply glut, limiting confidence that current high rates represent a durable cycle.",
-      "main_risk": "The company is exposed to freight-rate normalization and vessel-supply growth. It is not classified as rate-sensitive in the interest-rate sense: the relevant sensitivity is to freight rates and charter economics rather than real yields, long-end Treasury yields, liquidity, or financing costs.",
-      "what_would_make_us_wrong": "A sustained decline in dry-bulk spot and charter rates, deterioration in the company's monthly revenue or vessel utilization, or evidence that the recent revenue increase was unrelated to freight economics would falsify the transmission."
+      "main_counter_evidence": "BIMCO reporting warned that apparent 2026 dry-bulk strength was substantially driven by temporary Hormuz rerouting effects and could reverse into a 2027 supply glut, challenging the durability of the freight-rate improvement.",
+      "main_risk": "Freight rates may normalize if rerouting effects fade or fleet supply expands. The company is also sensitive to real interest rates and long-end yields because vessel ownership and fleet renewal require substantial debt financing; higher financing costs can reduce cash flow and asset values.",
+      "what_would_make_us_wrong": "Freight rates fall materially, vessel supply growth exceeds commodity-volume demand, or subsequent company disclosures show revenue weakening despite elevated reported rates."
     }
   ],
   "company_research_errors": [],
@@ -212,25 +205,25 @@
       "ticker": "4967.TW",
       "driver_id": "NAND_STORAGE_CYCLE",
       "status": "UNRESOLVED",
-      "reason": "The official August 2026 revenue record shows shipment and selling-price improvement, but no verifiable external source or company disclosure was found tying the improvement specifically to NAND pricing, SSD/controller/module demand, or inventory normalization."
+      "reason": "Official August revenue shows higher shipments and selling prices, but no independently verified NAND-specific pricing, inventory, controller/module demand, or company disclosure establishing that the measured improvement is caused by the nominated NAND/storage cycle."
     },
     {
       "ticker": "1609.TW",
       "driver_id": "COPPER_COMMODITY_TRADE_INVENTORY",
       "status": "UNRESOLVED",
-      "reason": "The official August 2026 revenue record shows year-over-year growth, but no verifiable company-specific transmission or independent copper price, exchange-inventory, regional-premium, tariff, or physical-tightness evidence was established; revenue growth alone cannot prove the copper trade-inventory driver."
+      "reason": "Official August revenue increased, but the available disclosure provides no copper-price, exchange-inventory, regional-premium, tariff, or company-specific transmission evidence linking the improvement to the nominated copper commodity trade-inventory cycle."
     },
     {
       "ticker": "3176.TWO",
       "driver_id": "UNMAPPED_OPPORTUNITY",
       "status": "UNRESOLVED",
-      "reason": "The official August 2026 revenue record reports higher overseas revenue, but no specific company project, order, product mechanism, or independently verified economic driver was identified."
+      "reason": "Official August revenue rose year over year and the issuer cited increased overseas revenue, but no specific project, product, order, clinical, regulatory, or other economic mechanism was verified to identify the opportunity driver."
     },
     {
       "ticker": "3044.TW",
       "driver_id": "UNMAPPED_OPPORTUNITY",
       "status": "UNRESOLVED",
-      "reason": "The official August 2026 revenue record reports higher revenue due to customer orders and shipments, but no specific causal driver, project, product mechanism, or independent confirmation was identified."
+      "reason": "Official August revenue rose 65.48% year over year with increased customer orders and shipments, but no distinct company-specific mechanism or independently verified global driver was established."
     }
   ]
 }
