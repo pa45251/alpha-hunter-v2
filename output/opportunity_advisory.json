@@ -1,8 +1,8 @@
 {
   "policy_version": "EARLY_OPPORTUNITY_1",
   "source_run_id": "20260912T102038+0800-dd11a682",
-  "generated_at_utc": "2026-09-12T02:25:39.932019+00:00",
-  "public_lineage_id": "f7bff074e0aa3433398b9f358ba7d8bec539e00e49c226e5adcc6d4fe2e0cea3",
+  "generated_at_utc": "2026-09-12T02:31:13.540963+00:00",
+  "public_lineage_id": "7e0d04f4c6937dbbbc7625a15130d61dc949d71e5a10bdf8b45a3ac49d80b01d",
   "auto_trade_allowed": false,
   "top_opportunities": [
     {

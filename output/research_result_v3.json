@@ -2,7 +2,7 @@
   "contract": "ALPHA_HUNTER_V3_VALIDATED_RESEARCH",
   "status": "PASS",
   "research_run_id": "20260912T102038+0800-dd11a682",
-  "validated_at_utc": "2026-09-12T02:25:33.413235+00:00",
+  "validated_at_utc": "2026-09-12T02:31:06.879111+00:00",
   "target_driver_ids": [
     "CONTAINER_FREIGHT",
     "DRY_BULK_FREIGHT",
@@ -15,26 +15,26 @@
     {
       "driver_id": "CONTAINER_FREIGHT",
       "state": "UNKNOWN",
-      "confidence": 0.12,
-      "primary_cause": "Exact, current evidence confirming or contradicting the container spot/contract freight and liner-utilization cycle was insufficient; the available peer-oriented result did not establish industry freight-rate or utilization causality.",
+      "confidence": 0.08,
+      "primary_cause": "No verifiable current source established the exact container spot or contract freight and liner-utilization driver; the available search attempts produced no usable evidence.",
       "industry_scope": "UNKNOWN",
       "supporting_evidence": [],
       "counter_evidence": [],
       "source_count": 0,
       "event_date": null,
       "source_dates": [],
-      "researched_at_utc": "2026-09-12T02:25:16Z",
+      "researched_at_utc": "2026-09-12T02:30:45Z",
       "research_run_id": "20260912T102038+0800-dd11a682"
     },
     {
       "driver_id": "DRY_BULK_FREIGHT",
       "state": "UNKNOWN",
-      "confidence": 0.39,
-      "primary_cause": "Evidence confirms recent Capesize freight-rate strength, but counter-evidence indicates that 2026 strength may be substantially driven by temporary Hormuz rerouting and could reverse into a 2027 supply glut; the exact durability and breadth of the BDI/Capesize/Panamax commodity-volume cycle remain unresolved.",
+      "confidence": 0.62,
+      "primary_cause": "Evidence is conflicting: a May 2026 report described Capesize rates rising on demand and tightening vessel supply, while an August 2026 BIMCO warning characterized apparent 2026 strength as substantially driven by forced rerouting and warned of a prospective supply glut. Current exact-driver persistence is therefore unresolved.",
       "industry_scope": "INDUSTRY_WIDE",
       "supporting_evidence": [
         {
-          "claim": "A key dry-bulk shipping-rate measure reached its highest level since December 2023, driven by rising Capesize demand and tightening vessel supply.",
+          "claim": "A key dry-bulk freight-rate measure reached its highest level since December 2023, driven by rising Capesize demand and tightening ship supply.",
           "source_title": "Dry-Bulk Shipping Rates Hit Two-Year High on Capesize Demand",
           "source_url": "https://gcaptain.com/dry-bulk-shipping-rates-hit-two-year-high-on-capesize-demand/",
           "published_at": "2026-05-07T00:07:00Z",
@@ -44,12 +44,12 @@
       ],
       "counter_evidence": [
         {
-          "claim": "BIMCO warned that apparent 2026 dry-bulk strength was substantially artificial because of forced Hormuz rerouting and could reverse into a 2027 supply glut.",
+          "claim": "BIMCO warned that apparent 2026 dry-bulk strength was substantially artificial because of forced rerouting and that the market faced a future supply glut as the rerouting effect reversed.",
           "source_title": "Dry bulk shipping faces 2027 supply glut: BIMCO warns Hormuz rerouting boost will reverse",
           "source_url": "https://www.msn.com/en-us/news/other/dry-bulk-shipping-faces-2027-supply-glut-bimco-warns-hormuz-rerouting-boost-will-reverse/ar-AA29coQf",
           "published_at": "2026-08-01T10:36:00Z",
           "event_date": "2026-08-01T00:00:00Z",
-          "evidence_type": "HIGH_QUALITY_REPORTING"
+          "evidence_type": "INDUSTRY_DATA"
         }
       ],
       "source_count": 2,
@@ -58,52 +58,84 @@
         "2026-05-07T00:00:00Z",
         "2026-08-01T00:00:00Z"
       ],
-      "researched_at_utc": "2026-09-12T02:25:16Z",
+      "researched_at_utc": "2026-09-12T02:30:45Z",
       "research_run_id": "20260912T102038+0800-dd11a682"
     },
     {
       "driver_id": "MATURE_NODE_FOUNDRY_UTILIZATION",
       "state": "UNKNOWN",
-      "confidence": 0.1,
-      "primary_cause": "Exact current evidence on mature- and specialty-node utilization, wafer pricing, customer inventory, and end-demand was insufficient; leading-edge AI/HPC evidence cannot confirm this driver.",
+      "confidence": 0.05,
+      "primary_cause": "No verifiable current source established mature or specialty-node utilization, wafer pricing, customer inventory, or end-demand conditions; leading-edge AI evidence would not satisfy this exact driver.",
       "industry_scope": "UNKNOWN",
       "supporting_evidence": [],
       "counter_evidence": [],
       "source_count": 0,
       "event_date": null,
       "source_dates": [],
-      "researched_at_utc": "2026-09-12T02:25:16Z",
+      "researched_at_utc": "2026-09-12T02:30:45Z",
       "research_run_id": "20260912T102038+0800-dd11a682"
     },
     {
       "driver_id": "LEADING_EDGE_FOUNDRY_AI_DEMAND",
       "state": "UNKNOWN",
-      "confidence": 0.18,
-      "primary_cause": "Exact current evidence confirming or contradicting leading-edge AI/HPC wafer demand, advanced-node utilization, pricing, and capacity was insufficient; the available result described broad advanced-node demand but did not provide sufficiently verified exact-driver operating evidence.",
+      "confidence": 0.14,
+      "primary_cause": "No verifiable primary or high-quality current source confirmed the exact leading-edge <=3nm/2nm AI/HPC wafer-demand, utilization, pricing, or capacity mechanism; the available result was general industry commentary rather than a sufficiently verified causal disclosure.",
       "industry_scope": "UNKNOWN",
       "supporting_evidence": [],
       "counter_evidence": [],
       "source_count": 0,
       "event_date": null,
       "source_dates": [],
-      "researched_at_utc": "2026-09-12T02:25:16Z",
+      "researched_at_utc": "2026-09-12T02:30:45Z",
       "research_run_id": "20260912T102038+0800-dd11a682"
     },
     {
       "driver_id": "MEMORY_IC_CYCLE",
       "state": "UNKNOWN",
-      "confidence": 0.1,
-      "primary_cause": "Exact current evidence on memory-IC design demand and ASP progression, including contradictory pricing, inventory, and end-demand evidence, was insufficient.",
+      "confidence": 0.05,
+      "primary_cause": "No verifiable current source established the exact memory-IC design demand or ASP cycle; evidence for other memory categories or price reaction would not establish this driver.",
       "industry_scope": "UNKNOWN",
       "supporting_evidence": [],
       "counter_evidence": [],
       "source_count": 0,
       "event_date": null,
       "source_dates": [],
-      "researched_at_utc": "2026-09-12T02:25:16Z",
+      "researched_at_utc": "2026-09-12T02:30:45Z",
       "research_run_id": "20260912T102038+0800-dd11a682"
     }
   ],
   "company_opportunities": [],
-  "company_research_errors": []
+  "company_research_errors": [],
+  "company_research_coverage": [
+    {
+      "ticker": "2605.TW",
+      "driver_id": "DRY_BULK_FREIGHT",
+      "status": "UNRESOLVED",
+      "reason": "No verifiable recent company-specific disclosure was available to establish vessel-rate exposure, fleet utilization, charter coverage, revenue, backlog, or earnings transmission from the dry-bulk cycle."
+    },
+    {
+      "ticker": "4967.TW",
+      "driver_id": "NAND_STORAGE_CYCLE",
+      "status": "UNRESOLVED",
+      "reason": "No verifiable recent company disclosure or independent source was available to establish NAND pricing, SSD/controller/module demand, inventory, shipments, or company-specific transmission."
+    },
+    {
+      "ticker": "1609.TW",
+      "driver_id": "COPPER_COMMODITY_TRADE_INVENTORY",
+      "status": "UNRESOLVED",
+      "reason": "No verifiable recent company-specific disclosure was available to establish copper inventory exposure, realized pricing, regional premia, physical tightness, or cable-volume transmission."
+    },
+    {
+      "ticker": "3176.TWO",
+      "driver_id": "UNMAPPED_OPPORTUNITY",
+      "status": "UNRESOLVED",
+      "reason": "The official monthly revenue snapshot shows August 2026 revenue of TWD 329.175 million, up 197.4% year over year, with the issuer remark that overseas revenue increased, but no primary disclosure was available to identify the underlying product, project, order, or repeatable economic driver."
+    },
+    {
+      "ticker": "3044.TW",
+      "driver_id": "UNMAPPED_OPPORTUNITY",
+      "status": "UNRESOLVED",
+      "reason": "No verifiable recent company disclosure or independent source was available to identify a company-specific economic driver, operating improvement, project, order, or other causal mechanism."
+    }
+  ]
 }
