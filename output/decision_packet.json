@@ -2,7 +2,7 @@
   "contract": "ALPHA_HUNTER_DECISION_PACKET",
   "decision_contract_version": "2.7.1",
   "run_id": "20260912T175525+0800-1432f3ae",
-  "generated_at": "2026-09-12T09:59:10.801315+00:00",
+  "generated_at": "2026-09-12T10:01:02.332355+00:00",
   "gate_first_score_second": true,
   "price_can_create_causality": false,
   "auto_trade_allowed": false,
@@ -25,11 +25,11 @@
   },
   "decision_bridge": {
     "contract": "ALPHA_HUNTER_DECISION_BRIDGE_V2",
-    "public_lineage_id": "7ebe2543e027a6b947d0022cd4f73d140e72e027f6a5b2e99e857b4a3172064b",
+    "public_lineage_id": "6a0a3c3275ee1970d9479ed6fdd7a86bfa4348ee082b9d0cb10df9008c32ede6",
     "canonical_snapshot_revalidated_immediately_before_decision": true,
     "persisted_gate_reused_without_revalidation": false,
     "mixed_snapshot_allowed": false,
-    "public_evidence_hash_count": 6
+    "public_evidence_hash_count": 7
   },
   "snapshot_lineage_layer": {
     "contract": "ALPHA_HUNTER_SNAPSHOT_LINEAGE_V2",
@@ -40,12 +40,15 @@
     "mixed_snapshot_allowed": false
   },
   "activation_layer": {
-    "source": "UNKNOWN_NO_CURRENT_RESEARCH",
-    "path": "output/no_validated_activation_for_this_snapshot.csv",
-    "same_snapshot_v3": false,
+    "source": "V3_AUTONOMOUS_RESEARCH",
+    "path": "output/driver_activation_v3.csv",
+    "same_snapshot_v3": true,
     "challenger_adjudicated": false,
-    "accepted_activation_rows": 0,
-    "active_driver_ids": [],
+    "accepted_activation_rows": 3,
+    "active_driver_ids": [
+      "AI_SERVER_RACK_BUILD",
+      "AI_SERVER_THERMAL_DENSITY"
+    ],
     "lineage_overwrite_enforced": true
   },
   "launch_layer": {
@@ -80,7 +83,7 @@
     ],
     "validation_evidence_status": "PENDING_ACCEPTANCE_REVIEW",
     "current_shadow_statistics_are_strategy_validation": false,
-    "sealed_snapshot_id": "a5d76b75b9a50b7cc8d32144dad549b5d93f673832cb9f6a8893da908921c17b"
+    "sealed_snapshot_id": "bcba455ec66379fb303b407114bd0dae759eefa52ff3bca477a2c636dafa0c91"
   },
   "shadow_validation_layer": {
     "validation_version": null,
