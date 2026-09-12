@@ -2,18 +2,18 @@
   "contract": "ALPHA_HUNTER_V2_6_1_RESEARCH_HANDOFF",
   "handoff_version": "1.0",
   "handoff_status": "PASS",
-  "generated_at_taipei": "2026-09-12T16:16:36.708717+08:00",
+  "generated_at_taipei": "2026-09-12T16:34:39.400305+08:00",
   "repository": "pa45251/alpha-hunter-v2",
-  "branch": "repair/global-sensor-layers",
+  "branch": "main",
   "schema_version": "2.6",
   "scanner_version": "2.6.1",
-  "run_id": "20260912T161248+0800-0132d3e4",
+  "run_id": "20260912T163101+0800-2861eef0",
   "gate_status": "PASS",
   "causal_rule": "PRICE_CANNOT_CREATE_CAUSALITY",
   "transport_policy": {
     "source_identity": "GitHub repository pa45251/alpha-hunter-v2 branch main only",
     "preferred_transport": "GitHub connector exact path output/research_handoff.json",
-    "fallback_transport": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/repair/global-sensor-layers/output/research_handoff.json",
+    "fallback_transport": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/research_handoff.json",
     "do_not_substitute": [
       "Streamlit tables",
       "GitHub search results",
@@ -25,28 +25,28 @@
   "artifacts": {
     "manifest": {
       "relative_path": "output/manifest.json",
-      "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/repair/global-sensor-layers/output/manifest.json",
-      "sha256": "543ff7a5bead5d58f10f2f053976e1416ed7f14d2a34d1517d501644f917d5ed",
-      "bytes": 20573
+      "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/manifest.json",
+      "sha256": "e710e3664f798ad6753aabae47e6250ed9ebf49a7145842acbf22d3409d01470",
+      "bytes": 20067
     },
     "gate_report": {
       "relative_path": "output/gate_report.json",
-      "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/repair/global-sensor-layers/output/gate_report.json",
-      "sha256": "6c6ed506ddbfd4d34a3132f5b4e584b44f34eff6ec948ae10801e0d41ae388d4",
-      "bytes": 4014
+      "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/gate_report.json",
+      "sha256": "8624814d1077c082c552f3663b5c386786d853e7289bfdc161f3b753be983944",
+      "bytes": 3899
     },
     "research_packet": {
       "relative_path": "output/research_packet.json",
-      "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/repair/global-sensor-layers/output/research_packet.json",
-      "sha256": "7cc98c0868290f54e30d2fd11e3e6135572c82b37e31f5f1f40c5d4082d525eb",
-      "bytes": 236603
+      "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/research_packet.json",
+      "sha256": "884690ae0f15d75a570e85c4f21a2b0bfc5990b31b02a8e08012bd2a6e776f35",
+      "bytes": 236143
     }
   },
   "research_entrypoint": {
     "relative_path": "output/research_packet.json",
-    "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/repair/global-sensor-layers/output/research_packet.json",
-    "sha256": "7cc98c0868290f54e30d2fd11e3e6135572c82b37e31f5f1f40c5d4082d525eb",
-    "bytes": 236603
+    "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/research_packet.json",
+    "sha256": "884690ae0f15d75a570e85c4f21a2b0bfc5990b31b02a8e08012bd2a6e776f35",
+    "bytes": 236143
   },
   "research_rule": "Research may begin only when handoff_status=PASS, gate_status=PASS, run_id is consistent, and the fetched research_packet SHA256 matches this handoff."
 }

@@ -1,5 +1,5 @@
 {
-  "generated_at_utc": "2026-09-12T08:13:45.475956+00:00",
+  "generated_at_utc": "2026-09-12T08:31:58.611370+00:00",
   "core": {
     "universe_count": 221,
     "scanned_count": 217,
@@ -49,7 +49,7 @@
       "ORCL": 1,
       "MSFT": 1,
       "AMZN": 1,
-      "GOOGL": 2,
+      "GOOGL": 1,
       "META": 1,
       "PLTR": 1,
       "IGV": 1,
@@ -264,7 +264,7 @@
       "ROG.SW": "NO_VALID_CLOSE"
     },
     "deadline_reached": false,
-    "elapsed_seconds": 15.816
+    "elapsed_seconds": 19.457
   },
   "discovery": {
     "source": "https://raw.githubusercontent.com/datasets/s-and-p-500-companies/main/data/constituents.csv",
@@ -272,7 +272,7 @@
     "member_count": 503,
     "sha256": "2f340b4557af4525bb170c7e349251fd922bb1622eb2508940a472e4edf943cc",
     "status": "PARTIAL_PRICE_DATA",
-    "age_days": 0.01,
+    "age_days": 0.02,
     "error": "",
     "discovery_count": 433,
     "membership_status": "READY",
@@ -723,7 +723,7 @@
       },
       "errors": {},
       "deadline_reached": false,
-      "elapsed_seconds": 29.926
+      "elapsed_seconds": 30.337
     }
   },
   "discovery_can_activate_driver": false

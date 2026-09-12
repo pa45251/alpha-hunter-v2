@@ -3,13 +3,13 @@
   "gate_version": "1.0",
   "gate_status": "PASS",
   "failure_code": null,
-  "validated_at_taipei": "2026-09-12T16:16:28.560380+08:00",
+  "validated_at_taipei": "2026-09-12T16:34:33.565095+08:00",
   "repository": "pa45251/alpha-hunter-v2",
-  "branch": "repair/global-sensor-layers",
+  "branch": "main",
   "schema_version": "2.6",
   "scanner_version": "2.6.1",
-  "run_id": "20260912T161248+0800-0132d3e4",
-  "manifest_sha256": "543ff7a5bead5d58f10f2f053976e1416ed7f14d2a34d1517d501644f917d5ed",
+  "run_id": "20260912T163101+0800-2861eef0",
+  "manifest_sha256": "e710e3664f798ad6753aabae47e6250ed9ebf49a7145842acbf22d3409d01470",
   "checks": [
     {
       "name": "repository_identity",
@@ -20,7 +20,7 @@
     {
       "name": "branch_identity",
       "passed": true,
-      "detail": "expected=repair/global-sensor-layers; actual=repair/global-sensor-layers",
+      "detail": "expected=main; actual=main",
       "severity": "HARD"
     },
     {
@@ -56,13 +56,13 @@
     {
       "name": "manifest_run_id",
       "passed": true,
-      "detail": "run_id=20260912T161248+0800-0132d3e4",
+      "detail": "run_id=20260912T163101+0800-2861eef0",
       "severity": "HARD"
     },
     {
       "name": "canonical_manifest_url",
       "passed": true,
-      "detail": "expected=https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/repair/global-sensor-layers/output/manifest.json; actual=https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/repair/global-sensor-layers/output/manifest.json",
+      "detail": "expected=https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/manifest.json; actual=https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/manifest.json",
       "severity": "HARD"
     },
     {
@@ -80,7 +80,7 @@
     {
       "name": "run_consistency",
       "passed": true,
-      "detail": "all=20260912T161248+0800-0132d3e4",
+      "detail": "all=20260912T163101+0800-2861eef0",
       "severity": "HARD"
     },
     {
