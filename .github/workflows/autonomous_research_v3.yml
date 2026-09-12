@@ -61,6 +61,8 @@ jobs:
     if: needs.trigger_gate.outputs.should_run == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 45
+    env:
+      ALPHA_HUNTER_RESEARCH_SELECTION_PATH: /tmp/research_handoff.json
 
     steps:
       - name: Checkout repository
@@ -95,37 +97,25 @@ jobs:
           fi
 
       - name: Build compact opportunity-research handoff
+        id: handoff
         run: |
           python - <<'PY'
           import json
           from pathlib import Path
-          from research_handoff import company_research_targets
-          packet = json.loads(Path('output/research_packet.json').read_text(encoding='utf-8'))
-          keep = (
-              'research_priority', 'global_theme', 'driver_id', 'driver_label',
-              'driver_scope', 'global_theme_strength_v2', 'global_latest_price_date',
-              'activation_evidence_required', 'counter_evidence_required',
-              'price_cannot_activate_driver'
-          )
-          compact = {
-              'contract': packet.get('contract'),
-              'run_id': packet.get('run_id'),
-              'lane': 'OPPORTUNITY_DISCOVERY',
-              'company_research_targets': company_research_targets(),
-              'causal_rule': packet.get('causal_rule'),
-              'research_targets': [
-                  {k: row.get(k) for k in keep if k in row}
-                  for row in (packet.get('research_queue_top30') or [])[:5]
-              ],
-          }
+          from research_handoff import decision_research_handoff
+          compact = decision_research_handoff()
           Path('/tmp/research_handoff.json').write_text(
               json.dumps(compact, ensure_ascii=False, separators=(',', ':')),
               encoding='utf-8'
           )
+          import os
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
+              f.write('has_work=' + str(bool(compact['research_targets'] or compact['company_research_targets'])).lower() + '\n')
           print('opportunity target drivers:', [x.get('driver_id') for x in compact['research_targets']])
           PY
 
       - name: Prefetch deterministic opportunity sources
+        if: steps.handoff.outputs.has_work == 'true'
         run: |
           python research_source_prefetch_v3.py \
             --handoff /tmp/research_handoff.json \
@@ -133,6 +123,7 @@ jobs:
             --per-query 3
 
       - name: Run bounded autonomous opportunity research
+        if: steps.handoff.outputs.has_work == 'true'
         id: copilot_research
         env:
           COPILOT_GITHUB_TOKEN: ${{ secrets.COPILOT_GITHUB_TOKEN }}
@@ -171,9 +162,11 @@ jobs:
           exit 0
 
       - name: Deterministic fail-closed opportunity research ingest
+        if: steps.handoff.outputs.has_work == 'true'
         run: python research_ingest_v3.py
 
       - name: Check first-pass opportunity research evidence quality
+        if: steps.handoff.outputs.has_work == 'true'
         id: quality_first
         continue-on-error: true
         env:
@@ -181,7 +174,7 @@ jobs:
         run: python research_quality_gate_v3.py
 
       - name: Retry zero-source opportunity research once
-        if: steps.quality_first.outcome == 'failure'
+        if: steps.handoff.outputs.has_work == 'true' && steps.quality_first.outcome == 'failure'
         env:
           COPILOT_GITHUB_TOKEN: ${{ secrets.COPILOT_GITHUB_TOKEN }}
         run: |
@@ -215,18 +208,21 @@ jobs:
           exit 0
 
       - name: Re-ingest recovery opportunity research
-        if: steps.quality_first.outcome == 'failure'
+        if: steps.handoff.outputs.has_work == 'true' && steps.quality_first.outcome == 'failure'
         run: python research_ingest_v3.py
 
       - name: Enforce opportunity research or challenger decision-source quality
+        if: steps.handoff.outputs.has_work == 'true'
         env:
           ALPHA_HUNTER_RESEARCH_TRANSPORT_PATH: /tmp/research_prefetch_v3.json
         run: python research_decision_source_gate_v3.py
 
       - name: Build same-snapshot v3 opportunity activation bridge
+        if: steps.handoff.outputs.has_work == 'true'
         run: python research_activation_bridge_v3.py
 
       - name: Build market decision and action from validated evidence
+        if: steps.handoff.outputs.has_work == 'true'
         env:
           ALPHA_HUNTER_ACTIVATION_SOURCE: V3_VALIDATED
         run: |
@@ -234,6 +230,7 @@ jobs:
           python action_board_summary.py --refresh
 
       - name: Validate research and decision contracts
+        if: steps.handoff.outputs.has_work == 'true'
         env:
           PYTHONPATH: ${{ github.workspace }}
         run: |
@@ -248,11 +245,13 @@ jobs:
             tests/test_shadow_validation_v2.py
 
       - name: Remove unvalidated and private ephemeral model output
+        if: steps.handoff.outputs.has_work == 'true'
         run: |
           rm -f output/research_result_v3.raw.txt
           rm -f /tmp/research_handoff.json /tmp/research_prefetch_v3.json
 
       - name: Assert same-snapshot validated causal source and V2 trace guards succeeded
+        if: steps.handoff.outputs.has_work == 'true'
         env:
           ALPHA_HUNTER_RESEARCH_TRANSPORT_PATH: /tmp/research_prefetch_v3.json
         run: |
@@ -279,6 +278,7 @@ jobs:
           PY
 
       - name: Commit validated public research and guarded V2 decision artifacts
+        if: steps.handoff.outputs.has_work == 'true'
         run: |
           git config user.name "alpha-hunter-bot"
           git config user.email "actions@users.noreply.github.com"

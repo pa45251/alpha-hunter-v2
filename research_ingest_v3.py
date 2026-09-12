@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+import os
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -10,7 +11,6 @@ from research_contract_v3 import ResearchContractError, validate_research_result
 PACKET = Path("output/research_packet.json")
 RAW = Path("output/research_result_v3.raw.txt")
 OUT = Path("output/research_result_v3.json")
-TARGET_COUNT = 5
 
 
 def _utcnow() -> str:
@@ -86,7 +86,17 @@ def main() -> None:
     packet = json.loads(PACKET.read_text(encoding="utf-8"))
     run_id = str(packet["run_id"])
     queue = packet.get("research_queue_top30") or []
-    targets = queue[:TARGET_COUNT]
+    if (PACKET.parent / 'causal_research_queue.csv').exists():
+        from driver_gates import sealed_csv
+        queue = sealed_csv('causal_research_queue.csv', PACKET.parent).to_dict('records')
+    from research_handoff import decision_research_handoff
+    selection_path = os.getenv('ALPHA_HUNTER_RESEARCH_SELECTION_PATH')
+    selection = json.loads(Path(selection_path).read_text()) if selection_path else decision_research_handoff(PACKET.parent)
+    if selection.get('run_id') != run_id:
+        raise RuntimeError('RESEARCH_SELECTION_RUN_MISMATCH')
+    targets = selection['research_targets']
+    if any(r.get('driver_id') not in {q['driver_id'] for q in queue} for r in targets):
+        raise RuntimeError('RESEARCH_SELECTION_NOT_CANONICAL')
     target_ids = [str(x["driver_id"]) for x in targets]
     target_set = set(target_ids)
 
@@ -139,7 +149,7 @@ def main() -> None:
     # Optional company intelligence is independently validated and never activates V2 edges.
     from research_handoff import company_research_targets
     from opportunity_advisory import validate_company_research
-    company_targets = {(r['ticker'], r['driver_id']) for r in company_research_targets()}
+    company_targets = {(r['ticker'], r['driver_id']) for r in selection['company_research_targets']}
     if status == 'PASS':
         seen_company = set()
         for row in payload.get('company_opportunities') or []:

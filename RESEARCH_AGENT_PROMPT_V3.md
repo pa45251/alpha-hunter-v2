@@ -7,7 +7,7 @@ PRICE CANNOT CREATE CAUSALITY.
 Price, returns, relative strength, technical patterns, Taiwan price reaction, or scanner ranking may nominate a driver for research but may never be supporting causal evidence.
 
 ## Input
-The workflow appends an authoritative compact handoff containing exactly the first 5 canonical research targets. Research those driver targets in order, and the separately nominated company_research_targets for the advisory extension below. Do not invent or substitute driver IDs.
+The workflow appends an authoritative compact handoff containing only decision-changing evidence gaps, selected by deterministic gates. Research those driver targets in order, and the separately nominated company_research_targets for the advisory extension below. Do not invent or substitute driver IDs.
 
 ## Required search protocol
 For EACH target driver, you MUST make a real attempt to discover current external evidence before returning UNKNOWN.
@@ -109,3 +109,29 @@ Replace every placeholder with supported facts. This template is a schema, not e
 If an official endpoint is unavailable after its bounded retry, report that transport limitation explicitly. An endpoint timeout is not negative fundamental evidence.
 
 rate_sensitive means sensitivity to real interest yields, long-end Treasury yields, liquidity and financing costs. It does NOT mean sensitivity to freight rates, commodity prices or product selling prices. Explain the chosen interest-rate sensitivity in main_risk for both true and false.
+
+
+Ordered driver gates (authoritative advisory contract):
+Driver -> international PRICE -> international CAUSAL -> company transmission -> entry.
+The scanner alone supplies international_price_state. Never write or override it.
+When research_task is IDENTIFY_DRIVER_AND_TEST_GLOBAL_ALTERNATIVE, identify the
+mechanism and test global alternatives first; revenue/EPS/orders alone do not
+establish LOCAL. UNKNOWN remains UNKNOWN; return unresolved coverage if needed.
+For INTERNATIONAL_CAUSAL, validate the nominated global driver before researching
+its company transmission. If rejected or unresolved, do not manufacture a company
+buy thesis. Company evidence cannot change driver identity or override any veto.
+LOCAL requires local_scope_evidence with event_type (CORPORATE_ACTION,
+REGULATORY_DECISION, TAIWAN_POLICY, COMPANY_SPECIFIC_CONTRACT),
+global_industry_not_primary=true, global_alternative_test, event_to_price_mechanism,
+event_evidence and global_alternative_evidence. Both evidence objects require the
+same source/title/metric/direction/published_at/available_at/ticker fields as company
+evidence, from distinct URLs. Explain why the specific event is primary and the
+relevant global industry alternative is not; lack of a mapped peer is not proof.
+known_global_link=true forbids this provisional LOCAL route. Do not relabel a
+known global thesis. scope may remain UNKNOWN. Existing international_evidence
+is non-price causal evidence, not international price confirmation.
+Do not research deferred_candidates. GLOBAL_REJECTED and ENTRY-only gaps do not
+need company fundamentals. Credit/time bounds are transport limits, not Top-N
+stock rankings. Return explicit unresolved coverage when evidence is insufficient.
+
+Research nominations come from the full sealed canonical queue, not its Top-30 presentation summary.

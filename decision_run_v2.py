@@ -50,6 +50,8 @@ def main() -> None:
     structural = _apply_current_activation(structural, activations)
     structural = apply_edge_provenance(structural, Path("input/edge_provenance.csv"))
     structural = apply_exposure_map(structural, Path("config/decision_exposure_map.csv"))
+    from driver_gates import attach_price_gates
+    structural = pd.DataFrame(attach_price_gates(structural.to_dict('records'), OUT))
 
     board, packet = write_decision_outputs_v2(structural, run_id, "output")
     board, launch_meta = apply_launch_gate(board)

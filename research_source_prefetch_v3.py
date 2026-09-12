@@ -120,7 +120,11 @@ def _search(query: str, timeout: float = 15.0, limit: int = 6) -> tuple[list[dic
 def _query_for(target: dict, lane: str) -> str:
     if target.get('ticker'):
         company = str(target.get('name') or '') + ' ' + str(target['ticker']).split('.')[0]
-        terms = '營收' if lane == 'SUPPORT' else '衰退'
+        task = target.get('research_task')
+        if task == 'IDENTIFY_DRIVER_AND_TEST_GLOBAL_ALTERNATIVE':
+            terms = '重大訊息 特定事件 產業驅動' if lane == 'SUPPORT' else '全球同業 產業週期 替代解釋'
+        else:
+            terms = '訂單 營收 傳導 ' + str(target.get('driver_label') or '') if lane == 'SUPPORT' else '訂單取消 需求衰退'
         return f'{company} {terms} {datetime.now(timezone.utc).year}'
     label = _compact_terms(target.get("driver_label") or target.get("driver_id"), 120)
     scope = _compact_terms(target.get("driver_scope"), 120)

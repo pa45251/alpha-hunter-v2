@@ -58,7 +58,7 @@ def _select_opportunities(limit: int = 5) -> list[dict]:
     from canonical_evidence import load_histories
     from research_handoff import company_research_targets
     from datetime import datetime, timezone
-    candidates = company_research_targets(OUT, limit=None)
+    candidates = company_research_targets(OUT, research_only=False)
     histories = load_histories(list({r['ticker'] for r in candidates}))
     research = load('research_result_v3.json')
     now = datetime.now(timezone.utc).isoformat()
@@ -119,7 +119,9 @@ if opportunities:
         lines += [f"### {i}. {md(row['ticker'])} {md(row['name'])} — {row['action']}", ""]
         for label, key in [('WHY', 'why'), ('Driver', 'driver'), ('Driver state', 'driver_state'),
                            ('Company transmission', 'company_transmission'),
-                           ('International confirmation', 'international'), ('Relative', 'relative'),
+                           ('International price', 'international_price_state'),
+                           ('International causal', 'international_causal_state'),
+                           ('Current gate', 'missing_gate'), ('International evidence', 'international'), ('Relative', 'relative'),
                            ('Regime', 'regime'), ('Technical state', 'technical'),
                            ('Why price', 'price_reason'), ('Entry', 'entry'),
                            ('Invalidation', 'invalidation'), ('Add trigger', 'add_trigger'),

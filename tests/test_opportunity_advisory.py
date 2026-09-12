@@ -23,7 +23,7 @@ def risk(**changes):
     r=dict(status='READY',regime='NORMAL',signals={'rate_pressure':'ADVERSE','vix':{'price':19},'credit_hyg_lqd':{'above_ma60':True,'ret20':.01}});r.update(changes);return r
 
 def evaluate(r=None,h=None,**candidate):
-    return assess(dict(ticker='9999.TW',name='unseen company',reaction_state='PRE_CONFIRMATION',**candidate),r or research(),risk(),h if h is not None else history(),ASOF)
+    return assess(dict(ticker='9999.TW',name='unseen company',reaction_state='PRE_CONFIRMATION',**({'driver_id':'EXACT_DRIVER', 'international_price_state':'CONFIRMED'} | candidate)),r or research(),risk(),h if h is not None else history(),ASOF)
 
 def test_developing_evidence_and_price_allow_early_buy_without_v2_confirmation():
     row=evaluate();assert row['action']=='EARLY BUY';assert row['planned_position_fraction']==.35
@@ -34,8 +34,8 @@ def test_confirmed_breakout_promotes_buy():
     assert evaluate(research(driver_state='CONFIRMED'),history().assign(Volume=lambda h: h.Volume.where(h.index!=h.index[-1],2_000_000)))['action']=='BUY'
 
 def test_local_driver_works_in_weak_broad_market():
-    r=research(scope='LOCAL',local_scope_reason='Specific signed EPC project recognition independent of global peer cycle',international_evidence=[])
-    x=assess({'ticker':'9999.TW'},r,risk(regime='DEFENSIVE'),history(),ASOF)
+    r=research(driver_id='UNMAPPED_OPPORTUNITY',scope='LOCAL',local_scope_reason='Specific signed EPC project recognition independent of global peer cycle',local_scope_evidence=local_proof(),international_evidence=[])
+    x=assess({'ticker':'9999.TW','driver_id':'UNMAPPED_OPPORTUNITY'},r,risk(regime='DEFENSIVE'),history(),ASOF)
     assert x['action']=='EARLY BUY';assert x['regime']=='NEUTRAL';assert x['relative']=='LOCAL DRIVER'
 
 @pytest.mark.parametrize('change',[
@@ -68,8 +68,9 @@ def test_bad_reward_risk_waits():
 
 def test_unmapped_research_can_be_provisional_local_without_taxonomy():
     r=research(driver_id='UNMAPPED_OPPORTUNITY',scope='LOCAL',local_scope_reason='Company-specific EPC backlog',international_evidence=[])
-    validate_company_research(r,'run',{('9999.TW','UNMAPPED_OPPORTUNITY')},ASOF)
-    assert evaluate(r)['action']=='EARLY BUY'
+    with pytest.raises(ValueError, match='INDEPENDENCE'):
+        validate_company_research(r,'run',{('9999.TW','UNMAPPED_OPPORTUNITY')},ASOF)
+    assert evaluate(r,driver_id='UNMAPPED_OPPORTUNITY')['action']=='WAIT'
 
 def test_mixed_snapshot_research_rejected():
     with pytest.raises(ValueError):validate_company_research(research(),'other',{('9999.TW','EXACT_DRIVER')},ASOF)
@@ -113,6 +114,8 @@ def test_research_ingest_roundtrip_preserves_company_advisory_without_activating
         company.pop('company_transmission')
     (out/'research_result_v3.raw.txt').write_text(json.dumps({'contract':'ALPHA_HUNTER_V3_AUTONOMOUS_RESEARCH','research_run_id':'run','results':[driver],'company_opportunities':[company]}))
     monkeypatch.setattr(ingest,'_utcnow',lambda:ASOF)
+    import research_handoff
+    monkeypatch.setattr(research_handoff, 'decision_research_handoff', lambda *a: dict(run_id='run', research_targets=[{'driver_id':'EXACT_DRIVER'}], company_research_targets=[{'ticker':'9999.TW','driver_id':'EXACT_DRIVER'}]))
     ingest.main()
     result=json.loads((out/'research_result_v3.json').read_text())
     if missing_transmission:
@@ -172,3 +175,11 @@ def test_old_revenue_period_cannot_be_laundered_by_new_retrieval_time(monkeypatc
     monkeypatch.setattr(p.requests,'get',lambda *a,**k:Response())
     monkeypatch.setattr(p,'_utcnow',lambda:ASOF)
     assert p.official_company_revenue([{'ticker':'9999.TW'}])=={}
+
+
+def local_proof():
+    return dict(event_type='COMPANY_SPECIFIC_CONTRACT', global_industry_not_primary=True,
+                global_alternative_test='Industry demand unchanged; isolated award replaces competitor',
+                event_to_price_mechanism='Unexpected exclusive Taiwan award adds contracted cash flows',
+                event_evidence=evidence(source_url='https://example.com/award'),
+                global_alternative_evidence=evidence(source_url='https://example.com/industry-comparison'))

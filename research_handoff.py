@@ -139,8 +139,8 @@ def build_research_handoff(out_dir: str | Path = "output") -> dict[str, Any]:
     return handoff
 
 
-def company_research_targets(out: Path = Path('output'), limit: int | None = 5) -> list[dict]:
-    """Both entry points share company research; no provisional taxonomy mutation."""
+def company_research_targets(out: Path = Path('output'), limit: int | None = None, *, research_only: bool = True) -> list[dict]:
+    """Select decision-changing gaps; legacy limit never truncates nominations."""
     import pandas as pd
     manifest = _read_json(out / 'manifest.json')
     run_id = manifest['run_id']
@@ -150,8 +150,9 @@ def company_research_targets(out: Path = Path('output'), limit: int | None = 5) 
         if not path.exists():
             continue
         x = pd.read_csv(path, dtype={'taiwan_code': str})
-        if 'run_id' in x:
-            x = x[x.run_id.astype(str).eq(run_id)]
+        if 'run_id' not in x:
+            continue
+        x = x[x.run_id.astype(str).eq(run_id)]
         if 'ticker' not in x and 'taiwan_ticker' in x:
             x['ticker'] = x['taiwan_ticker']
         if 'ticker' in x:
@@ -159,6 +160,7 @@ def company_research_targets(out: Path = Path('output'), limit: int | None = 5) 
     candidates_path = out / 'taiwan_candidates.csv'
     if candidates_path.exists():
         candidates = pd.read_csv(candidates_path)
+        candidates = candidates[candidates.get('run_id', pd.Series('', index=candidates.index)).astype(str).eq(run_id)]
         mapped = {str(t) for f in frames for t in f['ticker']}
         candidates = candidates[~candidates.ticker.astype(str).isin(mapped)].copy()
         candidates['driver_id'] = 'UNMAPPED_OPPORTUNITY'
@@ -172,29 +174,80 @@ def company_research_targets(out: Path = Path('output'), limit: int | None = 5) 
         pd.to_numeric(x.get('research_priority_score', pd.Series(index=x.index, dtype=float)), errors='coerce')).fillna(0)
     x['_extended'] = x['reaction_state'].isin(['EXTENDED', 'BROKEN'])
     x = x.sort_values(['_extended','research_priority'], ascending=[True,False]).drop_duplicates(['ticker','driver_id'])
-    if limit is not None:
-        # Spend bounded research on prices that could actually support risk now.
-        # Price nominates research only; it cannot supply company evidence.
-        from opportunity_advisory import price_plan
-        snapshot_path = out / 'market_snapshot.json'
-        saved = (_read_json(snapshot_path).get('entry_histories') or {}) if snapshot_path.exists() else {}
-        price_ready = {}
-        for ticker in x.ticker.drop_duplicates():
-            item = saved.get(ticker)
-            hist = pd.DataFrame(item['data'], columns=item['columns'], index=pd.to_datetime(item['index'])) if item else None
-            price_ready[ticker] = price_plan(hist)['price_ok']
-        x['_price_ready'] = x.ticker.map(price_ready)
-        x = x.sort_values(['_price_ready','_extended','research_priority'], ascending=[False,True,False])
-        # Avoid spending the whole bounded budget on repeated mappings of one stock.
-        unique = x.drop_duplicates('ticker')
-        mapped = unique[unique.driver_id.ne('UNMAPPED_OPPORTUNITY')]
-        why = unique[unique.driver_id.eq('UNMAPPED_OPPORTUNITY')]
-        x = pd.concat([mapped.head(max(0, limit - 2)), why.head(min(2, limit))])
-        if len(x) < limit:
-            x = pd.concat([x, unique[~unique.ticker.isin(x.ticker)].head(limit-len(x))])
-    cols = ['ticker','name','driver_id','driver_label','driver_scope','reaction_state',
-            'global_peer_evidence','transmission_gap_proxy','economic_role','research_priority']
-    return x[[c for c in cols if c in x]].astype(object).where(pd.notna(x[[c for c in cols if c in x]]), None).to_dict('records')
+    from driver_gates import attach_price_gates, thesis_gates
+    from opportunity_advisory import price_plan
+    from canonical_evidence import read_evidence
+    try:
+        saved = read_evidence('market_snapshot.json', out).get('entry_histories') or {}
+    except (RuntimeError, OSError, ValueError):
+        saved = {}
+    cols = ['ticker','name','driver_id','driver_label','driver_scope','global_theme','reaction_state',
+            'global_peer_evidence','transmission_gap_proxy','economic_role','research_priority','bias20','ret_5d']
+    records = x[[c for c in cols if c in x]].astype(object).where(pd.notna(x[[c for c in cols if c in x]]), None).to_dict('records')
+    records = attach_price_gates(records, out)
+    current_research = {}
+    research_path = out / 'research_result_v3.json'
+    if research_path.exists():
+        payload = _read_json(research_path)
+        if (payload.get('contract') == 'ALPHA_HUNTER_V3_VALIDATED_RESEARCH'
+                and payload.get('status') == 'PASS' and payload.get('research_run_id') == run_id):
+            current_research = payload
+    from opportunity_advisory import validate_company_research
+    from research_contract_v3 import validate_research_result
+    now = datetime.now(ZoneInfo('UTC')).isoformat()
+    company = {}
+    nominated = {(c['ticker'], c['driver_id']) for c in records}
+    for r in current_research.get('company_opportunities', []):
+        try:
+            validate_company_research(r, run_id, nominated, now)
+            company[(r['ticker'], r['driver_id'])] = r
+        except (ValueError, TypeError):
+            continue
+    rejected = set()
+    for r in current_research.get('results', []):
+        try:
+            validate_research_result(r, {c['driver_id'] for c in records})
+            if r.get('research_run_id') == run_id and r.get('state') == 'INACTIVE':
+                rejected.add(r['driver_id'])
+        except (ValueError, TypeError):
+            continue
+    # A known global mapping on any nominated edge prevents an unmapped local escape.
+    global_tickers = {c['ticker'] for c in records if c.get('driver_id') != 'UNMAPPED_OPPORTUNITY'}
+    from driver_gates import sealed_csv
+    try:
+        graph = sealed_csv('structural_exposure_graph.csv', out)
+        global_codes = set(graph['taiwan_code'].astype(str).str.split('.').str[0].str.zfill(4))
+    except (RuntimeError, OSError, ValueError, KeyError):
+        global_codes = None
+    for c in records:
+        c['known_global_link'] = c['ticker'] in global_tickers or global_codes is None or c['ticker'].split('.')[0] in global_codes
+        c['driver_rejected'] = c['driver_id'] in rejected
+        c.update(thesis_gates(c, company.get((c['ticker'], c['driver_id'])), now))
+        item = saved.get(c['ticker'])
+        hist = pd.DataFrame(item['data'], columns=item['columns'], index=pd.to_datetime(item['index'])) if item else None
+        c['entry_research_ready'] = bool(price_plan(hist)['price_ok'] and c.get('reaction_state') not in {'EXTENDED','BROKEN'})
+        c['research_eligible'] = c['entry_research_ready'] and c['research_task'] not in {'NONE','WAIT_FOR_MARKET_DATA'}
+        if not c['entry_research_ready'] and c['missing_gate'] != 'GLOBAL_REJECTED':
+            c['research_task'] = 'WAIT_FOR_ENTRY'
+    # The board retains all states; the research lane consumes only actionable gaps.
+    return [c for c in records if c['research_eligible']] if research_only else records
+
+
+def decision_research_handoff(out: Path = Path('output')) -> dict:
+    packet = _read_json(out / 'research_packet.json')
+    all_candidates = company_research_targets(out, research_only=False)
+    eligible = [c for c in all_candidates if c['research_eligible']]
+    driver_ids = {c['driver_id'] for c in eligible if c['missing_gate'] == 'CAUSAL_UNVERIFIED'}
+    from driver_gates import sealed_csv
+    # The packet's Top-30 is a presentation summary, not a nomination authority.
+    queue = (sealed_csv('causal_research_queue.csv', out).to_dict('records')
+             if (out / 'causal_research_queue.csv').exists() else packet.get('research_queue_top30', []))
+    drivers = [r for r in queue if r['driver_id'] in driver_ids]
+    return dict(contract='ALPHA_HUNTER_DECISION_GAP_HANDOFF', run_id=packet['run_id'],
+                research_targets=drivers, company_research_targets=eligible,
+                deferred_candidates=[dict(ticker=c['ticker'], driver_id=c['driver_id'],
+                                          missing_gate=c['missing_gate'], research_task=c['research_task'])
+                                     for c in all_candidates if not c['research_eligible']])
 
 
 if __name__ == "__main__":

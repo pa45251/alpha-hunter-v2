@@ -86,6 +86,9 @@ def evaluate(path: Path = RESULT, transport_path: Path | None = None) -> dict:
 
     status = str(data.get("status", ""))
     evidence_pass = total_sources > 0 and sourced_drivers > 0
+    company_sources = {e.get('source_url') for r in data.get('company_opportunities', [])
+                       for e in r.get('fundamental_evidence', []) if isinstance(e, dict) and e.get('source_url')}
+    company_only_pass = not results and bool(company_sources)
     run_id = str(data.get("research_run_id", ""))
     if transport_path is None:
         transport_path = Path(os.getenv("ALPHA_HUNTER_RESEARCH_TRANSPORT_PATH", str(DEFAULT_TRANSPORT)))
@@ -93,8 +96,7 @@ def evaluate(path: Path = RESULT, transport_path: Path | None = None) -> dict:
 
     quality_pass = bool(
         status == "PASS"
-        and len(results) > 0
-        and (evidence_pass or transport["transport_pass"])
+        and ((len(results) > 0 and (evidence_pass or transport["transport_pass"])) or company_only_pass)
     )
     return {
         "status": status,
@@ -103,6 +105,7 @@ def evaluate(path: Path = RESULT, transport_path: Path | None = None) -> dict:
         "sourced_drivers": sourced_drivers,
         "active_or_inactive": active_or_inactive,
         "evidence_pass": evidence_pass,
+        "company_only_pass": company_only_pass,
         "quality_pass": quality_pass,
         **transport,
     }
