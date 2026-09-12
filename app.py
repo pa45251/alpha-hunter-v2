@@ -80,10 +80,14 @@ if status == 'FRESH' and advisory_path.exists():
         for row in advisory.get('top_opportunities', [])[:5]:
             st.markdown(f"### {row['ticker']} {row.get('name', '')} — {row['action']}")
             for label, key in [('WHY','why'), ('Driver','driver'), ('Driver state','driver_state'),
-                               ('International','international'), ('Regime','regime'), ('Technical','technical'),
+                               ('Company transmission','company_transmission'), ('International','international'),
+                               ('Relative','relative'), ('Regime','regime'), ('Technical','technical'),
                                ('Why price','price_reason'), ('Entry','entry'), ('Invalidation','invalidation'),
-                               ('Add','add_trigger'), ('Main counter-evidence','main_counter_evidence'), ('Main risk','main_risk')]:
+                               ('Add','add_trigger'), ('Main counter-evidence','main_counter_evidence'), ('Main risk','main_risk'),
+                               ('What would make us wrong','what_would_make_us_wrong')]:
                 st.markdown(f"**{label}:** {row.get(key, 'Unverified')}")
+            for evidence in row.get('evidence', []) + row.get('international_evidence', []):
+                st.markdown(f"Evidence: {evidence['claim']} [{evidence['source_title']}]({evidence['source_url']})")
             if row['action'] == 'EARLY BUY':
                 st.caption('Initial position: 35% of planned size. Reassess evidence and price before adding.')
         st.caption('Advisory only. Automatic execution is disabled.')
