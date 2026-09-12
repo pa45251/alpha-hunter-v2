@@ -118,7 +118,7 @@ def _search(query: str, timeout: float = 15.0, limit: int = 6) -> tuple[list[dic
 def _query_for(target: dict, lane: str) -> str:
     if target.get('ticker'):
         company = str(target.get('name') or '') + ' ' + str(target['ticker']).split('.')[0]
-        terms = '營收 訂單 在手訂單 財報' if lane == 'SUPPORT' else '衰退 延遲 毛利 下修'
+        terms = '營收' if lane == 'SUPPORT' else '衰退'
         return f'{company} {terms} {datetime.now(timezone.utc).year}'
     label = _compact_terms(target.get("driver_label") or target.get("driver_id"), 120)
     scope = _compact_terms(target.get("driver_scope"), 120)
@@ -129,6 +129,42 @@ def _query_for(target: dict, lane: str) -> str:
     parts = [label, " ".join(requirement.split()[:7]), str(datetime.now(timezone.utc).year)]
     query = " ".join(x for x in parts if x).strip()
     return query[:420]
+
+
+def official_company_revenue(targets: list[dict], timeout: float = 15.0) -> dict[str, list[dict]]:
+    """Current official snapshots are evidence candidates, never historical backfills.
+
+    retrieved_at/available_at bind availability to this run. Export date does not
+    pretend the individual company's original announcement was known at midnight.
+    """
+    result = {}
+    wanted = {str(t.get('ticker', '')).split('.')[0]: str(t.get('ticker')) for t in targets}
+    for suffix, url in [('.TW', 'https://openapi.twse.com.tw/v1/opendata/t187ap05_L'),
+                        ('.TWO', 'https://www.tpex.org.tw/openapi/v1/mopsfin_t187ap05_O')]:
+        if not any(str(t.get('ticker', '')).endswith(suffix) for t in targets):
+            continue
+        try:
+            response = requests.get(url, timeout=timeout, headers={'User-Agent': USER_AGENT})
+            response.raise_for_status()
+            rows = response.json()
+            if not isinstance(rows, list):
+                continue
+            observed = _utcnow()
+            for row in rows:
+                code = str(row.get('公司代號', ''))
+                if code not in wanted or not wanted[code].endswith(suffix):
+                    continue
+                result[wanted[code]] = [{
+                    'source_title': f"Official monthly revenue: {row.get('公司名稱')} {row.get('資料年月')}",
+                    'source_url': url, 'published_at': observed, 'available_at': observed,
+                    'date_basis': 'CURRENT_DATASET_OBSERVED_AT; original issuer publication time unknown',
+                    'export_date_roc': row.get('出表日期'),
+                    'snippet': json.dumps(row, ensure_ascii=False),
+                    'search_lane': 'OFFICIAL_COMPANY_REVENUE',
+                }]
+        except (requests.RequestException, ValueError, TypeError) as exc:
+            print(f'Official revenue unavailable: {suffix} {type(exc).__name__}')
+    return result
 
 
 def build_prefetch(handoff: dict, *, timeout: float = 15.0, per_query: int = 5) -> dict:
@@ -199,6 +235,10 @@ def build_prefetch(handoff: dict, *, timeout: float = 15.0, per_query: int = 5) 
     if handoff.get('company_research_targets'):
         extra = build_prefetch({'run_id': run_id, 'research_targets': handoff['company_research_targets']}, timeout=timeout, per_query=per_query)
         company_sources = extra['targets']
+        official = official_company_revenue(handoff['company_research_targets'], timeout)
+        for target in company_sources:
+            target['candidate_sources'] = official.get(target.get('ticker'), []) + target['candidate_sources']
+            target['candidate_source_count'] = len(target['candidate_sources'])
     return {
         'company_targets': company_sources,
         "contract": CONTRACT,
@@ -237,7 +277,8 @@ def main() -> None:
         "research source prefetch: "
         f"status={payload['status']} targets={payload['target_count']} "
         f"queries={payload['query_attempt_count']} successful_queries={payload['successful_query_count']} "
-        f"candidate_sources={payload['candidate_source_count']} sourced_targets={payload['sourced_target_count']}"
+        f"candidate_sources={payload['candidate_source_count']} sourced_targets={payload['sourced_target_count']} "
+        f"company_sources={sum(x['candidate_source_count'] for x in payload.get('company_targets', []))}"
     )
     if payload["status"] != "PASS":
         raise SystemExit(2)

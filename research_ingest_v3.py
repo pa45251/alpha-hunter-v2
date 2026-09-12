@@ -152,6 +152,12 @@ def main() -> None:
             except (ValueError, TypeError) as exc:
                 company_errors.append(str(exc))
 
+    if status == 'PASS':
+        covered = {(r.get('ticker'), r.get('driver_id')) for r in company_opportunities}
+        covered.update((r.get('ticker'), r.get('driver_id')) for r in payload.get('company_research_coverage', []) if isinstance(r, dict) and r.get('reason'))
+        for key in sorted(company_targets - covered):
+            company_errors.append('COMPANY_RESEARCH_NOT_RETURNED:' + str(key))
+
     final_results = []
     for driver_id in target_ids:
         if driver_id in supplied:
@@ -170,9 +176,10 @@ def main() -> None:
         "results": final_results,
         "company_opportunities": company_opportunities,
         "company_research_errors": company_errors,
+        "company_research_coverage": payload.get("company_research_coverage", []) if status == "PASS" else [],
     }
     OUT.write_text(json.dumps(out, ensure_ascii=False, indent=2), encoding="utf-8")
-    print(f"v3 research ingest: {status}; valid={len(supplied)}/{len(target_ids)}")
+    print(f"v3 research ingest: {status}; valid={len(supplied)}/{len(target_ids)} company_opportunities={len(company_opportunities)} company_errors={company_errors}")
     if errors:
         for err in errors[:8]:
             print(f"research ingest diagnostic: {err}")

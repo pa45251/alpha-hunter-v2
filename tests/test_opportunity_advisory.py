@@ -119,8 +119,24 @@ def test_company_prefetch_searches_unmapped_why_and_preserves_chinese_name(monke
         calls.append(query)
         return [dict(source_title='Disclosure',source_url='https://example.com/company',published_at=ASOF,snippet='Backlog')],None
     monkeypatch.setattr(p,'_search',search)
+    monkeypatch.setattr(p,'official_company_revenue',lambda *args: {})
     result=p.build_prefetch({'run_id':'run','research_targets':[{'driver_id':'D','driver_label':'DRAM pricing'}], 'company_research_targets':[{'driver_id':'UNMAPPED_OPPORTUNITY','ticker':'9999.TW','name':'測試公司'}]})
     assert len(calls)==4
     assert any('測試公司' in q and '9999' in q for q in calls)
     assert result['target_count']==1
     assert result['company_targets'][0]['ticker']=='9999.TW'
+
+def test_known_global_driver_cannot_be_relabelled_local_to_bypass_confirmation():
+    with pytest.raises(ValueError,match='BYPASS'):
+        validate_company_research(research(scope='LOCAL',local_scope_reason='No convenient foreign peer'), 'run', {('9999.TW','EXACT_DRIVER')}, ASOF)
+
+def test_official_revenue_available_time_is_not_backdated(monkeypatch):
+    import research_source_prefetch_v3 as p
+    class Response:
+        def raise_for_status(self):pass
+        def json(self):return [{'公司代號':'9999','公司名稱':'Company','資料年月':'11508','出表日期':'1150911','營業收入-去年同月增減(%)':'25'}]
+    monkeypatch.setattr(p.requests,'get',lambda *a,**k:Response())
+    monkeypatch.setattr(p,'_utcnow',lambda:ASOF)
+    e=p.official_company_revenue([{'ticker':'9999.TW'}])['9999.TW'][0]
+    assert e['available_at']==ASOF and e['published_at']==ASOF
+    assert 'original issuer publication time unknown' in e['date_basis']

@@ -34,7 +34,7 @@ def evidence_valid(item, as_of, ticker=None, driver=None):
     if not isinstance(item, dict) or item.get('metric') not in METRICS:
         return False
     published = timestamp(item.get('published_at'))
-    observed = timestamp(item.get('available_at', item.get('published_at')))
+    observed = timestamp(item.get('available_at'))
     cutoff = timestamp(as_of)
     if any(pd.isna(x) for x in [published, observed, cutoff]):
         return False
@@ -70,6 +70,8 @@ def validate_company_research(row, run_id, targets, as_of):
             raise ValueError('COMPANY_RESEARCH_MISSING_' + field)
     if not isinstance(row.get('counter_evidence_reviewed'), bool) or not isinstance(row.get('major_counter_evidence'), bool):
         raise ValueError('COUNTER_REVIEW_REQUIRED')
+    if row['scope'] == 'LOCAL' and row.get('driver_id') != 'UNMAPPED_OPPORTUNITY':
+        raise ValueError('GLOBAL_DRIVER_CANNOT_BYPASS_INTERNATIONAL_CHECK_AS_LOCAL')
     if row['scope'] == 'LOCAL' and not row.get('local_scope_reason'):
         raise ValueError('LOCAL_SCOPE_REASON_REQUIRED')
     if row['driver_state'] != 'REJECTED':

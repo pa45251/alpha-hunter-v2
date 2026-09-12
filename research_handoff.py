@@ -173,6 +173,18 @@ def company_research_targets(out: Path = Path('output'), limit: int | None = 5) 
     x['_extended'] = x['reaction_state'].isin(['EXTENDED', 'BROKEN'])
     x = x.sort_values(['_extended','research_priority'], ascending=[True,False]).drop_duplicates(['ticker','driver_id'])
     if limit is not None:
+        # Spend bounded research on prices that could actually support risk now.
+        # Price nominates research only; it cannot supply company evidence.
+        from opportunity_advisory import price_plan
+        snapshot_path = out / 'market_snapshot.json'
+        saved = (_read_json(snapshot_path).get('entry_histories') or {}) if snapshot_path.exists() else {}
+        price_ready = {}
+        for ticker in x.ticker.drop_duplicates():
+            item = saved.get(ticker)
+            hist = pd.DataFrame(item['data'], columns=item['columns'], index=pd.to_datetime(item['index'])) if item else None
+            price_ready[ticker] = price_plan(hist)['price_ok']
+        x['_price_ready'] = x.ticker.map(price_ready)
+        x = x.sort_values(['_price_ready','_extended','research_priority'], ascending=[False,True,False])
         # Avoid spending the whole bounded budget on repeated mappings of one stock.
         unique = x.drop_duplicates('ticker')
         mapped = unique[unique.driver_id.ne('UNMAPPED_OPPORTUNITY')]
