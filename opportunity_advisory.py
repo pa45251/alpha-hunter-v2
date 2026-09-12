@@ -196,6 +196,7 @@ def assess(candidate, research, risk, hist, as_of):
         same = [e for e in research.get('international_evidence', [])
                 if evidence_valid(e, as_of, driver=research.get('driver_id')) and e.get('same_driver') is True and e.get('source_url') not in company_urls]
         international_ok = bool(same)
+        row['international_evidence'] = same
         row['international'] = '; '.join(e['claim'] for e in same) or 'Unverified — same-driver evidence required'
         gap = number(candidate.get('transmission_gap_proxy'), 0)
         row['relative'] = 'GLOBAL AHEAD' if gap > 0.08 else 'TAIWAN AHEAD' if gap < -0.08 else 'TOGETHER'

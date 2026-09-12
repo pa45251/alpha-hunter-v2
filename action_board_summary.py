@@ -127,7 +127,7 @@ if opportunities:
             lines.append(f"- **{label}:** {md(row.get(key, 'Unverified'))}")
         if row['action'] == 'EARLY BUY':
             lines.append('- **Initial size:** 35% of planned position; reassess before adding.')
-        for evidence in row.get('evidence', []):
+        for evidence in row.get('evidence', []) + row.get('international_evidence', []):
             lines.append(f"- Evidence: {md(evidence['claim'])} [{md(evidence['source_title'])}]({evidence['source_url']})")
         lines.append('')
 else:

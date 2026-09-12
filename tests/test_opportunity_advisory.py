@@ -95,7 +95,8 @@ def test_legacy_archived_extension_is_still_identified_without_history():
     row=assess({'ticker':'9999.TW','bias20':.45},None,{},None,ASOF)
     assert row['action']=='PASS'
 
-def test_research_ingest_roundtrip_preserves_company_advisory_without_activating_local_driver(tmp_path,monkeypatch):
+@pytest.mark.parametrize("missing_transmission", [False, True])
+def test_research_ingest_roundtrip_preserves_company_advisory_without_activating_local_driver(tmp_path,monkeypatch,missing_transmission):
     import json
     import research_ingest_v3 as ingest
     monkeypatch.chdir(tmp_path)
@@ -104,10 +105,19 @@ def test_research_ingest_roundtrip_preserves_company_advisory_without_activating
     pd.DataFrame([dict(ticker='9999.TW',name='New company',driver_id='EXACT_DRIVER',reaction_state='PRE_CONFIRMATION',run_id='run',reverse_research_priority=.8)]).to_csv(out/'reverse_transmission_candidates.csv',index=False)
     (out/'research_packet.json').write_text(json.dumps({'run_id':'run','research_queue_top30':[{'driver_id':'EXACT_DRIVER'}]}))
     driver=dict(driver_id='EXACT_DRIVER',state='UNKNOWN',confidence=0,industry_scope='UNKNOWN',researched_at_utc=ASOF,research_run_id='run',source_count=0,supporting_evidence=[],counter_evidence=[])
-    (out/'research_result_v3.raw.txt').write_text(json.dumps({'contract':'ALPHA_HUNTER_V3_AUTONOMOUS_RESEARCH','research_run_id':'run','results':[driver],'company_opportunities':[research()]}))
+    company=research()
+    if missing_transmission:
+        company.pop('company_transmission')
+    (out/'research_result_v3.raw.txt').write_text(json.dumps({'contract':'ALPHA_HUNTER_V3_AUTONOMOUS_RESEARCH','research_run_id':'run','results':[driver],'company_opportunities':[company]}))
     monkeypatch.setattr(ingest,'_utcnow',lambda:ASOF)
     ingest.main()
     result=json.loads((out/'research_result_v3.json').read_text())
+    if missing_transmission:
+        assert result['company_opportunities']==[]
+        assert result['company_research_coverage'][0]['status']=='UNRESOLVED'
+        assert 'company_transmission' in result['company_research_coverage'][0]['reason']
+        assert result['results'][0]['state']=='UNKNOWN'
+        return
     assert result['company_opportunities'][0]['driver_state']=='DEVELOPING'
     assert result['results'][0]['state']=='UNKNOWN'
     assert result['company_research_errors']==[]

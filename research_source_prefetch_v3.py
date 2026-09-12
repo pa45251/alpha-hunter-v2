@@ -146,8 +146,14 @@ def official_company_revenue(targets: list[dict], timeout: float = 15.0) -> dict
         if not any(str(t.get('ticker', '')).endswith(suffix) for t in targets):
             continue
         try:
-            response = requests.get(url, timeout=timeout, headers={'User-Agent': USER_AGENT})
-            response.raise_for_status()
+            for attempt in range(2):
+                try:
+                    response = requests.get(url, timeout=timeout, headers={'User-Agent': USER_AGENT})
+                    response.raise_for_status()
+                    break
+                except requests.RequestException:
+                    if attempt == 1:
+                        raise
             rows = list(csv.DictReader(io.StringIO(response.content.decode("utf-8-sig"))))
             if not rows or "公司代號" not in rows[0]:
                 raise ValueError("OFFICIAL_REVENUE_SCHEMA_MISMATCH")
