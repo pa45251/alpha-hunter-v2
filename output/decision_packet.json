@@ -1,8 +1,8 @@
 {
   "contract": "ALPHA_HUNTER_DECISION_PACKET",
   "decision_contract_version": "2.7.1",
-  "run_id": "20260912T220554+0800-e5731284",
-  "generated_at": "2026-09-12T14:11:18.902858+00:00",
+  "run_id": "20260913T075247+0800-234de76c",
+  "generated_at": "2026-09-12T23:56:38.012855+00:00",
   "gate_first_score_second": true,
   "price_can_create_causality": false,
   "auto_trade_allowed": false,
@@ -25,26 +25,26 @@
   },
   "decision_bridge": {
     "contract": "ALPHA_HUNTER_DECISION_BRIDGE_V2",
-    "public_lineage_id": "a6df70daf3d1edcf845dd939da58bc6f97fe70f936303d59ae44ab3ee28be0b9",
+    "public_lineage_id": "e422b6fcff87113b7f7ce053c6f87009d1b80ea71a41144d0b3fd27bdf0c3eab",
     "canonical_snapshot_revalidated_immediately_before_decision": true,
     "persisted_gate_reused_without_revalidation": false,
     "mixed_snapshot_allowed": false,
-    "public_evidence_hash_count": 7
+    "public_evidence_hash_count": 6
   },
   "snapshot_lineage_layer": {
     "contract": "ALPHA_HUNTER_SNAPSHOT_LINEAGE_V2",
-    "run_id": "20260912T220554+0800-e5731284",
-    "manifest_sha256": "ff9a249b3f407647680698bb0f811fb35306f7670dda5a3894c0334bddf67d71",
+    "run_id": "20260913T075247+0800-234de76c",
+    "manifest_sha256": "54e30524a0719fcd386b176e33f9efe86184d20d6eb7cf6c2860726ad05f0b69",
     "fresh_gate_status": "PASS",
     "persisted_gate_matches_current_files": true,
     "mixed_snapshot_allowed": false
   },
   "activation_layer": {
-    "source": "V3_AUTONOMOUS_RESEARCH",
-    "path": "output/driver_activation_v3.csv",
-    "same_snapshot_v3": true,
+    "source": "UNKNOWN_NO_CURRENT_RESEARCH",
+    "path": "output/no_validated_activation_for_this_snapshot.csv",
+    "same_snapshot_v3": false,
     "challenger_adjudicated": false,
-    "accepted_activation_rows": 2,
+    "accepted_activation_rows": 0,
     "active_driver_ids": [],
     "lineage_overwrite_enforced": true
   },
@@ -80,7 +80,7 @@
     ],
     "validation_evidence_status": "PENDING_ACCEPTANCE_REVIEW",
     "current_shadow_statistics_are_strategy_validation": false,
-    "sealed_snapshot_id": "3a5a1f2331c4e0c990e238c808e7856ed74d7688af704d1f020dfe84fe9d1ef8"
+    "sealed_snapshot_id": "0f8c5664ecb5c95f647a60e1704603950d0635e74b8bdddc09d884a55c95fbb5"
   },
   "shadow_validation_layer": {
     "validation_version": null,
