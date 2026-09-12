@@ -8,9 +8,9 @@
 
 ## Simple Opportunity Brief
 
-### 1. 6179.TWO 亞通 — WAIT
+### 1. 3176.TWO 基亞 — WAIT
 
-- **WHY:** WHY unresolved: obtain company evidence before taking risk
+- **WHY:** Official August 2026 revenue increased and the issuer cited higher overseas revenue, but the specific product, customer, project, and durable economic mechanism behind that increase remain unverified.
 - **Driver:** Unmapped opportunity — research WHY
 - **Driver state:** UNVERIFIED
 - **Company transmission:** Unverified
@@ -18,10 +18,83 @@
 - **Relative:** TOGETHER
 - **Regime:** UNKNOWN
 - **Technical state:** Early strength / support recovery
+- **Why price:** Observed 120-session resistance offers at least 2R before costs; support defines <=8% price risk
+- **Entry:** 36.1–36.5
+- **Invalidation:** Exit on loss of 34.05; thesis failure also invalidates
+- **Add trigger:** Close above 41 with volume >=1.2x prior median; thesis still supported and recheck R/R
+- **Main counter-evidence:** Unverified
+- **Main risk:** Exact company / driver transmission remains unverified; no entry recommendation
+- **What would make us wrong:** A price-only story or weak company transmission
+
+### 2. 4967.TW 十銓 — WAIT
+
+- **WHY:** Official August 2026 revenue data supports higher shipments and selling prices, but the required international NAND/storage-cycle evidence and independent company transmission confirmation were not available in the supplied prefetch.
+- **Driver:** NAND / storage controller and module cycle
+- **Driver state:** UNVERIFIED
+- **Company transmission:** Unverified
+- **International confirmation:** Unverified — same-driver evidence required
+- **Relative:** TOGETHER
+- **Regime:** UNKNOWN
+- **Technical state:** Early strength / support recovery
+- **Why price:** Observed 120-session resistance offers at least 2R before costs; support defines <=8% price risk
+- **Entry:** 278.5–280.5
+- **Invalidation:** Exit on loss of 268; thesis failure also invalidates
+- **Add trigger:** Close above 294 with volume >=1.2x prior median; thesis still supported and recheck R/R
+- **Main counter-evidence:** Unverified
+- **Main risk:** Exact company / driver transmission remains unverified; no entry recommendation
+- **What would make us wrong:** A price-only story or weak company transmission
+
+### 3. 1609.TW 大亞 — WAIT
+
+- **WHY:** Official August 2026 revenue increased, but no verified evidence links the improvement specifically to LME/COMEX pricing, inventories, regional premia, tariffs, or physical copper tightness; cable revenue alone cannot establish the nominated copper driver.
+- **Driver:** Copper commodity price / trade-inventory cycle
+- **Driver state:** UNVERIFIED
+- **Company transmission:** Unverified
+- **International confirmation:** Unverified — same-driver evidence required
+- **Relative:** TOGETHER
+- **Regime:** UNKNOWN
+- **Technical state:** Early strength / support recovery
+- **Why price:** Observed 120-session resistance offers at least 2R before costs; support defines <=8% price risk
+- **Entry:** 37.7–37.8
+- **Invalidation:** Exit on loss of 36.5; thesis failure also invalidates
+- **Add trigger:** Close above 38.95 with volume >=1.2x prior median; thesis still supported and recheck R/R
+- **Main counter-evidence:** Unverified
+- **Main risk:** Exact company / driver transmission remains unverified; no entry recommendation
+- **What would make us wrong:** A price-only story or weak company transmission
+
+### 4. 2605.TW 新興 — WAIT
+
+- **WHY:** WHY unresolved: obtain company evidence before taking risk
+- **Driver:** Dry-bulk freight / commodity shipping cycle
+- **Driver state:** UNVERIFIED
+- **Company transmission:** Unverified
+- **International confirmation:** Unverified — same-driver evidence required
+- **Relative:** TOGETHER
+- **Regime:** UNKNOWN
+- **Technical state:** Early strength / support recovery
+- **Why price:** Observed 120-session resistance offers at least 2R before costs; support defines <=8% price risk
+- **Entry:** 36.15–36.5
+- **Invalidation:** Exit on loss of 34.05; thesis failure also invalidates
+- **Add trigger:** Close above 39.6 with volume >=1.2x prior median; thesis still supported and recheck R/R
+- **Main counter-evidence:** Unverified
+- **Main risk:** Unverified causal interpretation
+- **What would make us wrong:** A price-only story or weak company transmission
+
+### 5. 2609.TW 陽明 — WAIT
+
+- **WHY:** WHY unresolved: obtain company evidence before taking risk
+- **Driver:** Container freight / liner shipping cycle
+- **Driver state:** UNVERIFIED
+- **Company transmission:** Unverified
+- **International confirmation:** Unverified — same-driver evidence required
+- **Relative:** TOGETHER
+- **Regime:** UNKNOWN
+- **Technical state:** Early strength / support recovery
 - **Why price:** Wait for a supported pullback with >=2R to observed resistance and <=8% stop distance
-- **Entry:** 35.3–35.75
-- **Invalidation:** Exit on loss of 27.35; thesis failure also invalidates
-- **Add trigger:** Close above 40 with volume >=1.2x prior median; thesis still supported and recheck R/R
+- **Entry:** 58.8–59.4
+- **Invalidation:** Exit on loss of 55.1; thesis failure also invalidates
+- **Add trigger:** Close above 68 with volume >=1.2x prior median; thesis still supported and recheck R/R
+- **Main counter-evidence:** Unverified
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
