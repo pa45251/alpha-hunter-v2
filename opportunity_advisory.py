@@ -86,7 +86,6 @@ def regime_compatibility(risk, research):
     signals = risk.get('signals') or {}
     credit = signals.get('credit_hyg_lqd') or {}
     vix = number((signals.get('vix') or {}).get('price'))
-    # System-wide funding stress is adverse even for a local thesis.
     if (vix >= 35 or (credit.get('above_ma60') is False and number(credit.get('ret20')) < -0.03)):
         return 'ADVERSE'
     rate = signals.get('rate_pressure', 'UNKNOWN')
@@ -97,7 +96,6 @@ def regime_compatibility(risk, research):
             return 'UNKNOWN'
     if research.get('rate_sensitive') not in {True, False}:
         return 'UNKNOWN'
-    # Broad equity weakness alone does not veto an evidence-backed local/sector trade.
     if risk.get('regime') == 'NORMAL' and rate != 'ADVERSE':
         return 'SUPPORTIVE'
     return 'NEUTRAL'
@@ -136,7 +134,6 @@ def price_plan(hist):
     tick = tw_stock_tick(close)
     stop = _round_down_tick(support - 0.25 * atr, tw_stock_tick(support))
     entry_low = _round_up_tick(max(stop + atr, close - 0.25 * atr), tick)
-    # Never recommend paying more than the observed close for an early thesis.
     entry_high = _round_down_tick(close, tick)
     risk = entry_high - stop
     rr = (target - entry_high) / risk if risk > 0 else -1
@@ -168,7 +165,6 @@ def price_plan(hist):
 
 def assess(candidate, research, risk, hist, as_of):
     plan = price_plan(hist)
-    # Sealed scanner extension flags are an additional veto, never overwritten by a plan.
     if candidate.get('reaction_state') == 'EXTENDED' or number(candidate.get('bias20')) > 0.20 or number(candidate.get('ret_5d')) > 0.25:
         plan.update(extended=True, price_ok=False, price_reason='Extended price: wait for a new base; do not chase')
     if number(candidate.get('bias20')) >= 0.40 or number(candidate.get('ret_5d')) >= 0.40:
@@ -216,19 +212,19 @@ def assess(candidate, research, risk, hist, as_of):
 
 
 def rank_opportunities(rows, limit=5):
-    # Evidence/action first; score only breaks ties. At most one unresolved WHY in Top 5.
+    """Rank every nominated opportunity.
+
+    `limit` is retained for backward compatibility with callers, but presentation
+    must not hide candidates. The canonical rule is that every unique candidate
+    survives ranking; action/evidence/research quality only changes order.
+    """
     ordered = sorted(rows, key=lambda r: ({'BUY':0,'EARLY BUY':1,'WAIT':2,'PASS':3}[r['action']],
                      0 if r.get('evidence') else 1, 0 if r.get('research_completed') else 1,
                      0 if r.get('price_ok') else 1, r.get('extended', False),
                      -number(r.get('research_priority'),0), str(r.get('ticker'))))
-    result=[]; seen=set(); unresolved=0
+    result=[]; seen=set()
     for row in ordered:
         if row['ticker'] in seen:
             continue
-        no_evidence = row.get('unmapped', not row.get('evidence')) and not row.get('evidence')
-        if no_evidence and unresolved >= 1:
-            continue
-        result.append(row); seen.add(row['ticker']); unresolved += int(no_evidence)
-        if len(result) >= limit:
-            break
+        result.append(row); seen.add(row['ticker'])
     return result
