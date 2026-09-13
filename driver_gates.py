@@ -32,11 +32,11 @@ def sealed_csv(name, out):
 
 
 def _independent_company_peers(peers: pd.DataFrame) -> pd.DataFrame:
-    """Return company observations only so ETF wrappers do not double-count constituents.
+    """Remove ETF/fund wrappers before company-level confirmation.
 
-    ETF rows remain useful theme sensors, but ETF + constituent equity are not independent
-    breadth observations. International entry confirmation therefore requires at least three
-    company peers after removing fund wrappers. Thin themes fail closed as UNKNOWN.
+    Theme ETFs remain useful aggregate sensors, but an ETF and its constituents are not
+    independent observations. They therefore cannot both vote in the company-confirmation
+    channel used to upgrade a theme from DEVELOPING to CONFIRMED.
     """
     if peers.empty:
         return peers
@@ -47,13 +47,11 @@ def _independent_company_peers(peers: pd.DataFrame) -> pd.DataFrame:
 
 def _company_breadth_row(peers: pd.DataFrame) -> pd.Series | None:
     p = _independent_company_peers(peers)
-    if len(p) < 3:
-        return None
     required = ['price', 'ma20', 'ma60', 'rs_5d_vs_bench', 'rs_20d_vs_bench', 'dist_20d_high', 'dist_52w_high']
     if any(c not in p.columns for c in required):
         return None
-    numeric = p[required].apply(pd.to_numeric, errors='coerce')
-    if numeric.isna().any().any():
+    numeric = p[required].apply(pd.to_numeric, errors='coerce').dropna()
+    if len(numeric) < 2:
         return None
     return pd.Series({
         'above_ma20_pct': float((numeric['price'] > numeric['ma20']).mean()),
@@ -63,8 +61,8 @@ def _company_breadth_row(peers: pd.DataFrame) -> pd.Series | None:
         'near_20d_high_pct': float((numeric['dist_20d_high'] > -0.05).mean()),
         'near_52w_high_pct': float((numeric['dist_52w_high'] > -0.05).mean()),
         'median_rs20': float(numeric['rs_20d_vs_bench'].median()),
-        'breadth_confidence': 'HIGH' if len(p) >= 6 else 'MEDIUM',
-        'independent_company_count': int(len(p)),
+        'breadth_confidence': 'HIGH' if len(numeric) >= 6 else 'MEDIUM',
+        'independent_company_count': int(len(numeric)),
     })
 
 
@@ -79,36 +77,45 @@ def international_price(theme, breadth, peers):
     if len(b) != 1 or p.empty:
         return result
 
-    # Scanner breadth may contain both ETF wrappers and their constituents. Use it only as
-    # a coverage sanity check; the entry gate itself recomputes breadth from independent
-    # company observations so the same economic move cannot receive duplicate votes.
     scanner_b = b.iloc[0]
-    scanner_required = ['above_ma20_pct', 'above_ma60_pct', 'positive_rs20_pct', 'positive_rs5_pct',
-                        'near_20d_high_pct', 'near_52w_high_pct', 'median_rs20']
-    if scanner_b.get('breadth_confidence') not in {'MEDIUM', 'HIGH'} or pd.to_numeric(scanner_b[scanner_required], errors='coerce').isna().any():
+    required = ['above_ma20_pct', 'above_ma60_pct', 'positive_rs20_pct', 'positive_rs5_pct',
+                'near_20d_high_pct', 'near_52w_high_pct', 'median_rs20']
+    if scanner_b.get('breadth_confidence') not in {'MEDIUM', 'HIGH'} or pd.to_numeric(scanner_b[required], errors='coerce').isna().any():
         result['international_price_reason'] = 'Insufficient scanner breadth coverage'
         return result
 
-    independent = _company_breadth_row(p)
     company_peers = _independent_company_peers(p)
-    if independent is None:
-        result['international_price_reason'] = 'Insufficient independent company breadth; ETF wrappers cannot confirm entry'
+    if company_peers.empty:
+        result['international_price_reason'] = 'No independent company peer evidence; ETF wrapper alone cannot confirm entry'
         return result
 
-    trend, width = _breadth_score(independent)
+    independent = _company_breadth_row(p)
+    # When two or more complete company peers exist, recompute breadth without ETF wrappers.
+    # Thin themes may remain DEVELOPING using the scanner aggregate, but can never be upgraded
+    # to CONFIRMED by an ETF plus the same constituent move.
+    price_breadth = independent if independent is not None else scanner_b
+    trend, width = _breadth_score(price_breadth)
     states = company_peers.get('raw_leader_state', pd.Series(dtype=str)).dropna()
     rs = {k: pd.to_numeric(company_peers.get(k, pd.Series(dtype=float)), errors='coerce').median()
           for k in ['rs_5d_vs_bench', 'rs_20d_vs_bench', 'rs_60d_vs_bench', 'acceleration']}
     rejected = trend < .45 or width < .40 or (
-        len(states) == len(company_peers) and states.isin(['WEAKENING', 'BROKEN', 'REJECTED']).all()
+        len(states) == len(company_peers) and len(states) > 0
+        and states.isin(['WEAKENING', 'BROKEN', 'REJECTED']).all()
     )
-    complete = all(pd.notna(v) for v in rs.values()) and len(states) == len(company_peers)
-    confirmed = complete and all(v > 0 for v in rs.values()) and states.isin(['PERSISTENT', 'CONFIRMED']).any()
+    complete = all(pd.notna(v) for v in rs.values()) and len(states) == len(company_peers) and len(company_peers) > 0
+    confirmed = (
+        independent is not None
+        and complete
+        and all(v > 0 for v in rs.values())
+        and states.isin(['PERSISTENT', 'CONFIRMED']).any()
+    )
+    developing = complete
     result.update(
-        international_price_state='REJECTED' if rejected else 'CONFIRMED' if confirmed else 'DEVELOPING' if complete else 'UNKNOWN',
+        international_price_state='REJECTED' if rejected else 'CONFIRMED' if confirmed else 'DEVELOPING' if developing else 'UNKNOWN',
         international_price_reason=(
-            f'{theme}: independent_companies={len(company_peers)}; trend={trend:.3f}; '
-            f'breadth={width:.3f}; leader_states={sorted(set(states))}'
+            f'{theme}: independent_companies={len(company_peers)}; '
+            f'breadth_basis={"COMPANY_ONLY" if independent is not None else "SCANNER_AGGREGATE_THIN_THEME"}; '
+            f'trend={trend:.3f}; breadth={width:.3f}; leader_states={sorted(set(states))}'
         ),
         international_price_metrics=rs,
     )
@@ -143,7 +150,6 @@ def local_proven(research, candidate, as_of):
             or proof.get('global_industry_not_primary') is not True
             or not proof.get('global_alternative_test') or not proof.get('event_to_price_mechanism')):
         return False
-    # Two distinct source-backed claims: the event and the exclusion of a global explanation.
     return all(evidence_valid(proof.get(key), as_of, ticker=research.get('ticker'))
                for key in ['event_evidence', 'global_alternative_evidence']) and (
         proof['event_evidence']['source_url'] != proof['global_alternative_evidence']['source_url'])
