@@ -116,10 +116,10 @@ def test_research_ingest_roundtrip_preserves_company_advisory_without_activating
     transport=tmp_path/'prefetch.json'
     transport.write_text(json.dumps({
         'contract':'ALPHA_HUNTER_V3_RESEARCH_SOURCE_PREFETCH','status':'PASS','research_run_id':'run',
-        'targets':[{'driver_id':'EXACT_DRIVER','candidate_sources':[]}],
+        'targets':[{'driver_id':'EXACT_DRIVER','candidate_sources':[
+            {'source_url':'https://example.com/independent-industry'}]}],
         'company_targets':[{'ticker':'9999.TW','driver_id':'EXACT_DRIVER','candidate_sources':[
-            {'source_url':'https://example.com/filing'},
-            {'source_url':'https://example.com/independent-industry'}]}]}))
+            {'source_url':'https://example.com/filing'}]}]}))
     monkeypatch.setenv('ALPHA_HUNTER_RESEARCH_TRANSPORT_PATH',str(transport))
     monkeypatch.setattr(ingest,'_utcnow',lambda:ASOF)
     import research_handoff
