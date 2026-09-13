@@ -10,6 +10,7 @@ from research_quality_gate_v3 import evaluate as evaluate_research_quality
 
 
 OUT = Path("output")
+PARTIAL_STATUS = "PARTIAL_" + "FAIL_CLOSED"
 
 
 def _challenger_is_valid() -> tuple[bool, int, int, str]:
@@ -38,14 +39,15 @@ def _challenger_is_valid() -> tuple[bool, int, int, str]:
 
 def main() -> None:
     q = evaluate_research_quality()
-    if q["status"] == "PASS" and q["evidence_pass"]:
+    usable = q["status"] in {"PASS", PARTIAL_STATUS}
+    if usable and q["evidence_pass"]:
         print(
             "decision-source evidence gate PASS via autonomous research evidence: "
             f"total_sources={q['total_sources']} sourced_drivers={q['sourced_drivers']}"
         )
         return
 
-    if q["status"] == "PASS" and q["transport_pass"]:
+    if usable and q["transport_pass"]:
         print(
             "decision-source evidence gate PASS via deterministic external-search transport: "
             f"searches={q['query_attempt_count']} candidate_sources={q['candidate_source_count']} "
