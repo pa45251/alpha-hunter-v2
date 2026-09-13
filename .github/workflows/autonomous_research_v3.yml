@@ -8,6 +8,7 @@ on:
       - ".github/workflows/autonomous_research_v3.yml"
       - "company_research_*.py"
       - "company_source_documents.py"
+      - "openai_research_provider_v3.py"
       - "research_handoff.py"
       - "research_source_prefetch_v3.py"
       - "research_targeted_retrieval_v1.py"
@@ -21,6 +22,7 @@ on:
       - "research_activation_bridge_v3.py"
       - "driver_gates.py"
       - "opportunity_advisory.py"
+      - "tests/test_openai_research_provider_v3.py"
   workflow_run:
     workflows: ["Alpha Hunter Daily Scan"]
     types: [completed]
@@ -90,17 +92,6 @@ jobs:
           python-version: '3.12'
       - name: Install Python dependencies
         run: pip install -r requirements.txt
-      - name: Set up Node.js
-        uses: actions/setup-node@v6
-        with:
-          node-version: '24'
-      - name: Install Copilot CLI
-        run: npm install -g @github/copilot
-      - name: Verify personal Copilot credential
-        env:
-          COPILOT_GITHUB_TOKEN: ${{ secrets.COPILOT_GITHUB_TOKEN }}
-        run: |
-          if [ -z "$COPILOT_GITHUB_TOKEN" ]; then echo "::error::Missing repository secret COPILOT_GITHUB_TOKEN."; exit 1; fi
 
       - name: Build deterministic research admission handoff
         id: handoff
@@ -123,18 +114,30 @@ jobs:
         if: steps.handoff.outputs.has_work == 'true'
         run: python research_source_prefetch_v3.py --handoff /tmp/research_handoff.json --out /tmp/research_prefetch_v3.json --per-query 3
 
+      - name: Verify OpenAI research provider
+        if: steps.handoff.outputs.has_work == 'true'
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          OPENAI_RESEARCH_MODEL: ${{ vars.OPENAI_RESEARCH_MODEL || 'gpt-5.6-terra' }}
+          OPENAI_RESEARCH_REASONING_EFFORT: ${{ vars.OPENAI_RESEARCH_REASONING_EFFORT || 'high' }}
+        run: |
+          if [ -z "$OPENAI_API_KEY" ]; then echo "::error::Missing repository secret OPENAI_API_KEY."; exit 1; fi
+          echo "OpenAI V3 research provider enabled: model=$OPENAI_RESEARCH_MODEL effort=$OPENAI_RESEARCH_REASONING_EFFORT"
+
       - name: Restore same-snapshot thesis execution cache
         uses: actions/cache@v4
         with:
           path: .alpha-hunter/company_research_cache.json
-          key: company-research-v3-${{ github.ref_name }}-${{ hashFiles('output/manifest.json') }}-${{ github.run_id }}
+          key: openai-company-research-v3-${{ github.ref_name }}-${{ hashFiles('output/manifest.json') }}-${{ github.run_id }}
           restore-keys: |
-            company-research-v3-${{ github.ref_name }}-${{ hashFiles('output/manifest.json') }}-
+            openai-company-research-v3-${{ github.ref_name }}-${{ hashFiles('output/manifest.json') }}-
 
-      - name: Run shared driver and isolated company fact research
+      - name: Run OpenAI shared driver and isolated company fact research
         if: steps.handoff.outputs.has_work == 'true'
         env:
-          COPILOT_GITHUB_TOKEN: ${{ secrets.COPILOT_GITHUB_TOKEN }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          OPENAI_RESEARCH_MODEL: ${{ vars.OPENAI_RESEARCH_MODEL || 'gpt-5.6-terra' }}
+          OPENAI_RESEARCH_REASONING_EFFORT: ${{ vars.OPENAI_RESEARCH_REASONING_EFFORT || 'high' }}
         run: python company_research_runner_v2.py
       - name: Deterministic fail-closed opportunity research ingest
         if: steps.handoff.outputs.has_work == 'true'
@@ -167,7 +170,7 @@ jobs:
         env:
           PYTHONPATH: ${{ github.workspace }}
         run: |
-          python -m pytest -q tests/test_company_research_terminal.py tests/test_company_research_runner.py tests/test_research_targeted_retrieval_v1.py tests/test_research_contract_v3.py tests/test_research_activation_bridge_v3.py tests/test_research_source_prefetch_v3.py tests/test_research_quality_gate_v3.py tests/test_research_decision_source_gate_v3.py tests/test_research_repeat_guard_v4.py tests/test_snapshot_lineage_v2.py tests/test_decision_state_v2.py tests/test_shadow_audit_v2.py tests/test_shadow_validation_v2.py
+          python -m pytest -q tests/test_openai_research_provider_v3.py tests/test_company_research_terminal.py tests/test_company_research_runner.py tests/test_research_targeted_retrieval_v1.py tests/test_research_contract_v3.py tests/test_research_activation_bridge_v3.py tests/test_research_source_prefetch_v3.py tests/test_research_quality_gate_v3.py tests/test_research_decision_source_gate_v3.py tests/test_research_repeat_guard_v4.py tests/test_snapshot_lineage_v2.py tests/test_decision_state_v2.py tests/test_shadow_audit_v2.py tests/test_shadow_validation_v2.py
       - name: Remove unvalidated model output
         if: steps.handoff.outputs.has_work == 'true'
         run: rm -f output/research_result_v3.raw.txt
