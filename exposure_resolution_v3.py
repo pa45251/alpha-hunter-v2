@@ -65,6 +65,13 @@ def existing_cache(cutoff: pd.Timestamp, taxonomy: dict[str, dict]) -> dict[str,
 
 
 def main() -> None:
+    # Exposure resolution is an optional CAN-stage enrichment. If the ephemeral raw
+    # research transport is absent (e.g. unit tests or a later deterministic refresh),
+    # do not weaken or block the canonical activation path; simply leave exposure UNKNOWN.
+    if not RAW.exists() or not HANDOFF.exists():
+        print("Exposure resolution skipped: ephemeral research transport unavailable")
+        return
+
     validated = json.loads((OUT / "research_result_v3.json").read_text(encoding="utf-8"))
     run_id = str(validated.get("research_run_id") or "")
     cutoff_text = str(validated.get("validated_at_utc") or "")
