@@ -5,6 +5,7 @@ from pathlib import Path
 from typing import Any
 
 
+# Live-validation trigger only; no semantic effect.
 def thesis_id(ticker: str, driver_id: str, event_id: str | None = None) -> str:
     raw = f"{ticker}|{driver_id}|{event_id or ''}"
     return hashlib.sha256(raw.encode("utf-8")).hexdigest()[:20]
