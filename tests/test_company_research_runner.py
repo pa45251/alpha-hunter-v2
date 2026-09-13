@@ -77,6 +77,20 @@ def test_mapped_task_ignores_out_of_scope_exposure_proposal(tmp_path):
     assert not result['company_execution_failures']
 
 
+def test_company_call_discards_stray_shared_driver_results(tmp_path):
+    target = dict(ticker='1234', driver_id='D', thesis_id='tid', event_id='')
+    h = dict(run_id='run', company_research_targets=[target])
+    def call(*args):
+        return dict(
+            results=[dict(driver_id='D', state='ACTIVE', source_count=99)],
+            company_research_coverage=[dict(status='UNKNOWN_AFTER_RESEARCH', reason='No company mechanism')],
+        ), None
+    result = run(h, {}, tmp_path/'cache', tmp_path/'logs', call)
+    assert result['results'] == []
+    assert result['company_research_coverage'][0]['status'] == 'UNKNOWN_AFTER_RESEARCH'
+    assert not result['company_execution_failures']
+
+
 def test_isolated_task_rejects_explicit_conflicting_identity(tmp_path):
     target = dict(ticker='1234', driver_id='D', thesis_id='tid', event_id='')
     h = dict(run_id='run', company_research_targets=[target])
