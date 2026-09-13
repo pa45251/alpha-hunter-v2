@@ -2,18 +2,18 @@
   "contract": "ALPHA_HUNTER_V2_6_1_RESEARCH_HANDOFF",
   "handoff_version": "1.0",
   "handoff_status": "PASS",
-  "generated_at_taipei": "2026-09-13T07:56:43.733388+08:00",
+  "generated_at_taipei": "2026-09-13T08:47:53.030061+08:00",
   "repository": "pa45251/alpha-hunter-v2",
-  "branch": "main",
+  "branch": "repair/first-principles-live-validation",
   "schema_version": "2.6",
   "scanner_version": "2.6.1",
-  "run_id": "20260913T075247+0800-234de76c",
+  "run_id": "20260913T084423+0800-50626a0e",
   "gate_status": "PASS",
   "causal_rule": "PRICE_CANNOT_CREATE_CAUSALITY",
   "transport_policy": {
     "source_identity": "GitHub repository pa45251/alpha-hunter-v2 branch main only",
     "preferred_transport": "GitHub connector exact path output/research_handoff.json",
-    "fallback_transport": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/research_handoff.json",
+    "fallback_transport": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/repair/first-principles-live-validation/output/research_handoff.json",
     "do_not_substitute": [
       "Streamlit tables",
       "GitHub search results",
@@ -25,28 +25,28 @@
   "artifacts": {
     "manifest": {
       "relative_path": "output/manifest.json",
-      "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/manifest.json",
-      "sha256": "54e30524a0719fcd386b176e33f9efe86184d20d6eb7cf6c2860726ad05f0b69",
-      "bytes": 20067
+      "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/repair/first-principles-live-validation/output/manifest.json",
+      "sha256": "a2dc62604ec5925675a5190e2dcbbe4d1aba4566e5b63c9c921322a44f856558",
+      "bytes": 20837
     },
     "gate_report": {
       "relative_path": "output/gate_report.json",
-      "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/gate_report.json",
-      "sha256": "4075221c77198519fa3988d858f709a33970122812557042767fe51205096617",
-      "bytes": 3899
+      "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/repair/first-principles-live-validation/output/gate_report.json",
+      "sha256": "c58a77f3529c1002b63025682ed9a203117d0a766a03c9271cf94c318d690dce",
+      "bytes": 4074
     },
     "research_packet": {
       "relative_path": "output/research_packet.json",
-      "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/research_packet.json",
-      "sha256": "0685d9867e820ad91bd151598057b0a034ae44196f4ac364c927688dbefee4a6",
-      "bytes": 236135
+      "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/repair/first-principles-live-validation/output/research_packet.json",
+      "sha256": "e7b4afab34c5acf893a907e5be3c89e0437bf79596f65ceeabbe3c43aa25d69b",
+      "bytes": 236835
     }
   },
   "research_entrypoint": {
     "relative_path": "output/research_packet.json",
-    "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/research_packet.json",
-    "sha256": "0685d9867e820ad91bd151598057b0a034ae44196f4ac364c927688dbefee4a6",
-    "bytes": 236135
+    "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/repair/first-principles-live-validation/output/research_packet.json",
+    "sha256": "e7b4afab34c5acf893a907e5be3c89e0437bf79596f65ceeabbe3c43aa25d69b",
+    "bytes": 236835
   },
   "research_rule": "Research may begin only when handoff_status=PASS, gate_status=PASS, run_id is consistent, and the fetched research_packet SHA256 matches this handoff."
 }
