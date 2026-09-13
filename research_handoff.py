@@ -3,7 +3,7 @@ from __future__ import annotations
 import hashlib
 import json
 import os
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 from zoneinfo import ZoneInfo
@@ -13,6 +13,8 @@ EXPECTED_REPOSITORY = "pa45251/alpha-hunter-v2"
 EXPECTED_BRANCH = os.getenv("GITHUB_REF_NAME", "main")
 EXPECTED_SCHEMA = "2.6"
 EXPECTED_SCANNER_PREFIX = "2.6"
+EXPOSURE_CACHE_CONTRACT = "ALPHA_HUNTER_V3_EXPOSURE_RESOLUTION_CACHE"
+EXPOSURE_CACHE_MAX_AGE_DAYS = 120
 
 
 def _sha256(path: Path) -> str:
@@ -25,6 +27,70 @@ def _sha256(path: Path) -> str:
 
 def _read_json(path: Path) -> dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8"))
+
+
+def _driver_taxonomy() -> dict[str, dict]:
+    import pandas as pd
+    frame = pd.read_csv(Path('config/causal_driver_taxonomy.csv'))
+    enabled = pd.to_numeric(frame.get('enabled'), errors='coerce').fillna(0).eq(1)
+    rows = {}
+    for row in frame[enabled].to_dict('records'):
+        driver_id = str(row.get('driver_id') or '').strip()
+        if not driver_id:
+            continue
+        rows[driver_id] = dict(
+            driver_id=driver_id,
+            driver_label=str(row.get('driver_label') or ''),
+            global_theme=str(row.get('global_theme') or ''),
+            driver_scope=str(row.get('driver_scope') or ''),
+        )
+    return rows
+
+
+def _fresh_exposure_cache(out: Path, now: datetime) -> dict[str, dict]:
+    path = out / 'exposure_resolution_v3.json'
+    if not path.exists():
+        return {}
+    try:
+        payload = _read_json(path)
+    except (OSError, ValueError, TypeError):
+        return {}
+    if payload.get('contract') != EXPOSURE_CACHE_CONTRACT or payload.get('status') != 'PASS':
+        return {}
+    result = {}
+    for row in payload.get('resolutions') or []:
+        if not isinstance(row, dict) or not row.get('ticker'):
+            continue
+        try:
+            validated = datetime.fromisoformat(str(row.get('validated_at_utc')).replace('Z', '+00:00'))
+            if validated.tzinfo is None:
+                validated = validated.replace(tzinfo=timezone.utc)
+            age = (now - validated.astimezone(timezone.utc)).days
+        except (TypeError, ValueError):
+            continue
+        if 0 <= age <= EXPOSURE_CACHE_MAX_AGE_DAYS:
+            result[str(row['ticker'])] = row
+    return result
+
+
+def _apply_exposure_cache(records: list[dict], out: Path, now: datetime) -> list[dict]:
+    taxonomy = _driver_taxonomy()
+    cache = _fresh_exposure_cache(out, now)
+    for row in records:
+        if row.get('driver_id') != 'UNMAPPED_OPPORTUNITY':
+            continue
+        cached = cache.get(str(row.get('ticker')))
+        meta = taxonomy.get(str((cached or {}).get('resolved_driver_id')))
+        if not meta:
+            continue
+        row['original_driver_id'] = 'UNMAPPED_OPPORTUNITY'
+        row['driver_id'] = meta['driver_id']
+        row['driver_label'] = meta['driver_label']
+        row['global_theme'] = meta['global_theme']
+        row['driver_scope'] = meta['driver_scope']
+        row['exposure_resolution_status'] = 'PROVISIONAL_SOURCE_BACKED'
+        row['exposure_resolution_mechanism'] = cached.get('mechanism')
+    return records
 
 
 def build_research_handoff(out_dir: str | Path = "output") -> dict[str, Any]:
@@ -154,11 +220,6 @@ def company_research_targets(out: Path = Path('output'), limit: int | None = Non
         if 'ticker' in x:
             frames.append(x)
 
-    # taiwan_candidates.csv is already an authoritative manifest-hashed snapshot. Older
-    # scanner versions did not stamp run_id into the CSV itself; filtering a missing run_id
-    # silently deleted every otherwise-valid unmapped candidate. Consume the sealed file
-    # instead: its manifest hash is the lineage authority, and sealed_csv additionally checks
-    # run_id when a future scanner version includes that column.
     candidates_path = out / 'taiwan_candidates.csv'
     if candidates_path.exists():
         candidates = sealed_csv('taiwan_candidates.csv', out)
@@ -187,6 +248,8 @@ def company_research_targets(out: Path = Path('output'), limit: int | None = Non
     cols = ['ticker','name','driver_id','driver_label','driver_scope','global_theme','reaction_state',
             'global_peer_evidence','transmission_gap_proxy','economic_role','research_priority','bias20','ret_5d']
     records = x[[c for c in cols if c in x]].astype(object).where(pd.notna(x[[c for c in cols if c in x]]), None).to_dict('records')
+    now_dt = datetime.now(timezone.utc)
+    records = _apply_exposure_cache(records, out, now_dt)
     records = attach_price_gates(records, out)
 
     current_research = {}
@@ -198,7 +261,7 @@ def company_research_targets(out: Path = Path('output'), limit: int | None = Non
             current_research = payload
     from opportunity_advisory import validate_company_research
     from research_contract_v3 import validate_research_result
-    now = datetime.now(ZoneInfo('UTC')).isoformat()
+    now = now_dt.isoformat()
     company = {}
     nominated = {(c['ticker'], c['driver_id']) for c in records}
     for r in current_research.get('company_opportunities', []):
@@ -245,6 +308,7 @@ def decision_research_handoff(out: Path = Path('output')) -> dict:
              if (out / 'causal_research_queue.csv').exists() else packet.get('research_queue_top30', []))
     drivers = [r for r in queue if r['driver_id'] in driver_ids]
     return dict(contract='ALPHA_HUNTER_DECISION_GAP_HANDOFF', run_id=packet['run_id'],
+                allowed_driver_taxonomy=list(_driver_taxonomy().values()),
                 research_targets=drivers, company_research_targets=eligible,
                 deferred_candidates=[dict(ticker=c['ticker'], driver_id=c['driver_id'],
                                           missing_gate=c['missing_gate'], research_task=c['research_task'])
