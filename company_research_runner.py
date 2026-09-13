@@ -12,7 +12,7 @@ import subprocess
 from company_research_terminal import identity, resolve_identity
 from research_ingest_v3 import _extract_json
 
-VERSION = 'COMPANY_DOCUMENT_TERMINAL_V2'
+VERSION = 'COMPANY_DOCUMENT_TERMINAL_V3'
 FIELDS = ('results', 'company_opportunities', 'company_research_coverage', 'exposure_resolutions', 'company_execution_failures')
 
 
@@ -24,13 +24,60 @@ def fingerprint(handoff, prefetch):
         if isinstance(value, list):
             return [stable(v) for v in value]
         return value
-    # Preserve original publication/availability when known; observed-at metadata may change
-    # without a new fact. Document bytes, query outcomes and setup always participate.
     sources = []
     for t in prefetch.get('targets', []) + prefetch.get('company_targets', []):
         for s in t.get('candidate_sources', []):
             sources.append({k:s.get(k) for k in ['source_url','document_sha256','document_text','snippet','fetch_status','search_lane']})
     return hashlib.sha256(json.dumps([VERSION, stable(handoff), stable(sources)], sort_keys=True, ensure_ascii=False).encode()).hexdigest()
+
+
+def _bind_field(row, key, expected, error):
+    """Fill redundant task metadata only when omitted; explicit contradictions fail closed."""
+    supplied = row.get(key)
+    expected_cmp = '' if expected is None else str(expected)
+    if supplied not in {None, ''} and str(supplied) != expected_cmp:
+        raise ValueError(error)
+    row[key] = expected
+
+
+def _bind_isolated_payload(payload, target, run_id):
+    """Bind rows to the one authoritative thesis already selected by deterministic code.
+
+    This never creates evidence or a thesis.  It only removes the need for an LLM to
+    perfectly repeat metadata already fixed by the isolated task envelope.
+    """
+    target_tid = identity(target)
+    event_id = target.get('event_id') or ''
+    for field in ('company_opportunities', 'company_research_coverage'):
+        normalized = []
+        for original in payload.get(field, []):
+            if not isinstance(original, dict):
+                raise ValueError('NON_OBJECT_COMPANY_RESULT')
+            row = dict(original)
+            _bind_field(row, 'ticker', target['ticker'], 'COMPANY_TICKER_MISMATCH')
+            _bind_field(row, 'driver_id', target['driver_id'], 'COMPANY_DRIVER_MISMATCH')
+            _bind_field(row, 'thesis_id', target_tid, 'COMPANY_THESIS_MISMATCH')
+            _bind_field(row, 'event_id', event_id, 'COMPANY_EVENT_MISMATCH')
+            if field == 'company_opportunities':
+                _bind_field(row, 'research_run_id', run_id, 'COMPANY_RESEARCH_RUN_MISMATCH')
+            normalized.append(resolve_identity(row, [target]))
+        payload[field] = normalized
+
+    # Exposure resolution is only a proposal from an UNMAPPED thesis.  Missing envelope
+    # metadata is deterministic; a contradictory proposal remains a schema failure.
+    normalized_exposure = []
+    for original in payload.get('exposure_resolutions', []):
+        if not isinstance(original, dict):
+            raise ValueError('NON_OBJECT_EXPOSURE_RESOLUTION')
+        if target.get('driver_id') != 'UNMAPPED_OPPORTUNITY':
+            raise ValueError('EXPOSURE_RESOLUTION_REQUIRES_UNMAPPED_TARGET')
+        row = dict(original)
+        _bind_field(row, 'ticker', target['ticker'], 'EXPOSURE_TICKER_MISMATCH')
+        _bind_field(row, 'nominated_driver_id', 'UNMAPPED_OPPORTUNITY', 'EXPOSURE_NOMINATION_MISMATCH')
+        _bind_field(row, 'research_run_id', run_id, 'EXPOSURE_RESEARCH_RUN_MISMATCH')
+        normalized_exposure.append(row)
+    payload['exposure_resolutions'] = normalized_exposure
+    return payload
 
 
 def invoke(handoff, prefetch, shared, call_id, log_dir):
@@ -49,7 +96,6 @@ def invoke(handoff, prefetch, shared, call_id, log_dir):
         result = subprocess.run(command, input=prompt, text=True, capture_output=True, timeout=150)
     except (OSError, subprocess.TimeoutExpired) as exc:
         return None, ('TRANSPORT_FAILED', type(exc).__name__)
-    # Private local diagnostics are bounded, never logged credentials or prompts to public artifacts.
     (log_dir / (call_id + '.stderr.txt')).write_text(result.stderr[-6000:])
     if result.returncode or not result.stdout.strip():
         return None, ('TRANSPORT_FAILED', f'CLI_EXIT_{result.returncode}')
@@ -87,13 +133,11 @@ def run(handoff, prefetch, cache_path, log_dir, call=invoke):
         driver_docs = [t for t in prefetch.get('targets', []) if t.get('driver_id') == target['driver_id']]
         tasks.append((identity(target), dict(base, research_targets=[], company_research_targets=[target]),
                       dict(prefetch, targets=driver_docs, company_targets=company_docs)))
+
     def perform(item):
         key, task, sources = item
-        # Include shared findings in the company cache dependency.
         sig = fingerprint(dict(task, shared_driver_research=merged['results']), sources)
         prior = cache['items'].get(key)
-        # Only successful model payloads are reusable. Execution failures are operational state,
-        # not investment conclusions, and must be allowed to recover on a later execution.
         reused = bool(prior and prior.get('signature') == sig
                       and prior.get('payload') is not None and not prior.get('failure'))
         if reused:
@@ -107,9 +151,7 @@ def run(handoff, prefetch, cache_path, log_dir, call=invoke):
                 payload, failure = call(task, sources, merged['results'], key, log_dir)
             if payload and key != 'shared':
                 try:
-                    for field in ['company_opportunities','company_research_coverage']:
-                        payload[field] = [resolve_identity(r, task['company_research_targets']) for r in payload.get(field, [])]
-                    # A company call cannot smuggle another driver result into the shared lane.
+                    payload = _bind_isolated_payload(payload, task['company_research_targets'][0], handoff['run_id'])
                     if payload.get('results'):
                         raise ValueError('COMPANY_CALL_CANNOT_WRITE_SHARED_DRIVER_RESULTS')
                 except ValueError as exc:
@@ -139,7 +181,6 @@ def run(handoff, prefetch, cache_path, log_dir, call=invoke):
         collect(perform(tasks.pop(0)))
     from concurrent.futures import ThreadPoolExecutor
     with ThreadPoolExecutor(max_workers=3) as pool:
-        # map preserves nomination order regardless of completion order.
         for result in pool.map(perform, tasks):
             collect(result)
     merged['execution_ledger'] = ledger

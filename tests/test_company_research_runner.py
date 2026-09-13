@@ -54,6 +54,26 @@ def test_execution_failure_is_not_cached_but_success_is(tmp_path):
     assert third['execution_ledger'][0]['cache_hit'] is True
 
 
+def test_isolated_task_binds_missing_identity_and_run_metadata(tmp_path):
+    target = dict(ticker='1234', driver_id='D', thesis_id='tid', event_id='', research_question='why')
+    h = dict(run_id='run', company_research_targets=[target])
+    def call(*args):
+        return dict(company_research_coverage=[dict(status='UNKNOWN_AFTER_RESEARCH', reason='Missing fact')],
+                    company_opportunities=[]), None
+    result = run(h, {}, tmp_path/'cache', tmp_path/'logs', call)
+    row = result['company_research_coverage'][0]
+    assert (row['ticker'], row['driver_id'], row['thesis_id']) == ('1234', 'D', 'tid')
+
+
+def test_isolated_task_rejects_explicit_conflicting_identity(tmp_path):
+    target = dict(ticker='1234', driver_id='D', thesis_id='tid', event_id='')
+    h = dict(run_id='run', company_research_targets=[target])
+    def call(*args):
+        return dict(company_research_coverage=[dict(ticker='OTHER', status='UNKNOWN_AFTER_RESEARCH', reason='Missing')]), None
+    result = run(h, {}, tmp_path/'cache', tmp_path/'logs', call)
+    assert result['company_execution_failures'][0]['failure_code'] == 'SCHEMA_FAILED'
+
+
 def test_company_call_cannot_write_other_thesis(tmp_path):
     h = dict(run_id='run', company_research_targets=[dict(ticker='1234',driver_id='D')])
     def call(*args):

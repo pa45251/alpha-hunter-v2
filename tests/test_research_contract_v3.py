@@ -1,13 +1,14 @@
 import pytest
 
 from research_contract_v3 import ResearchContractError, downstream_state, validate_research_result
+from research_ingest_v3 import _bind_driver_metadata
 
 
-def evidence(kind="PRIMARY"):
+def evidence(kind="PRIMARY", url="https://example.com/source"):
     return {
         "claim": "Exact driver evidence",
         "source_title": "Source",
-        "source_url": "https://example.com/source",
+        "source_url": url,
         "published_at": "2026-09-06T00:00:00Z",
         "event_date": "2026-09-05T00:00:00Z",
         "evidence_type": kind,
@@ -31,29 +32,32 @@ def research(state="ACTIVE"):
 
 def challenge(verdict="PASS", all_true=True):
     names = [
-        "exact_driver_match",
-        "causal_direction",
-        "event_time_consistency",
-        "industry_scope",
-        "company_specific_contamination",
-        "circular_sourcing",
-        "stale_evidence",
-        "counter_evidence_reviewed",
-        "price_not_used_as_causality",
+        "exact_driver_match", "causal_direction", "event_time_consistency", "industry_scope",
+        "company_specific_contamination", "circular_sourcing", "stale_evidence",
+        "counter_evidence_reviewed", "price_not_used_as_causality",
     ]
     checks = {name: True for name in names}
     if not all_true:
         checks["exact_driver_match"] = False
-    return {
-        "driver_id": "AI_SERVER_SHIPMENTS",
-        "research_run_id": "research-1",
-        "verdict": verdict,
-        "checks": checks,
-    }
+    return {"driver_id": "AI_SERVER_SHIPMENTS", "research_run_id": "research-1", "verdict": verdict, "checks": checks}
 
 
 def test_active_source_backed_passes():
     validate_research_result(research(), {"AI_SERVER_SHIPMENTS"})
+
+
+def test_source_count_is_deterministic_unique_url_metadata():
+    row = research()
+    row['source_count'] = 999
+    bound, urls = _bind_driver_metadata(row, 'research-1')
+    assert bound['source_count'] == 1
+    assert urls == {'https://example.com/source'}
+    validate_research_result(bound, {"AI_SERVER_SHIPMENTS"})
+
+
+def test_explicit_driver_run_mismatch_still_fails_closed():
+    with pytest.raises(ResearchContractError, match='run_id mismatch'):
+        _bind_driver_metadata(research(), 'other-run')
 
 
 def test_unknown_driver_fails_closed():

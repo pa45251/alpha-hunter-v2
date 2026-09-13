@@ -20,7 +20,6 @@ def _utcnow() -> str:
 
 
 def _extract_json(text: str):
-    """Extract one top-level JSON object without relaxing downstream validation."""
     text = text.strip().lstrip("\ufeff")
     if not text:
         raise ResearchContractError("empty autonomous research output")
@@ -74,19 +73,22 @@ def _unknown(driver_id: str, run_id: str, reason: str) -> dict:
 def _source_urls(items) -> set[str]:
     if not isinstance(items, list):
         return set()
-    return {
-        str(item.get("source_url"))
-        for item in items
-        if isinstance(item, dict) and item.get("source_url")
-    }
+    return {str(item.get("source_url")) for item in items if isinstance(item, dict) and item.get("source_url")}
+
+
+def _bind_driver_metadata(result: dict, run_id: str) -> tuple[dict, set[str]]:
+    """Derive metadata already knowable from the validated envelope/evidence rows."""
+    row = dict(result)
+    supplied = row.get('research_run_id')
+    if supplied not in {None, ''} and str(supplied) != str(run_id):
+        raise ResearchContractError('per-driver run_id mismatch')
+    row['research_run_id'] = run_id
+    urls = _source_urls(row.get('supporting_evidence')) | _source_urls(row.get('counter_evidence'))
+    row['source_count'] = len(urls)
+    return row, urls
 
 
 def _company_fact_urls(row: dict) -> set[str]:
-    """URLs that assert company-specific facts.
-
-    Shared driver evidence is intentionally excluded. A driver URL can validate the
-    international claim, but it can never substitute for company exposure/transmission.
-    """
     urls = _source_urls(row.get("fundamental_evidence")) | _source_urls(row.get("exposure_evidence")) | _source_urls(row.get("counter_evidence"))
     proof = row.get("local_scope_evidence")
     if isinstance(proof, dict):
@@ -113,16 +115,13 @@ def _prefetch_allowlists(run_id: str) -> tuple[dict[str, set[str]], dict[tuple[s
 
     drivers: dict[str, set[str]] = {}
     for target in data.get("targets") or []:
-        if not isinstance(target, dict):
-            continue
-        drivers[str(target.get("driver_id", ""))] = _source_urls(target.get("candidate_sources"))
-
+        if isinstance(target, dict):
+            drivers[str(target.get("driver_id", ""))] = _source_urls(target.get("candidate_sources"))
     companies: dict[tuple[str, str], set[str]] = {}
     for target in data.get("company_targets") or []:
-        if not isinstance(target, dict):
-            continue
-        key = (str(target.get("ticker", "")), str(target.get("driver_id", "")))
-        companies[key] = _source_urls(target.get("candidate_sources"))
+        if isinstance(target, dict):
+            key = (str(target.get("ticker", "")), str(target.get("driver_id", "")))
+            companies[key] = _source_urls(target.get("candidate_sources"))
     return drivers, companies
 
 
@@ -133,7 +132,6 @@ def _assert_urls_prefetched(urls: set[str], allowed: set[str], label: str) -> No
 
 
 def _failure_code(exc: Exception | str) -> str:
-    # Validation errors are execution/schema defects, never economic UNKNOWN.
     return "TRANSPORT_FAILED" if "DETERMINISTIC_SOURCE_TRANSPORT" in str(exc) else "SCHEMA_FAILED"
 
 
@@ -161,13 +159,11 @@ def main() -> None:
     company_opportunities: list[dict] = []
     company_errors: list[str] = []
     company_failures: list[dict] = []
-    company_invalid_coverage: list[dict] = []
 
     default_failure = None
     try:
         driver_allow, company_allow = _prefetch_allowlists(run_id)
-        raw_text = RAW.read_text(encoding="utf-8")
-        payload = _extract_json(raw_text)
+        payload = _extract_json(RAW.read_text(encoding="utf-8"))
         if payload.get("contract") != "ALPHA_HUNTER_V3_AUTONOMOUS_RESEARCH":
             raise ResearchContractError("research contract marker mismatch")
         if str(payload.get("research_run_id")) != run_id:
@@ -175,11 +171,11 @@ def main() -> None:
         results = payload.get("results")
         if not isinstance(results, list):
             raise ResearchContractError("results must be a list")
-        for result in results:
-            if not isinstance(result, dict):
+        for original in results:
+            if not isinstance(original, dict):
                 errors.append("non-object result rejected")
                 continue
-            driver_id = str(result.get("driver_id", ""))
+            driver_id = str(original.get("driver_id", ""))
             if driver_id not in target_set:
                 errors.append(f"unnominated/non-target driver rejected: {driver_id}")
                 continue
@@ -187,12 +183,8 @@ def main() -> None:
                 errors.append(f"duplicate driver rejected: {driver_id}")
                 continue
             try:
-                if str(result.get("research_run_id")) != run_id:
-                    raise ResearchContractError("per-driver run_id mismatch")
+                result, urls = _bind_driver_metadata(original, run_id)
                 validate_research_result(result, target_set)
-                urls = _source_urls(result.get("supporting_evidence")) | _source_urls(result.get("counter_evidence"))
-                if int(result.get("source_count", -1)) != len(urls):
-                    raise ResearchContractError("source_count must equal unique evidence URLs")
                 _assert_urls_prefetched(urls, driver_allow.get(driver_id, set()), driver_id)
                 supplied[driver_id] = result
             except Exception as exc:
@@ -212,24 +204,18 @@ def main() -> None:
     company_targets = {(r["ticker"], r["driver_id"]) for r in nominated_companies}
     if status == "PASS":
         seen_company = set()
-        for row in payload.get("company_opportunities") or []:
+        for original in payload.get("company_opportunities") or []:
+            row = original
             try:
                 row = resolve_identity(row, nominated_companies)
                 validate_company_research(row, run_id, company_targets, _utcnow())
                 key = (row["ticker"], row["driver_id"])
                 if row["thesis_id"] in seen_company:
                     raise ValueError("DUPLICATE_COMPANY_RESEARCH")
-                # Company-specific claims and shared driver claims have distinct trust scopes.
-                # Never union the allowlists: doing so would let a macro article masquerade
-                # as company exposure, or a company article masquerade as industry evidence.
-                _assert_urls_prefetched(
-                    _company_fact_urls(row), company_allow.get(key, set()), f"COMPANY:{key[0]}:{key[1]}"
-                )
+                _assert_urls_prefetched(_company_fact_urls(row), company_allow.get(key, set()), f"COMPANY:{key[0]}:{key[1]}")
                 if row.get("driver_id") != "UNMAPPED_OPPORTUNITY":
-                    _assert_urls_prefetched(
-                        _driver_fact_urls(row), driver_allow.get(str(row.get("driver_id")), set()),
-                        f"DRIVER:{key[0]}:{key[1]}"
-                    )
+                    _assert_urls_prefetched(_driver_fact_urls(row), driver_allow.get(str(row.get("driver_id")), set()),
+                                            f"DRIVER:{key[0]}:{key[1]}")
                 elif _driver_fact_urls(row):
                     raise ResearchContractError("UNMAPPED_COMPANY_CANNOT_CLAIM_SHARED_DRIVER_EVIDENCE")
                 transport = json.loads(Path(os.getenv("ALPHA_HUNTER_RESEARCH_TRANSPORT_PATH", str(DEFAULT_PREFETCH))).read_text())
@@ -263,15 +249,8 @@ def main() -> None:
             except (ValueError, TypeError, ResearchContractError) as exc:
                 company_errors.append(str(exc))
                 if isinstance(row, dict) and (row.get("ticker"), row.get("driver_id")) in company_targets:
-                    failure = dict(
-                        ticker=row["ticker"], driver_id=row["driver_id"], thesis_id=row.get("thesis_id"),
-                        failure_code=_failure_code(exc), reason=str(exc)
-                    )
-                    company_failures.append(failure)
-                    company_invalid_coverage.append(dict(
-                        ticker=row["ticker"], driver_id=row["driver_id"], status="UNRESOLVED",
-                        reason_code=failure["failure_code"], reason="Research failed validation: " + str(exc)
-                    ))
+                    company_failures.append(dict(ticker=row["ticker"], driver_id=row["driver_id"], thesis_id=row.get("thesis_id"),
+                                                 failure_code=_failure_code(exc), reason=str(exc)))
 
     final_results = []
     for driver_id in target_ids:
@@ -283,8 +262,7 @@ def main() -> None:
 
     company_failures.extend(payload.get("company_execution_failures") or [])
     company_opportunities, coverage_rows, terminal_summary, terminal_errors = finalize(
-        nominated_companies, company_opportunities,
-        payload.get("company_research_coverage", []), company_failures, default_failure)
+        nominated_companies, company_opportunities, payload.get("company_research_coverage", []), company_failures, default_failure)
     company_errors.extend(terminal_errors)
     company_failures = [dict(r, failure_code=r["status"]) for r in coverage_rows
                         if r["status"] in {"TRANSPORT_FAILED", "SCHEMA_FAILED"}]
@@ -304,10 +282,7 @@ def main() -> None:
         "company_terminal_summary": terminal_summary,
     }
     OUT.write_text(json.dumps(out, ensure_ascii=False, indent=2), encoding="utf-8")
-    print(
-        f"v3 research ingest: {status}; valid={len(supplied)}/{len(target_ids)} "
-        f"company_opportunities={len(company_opportunities)} company_failures={len(company_failures)}"
-    )
+    print(f"v3 research ingest: {status}; valid={len(supplied)}/{len(target_ids)} company_opportunities={len(company_opportunities)} company_failures={len(company_failures)}")
     if errors:
         for err in errors[:8]:
             print(f"research ingest diagnostic: {err}")

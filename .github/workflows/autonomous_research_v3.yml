@@ -57,9 +57,7 @@ jobs:
               echo "reason=UPSTREAM_NOT_SUCCESS" >> "$GITHUB_OUTPUT"
               exit 0
             fi
-            python automation_guard_v4.py \
-              --mode workflow-trigger \
-              --trigger-started-at-utc "${{ github.event.workflow_run.run_started_at }}"
+            python automation_guard_v4.py --mode workflow-trigger --trigger-started-at-utc "${{ github.event.workflow_run.run_started_at }}"
           elif [ "${{ github.event_name }}" = "push" ] && ! python -c 'import json,os; from pathlib import Path; m=json.loads(Path("output/manifest.json").read_text()); assert m.get("branch")==os.environ["GITHUB_REF_NAME"] and m.get("status")=="PASS"'; then
             echo "should_run=false" >> "$GITHUB_OUTPUT"
             echo "reason=BRANCH_SCAN_REQUIRED" >> "$GITHUB_OUTPUT"
@@ -82,49 +80,36 @@ jobs:
         with:
           ref: ${{ github.ref_name }}
           fetch-depth: 0
-
       - name: Set up Python
         uses: actions/setup-python@v6
         with:
           python-version: '3.12'
-
       - name: Install Python dependencies
         run: pip install -r requirements.txt
-
       - name: Set up Node.js
         uses: actions/setup-node@v6
         with:
           node-version: '24'
-
       - name: Install Copilot CLI
         run: npm install -g @github/copilot
-
       - name: Verify personal Copilot credential
         env:
           COPILOT_GITHUB_TOKEN: ${{ secrets.COPILOT_GITHUB_TOKEN }}
         run: |
-          if [ -z "$COPILOT_GITHUB_TOKEN" ]; then
-            echo "::error::Missing repository secret COPILOT_GITHUB_TOKEN."
-            exit 1
-          fi
+          if [ -z "$COPILOT_GITHUB_TOKEN" ]; then echo "::error::Missing repository secret COPILOT_GITHUB_TOKEN."; exit 1; fi
 
       - name: Build deterministic research admission handoff
         id: handoff
         run: |
           python - <<'PY'
-          import json
+          import json, os
           from pathlib import Path
           from research_handoff import decision_research_handoff
           from research_admission_v4 import apply_admission
           compact = apply_admission(decision_research_handoff())
-          Path('/tmp/research_handoff.json').write_text(
-              json.dumps(compact, ensure_ascii=False, separators=(',', ':')),
-              encoding='utf-8'
-          )
-          import os
+          Path('/tmp/research_handoff.json').write_text(json.dumps(compact, ensure_ascii=False, separators=(',', ':')), encoding='utf-8')
           has_work = bool(compact['research_targets'] or compact['company_research_targets'])
-          with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
-              f.write('has_work=' + str(has_work).lower() + '\n')
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as f: f.write('has_work=' + str(has_work).lower() + '\n')
           Path('output/research_admission_audit.json').write_text(json.dumps(compact.get('admission_completeness'), ensure_ascii=False, indent=2))
           print('research admission:', compact.get('admission_summary'))
           print('shared driver questions:', [x.get('driver_id') for x in compact['research_targets']])
@@ -132,46 +117,37 @@ jobs:
 
       - name: Prefetch deterministic opportunity sources
         if: steps.handoff.outputs.has_work == 'true'
-        run: |
-          python research_source_prefetch_v3.py \
-            --handoff /tmp/research_handoff.json \
-            --out /tmp/research_prefetch_v3.json \
-            --per-query 3
+        run: python research_source_prefetch_v3.py --handoff /tmp/research_handoff.json --out /tmp/research_prefetch_v3.json --per-query 3
 
       - name: Restore same-snapshot thesis execution cache
         uses: actions/cache@v4
         with:
           path: .alpha-hunter/company_research_cache.json
-          key: company-research-v2-${{ github.ref_name }}-${{ hashFiles('output/manifest.json') }}-${{ github.run_id }}
+          key: company-research-v3-${{ github.ref_name }}-${{ hashFiles('output/manifest.json') }}-${{ github.run_id }}
           restore-keys: |
-            company-research-v2-${{ github.ref_name }}-${{ hashFiles('output/manifest.json') }}-
+            company-research-v3-${{ github.ref_name }}-${{ hashFiles('output/manifest.json') }}-
 
       - name: Run shared driver and isolated company fact research
         if: steps.handoff.outputs.has_work == 'true'
         env:
           COPILOT_GITHUB_TOKEN: ${{ secrets.COPILOT_GITHUB_TOKEN }}
         run: python company_research_runner.py
-
       - name: Deterministic fail-closed opportunity research ingest
         if: steps.handoff.outputs.has_work == 'true'
         run: python research_ingest_v3.py
-
       - name: Check opportunity research evidence quality
         if: steps.handoff.outputs.has_work == 'true'
         env:
           ALPHA_HUNTER_RESEARCH_TRANSPORT_PATH: /tmp/research_prefetch_v3.json
         run: python research_quality_gate_v3.py
-
       - name: Enforce opportunity research decision-source quality
         if: steps.handoff.outputs.has_work == 'true'
         env:
           ALPHA_HUNTER_RESEARCH_TRANSPORT_PATH: /tmp/research_prefetch_v3.json
         run: python research_decision_source_gate_v3.py
-
       - name: Build same-snapshot v3 opportunity activation bridge
         if: steps.handoff.outputs.has_work == 'true'
         run: python research_activation_bridge_v3.py
-
       - name: Build market decision and action from validated evidence
         if: steps.handoff.outputs.has_work == 'true'
         env:
@@ -179,33 +155,18 @@ jobs:
         run: |
           python decision_run_v2.py
           python action_board_summary.py --refresh
-
       - name: Record research execution fingerprint
         if: steps.handoff.outputs.has_work == 'true'
         run: python research_execution_record_v4.py
-
       - name: Validate research and decision contracts
         if: steps.handoff.outputs.has_work == 'true'
         env:
           PYTHONPATH: ${{ github.workspace }}
         run: |
-          python -m pytest -q \
-            tests/test_company_research_terminal.py \
-            tests/test_company_research_runner.py \
-            tests/test_research_contract_v3.py \
-            tests/test_research_activation_bridge_v3.py \
-            tests/test_research_source_prefetch_v3.py \
-            tests/test_research_quality_gate_v3.py \
-            tests/test_research_repeat_guard_v4.py \
-            tests/test_snapshot_lineage_v2.py \
-            tests/test_decision_state_v2.py \
-            tests/test_shadow_audit_v2.py \
-            tests/test_shadow_validation_v2.py
-
+          python -m pytest -q tests/test_company_research_terminal.py tests/test_company_research_runner.py tests/test_research_contract_v3.py tests/test_research_activation_bridge_v3.py tests/test_research_source_prefetch_v3.py tests/test_research_quality_gate_v3.py tests/test_research_repeat_guard_v4.py tests/test_snapshot_lineage_v2.py tests/test_decision_state_v2.py tests/test_shadow_audit_v2.py tests/test_shadow_validation_v2.py
       - name: Remove unvalidated model output
         if: steps.handoff.outputs.has_work == 'true'
         run: rm -f output/research_result_v3.raw.txt
-
       - name: Assert same-snapshot validated causal source and V2 trace guards succeeded
         if: steps.handoff.outputs.has_work == 'true'
         env:
@@ -216,41 +177,24 @@ jobs:
           import json
           from pathlib import Path
           decision = json.loads(Path('output/decision_packet.json').read_text(encoding='utf-8'))
-          activation = decision.get('activation_layer') or {}
-          lineage = decision.get('snapshot_lineage_layer') or {}
-          lifecycle = decision.get('state_lifecycle') or {}
+          activation = decision.get('activation_layer') or {}; lineage = decision.get('snapshot_lineage_layer') or {}; lifecycle = decision.get('state_lifecycle') or {}
           source = activation.get('source')
           print(f"decision activation source={source} same_snapshot_v3={activation.get('same_snapshot_v3')} accepted={activation.get('accepted_activation_rows')}")
-          if source not in {'V3_AUTONOMOUS_RESEARCH', 'CHATGPT_CHALLENGER_ADJUDICATION'} or not activation.get('same_snapshot_v3'):
-              raise SystemExit(f'Decision layer did not consume a same-snapshot validated causal source: {activation}')
-          if not lineage.get('persisted_gate_matches_current_files'):
-              raise SystemExit('Snapshot lineage revalidation invariant missing')
-          if lifecycle.get('same_session_rerun_can_consume_trigger') is not False:
-              raise SystemExit('Same-session idempotence invariant missing')
+          if source not in {'V3_AUTONOMOUS_RESEARCH', 'CHATGPT_CHALLENGER_ADJUDICATION'} or not activation.get('same_snapshot_v3'): raise SystemExit(f'Decision layer did not consume a same-snapshot validated causal source: {activation}')
+          if not lineage.get('persisted_gate_matches_current_files'): raise SystemExit('Snapshot lineage revalidation invariant missing')
+          if lifecycle.get('same_session_rerun_can_consume_trigger') is not False: raise SystemExit('Same-session idempotence invariant missing')
           PY
-
       - name: Commit validated public research and guarded V2 decision artifacts
         if: steps.handoff.outputs.has_work == 'true'
         run: |
           git config user.name "alpha-hunter-bot"
           git config user.email "actions@users.noreply.github.com"
-          git add \
-            output/research_result_v3.json \
-            output/research_execution_v4.json \
-            output/company_research_execution.json \
-            output/exposure_resolution_v3.json \
-            output/driver_activation_v3.csv \
-            output/shadow_journal.jsonl \
-            output/decision_board.csv \
-            output/decision_packet.json \
-            output/decision_history.csv \
-            output/shadow_audit.csv
+          git add output/research_result_v3.json output/research_execution_v4.json output/company_research_execution.json output/exposure_resolution_v3.json output/driver_activation_v3.csv output/shadow_journal.jsonl output/decision_board.csv output/decision_packet.json output/decision_history.csv output/shadow_audit.csv
           git add -A output/opportunity_advisory.json output/action_board.md output/global_alignment_v2.csv output/global_alignment_v2.json output/entry_plans_v2.csv output/entry_plans_v2.json
           if ! git diff --cached --quiet; then
             git commit -m "alpha hunter v3 admitted research to guarded v2 decision $(date -u +%F)"
             git push origin HEAD:${{ github.ref_name }}
           fi
-
       - name: Publish terminal funnel acceptance artifact
         if: always()
         uses: actions/upload-artifact@v4
@@ -263,9 +207,15 @@ jobs:
             output/opportunity_advisory.json
             output/manifest.json
           retention-days: 14
-
       - name: Research lane completion status
         if: always()
         run: |
           echo "has_work=${{ steps.handoff.outputs.has_work }}"
-          python -c "import json; print(json.load(open('output/research_result_v3.json')).get('company_terminal_summary'))"
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          summary = json.loads(Path('output/research_result_v3.json').read_text()).get('company_terminal_summary') or {}
+          print(summary)
+          if summary.get('admitted', 0) and summary.get('research_complete') is not True:
+              raise SystemExit('Company research execution incomplete: transport/schema failures remain')
+          PY
