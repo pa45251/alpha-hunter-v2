@@ -1,7 +1,6 @@
 {
   "contract": "ALPHA_HUNTER_SCAN_WATCHDOG_V1",
   "purpose": "A harmless push target for an external ChatGPT watchdog. Daily Scan still decides whether a fresh canonical scan is required.",
-  "last_external_trigger_at_taipei": "2026-09-12T16:33:00+08:00",
-  "reason": "CANONICAL_ENTRY_RISK_LIVE_ACCEPTANCE",
-  "validation_reason": "Verify entry upper/stop downside, shared R/R, action and narrative consistency"
+  "last_external_trigger_at_taipei": "2026-09-14T06:28:13+08:00",
+  "reason": "MANIFEST_NOT_TODAY_TAIPEI"
 }
