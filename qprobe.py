@@ -1,1 +1,0 @@
-OK = {"PASS", "PARTIAL_" + "FAIL_CLOSED"}
