@@ -7,6 +7,7 @@ import pytest
 from driver_gates import _company_breadth_row, _independent_company_peers, international_price, sealed_csv
 from research_contract_v3 import ResearchContractError
 from research_ingest_v3 import _assert_urls_prefetched, _prefetch_allowlists
+import research_source_prefetch_v3 as source_prefetch
 
 
 def _peer(ticker, name, state='PERSISTENT', rs=0.10):
@@ -102,3 +103,32 @@ def test_sealed_csv_accepts_authoritative_candidate_without_embedded_run_id(tmp_
     loaded = sealed_csv('taiwan_candidates.csv', tmp_path)
     assert loaded.iloc[0]['ticker'] == '6179.TWO'
     assert 'run_id' not in loaded.columns
+
+
+def test_company_only_prefetch_is_a_valid_research_transport(monkeypatch):
+    def fake_search(query, timeout=15.0, limit=6):
+        return ([{
+            'source_title': 'Known company source',
+            'source_url': 'https://example.com/company-source',
+            'published_at': '2026-09-12T00:00:00+00:00',
+            'snippet': 'measured operating evidence',
+        }], None)
+
+    monkeypatch.setattr(source_prefetch, '_search', fake_search)
+    monkeypatch.setattr(source_prefetch, 'official_company_revenue', lambda targets, timeout=15.0: {})
+    payload = source_prefetch.build_prefetch({
+        'run_id': 'run-1',
+        'research_targets': [],
+        'company_research_targets': [{
+            'ticker': '6179.TWO',
+            'name': '亞通',
+            'driver_id': 'UNMAPPED_OPPORTUNITY',
+            'driver_label': 'UNMAPPED / WHY?',
+            'research_task': 'IDENTIFY_DRIVER_AND_TEST_GLOBAL_ALTERNATIVE',
+        }],
+    })
+    assert payload['status'] == 'PASS'
+    assert payload['target_count'] == 0
+    assert payload['driver_transport_status'] == 'NOT_REQUIRED'
+    assert payload['company_transport_status'] == 'PASS'
+    assert payload['company_targets'][0]['ticker'] == '6179.TWO'
