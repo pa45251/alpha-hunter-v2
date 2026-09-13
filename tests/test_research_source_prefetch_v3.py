@@ -23,6 +23,21 @@ def _handoff():
     }
 
 
+def _company_handoff():
+    return {
+        'run_id': 'run-1',
+        'company_research_targets': [
+            {
+                'ticker': '2605.TW',
+                'name': '新興',
+                'driver_id': 'DRY_BULK_FREIGHT',
+                'driver_label': 'Dry-bulk freight / commodity shipping cycle',
+                'research_task': 'VALIDATE_COMPANY_TRANSMISSION',
+            },
+        ],
+    }
+
+
 def test_prefetch_attempts_support_and_counter_for_every_target(monkeypatch):
     calls = []
 
@@ -62,3 +77,30 @@ def test_prefetch_fails_closed_when_transport_errors(monkeypatch):
     assert out['status'] == 'FAIL_CLOSED'
     assert out['successful_query_count'] == 0
     assert len(out['errors']) == 4
+
+
+def test_company_transport_recomputed_after_official_evidence_enrichment(monkeypatch):
+    monkeypatch.setattr(prefetch, '_search', lambda *args, **kwargs: ([], None))
+    monkeypatch.setattr(prefetch, 'official_company_revenue', lambda *args, **kwargs: {
+        '2605.TW': [{
+            'source_title': 'Official monthly revenue',
+            'source_url': 'https://mopsfin.twse.com.tw/opendata/t187ap05_L.csv',
+            'published_at': '2026-09-13T00:00:00+00:00',
+            'snippet': 'Official company revenue evidence.',
+            'search_lane': 'OFFICIAL_COMPANY_REVENUE',
+        }]
+    })
+    out = prefetch.build_prefetch(_company_handoff(), per_query=3)
+    assert out['status'] == 'PASS'
+    assert out['driver_transport_status'] == 'NOT_REQUIRED'
+    assert out['company_transport_status'] == 'PASS'
+    assert out['company_targets'][0]['candidate_source_count'] == 1
+
+
+def test_company_transport_still_fails_closed_without_any_final_source(monkeypatch):
+    monkeypatch.setattr(prefetch, '_search', lambda *args, **kwargs: ([], None))
+    monkeypatch.setattr(prefetch, 'official_company_revenue', lambda *args, **kwargs: {})
+    out = prefetch.build_prefetch(_company_handoff(), per_query=3)
+    assert out['status'] == 'FAIL_CLOSED'
+    assert out['company_transport_status'] == 'FAIL_CLOSED'
+    assert out['company_targets'][0]['candidate_source_count'] == 0
