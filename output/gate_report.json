@@ -3,13 +3,13 @@
   "gate_version": "1.0",
   "gate_status": "PASS",
   "failure_code": null,
-  "validated_at_taipei": "2026-09-13T14:13:52.342589+08:00",
+  "validated_at_taipei": "2026-09-13T15:41:40.558686+08:00",
   "repository": "pa45251/alpha-hunter-v2",
   "branch": "repair/research-admission-first-principles",
   "schema_version": "2.6",
   "scanner_version": "2.6.1",
-  "run_id": "20260913T141036+0800-ad3eb00c",
-  "manifest_sha256": "5e9d684397a56fccddad7784eb330a1de7b0ce93afcb16eaa92ed97693375e92",
+  "run_id": "20260913T153722+0800-a1ec0450",
+  "manifest_sha256": "b13763c53ff6c9acf6a886fe5c8f0bbce8fa0f44b7dbff18345392d6a46d13e7",
   "checks": [
     {
       "name": "repository_identity",
@@ -56,7 +56,7 @@
     {
       "name": "manifest_run_id",
       "passed": true,
-      "detail": "run_id=20260913T141036+0800-ad3eb00c",
+      "detail": "run_id=20260913T153722+0800-a1ec0450",
       "severity": "HARD"
     },
     {
@@ -80,7 +80,7 @@
     {
       "name": "run_consistency",
       "passed": true,
-      "detail": "all=20260913T141036+0800-ad3eb00c",
+      "detail": "all=20260913T153722+0800-a1ec0450",
       "severity": "HARD"
     },
     {

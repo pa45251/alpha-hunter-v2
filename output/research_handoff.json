@@ -2,16 +2,16 @@
   "contract": "ALPHA_HUNTER_V2_6_1_RESEARCH_HANDOFF",
   "handoff_version": "1.0",
   "handoff_status": "PASS",
-  "generated_at_taipei": "2026-09-13T14:14:03.014400+08:00",
+  "generated_at_taipei": "2026-09-13T15:41:50.681283+08:00",
   "repository": "pa45251/alpha-hunter-v2",
   "branch": "repair/research-admission-first-principles",
   "schema_version": "2.6",
   "scanner_version": "2.6.1",
-  "run_id": "20260913T141036+0800-ad3eb00c",
+  "run_id": "20260913T153722+0800-a1ec0450",
   "gate_status": "PASS",
   "causal_rule": "PRICE_CANNOT_CREATE_CAUSALITY",
   "transport_policy": {
-    "source_identity": "GitHub repository pa45251/alpha-hunter-v2 branch main only",
+    "source_identity": "GitHub repository pa45251/alpha-hunter-v2 branch repair/research-admission-first-principles only",
     "preferred_transport": "GitHub connector exact path output/research_handoff.json",
     "fallback_transport": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/repair/research-admission-first-principles/output/research_handoff.json",
     "do_not_substitute": [
@@ -26,26 +26,26 @@
     "manifest": {
       "relative_path": "output/manifest.json",
       "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/repair/research-admission-first-principles/output/manifest.json",
-      "sha256": "5e9d684397a56fccddad7784eb330a1de7b0ce93afcb16eaa92ed97693375e92",
-      "bytes": 20887
+      "sha256": "b13763c53ff6c9acf6a886fe5c8f0bbce8fa0f44b7dbff18345392d6a46d13e7",
+      "bytes": 20888
     },
     "gate_report": {
       "relative_path": "output/gate_report.json",
       "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/repair/research-admission-first-principles/output/gate_report.json",
-      "sha256": "f8748285af836c4986f0c4bd0a159066cddc1d015d29549c92860799359c9d9c",
+      "sha256": "1055b7ecf6244f3d5cd77f3483b30ba671defd7ff0cbc28996b4aed9dbac2e33",
       "bytes": 4089
     },
     "research_packet": {
       "relative_path": "output/research_packet.json",
       "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/repair/research-admission-first-principles/output/research_packet.json",
-      "sha256": "db626da8cc0cf430957cd8b299f8b9c0bee7bd99349219012ca605aaa9812838",
+      "sha256": "88fefe059d4270de07ece58449fe9827c8b4bca4b501ba73a1e17b09209710f9",
       "bytes": 236817
     }
   },
   "research_entrypoint": {
     "relative_path": "output/research_packet.json",
     "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/repair/research-admission-first-principles/output/research_packet.json",
-    "sha256": "db626da8cc0cf430957cd8b299f8b9c0bee7bd99349219012ca605aaa9812838",
+    "sha256": "88fefe059d4270de07ece58449fe9827c8b4bca4b501ba73a1e17b09209710f9",
     "bytes": 236817
   },
   "research_rule": "Research may begin only when handoff_status=PASS, gate_status=PASS, run_id is consistent, and the fetched research_packet SHA256 matches this handoff."

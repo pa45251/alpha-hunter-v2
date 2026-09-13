@@ -2,13 +2,13 @@
   "contract": "ALPHA_HUNTER_CANONICAL_DATA_CONTRACT",
   "schema_version": "2.6",
   "scanner_version": "2.6.1",
-  "run_id": "20260913T141036+0800-ad3eb00c",
+  "run_id": "20260913T153722+0800-a1ec0450",
   "repository": "pa45251/alpha-hunter-v2",
   "branch": "repair/research-admission-first-principles",
   "canonical_output_directory": "https://github.com/pa45251/alpha-hunter-v2/tree/repair/research-admission-first-principles/output",
   "canonical_manifest_raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/repair/research-admission-first-principles/output/manifest.json",
-  "generated_at_utc": "2026-09-13T06:13:52.310349+00:00",
-  "generated_at_taipei": "2026-09-13T14:13:52.310366+08:00",
+  "generated_at_utc": "2026-09-13T07:41:40.536053+00:00",
+  "generated_at_taipei": "2026-09-13T15:41:40.536071+08:00",
   "status": "PASS",
   "missing_required_files": [],
   "pipeline_checks": {
@@ -33,7 +33,7 @@
       "member_count": 503,
       "sha256": "2f340b4557af4525bb170c7e349251fd922bb1622eb2508940a472e4edf943cc",
       "status": "PARTIAL_PRICE_DATA",
-      "age_days": 0.92,
+      "age_days": 0.98,
       "error": "",
       "discovery_count": 433,
       "membership_status": "READY",
@@ -484,7 +484,7 @@
         },
         "errors": {},
         "deadline_reached": false,
-        "elapsed_seconds": 27.55
+        "elapsed_seconds": 38.405
       }
     },
     "scanned_count": 220,
@@ -530,15 +530,15 @@
       "name": "global_scan_quality.json",
       "relative_path": "output/global_scan_quality.json",
       "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/repair/research-admission-first-principles/output/global_scan_quality.json",
-      "sha256": "c35b552d1c659e2bb7ec707cba9786c585245d778dfafcb7065c18f7513971cf",
-      "bytes": 13247
+      "sha256": "937bb9088ae8580e9b9f5ac5b52675a0f0f5a2928dd7500a422dfa5f160d4716",
+      "bytes": 13248
     },
     {
       "name": "discovery_snapshot.csv",
       "relative_path": "output/discovery_snapshot.csv",
       "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/repair/research-admission-first-principles/output/discovery_snapshot.csv",
-      "sha256": "125bcea50f97c7b62d4e575a3a473ffcd8a087c9f4ea738e683c74e9895c6523",
-      "bytes": 250594
+      "sha256": "b731ca6d194b6d6c82ad25c607d2bbbbc2c8c8fc0e3e1ec25ec7280c195a4830",
+      "bytes": 250618
     },
     {
       "name": "discovery_research_queue.csv",
@@ -551,15 +551,15 @@
       "name": "risk_regime.json",
       "relative_path": "output/risk_regime.json",
       "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/repair/research-admission-first-principles/output/risk_regime.json",
-      "sha256": "fdebef1b0b07f6a424503b070b1ba6c905de524e304f1b6dbe803536e394932c",
+      "sha256": "c0f5f9bf898df78afd12607ea3214f5826b779661821128a7f3f973963fa5643",
       "bytes": 2420
     },
     {
       "name": "market_snapshot.csv",
       "relative_path": "output/market_snapshot.csv",
       "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/repair/research-admission-first-principles/output/market_snapshot.csv",
-      "sha256": "5bcd541dcd315472e1d04f21cade976dbce5875d32d165613dcee6abc44675cb",
-      "bytes": 196589
+      "sha256": "412a1d54d697eff842098ecdb4851a3b2e91cf9a5a4d200b3e198ac4ea99b9ef",
+      "bytes": 196594
     },
     {
       "name": "theme_breadth.csv",
@@ -572,7 +572,7 @@
       "name": "leader_registry.csv",
       "relative_path": "output/leader_registry.csv",
       "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/repair/research-admission-first-principles/output/leader_registry.csv",
-      "sha256": "680d762cdc5c800b9ee2d6564ec5ff23e94d45f4ab232974ae546aba747154b2",
+      "sha256": "912421a3750e072c2e8343994047b7f9f51a21c1e5e7d700ae2d430421319754",
       "bytes": 43636
     },
     {
@@ -586,15 +586,15 @@
       "name": "market_snapshot.json",
       "relative_path": "output/market_snapshot.json",
       "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/repair/research-admission-first-principles/output/market_snapshot.json",
-      "sha256": "0cfd76c9a0a31f6098115aaa2523444abe554476ca3838ef4ab22815c1b4a394",
-      "bytes": 2396910
+      "sha256": "64a526d2d8fda32ba6cfc8a6925660d7a71146260469a820f4eb2a8b48fda359",
+      "bytes": 2396904
     },
     {
       "name": "taiwan_candidates.csv",
       "relative_path": "output/taiwan_candidates.csv",
       "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/repair/research-admission-first-principles/output/taiwan_candidates.csv",
-      "sha256": "c6c09f492982578b47fe08259f11b41237a3f2009a7ad508f8f4c236e3adb3bb",
-      "bytes": 131292
+      "sha256": "d9c24b07a1527df0dd7f935f936ccac8a72980b7fa53ffa194128d7938e77568",
+      "bytes": 131291
     },
     {
       "name": "taiwan_candidate_history.csv",
@@ -621,28 +621,28 @@
       "name": "causal_research_queue.csv",
       "relative_path": "output/causal_research_queue.csv",
       "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/repair/research-admission-first-principles/output/causal_research_queue.csv",
-      "sha256": "89c91ad28daa5c554ee96ee741429cf6d9f5d4e1df0ea78cbeb952234e69530a",
+      "sha256": "03636bb22b3598d69be978d79f81f5b6d80e04de9357d51509273177b82f3728",
       "bytes": 23557
     },
     {
       "name": "reverse_transmission_candidates.csv",
       "relative_path": "output/reverse_transmission_candidates.csv",
       "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/repair/research-admission-first-principles/output/reverse_transmission_candidates.csv",
-      "sha256": "1f8b65764f659e0aba1b1abcb90798f2b1f62b6ded74b9d0ffb4255b093c7107",
+      "sha256": "d6d191957f4b369a40aceb9f2fa2069bb6be69fb80199a313fc75dc43c998938",
       "bytes": 26439
     },
     {
       "name": "structural_matches.csv",
       "relative_path": "output/structural_matches.csv",
       "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/repair/research-admission-first-principles/output/structural_matches.csv",
-      "sha256": "371dbdbeca712a56046b66650f152d0ece04c5fdd333b3bf584250a2d1eca73b",
+      "sha256": "bc05b9bc2b07a74ccaa6bd385d42d7edd5bc5f020213c1570b63f4f3a2f9cad5",
       "bytes": 49517
     },
     {
       "name": "causal_graph_audit.csv",
       "relative_path": "output/causal_graph_audit.csv",
       "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/repair/research-admission-first-principles/output/causal_graph_audit.csv",
-      "sha256": "367a12240af821299e5da37363d593313007d15b3ffefc94dc49f692a83a17ee",
+      "sha256": "bf761a13aa0edcef073d3d924a66d2c1e6047f1cc56dbd8a4d70db2494ba94d0",
       "bytes": 23551
     },
     {
