@@ -12,7 +12,7 @@ import subprocess
 from company_research_terminal import identity, resolve_identity
 from research_ingest_v3 import _extract_json
 
-VERSION = 'COMPANY_DOCUMENT_TERMINAL_V1'
+VERSION = 'COMPANY_DOCUMENT_TERMINAL_V2'
 FIELDS = ('results', 'company_opportunities', 'company_research_coverage', 'exposure_resolutions', 'company_execution_failures')
 
 
@@ -44,7 +44,7 @@ def invoke(handoff, prefetch, shared, call_id, log_dir):
     prompt += json.dumps(dict(authoritative_handoff=handoff, deterministic_prefetch=prefetch,
                               shared_driver_research=shared), ensure_ascii=False)
     command = ['copilot','--agent=alpha-hunter-evidence-research','-s','--deny-tool=write,shell,memory',
-               '--no-ask-user','--max-ai-credits=3']
+               '--no-ask-user','--max-ai-credits=30']
     try:
         result = subprocess.run(command, input=prompt, text=True, capture_output=True, timeout=150)
     except (OSError, subprocess.TimeoutExpired) as exc:
@@ -92,9 +92,12 @@ def run(handoff, prefetch, cache_path, log_dir, call=invoke):
         # Include shared findings in the company cache dependency.
         sig = fingerprint(dict(task, shared_driver_research=merged['results']), sources)
         prior = cache['items'].get(key)
-        reused = bool(prior and prior.get('signature') == sig)
+        # Only successful model payloads are reusable. Execution failures are operational state,
+        # not investment conclusions, and must be allowed to recover on a later execution.
+        reused = bool(prior and prior.get('signature') == sig
+                      and prior.get('payload') is not None and not prior.get('failure'))
         if reused:
-            payload, failure = prior.get('payload'), prior.get('failure')
+            payload, failure = prior.get('payload'), None
         else:
             docs = [s for t in sources.get('company_targets', []) for s in t.get('candidate_sources', [])
                     if s.get('fetch_status') == 'FETCHED' and s.get('search_lane') not in {'OFFICIAL_COMPANY_REVENUE','STRUCTURAL_IDENTITY'}]
@@ -118,7 +121,10 @@ def run(handoff, prefetch, cache_path, log_dir, call=invoke):
     def collect(result):
         key, task, sig, reused, payload, failure = result
         if not reused:
-            cache['items'][key] = dict(signature=sig, payload=payload, failure=failure)
+            if payload is not None and failure is None:
+                cache['items'][key] = dict(signature=sig, payload=payload, failure=None)
+            else:
+                cache['items'].pop(key, None)
             cache_path.parent.mkdir(parents=True, exist_ok=True)
             cache_path.write_text(json.dumps(cache, ensure_ascii=False))
         if failure and key != 'shared':

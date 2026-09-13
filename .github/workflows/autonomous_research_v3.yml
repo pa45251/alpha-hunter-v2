@@ -142,9 +142,9 @@ jobs:
         uses: actions/cache@v4
         with:
           path: .alpha-hunter/company_research_cache.json
-          key: company-research-v1-${{ github.ref_name }}-${{ hashFiles('output/manifest.json') }}-${{ github.run_id }}
+          key: company-research-v2-${{ github.ref_name }}-${{ hashFiles('output/manifest.json') }}-${{ github.run_id }}
           restore-keys: |
-            company-research-v1-${{ github.ref_name }}-${{ hashFiles('output/manifest.json') }}-
+            company-research-v2-${{ github.ref_name }}-${{ hashFiles('output/manifest.json') }}-
 
       - name: Run shared driver and isolated company fact research
         if: steps.handoff.outputs.has_work == 'true'
@@ -202,14 +202,14 @@ jobs:
             tests/test_shadow_audit_v2.py \
             tests/test_shadow_validation_v2.py
 
-      - name: Remove unvalidated and private ephemeral model output
+      - name: Remove unvalidated model output
         if: steps.handoff.outputs.has_work == 'true'
-        run: |
-          rm -f output/research_result_v3.raw.txt
-          rm -f /tmp/research_handoff.json /tmp/research_prefetch_v3.json
+        run: rm -f output/research_result_v3.raw.txt
 
       - name: Assert same-snapshot validated causal source and V2 trace guards succeeded
         if: steps.handoff.outputs.has_work == 'true'
+        env:
+          ALPHA_HUNTER_RESEARCH_TRANSPORT_PATH: /tmp/research_prefetch_v3.json
         run: |
           python research_decision_source_gate_v3.py
           python - <<'PY'

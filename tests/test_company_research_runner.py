@@ -21,7 +21,7 @@ def test_every_thesis_called_separately_and_unchanged_never_recalled(tmp_path):
     assert len(calls) == 19
 
 
-def test_transport_failure_remains_terminal_and_is_not_retried(tmp_path):
+def test_transport_failure_remains_terminal_without_becoming_investment_unknown(tmp_path):
     h = dict(run_id='run', company_research_targets=[dict(ticker='1234',driver_id='D')])
     p = dict(document_contract='EXACT_COMPANY_DOCUMENT_V1', company_targets=[])
     def forbidden(*args):
@@ -29,6 +29,29 @@ def test_transport_failure_remains_terminal_and_is_not_retried(tmp_path):
     result=run(h,p,tmp_path/'cache',tmp_path/'logs',forbidden)
     assert result['company_execution_failures'][0]['failure_code']=='TRANSPORT_FAILED'
     assert not result['company_opportunities']
+    assert not result['company_research_coverage']
+
+
+def test_execution_failure_is_not_cached_but_success_is(tmp_path):
+    target = dict(ticker='1234', driver_id='D', research_question='why')
+    h = dict(run_id='run', company_research_targets=[target])
+    p = dict(company_targets=[])
+    calls = []
+    def flaky(task, sources, shared, key, logs):
+        calls.append(key)
+        if len(calls) == 1:
+            return None, ('TRANSPORT_FAILED', 'CLI_EXIT_1')
+        return dict(company_research_coverage=[dict(target, status='UNKNOWN_AFTER_RESEARCH', reason='Missing fact')]), None
+    cache = tmp_path/'cache.json'
+    first = run(h,p,cache,tmp_path/'logs',flaky)
+    assert first['company_execution_failures'][0]['failure_code'] == 'TRANSPORT_FAILED'
+    second = run(h,p,cache,tmp_path/'logs',flaky)
+    assert len(calls) == 2
+    assert second['company_research_coverage'][0]['status'] == 'UNKNOWN_AFTER_RESEARCH'
+    assert second['execution_ledger'][0]['cache_hit'] is False
+    third = run(h,p,cache,tmp_path/'logs',flaky)
+    assert len(calls) == 2
+    assert third['execution_ledger'][0]['cache_hit'] is True
 
 
 def test_company_call_cannot_write_other_thesis(tmp_path):
