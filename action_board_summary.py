@@ -110,7 +110,8 @@ def _select_opportunities(limit: int = 5) -> list[dict]:
         from entry_risk import validate_plan
         validate_plan(row)
         checked = coverage.get((candidate['ticker'], candidate['driver_id']))
-        row['research_completed'] = bool(evidence or checked)
+        row['research_completed'] = bool(evidence or (checked and checked.get('status') in {'SUPPORTED', 'REJECTED', 'UNKNOWN_AFTER_RESEARCH'}))
+        row['research_terminal_outcome'] = checked.get('status') if checked else None
         if checked and not evidence:
             row['why'] = str(checked.get('reason') or row['why'])
             row['main_risk'] = 'Exact company / driver transmission remains unverified; no entry recommendation'
@@ -138,6 +139,7 @@ def _select_opportunities(limit: int = 5) -> list[dict]:
         public_lineage_id=(load('decision_packet.json').get('decision_bridge') or {}).get('public_lineage_id'),
         auto_trade_allowed=False,
         research_admission_summary=admitted.get('admission_summary') or {},
+        company_terminal_summary=research.get('company_terminal_summary') or {},
         top_opportunities=top,
         all_candidates=rows,
     )
@@ -193,6 +195,8 @@ research_counts = {
     'NO_RESEARCH': len(no_research_rows),
 }
 
+terminal = load('research_result_v3.json').get('company_terminal_summary') or {}
+research_complete = terminal.get('research_complete') is True
 lines = [
     "# Alpha Hunter — Action Board", "",
     f"- Run: `{run_id}`",
@@ -200,6 +204,7 @@ lines = [
     f"- Risk regime: **{regime.get('regime', 'UNKNOWN')}**",
     f"- Causal evidence: `{activation.get('source', 'UNKNOWN')}`",
     "- Core rule: price nominates; non-price facts establish economic exposure/activation/transmission; price/risk decides timing.",
+    f"- Company research: {terminal.get('counts', {})}; completed={research_complete}",
     f"- Trading actions: BUY={trade_counts['BUY']} / EARLY BUY={trade_counts['EARLY BUY']} / WAIT={trade_counts['WAIT']} / PASS={trade_counts['PASS']}",
     f"- Research workload: FACT_CHECK={research_counts['FACT_CHECK']} / OBSERVE={research_counts['OBSERVE']} / DROP_THIS_RUN={research_counts['DROP_THIS_RUN']} / NO_RESEARCH={research_counts['NO_RESEARCH']}",
     "- FACT_CHECK is the bounded model-research workload. OBSERVE/DEFERRED rows are not LLM tasks until a wake condition changes.",
@@ -211,7 +216,7 @@ if trade_rows:
     for i, row in enumerate(trade_rows, 1):
         _render_row(lines, row, i, row['trading_action'])
 else:
-    lines.append('- No thesis-qualified BUY / EARLY BUY / WAIT in this snapshot.')
+    lines.append('- No thesis-qualified BUY / EARLY BUY / WAIT in this snapshot.' if research_complete else '- Company research is incomplete. Zero qualified actions is not a market conclusion; inspect transport/schema outcomes.')
 
 lines += ["", "## Active Fact-Check Queue", ""]
 if fact_rows:

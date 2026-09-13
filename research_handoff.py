@@ -98,6 +98,8 @@ def _apply_exposure_cache(records: list[dict], out: Path, now: datetime) -> list
         if not valid:
             expanded.append(row)
             continue
+        if row.get('event_id'):
+            expanded.append(row)
         for cached, meta in valid:
             mapped = dict(row)
             mapped['original_driver_id'] = 'UNMAPPED_OPPORTUNITY'
@@ -245,7 +247,9 @@ def company_research_targets(out: Path = Path('output'), limit: int | None = Non
     if candidates_path.exists():
         candidates = sealed_csv('taiwan_candidates.csv', out)
         mapped = {str(t) for f in frames for t in f['ticker']}
-        candidates = candidates[~candidates.ticker.astype(str).isin(mapped)].copy()
+        # Preserve independently identified local events on globally mapped tickers.
+        has_event = candidates.get('event_id', pd.Series('', index=candidates.index)).fillna('').astype(str).str.strip().ne('')
+        candidates = candidates[~candidates.ticker.astype(str).isin(mapped) | has_event].copy()
         candidates['driver_id'] = 'UNMAPPED_OPPORTUNITY'
         candidates['driver_label'] = 'UNMAPPED / WHY?'
         candidates['research_priority_score'] = candidates.get('taiwan_early_score_v2', 0)
@@ -257,7 +261,8 @@ def company_research_targets(out: Path = Path('output'), limit: int | None = Non
     x['research_priority'] = pd.to_numeric(x.get('reverse_research_priority', pd.Series(index=x.index, dtype=float)), errors='coerce').fillna(
         pd.to_numeric(x.get('research_priority_score', pd.Series(index=x.index, dtype=float)), errors='coerce')).fillna(0)
     x['_extended'] = x['reaction_state'].isin(['EXTENDED', 'BROKEN'])
-    x = x.sort_values(['_extended','research_priority'], ascending=[True,False]).drop_duplicates(['ticker','driver_id'])
+    x['event_id'] = x.get('event_id', pd.Series('', index=x.index)).fillna('').astype(str)
+    x = x.sort_values(['_extended','research_priority'], ascending=[True,False]).drop_duplicates(['ticker','driver_id','event_id'])
 
     from driver_gates import attach_price_gates, thesis_gates
     from opportunity_advisory import price_plan
@@ -266,7 +271,7 @@ def company_research_targets(out: Path = Path('output'), limit: int | None = Non
         saved = read_evidence('market_snapshot.json', out).get('entry_histories') or {}
     except (RuntimeError, OSError, ValueError):
         saved = {}
-    cols = ['ticker','name','driver_id','driver_label','driver_scope','global_theme','reaction_state',
+    cols = ['ticker','name','event_id','driver_id','driver_label','driver_scope','global_theme','reaction_state',
             'global_peer_evidence','transmission_gap_proxy','economic_role','research_priority','bias20','ret_5d']
     records = x[[c for c in cols if c in x]].astype(object).where(pd.notna(x[[c for c in cols if c in x]]), None).to_dict('records')
     now_dt = datetime.now(timezone.utc)
@@ -312,7 +317,10 @@ def company_research_targets(out: Path = Path('output'), limit: int | None = Non
         c.update(thesis_gates(c, company.get((c['ticker'], c['driver_id'])), now))
         item = saved.get(c['ticker'])
         hist = pd.DataFrame(item['data'], columns=item['columns'], index=pd.to_datetime(item['index'])) if item else None
-        c['entry_research_ready'] = bool(price_plan(hist)['price_ok'] and c.get('reaction_state') not in {'EXTENDED','BROKEN'})
+        plan = price_plan(hist)
+        c['price_data_status'] = plan['price_data_status']
+        c['entry_research_reason'] = plan['price_reason']
+        c['entry_research_ready'] = bool(plan['price_ok'] and c.get('reaction_state') not in {'EXTENDED','BROKEN'})
         c['research_eligible'] = c['entry_research_ready'] and c['research_task'] not in {'NONE','WAIT_FOR_MARKET_DATA'}
         if not c['entry_research_ready'] and c['missing_gate'] not in {'ECONOMIC_DRIVER_REJECTED', 'GLOBAL_PRICE_WEAK'}:
             c['research_task'] = 'WAIT_FOR_ENTRY'

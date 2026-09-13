@@ -34,6 +34,8 @@ def _classify(row: dict) -> tuple[str, str, str]:
         return "NO_RESEARCH", "Thesis already reached entry gate", "ENTRY_OR_REGIME_CHANGE"
     if gate in {"GLOBAL_PRICE_WEAK", "GLOBAL_PRICE_UNCONFIRMED"}:
         return "OBSERVE", "Global price is a trading-risk blocker, not an economic research question", "GLOBAL_PRICE_STATE_CHANGE"
+    if row.get("price_data_status") == "MISSING_OR_INSUFFICIENT":
+        return "OBSERVE", "Sealed price data missing or insufficient; setup not evaluated", "PRICE_DATA_REPAIRED"
     if not price_ready or reaction == "EXTENDED":
         return "OBSERVE", "Evidence gap exists but current setup cannot change action", "ENTRY_SETUP_OR_NEW_NONPRICE_EVENT"
     if gate in {"DRIVER_UNKNOWN", "CAUSAL_UNVERIFIED", "COMPANY_TRANSMISSION_UNVERIFIED"}:
@@ -77,6 +79,8 @@ def apply_admission(handoff: dict[str, Any], *, out: Path = Path("output")) -> d
                 "thesis_id": row["thesis_id"],
                 "driver_id": row.get("driver_id"),
                 "missing_gate": row.get("missing_gate"),
+                "admission_predicates": admission_predicates(row),
+                "entry_research_reason": row.get("entry_research_reason"),
                 "admission_state": state,
                 "admission_reason": reason,
                 "wake_condition": wake,
@@ -95,6 +99,7 @@ def apply_admission(handoff: dict[str, Any], *, out: Path = Path("output")) -> d
     result["research_targets"] = shared
     result["company_research_targets"] = admitted
     result["deferred_candidates"] = deferred
+    result["admission_completeness"] = audit_completeness(all_rows)
     result["admission_summary"] = {
         "audit_candidates": len(all_rows),
         "fact_check_targets": len(admitted),
@@ -102,3 +107,29 @@ def apply_admission(handoff: dict[str, Any], *, out: Path = Path("output")) -> d
         "deferred_candidates": len(deferred),
     }
     return result
+
+
+def admission_predicates(row):
+    return {k: row.get(k) for k in ('missing_gate', 'reaction_state', 'entry_research_ready', 'price_data_status')}
+
+
+def audit_completeness(rows):
+    """Replay every predicate tuple; no rank, ticker or quota influences admission."""
+    import json
+    classes, ledger = {}, []
+    seen = set()
+    for row in rows:
+        tid = thesis_id(str(row.get('ticker')), str(row.get('driver_id')), row.get('event_id'))
+        if tid in seen:
+            raise ValueError('DUPLICATE_ADMISSION_THESIS')
+        seen.add(tid)
+        predicates = admission_predicates(row)
+        key = json.dumps(predicates, sort_keys=True)
+        outcome = _classify(row)
+        if key in classes and classes[key] != outcome:
+            raise ValueError('NONDETERMINISTIC_ADMISSION')
+        classes[key] = outcome
+        ledger.append(dict(thesis_id=tid, ticker=row.get('ticker'), driver_id=row.get('driver_id'),
+                           predicates=predicates, admission_state=outcome[0], reason=outcome[1],
+                           entry_reason=row.get('entry_research_reason')))
+    return dict(evaluated=len(rows), predicate_classes=len(classes), deterministic=True, ledger=ledger)

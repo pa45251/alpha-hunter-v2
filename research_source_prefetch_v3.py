@@ -84,7 +84,7 @@ def _unwrap_bing_url(value: str | None) -> str | None:
 def _search(query: str, timeout: float = 15.0, limit: int = 6) -> tuple[list[dict], str | None]:
     try:
         response = requests.get(
-            ENDPOINT,
+            "https://www.bing.com/search" if any("\u4e00" <= c <= "\u9fff" for c in query) else ENDPOINT,
             params={"q": query, "format": "RSS", "count": max(10, limit * 2)},
             headers={
                 "User-Agent": USER_AGENT,
@@ -120,14 +120,8 @@ def _search(query: str, timeout: float = 15.0, limit: int = 6) -> tuple[list[dic
 def _query_for(target: dict, lane: str) -> str:
     if target.get('ticker'):
         company = str(target.get('name') or '') + ' ' + str(target['ticker']).split('.')[0]
-        task = target.get('research_task')
-        if task == 'IDENTIFY_DRIVER_AND_TEST_GLOBAL_ALTERNATIVE':
-            # CAN-stage discovery must search slow-moving company facts first. Event/news
-            # language biases the model toward post-hoc catalysts instead of structural exposure.
-            terms = '產品 應用 客戶 終端市場 營收 法說' if lane == 'SUPPORT' else '全球同業 產業週期 替代解釋'
-        else:
-            terms = '訂單 營收 傳導 ' + str(target.get('driver_label') or '') if lane == 'SUPPORT' else '訂單取消 需求衰退'
-        return f'{company} {terms} {datetime.now(timezone.utc).year}'
+        terms = '法說 產品 應用' if lane == 'SUPPORT' else '訂單 出貨 展望 風險'
+        return f'{company} {terms}'
     label = _compact_terms(target.get("driver_label") or target.get("driver_id"), 120)
     if lane == "SUPPORT":
         requirement = _compact_terms(target.get("activation_evidence_required"), 160)
@@ -185,7 +179,7 @@ def official_company_revenue(targets: list[dict], timeout: float = 15.0) -> dict
     return result
 
 
-def build_prefetch(handoff: dict, *, timeout: float = 15.0, per_query: int = 5) -> dict:
+def build_prefetch(handoff: dict, *, timeout: float = 15.0, per_query: int = 5, documents: bool = False) -> dict:
     run_id = str(handoff.get("run_id") or handoff.get("research_run_id") or "")
     targets = [x for x in (handoff.get("research_targets") or []) if isinstance(x, dict)]
     company_input = [x for x in (handoff.get('company_research_targets') or []) if isinstance(x, dict)]
@@ -229,12 +223,21 @@ def build_prefetch(handoff: dict, *, timeout: float = 15.0, per_query: int = 5) 
                 target_candidates.append(enriched)
 
         out_targets.append({
+            "thesis_id": target.get("thesis_id"),
+            "event_id": target.get("event_id"),
             "driver_id": driver_id,
             "ticker": target.get("ticker"),
             "queries": queries,
             "candidate_sources": target_candidates,
             "candidate_source_count": len(target_candidates),
         })
+
+    if documents:
+        from company_source_documents import acquire
+        for target in out_targets:
+            target['candidate_sources'] = [acquire(s, timeout) for s in target['candidate_sources']]
+            for source in target['candidate_sources']:
+                source.pop('_links', None)
 
     candidate_source_count = sum(int(x["candidate_source_count"]) for x in out_targets)
     sourced_target_count = sum(1 for x in out_targets if int(x["candidate_source_count"]) > 0)
@@ -257,6 +260,9 @@ def build_prefetch(handoff: dict, *, timeout: float = 15.0, per_query: int = 5) 
         for target in company_sources:
             target['candidate_sources'] = official.get(target.get('ticker'), []) + target['candidate_sources']
             target['candidate_source_count'] = len(target['candidate_sources'])
+        if documents:
+            from company_source_documents import enrich_company_sources
+            company_sources = enrich_company_sources(company_input, company_sources, timeout)
         company_status = (
             "PASS"
             if any(int(target.get('candidate_source_count', 0)) > 0 for target in company_sources)
@@ -271,6 +277,7 @@ def build_prefetch(handoff: dict, *, timeout: float = 15.0, per_query: int = 5) 
 
     return {
         'company_targets': company_sources,
+        'document_contract': 'EXACT_COMPANY_DOCUMENT_V1' if documents else None,
         "contract": CONTRACT,
         "status": status,
         "research_run_id": run_id,
@@ -301,6 +308,7 @@ def main() -> None:
         handoff,
         timeout=args.timeout,
         per_query=max(1, min(args.per_query, 8)),
+        documents=True,
     )
     Path(args.out).write_text(
         json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8"
@@ -312,8 +320,7 @@ def main() -> None:
         f"candidate_sources={payload['candidate_source_count']} sourced_targets={payload['sourced_target_count']} "
         f"company_sources={sum(x['candidate_source_count'] for x in payload.get('company_targets', []))}"
     )
-    if payload["status"] != "PASS":
-        raise SystemExit(2)
+    # Always emit the transport ledger; per-thesis failures must reach terminal ingest.
 
 
 if __name__ == "__main__":

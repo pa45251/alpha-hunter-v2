@@ -164,3 +164,9 @@ If any required fact cannot be supported, do not return an incomplete company op
 Transport failure is not negative investment evidence. If the supplied transport is inadequate, use `reason_code=TRANSPORT_FAILED`. If a target cannot be returned because the schema cannot be satisfied, use `reason_code=SCHEMA_FAILED`.
 
 Do not retry or fabricate facts merely to avoid UNKNOWN.
+
+## Document and terminal contract
+
+Each company evidence item must include `source_quote`, an exact contiguous quotation from its prefetched `document_text`. Search snippets cannot satisfy this requirement. Generic revenue alone cannot establish exposure or specific company transmission. Include a source-backed `counter_evidence` list to assert REJECTED.
+
+Every admitted company thesis must return one coverage row containing the exact `thesis_id`, `ticker`, `driver_id`, `status` and `reason`. `status` is SUPPORTED, REJECTED, or UNKNOWN_AFTER_RESEARCH. SUPPORTED and REJECTED require a complete evidence-backed company opportunity as well. Missing economic facts are UNKNOWN_AFTER_RESEARCH; transport and schema failures are assigned by execution code. Exposure resolution alone is not a supported investment thesis.

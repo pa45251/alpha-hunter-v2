@@ -87,23 +87,18 @@ def _company_fact_urls(row: dict) -> set[str]:
     Shared driver evidence is intentionally excluded. A driver URL can validate the
     international claim, but it can never substitute for company exposure/transmission.
     """
-    urls = _source_urls(row.get("fundamental_evidence")) | _source_urls(row.get("exposure_evidence"))
+    urls = _source_urls(row.get("fundamental_evidence")) | _source_urls(row.get("exposure_evidence")) | _source_urls(row.get("counter_evidence"))
     proof = row.get("local_scope_evidence")
     if isinstance(proof, dict):
-        item = proof.get("event_evidence")
-        if isinstance(item, dict) and item.get("source_url"):
-            urls.add(str(item["source_url"]))
+        for field in ("event_evidence", "global_alternative_evidence"):
+            item = proof.get(field)
+            if isinstance(item, dict) and item.get("source_url"):
+                urls.add(str(item["source_url"]))
     return urls
 
 
 def _driver_fact_urls(row: dict) -> set[str]:
-    urls = _source_urls(row.get("international_evidence"))
-    proof = row.get("local_scope_evidence")
-    if isinstance(proof, dict):
-        item = proof.get("global_alternative_evidence")
-        if isinstance(item, dict) and item.get("source_url"):
-            urls.add(str(item["source_url"]))
-    return urls
+    return _source_urls(row.get("international_evidence"))
 
 
 def _prefetch_allowlists(run_id: str) -> tuple[dict[str, set[str]], dict[tuple[str, str], set[str]]]:
@@ -111,7 +106,7 @@ def _prefetch_allowlists(run_id: str) -> tuple[dict[str, set[str]], dict[tuple[s
     if not path.exists():
         raise ResearchContractError("DETERMINISTIC_SOURCE_TRANSPORT_MISSING")
     data = json.loads(path.read_text(encoding="utf-8"))
-    if data.get("contract") != PREFETCH_CONTRACT or data.get("status") != "PASS":
+    if data.get("contract") != PREFETCH_CONTRACT or data.get("status") not in {"PASS", "FAIL_CLOSED"}:
         raise ResearchContractError("DETERMINISTIC_SOURCE_TRANSPORT_INVALID")
     if str(data.get("research_run_id", "")) != str(run_id):
         raise ResearchContractError("DETERMINISTIC_SOURCE_TRANSPORT_RUN_MISMATCH")
@@ -138,12 +133,8 @@ def _assert_urls_prefetched(urls: set[str], allowed: set[str], label: str) -> No
 
 
 def _failure_code(exc: Exception | str) -> str:
-    text = str(exc)
-    if "UNPREFETCHED_EVIDENCE_URL" in text or "TRANSPORT" in text:
-        return "TRANSPORT_SCOPE_FAILED"
-    if "SCHEMA" in text or "MISSING_" in text or "INVALID" in text or "REQUIRED" in text:
-        return "SCHEMA_FAILED"
-    return "UNKNOWN_AFTER_RESEARCH"
+    # Validation errors are execution/schema defects, never economic UNKNOWN.
+    return "TRANSPORT_FAILED" if "DETERMINISTIC_SOURCE_TRANSPORT" in str(exc) else "SCHEMA_FAILED"
 
 
 def main() -> None:
@@ -172,6 +163,7 @@ def main() -> None:
     company_failures: list[dict] = []
     company_invalid_coverage: list[dict] = []
 
+    default_failure = None
     try:
         driver_allow, company_allow = _prefetch_allowlists(run_id)
         raw_text = RAW.read_text(encoding="utf-8")
@@ -210,16 +202,22 @@ def main() -> None:
         errors.append(str(exc))
         driver_allow, company_allow = {}, {}
         payload = {}
+        default_failure = (_failure_code(exc), str(exc))
+        if isinstance(exc, OSError) or "empty autonomous" in str(exc):
+            default_failure = ("TRANSPORT_FAILED", str(exc))
 
     from opportunity_advisory import validate_company_research
-    company_targets = {(r["ticker"], r["driver_id"]) for r in selection["company_research_targets"]}
+    from company_research_terminal import finalize, resolve_identity
+    nominated_companies = selection["company_research_targets"]
+    company_targets = {(r["ticker"], r["driver_id"]) for r in nominated_companies}
     if status == "PASS":
         seen_company = set()
         for row in payload.get("company_opportunities") or []:
             try:
+                row = resolve_identity(row, nominated_companies)
                 validate_company_research(row, run_id, company_targets, _utcnow())
                 key = (row["ticker"], row["driver_id"])
-                if key in seen_company:
+                if row["thesis_id"] in seen_company:
                     raise ValueError("DUPLICATE_COMPANY_RESEARCH")
                 # Company-specific claims and shared driver claims have distinct trust scopes.
                 # Never union the allowlists: doing so would let a macro article masquerade
@@ -234,13 +232,39 @@ def main() -> None:
                     )
                 elif _driver_fact_urls(row):
                     raise ResearchContractError("UNMAPPED_COMPANY_CANNOT_CLAIM_SHARED_DRIVER_EVIDENCE")
-                seen_company.add(key)
+                transport = json.loads(Path(os.getenv("ALPHA_HUNTER_RESEARCH_TRANSPORT_PATH", str(DEFAULT_PREFETCH))).read_text())
+                if transport.get("document_contract") == "EXACT_COMPANY_DOCUMENT_V1":
+                    from company_source_documents import verify_document_claim
+                    docs = {s["source_url"]: s for t in transport.get("company_targets", [])
+                            if (t.get("ticker"), t.get("driver_id")) == key
+                            for s in t.get("candidate_sources", [])}
+                    exposures = row.get("exposure_evidence") or []
+                    if row.get("driver_state") != "REJECTED" and not exposures:
+                        raise ValueError("SOURCE_BACKED_COMPANY_EXPOSURE_REQUIRED")
+                    for item in exposures:
+                        verify_document_claim(item, docs, specific=True)
+                    for item in row.get("fundamental_evidence") or []:
+                        verify_document_claim(item, docs)
+                    for item in (row.get("local_scope_evidence") or {}).values():
+                        if isinstance(item, dict) and item.get("source_url"):
+                            verify_document_claim(item, docs, specific=True)
+                    specific = [e for e in row.get("fundamental_evidence", [])
+                                if (docs.get(e.get("source_url")) or {}).get("evidence_role") != "GENERIC_REVENUE_ONLY"]
+                    if row.get("driver_state") != "REJECTED" and not specific:
+                        raise ValueError("SPECIFIC_COMPANY_TRANSMISSION_REQUIRED")
+                    if row.get("driver_state") == "REJECTED":
+                        counter = row.get("counter_evidence") or []
+                        if not counter:
+                            raise ValueError("SOURCE_BACKED_REJECTION_REQUIRED")
+                        for item in counter:
+                            verify_document_claim(item, docs, specific=True)
+                seen_company.add(row["thesis_id"])
                 company_opportunities.append(row)
             except (ValueError, TypeError, ResearchContractError) as exc:
                 company_errors.append(str(exc))
                 if isinstance(row, dict) and (row.get("ticker"), row.get("driver_id")) in company_targets:
                     failure = dict(
-                        ticker=row["ticker"], driver_id=row["driver_id"],
+                        ticker=row["ticker"], driver_id=row["driver_id"], thesis_id=row.get("thesis_id"),
                         failure_code=_failure_code(exc), reason=str(exc)
                     )
                     company_failures.append(failure)
@@ -248,20 +272,6 @@ def main() -> None:
                         ticker=row["ticker"], driver_id=row["driver_id"], status="UNRESOLVED",
                         reason_code=failure["failure_code"], reason="Research failed validation: " + str(exc)
                     ))
-
-    if status == "PASS":
-        covered = {(r.get("ticker"), r.get("driver_id")) for r in company_opportunities}
-        covered.update(
-            (r.get("ticker"), r.get("driver_id"))
-            for r in payload.get("company_research_coverage", [])
-            if isinstance(r, dict) and r.get("reason")
-        )
-        for key in sorted(company_targets - covered):
-            message = "COMPANY_RESEARCH_NOT_RETURNED:" + str(key)
-            company_errors.append(message)
-            company_failures.append(dict(
-                ticker=key[0], driver_id=key[1], failure_code="NOT_RETURNED", reason=message
-            ))
 
     final_results = []
     for driver_id in target_ids:
@@ -271,14 +281,13 @@ def main() -> None:
             status = "PARTIAL_FAIL_CLOSED" if status == "PASS" else status
             final_results.append(_unknown(driver_id, run_id, "Autonomous research output missing or failed deterministic validation."))
 
-    coverage_rows = []
-    if status in {"PASS", "PARTIAL_FAIL_CLOSED"}:
-        for row in payload.get("company_research_coverage", []) or []:
-            if isinstance(row, dict):
-                copied = dict(row)
-                copied.setdefault("reason_code", "UNKNOWN_AFTER_RESEARCH")
-                coverage_rows.append(copied)
-        coverage_rows.extend(company_invalid_coverage)
+    company_failures.extend(payload.get("company_execution_failures") or [])
+    company_opportunities, coverage_rows, terminal_summary, terminal_errors = finalize(
+        nominated_companies, company_opportunities,
+        payload.get("company_research_coverage", []), company_failures, default_failure)
+    company_errors.extend(terminal_errors)
+    company_failures = [dict(r, failure_code=r["status"]) for r in coverage_rows
+                        if r["status"] in {"TRANSPORT_FAILED", "SCHEMA_FAILED"}]
 
     out = {
         "contract": "ALPHA_HUNTER_V3_VALIDATED_RESEARCH",
@@ -292,6 +301,7 @@ def main() -> None:
         "company_research_errors": company_errors,
         "company_research_failures": company_failures,
         "company_research_coverage": coverage_rows,
+        "company_terminal_summary": terminal_summary,
     }
     OUT.write_text(json.dumps(out, ensure_ascii=False, indent=2), encoding="utf-8")
     print(

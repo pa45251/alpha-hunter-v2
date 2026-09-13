@@ -110,7 +110,7 @@ def regime_compatibility(risk, research):
 
 def price_plan(hist):
     """Observed support/resistance, ATR noise buffer, no invented target return."""
-    out = dict(price_ok=False, confirmed=False, early_signal=False, severe=False,
+    out = dict(price_data_status='MISSING_OR_INSUFFICIENT', price_ok=False, confirmed=False, early_signal=False, severe=False,
                extended=False, technical='Price history unavailable', entry='Unavailable',
                invalidation='Unavailable', add_trigger='Unavailable', price_reason='Need sealed OHLCV',
                entry_state='WAIT_FOR_ENTRY', **entry_risk(None, None, None, None))
@@ -155,7 +155,7 @@ def price_plan(hist):
     if extended:
         reason += ' Extended price: wait for a new base; do not chase.'
     out.update(**metrics)
-    out.update(price_ok=bool(valid), entry_state='ENTRY_READY' if valid else 'WAIT_FOR_ENTRY', confirmed=bool(confirmed), early_signal=bool(early),
+    out.update(price_data_status='VALID', price_ok=bool(valid), entry_state='ENTRY_READY' if valid else 'WAIT_FOR_ENTRY', confirmed=bool(confirmed), early_signal=bool(early),
                severe=bool(severe), extended=bool(extended), technical='Confirmed breakout' if confirmed else 'Early strength / support recovery' if early else 'No early strength',
                entry=f'{entry_low:g}–{entry_high:g}' if metrics['risk_pct'] is not None else 'Unavailable',
                invalidation=f'Exit on loss of {stop:g}; thesis failure also invalidates',

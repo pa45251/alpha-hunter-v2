@@ -67,7 +67,7 @@ jobs:
     needs: trigger_gate
     if: needs.trigger_gate.outputs.should_run == 'true'
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 75
     env:
       ALPHA_HUNTER_RESEARCH_SELECTION_PATH: /tmp/research_handoff.json
 
@@ -132,101 +132,42 @@ jobs:
             --out /tmp/research_prefetch_v3.json \
             --per-query 3
 
-      - name: Guard unchanged same-snapshot unresolved research
-        if: steps.handoff.outputs.has_work == 'true'
-        id: repeat
-        run: |
-          python - <<'PY'
-          import json, os
-          from pathlib import Path
-          from research_repeat_guard_v4 import filter_repeats, load_previous
-          handoff_path = Path('/tmp/research_handoff.json')
-          handoff = json.loads(handoff_path.read_text(encoding='utf-8'))
-          prefetch = json.loads(Path('/tmp/research_prefetch_v3.json').read_text(encoding='utf-8'))
-          previous = load_previous()
-          filtered, skipped = filter_repeats(handoff, prefetch, previous)
-          total = len(handoff.get('company_research_targets') or [])
-          all_unchanged = bool(total) and len(skipped) == total
-          if not all_unchanged:
-              # We deliberately rerun the admitted batch if any thesis changed, so canonical
-              # output is never assembled by relabelling old research from another execution.
-              annotated, _ = filter_repeats(handoff, prefetch, {'run_id': handoff.get('run_id'), 'items': []})
-              handoff_path.write_text(json.dumps(annotated, ensure_ascii=False, separators=(',', ':')), encoding='utf-8')
-          with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
-              f.write('skip_model=' + str(all_unchanged).lower() + '\n')
-          print(f'repeat guard: total={total} unchanged_unresolved={len(skipped)} skip_model={all_unchanged}')
-          PY
+      - name: Restore same-snapshot thesis execution cache
+        uses: actions/cache@v4
+        with:
+          path: .alpha-hunter/company_research_cache.json
+          key: company-research-v1-${{ github.ref_name }}-${{ hashFiles('output/manifest.json') }}-${{ github.run_id }}
+          restore-keys: |
+            company-research-v1-${{ github.ref_name }}-${{ hashFiles('output/manifest.json') }}-
 
-      - name: Run bounded autonomous fact research
-        if: steps.handoff.outputs.has_work == 'true' && steps.repeat.outputs.skip_model != 'true'
-        id: copilot_research
+      - name: Run shared driver and isolated company fact research
+        if: steps.handoff.outputs.has_work == 'true'
         env:
           COPILOT_GITHUB_TOKEN: ${{ secrets.COPILOT_GITHUB_TOKEN }}
-        run: |
-          set +e
-          {
-            cat RESEARCH_AGENT_PROMPT_V3.md
-            cat <<'EOF'
-
-          IMPORTANT INPUT OVERRIDE: The authoritative admitted handoff is appended below. Research only research_targets and company_research_targets. Do not research deferred_candidates.
-
-          DETERMINISTIC SEARCH TRANSPORT: The workflow already performed bounded discovery outside the model. The prefetch packet defines the only URLs eligible for canonical evidence. Search summaries are clues, not proof by themselves. Company-specific claims and shared-driver claims have separate source scopes. Price remains prohibited. UNKNOWN is correct when exact evidence is insufficient.
-
-          --- BEGIN AUTHORITATIVE ADMITTED HANDOFF ---
-          EOF
-            cat /tmp/research_handoff.json
-            cat <<'EOF'
-          --- END AUTHORITATIVE ADMITTED HANDOFF ---
-
-          --- BEGIN DETERMINISTIC SOURCE PREFETCH ---
-          EOF
-            cat /tmp/research_prefetch_v3.json
-            cat <<'EOF'
-          --- END DETERMINISTIC SOURCE PREFETCH ---
-          EOF
-          } > /tmp/research_prompt_v3.txt
-          copilot \
-            --agent=alpha-hunter-evidence-research \
-            -s \
-            --allow-all-urls \
-            --deny-tool='write,shell,memory' \
-            --no-ask-user \
-            --max-ai-credits=30 \
-            < /tmp/research_prompt_v3.txt \
-            > output/research_result_v3.raw.txt \
-            2> /tmp/copilot_research.err
-          code=$?
-          echo "exit_code=$code" >> "$GITHUB_OUTPUT"
-          if [ "$code" -ne 0 ]; then
-            echo "Copilot CLI exited with code $code"
-            sed -n '1,100p' /tmp/copilot_research.err || true
-            echo '{}' > output/research_result_v3.raw.txt
-          fi
-          rm -f /tmp/research_prompt_v3.txt
-          exit 0
+        run: python company_research_runner.py
 
       - name: Deterministic fail-closed opportunity research ingest
-        if: steps.handoff.outputs.has_work == 'true' && steps.repeat.outputs.skip_model != 'true'
+        if: steps.handoff.outputs.has_work == 'true'
         run: python research_ingest_v3.py
 
       - name: Check opportunity research evidence quality
-        if: steps.handoff.outputs.has_work == 'true' && steps.repeat.outputs.skip_model != 'true'
+        if: steps.handoff.outputs.has_work == 'true'
         env:
           ALPHA_HUNTER_RESEARCH_TRANSPORT_PATH: /tmp/research_prefetch_v3.json
         run: python research_quality_gate_v3.py
 
       - name: Enforce opportunity research decision-source quality
-        if: steps.handoff.outputs.has_work == 'true' && steps.repeat.outputs.skip_model != 'true'
+        if: steps.handoff.outputs.has_work == 'true'
         env:
           ALPHA_HUNTER_RESEARCH_TRANSPORT_PATH: /tmp/research_prefetch_v3.json
         run: python research_decision_source_gate_v3.py
 
       - name: Build same-snapshot v3 opportunity activation bridge
-        if: steps.handoff.outputs.has_work == 'true' && steps.repeat.outputs.skip_model != 'true'
+        if: steps.handoff.outputs.has_work == 'true'
         run: python research_activation_bridge_v3.py
 
       - name: Build market decision and action from validated evidence
-        if: steps.handoff.outputs.has_work == 'true' && steps.repeat.outputs.skip_model != 'true'
+        if: steps.handoff.outputs.has_work == 'true'
         env:
           ALPHA_HUNTER_ACTIVATION_SOURCE: V3_VALIDATED
         run: |
@@ -234,15 +175,17 @@ jobs:
           python action_board_summary.py --refresh
 
       - name: Record research execution fingerprint
-        if: steps.handoff.outputs.has_work == 'true' && steps.repeat.outputs.skip_model != 'true'
+        if: steps.handoff.outputs.has_work == 'true'
         run: python research_execution_record_v4.py
 
       - name: Validate research and decision contracts
-        if: steps.handoff.outputs.has_work == 'true' && steps.repeat.outputs.skip_model != 'true'
+        if: steps.handoff.outputs.has_work == 'true'
         env:
           PYTHONPATH: ${{ github.workspace }}
         run: |
           python -m pytest -q \
+            tests/test_company_research_terminal.py \
+            tests/test_company_research_runner.py \
             tests/test_research_contract_v3.py \
             tests/test_research_activation_bridge_v3.py \
             tests/test_research_source_prefetch_v3.py \
@@ -254,13 +197,13 @@ jobs:
             tests/test_shadow_validation_v2.py
 
       - name: Remove unvalidated and private ephemeral model output
-        if: steps.handoff.outputs.has_work == 'true' && steps.repeat.outputs.skip_model != 'true'
+        if: steps.handoff.outputs.has_work == 'true'
         run: |
           rm -f output/research_result_v3.raw.txt
           rm -f /tmp/research_handoff.json /tmp/research_prefetch_v3.json
 
       - name: Assert same-snapshot validated causal source and V2 trace guards succeeded
-        if: steps.handoff.outputs.has_work == 'true' && steps.repeat.outputs.skip_model != 'true'
+        if: steps.handoff.outputs.has_work == 'true'
         run: |
           python research_decision_source_gate_v3.py
           python - <<'PY'
@@ -281,13 +224,14 @@ jobs:
           PY
 
       - name: Commit validated public research and guarded V2 decision artifacts
-        if: steps.handoff.outputs.has_work == 'true' && steps.repeat.outputs.skip_model != 'true'
+        if: steps.handoff.outputs.has_work == 'true'
         run: |
           git config user.name "alpha-hunter-bot"
           git config user.email "actions@users.noreply.github.com"
           git add \
             output/research_result_v3.json \
             output/research_execution_v4.json \
+            output/company_research_execution.json \
             output/exposure_resolution_v3.json \
             output/driver_activation_v3.csv \
             output/shadow_journal.jsonl \
@@ -301,8 +245,20 @@ jobs:
             git push origin HEAD:${{ github.ref_name }}
           fi
 
+      - name: Publish terminal funnel acceptance artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: company-research-acceptance-${{ github.run_id }}
+          path: |
+            output/research_result_v3.json
+            output/company_research_execution.json
+            output/opportunity_advisory.json
+            output/manifest.json
+          retention-days: 14
+
       - name: Research lane completion status
         if: always()
         run: |
           echo "has_work=${{ steps.handoff.outputs.has_work }}"
-          echo "repeat_skip_model=${{ steps.repeat.outputs.skip_model }}"
+          python -c "import json; print(json.load(open('output/research_result_v3.json')).get('company_terminal_summary'))"

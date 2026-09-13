@@ -23,7 +23,7 @@ def record(handoff_path: Path, research_path: Path, out_path: Path) -> dict:
         driver = str(row.get("driver_id") or "")
         thesis = str(row.get("thesis_id") or f"{ticker}|{driver}")
         key = (ticker, driver)
-        outcome = "RESOLVED" if key in opportunities else "UNRESOLVED"
+        outcome = (coverage.get(key) or {}).get("status") or ("RESOLVED" if key in opportunities else "UNRESOLVED")
         reason = (coverage.get(key) or {}).get("reason")
         items.append({
             "thesis_id": thesis,

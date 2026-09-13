@@ -128,7 +128,8 @@ def test_research_ingest_roundtrip_preserves_company_advisory_without_activating
     result=json.loads((out/'research_result_v3.json').read_text())
     if missing_transmission:
         assert result['company_opportunities']==[]
-        assert result['company_research_coverage'][0]['status']=='UNRESOLVED'
+        assert result['company_research_coverage'][0]['status']=='SCHEMA_FAILED'
+        assert result['company_terminal_summary']['research_complete'] is False
         assert 'company_transmission' in result['company_research_coverage'][0]['reason']
         assert result['results'][0]['state']=='UNKNOWN'
         return
