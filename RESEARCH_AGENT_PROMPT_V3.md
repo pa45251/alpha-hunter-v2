@@ -164,3 +164,5 @@ Do not research deferred_candidates. GLOBAL_REJECTED and ENTRY-only gaps do not 
 Research nominations come from the full sealed canonical queue, not its Top-30 presentation summary.
 
 Entry prices, invalidation, risk_pct and reference R/R belong to the canonical deterministic entry-risk contract. Research cannot overwrite these prices or relax its risk limit.
+
+Validation-only reminder: exposure resolution answers CAN only and never implies NOW, REACH, or PRICE permission.
