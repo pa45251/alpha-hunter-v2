@@ -127,22 +127,16 @@ def _query_for(target: dict, lane: str) -> str:
             terms = '訂單 營收 傳導 ' + str(target.get('driver_label') or '') if lane == 'SUPPORT' else '訂單取消 需求衰退'
         return f'{company} {terms} {datetime.now(timezone.utc).year}'
     label = _compact_terms(target.get("driver_label") or target.get("driver_id"), 120)
-    scope = _compact_terms(target.get("driver_scope"), 120)
     if lane == "SUPPORT":
         requirement = _compact_terms(target.get("activation_evidence_required"), 160)
     else:
         requirement = _compact_terms(target.get("counter_evidence_required"), 160)
     parts = [label, " ".join(requirement.split()[:7]), str(datetime.now(timezone.utc).year)]
-    query = " ".join(x for x in parts if x).strip()
-    return query[:420]
+    return " ".join(x for x in parts if x).strip()[:420]
 
 
 def official_company_revenue(targets: list[dict], timeout: float = 15.0) -> dict[str, list[dict]]:
-    """Current official snapshots are evidence candidates, never historical backfills.
-
-    retrieved_at/available_at bind availability to this run. Export date does not
-    pretend the individual company's original announcement was known at midnight.
-    """
+    """Current official snapshots are evidence candidates, never historical backfills."""
     result = {}
     wanted = {str(t.get('ticker', '')).split('.')[0]: str(t.get('ticker')) for t in targets}
     for suffix, url in [('.TW', 'https://mopsfin.twse.com.tw/opendata/t187ap05_L.csv'),
@@ -173,10 +167,12 @@ def official_company_revenue(targets: list[dict], timeout: float = 15.0) -> dict
                 now = datetime.fromisoformat(observed.replace('Z', '+00:00'))
                 age_months = (now.year - year) * 12 + now.month - month
                 if not 1 <= month <= 12 or not 0 <= age_months <= 2:
-                    continue  # Retrieval time cannot make an old operating period fresh.
+                    continue
                 result[wanted[code]] = [{
                     'source_title': f"Official monthly revenue: {row.get('公司名稱')} {row.get('資料年月')}",
-                    'source_url': url, 'published_at': observed, 'available_at': observed,
+                    'source_url': url,
+                    'published_at': observed,
+                    'available_at': observed,
                     'date_basis': 'CURRENT_DATASET_OBSERVED_AT; original issuer publication time unknown',
                     'export_date_roc': row.get('出表日期'),
                     'snippet': json.dumps(row, ensure_ascii=False),
@@ -190,10 +186,11 @@ def official_company_revenue(targets: list[dict], timeout: float = 15.0) -> dict
 def build_prefetch(handoff: dict, *, timeout: float = 15.0, per_query: int = 5) -> dict:
     run_id = str(handoff.get("run_id") or handoff.get("research_run_id") or "")
     targets = [x for x in (handoff.get("research_targets") or []) if isinstance(x, dict)]
+    company_input = [x for x in (handoff.get('company_research_targets') or []) if isinstance(x, dict)]
     if not run_id:
         raise RuntimeError("prefetch handoff missing run_id")
-    if not targets:
-        raise RuntimeError("prefetch handoff contains no research_targets")
+    if not targets and not company_input:
+        raise RuntimeError("prefetch handoff contains no research targets")
 
     query_attempt_count = 0
     successful_query_count = 0
@@ -213,14 +210,12 @@ def build_prefetch(handoff: dict, *, timeout: float = 15.0, per_query: int = 5) 
                 successful_query_count += 1
             else:
                 errors.append(f"{driver_id}:{lane}:{error}")
-            queries.append(
-                {
-                    "lane": lane,
-                    "query": query,
-                    "status": "PASS" if error is None else "ERROR",
-                    "result_count": len(rows),
-                }
-            )
+            queries.append({
+                "lane": lane,
+                "query": query,
+                "status": "PASS" if error is None else "ERROR",
+                "result_count": len(rows),
+            })
             for row in rows:
                 url = str(row.get("source_url") or "")
                 if not url or url in seen:
@@ -231,34 +226,43 @@ def build_prefetch(handoff: dict, *, timeout: float = 15.0, per_query: int = 5) 
                 enriched["query"] = query
                 target_candidates.append(enriched)
 
-        out_targets.append(
-            {
-                "driver_id": driver_id,
-                "ticker": target.get("ticker"),
-                "queries": queries,
-                "candidate_sources": target_candidates,
-                "candidate_source_count": len(target_candidates),
-            }
-        )
+        out_targets.append({
+            "driver_id": driver_id,
+            "ticker": target.get("ticker"),
+            "queries": queries,
+            "candidate_sources": target_candidates,
+            "candidate_source_count": len(target_candidates),
+        })
 
     candidate_source_count = sum(int(x["candidate_source_count"]) for x in out_targets)
     sourced_target_count = sum(1 for x in out_targets if int(x["candidate_source_count"]) > 0)
-    status = (
+    driver_status = (
         "PASS"
-        if query_attempt_count == len(targets) * 2
+        if targets
+        and query_attempt_count == len(targets) * 2
         and successful_query_count > 0
         and candidate_source_count > 0
         and sourced_target_count > 0
         else "FAIL_CLOSED"
-    )
+    ) if targets else "NOT_REQUIRED"
+
     company_sources = []
-    if handoff.get('company_research_targets'):
-        extra = build_prefetch({'run_id': run_id, 'research_targets': handoff['company_research_targets']}, timeout=timeout, per_query=per_query)
+    company_status = "NOT_REQUIRED"
+    if company_input:
+        extra = build_prefetch({'run_id': run_id, 'research_targets': company_input}, timeout=timeout, per_query=per_query)
         company_sources = extra['targets']
-        official = official_company_revenue(handoff['company_research_targets'], timeout)
+        company_status = extra['status']
+        official = official_company_revenue(company_input, timeout)
         for target in company_sources:
             target['candidate_sources'] = official.get(target.get('ticker'), []) + target['candidate_sources']
             target['candidate_source_count'] = len(target['candidate_sources'])
+
+    status = "PASS" if (
+        (driver_status in {"PASS", "NOT_REQUIRED"})
+        and (company_status in {"PASS", "NOT_REQUIRED"})
+        and (driver_status == "PASS" or company_status == "PASS")
+    ) else "FAIL_CLOSED"
+
     return {
         'company_targets': company_sources,
         "contract": CONTRACT,
@@ -271,6 +275,8 @@ def build_prefetch(handoff: dict, *, timeout: float = 15.0, per_query: int = 5) 
         "successful_query_count": successful_query_count,
         "candidate_source_count": candidate_source_count,
         "sourced_target_count": sourced_target_count,
+        "driver_transport_status": driver_status,
+        "company_transport_status": company_status,
         "errors": errors[:20],
         "targets": out_targets,
     }
