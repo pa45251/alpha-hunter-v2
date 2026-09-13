@@ -1,7 +1,7 @@
 {
   "contract": "ALPHA_HUNTER_V3_EXPOSURE_RESOLUTION_CACHE",
   "status": "PASS",
-  "updated_at_utc": "2026-09-13T11:04:16.890823+00:00",
+  "updated_at_utc": "2026-09-13T11:48:43.396036+00:00",
   "resolutions": [
     {
       "ticker": "2636.TW",
@@ -16,6 +16,23 @@
       "source_available_at": "2026-09-13T11:01:51.270860+00:00",
       "validated_at_utc": "2026-09-13T11:04:16.890823+00:00",
       "valid_until_utc": "2027-09-13T11:01:51.270860+00:00",
+      "origin_research_run_id": "20260913T153722+0800-a1ec0450",
+      "mapping_status": "PROVISIONAL_SOURCE_BACKED",
+      "revoked": false
+    },
+    {
+      "ticker": "2838.TW",
+      "resolved_driver_id": "FINANCIALS_RATE_CREDIT_CYCLE",
+      "driver_label": "Financials rate / credit / margin cycle",
+      "global_theme": "Financials",
+      "mechanism": "As a commercial bank, 聯邦商業銀行股份有限公司 is structurally exposed to financial-sector rate, credit-quality, net-interest-margin and loan-growth conditions.",
+      "source_urls": [
+        "https://mopsfin.twse.com.tw/opendata/t187ap03_L.csv"
+      ],
+      "source_published_at": "2026-09-13T11:45:41.963551+00:00",
+      "source_available_at": "2026-09-13T11:45:41.963551+00:00",
+      "validated_at_utc": "2026-09-13T11:48:43.396036+00:00",
+      "valid_until_utc": "2027-09-13T11:45:41.963551+00:00",
       "origin_research_run_id": "20260913T153722+0800-a1ec0450",
       "mapping_status": "PROVISIONAL_SOURCE_BACKED",
       "revoked": false
@@ -51,6 +68,23 @@
       "source_available_at": "2026-09-13T11:02:08.659698+00:00",
       "validated_at_utc": "2026-09-13T11:04:16.890823+00:00",
       "valid_until_utc": "2027-09-13T11:02:08.659698+00:00",
+      "origin_research_run_id": "20260913T153722+0800-a1ec0450",
+      "mapping_status": "PROVISIONAL_SOURCE_BACKED",
+      "revoked": false
+    },
+    {
+      "ticker": "6150.TWO",
+      "resolved_driver_id": "CONSUMER_ELECTRONICS_CYCLE",
+      "driver_label": "Consumer electronics demand cycle",
+      "global_theme": "Consumer_Tech",
+      "mechanism": "撼訊 sells branded high-end gaming graphics cards and custom industrial graphics cards, making it structurally exposed to graphics-card and related consumer or specialty electronics demand. The source does not establish current cycle activation or product-level transmission.",
+      "source_urls": [
+        "https://www.tul.com.tw"
+      ],
+      "source_published_at": "2026-09-13T11:46:00.587784+00:00",
+      "source_available_at": "2026-09-13T11:46:00.587784+00:00",
+      "validated_at_utc": "2026-09-13T11:48:43.396036+00:00",
+      "valid_until_utc": "2027-09-13T11:46:00.587784+00:00",
       "origin_research_run_id": "20260913T153722+0800-a1ec0450",
       "mapping_status": "PROVISIONAL_SOURCE_BACKED",
       "revoked": false

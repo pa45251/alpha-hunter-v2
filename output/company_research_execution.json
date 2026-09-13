@@ -24,26 +24,15 @@
     {
       "task_id": "7d3698b6b83b3df6cb0d",
       "cache_hit": false,
-      "failure": [
-        "SCHEMA_FAILED",
-        "EXPOSURE_RESOLUTION_REQUIRES_UNMAPPED_TARGET"
-      ]
+      "failure": null
     },
     {
-      "task_id": "91de2ab926e80b8ee119",
+      "task_id": "89533de48e0ba9fefdb1",
       "cache_hit": false,
       "failure": null
     },
     {
       "task_id": "aca52818bf1b820ccd7d",
-      "cache_hit": false,
-      "failure": [
-        "SCHEMA_FAILED",
-        "EXPOSURE_RESOLUTION_REQUIRES_UNMAPPED_TARGET"
-      ]
-    },
-    {
-      "task_id": "f904c2652a110a7b62ac",
       "cache_hit": false,
       "failure": null
     },

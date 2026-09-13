@@ -7,8 +7,8 @@
       "thesis_id": "dbd739811243091319dc",
       "ticker": "3176.TWO",
       "driver_id": "UNMAPPED_OPPORTUNITY",
-      "outcome": "SCHEMA_FAILED",
-      "reason": "COMPANY_DRIVER_STATE_INVALID",
+      "outcome": "UNKNOWN_AFTER_RESEARCH",
+      "reason": "The prefetched sources do not establish a decision-changing company exposure or specific local event. Official profile evidence is limited to company identity; official website transport failed; monthly revenue is generic and cannot establish a driver mechanism.",
       "signature": null,
       "origin_research_run_id": "20260913T153722+0800-a1ec0450"
     },
@@ -16,8 +16,8 @@
       "thesis_id": "725fd0ddcafbbd6a8d90",
       "ticker": "2605.TW",
       "driver_id": "DRY_BULK_FREIGHT",
-      "outcome": "SCHEMA_FAILED",
-      "reason": "COMPANY_DRIVER_STATE_INVALID",
+      "outcome": "UNKNOWN_AFTER_RESEARCH",
+      "reason": "Structural dry-bulk exposure is supported, but current company-specific transmission to the nominated dry-bulk freight driver cannot be established from the prefetched evidence. Generic monthly revenue growth and tanker fleet-expansion disclosures are insufficient.",
       "signature": null,
       "origin_research_run_id": "20260913T153722+0800-a1ec0450"
     },
@@ -25,8 +25,8 @@
       "thesis_id": "830447445162a2de686b",
       "ticker": "4967.TW",
       "driver_id": "NAND_STORAGE_CYCLE",
-      "outcome": "SCHEMA_FAILED",
-      "reason": "COMPANY_DRIVER_STATE_INVALID",
+      "outcome": "UNKNOWN_AFTER_RESEARCH",
+      "reason": "Structural exposure is supported by the company's prefetched official website, which lists SSD, memory card, USB flash drive and memory products. However, no prefetched company document provides a current measurable fact linking 4967.TW's operating performance specifically to NAND pricing, storage-controller/module demand, inventory, storage-unit shipments or cycle-specific orders. The official August 2026 revenue disclosure attributes growth to increased shipments and higher selling prices but is generic and cannot establish NAND cycle transmission.",
       "signature": null,
       "origin_research_run_id": "20260913T153722+0800-a1ec0450"
     },
@@ -34,17 +34,17 @@
       "thesis_id": "7d3698b6b83b3df6cb0d",
       "ticker": "3044.TW",
       "driver_id": "AI_SERVER_SHIPMENTS",
-      "outcome": "SCHEMA_FAILED",
-      "reason": "EXPOSURE_RESOLUTION_REQUIRES_UNMAPPED_TARGET",
+      "outcome": "UNKNOWN_AFTER_RESEARCH",
+      "reason": "The prefetched company evidence supports only broad structural exposure to servers and workstations. It does not establish AI-server products, rack shipments, ODM backlog, AI-specific orders, shipments, pricing, utilization, or another measurable transmission fact tied specifically to the AI server shipment / ODM cycle. The available monthly revenue increase is generic and cannot establish this driver.",
       "signature": null,
       "origin_research_run_id": "20260913T153722+0800-a1ec0450"
     },
     {
-      "thesis_id": "91de2ab926e80b8ee119",
+      "thesis_id": "89533de48e0ba9fefdb1",
       "ticker": "2636.TW",
-      "driver_id": "UNMAPPED_OPPORTUNITY",
-      "outcome": "SCHEMA_FAILED",
-      "reason": "COMPANY_DRIVER_STATE_INVALID",
+      "driver_id": "CONTAINER_FREIGHT",
+      "outcome": "UNKNOWN_AFTER_RESEARCH",
+      "reason": "公司結構性海運曝險及當期運價與貨量增加均有公司 prefetched 證據；但 exact-driver 的 deterministic shared-driver prefetch 沒有可驗證的非價格證據，無法確認全球貨櫃運價或班輪利用率週期，故不能支持或拒絕該 thesis。",
       "signature": null,
       "origin_research_run_id": "20260913T153722+0800-a1ec0450"
     },
@@ -52,17 +52,8 @@
       "thesis_id": "aca52818bf1b820ccd7d",
       "ticker": "1609.TW",
       "driver_id": "COPPER_COMMODITY_TRADE_INVENTORY",
-      "outcome": "SCHEMA_FAILED",
-      "reason": "EXPOSURE_RESOLUTION_REQUIRES_UNMAPPED_TARGET",
-      "signature": null,
-      "origin_research_run_id": "20260913T153722+0800-a1ec0450"
-    },
-    {
-      "thesis_id": "f904c2652a110a7b62ac",
-      "ticker": "4915.TW",
-      "driver_id": "UNMAPPED_OPPORTUNITY",
-      "outcome": "SCHEMA_FAILED",
-      "reason": "COMPANY_DRIVER_STATE_INVALID",
+      "outcome": "UNKNOWN_AFTER_RESEARCH",
+      "reason": "Structural copper-wire exposure is supported by the issuer website, but current copper-specific company transmission and its counter-evidence cannot be established from the prefetched documents. Generic monthly revenue growth is insufficient.",
       "signature": null,
       "origin_research_run_id": "20260913T153722+0800-a1ec0450"
     },
@@ -70,8 +61,8 @@
       "thesis_id": "5d194e16513acc309b20",
       "ticker": "6150.TWO",
       "driver_id": "UNMAPPED_OPPORTUNITY",
-      "outcome": "SCHEMA_FAILED",
-      "reason": "COMPANY_DRIVER_STATE_INVALID",
+      "outcome": "UNKNOWN_AFTER_RESEARCH",
+      "reason": "Structural exposure to graphics cards is supported, but the deterministic company documents do not establish a current measurable transmission fact for a mapped global driver or a concrete local event. Generic monthly revenue cannot establish the nominated economic mechanism.",
       "signature": null,
       "origin_research_run_id": "20260913T153722+0800-a1ec0450"
     },
@@ -80,7 +71,7 @@
       "ticker": "4951.TWO",
       "driver_id": "UNMAPPED_OPPORTUNITY",
       "outcome": "UNKNOWN_AFTER_RESEARCH",
-      "reason": "No source-backed economic exposure or specific local event was supported by the admitted company evidence. The issuer materials describe a broad mixed semiconductor product portfolio but do not provide a measurable current transmission fact (orders, shipments, backlog, pricing, utilization or a concrete event) tied to any enabled taxonomy driver.",
+      "reason": "No source-backed exact taxonomy mapping, current driver-specific company transmission, or concrete local event was established from the prefetched documents. Generic monthly revenue and broad product descriptions are insufficient.",
       "signature": null,
       "origin_research_run_id": "20260913T153722+0800-a1ec0450"
     },
@@ -89,7 +80,7 @@
       "ticker": "5609.TWO",
       "driver_id": "UNMAPPED_OPPORTUNITY",
       "outcome": "UNKNOWN_AFTER_RESEARCH",
-      "reason": "The prefetched official profile only identifies 中菲行國際物流股份有限公司 and its website. The available company revenue record is generic revenue-only evidence and cannot establish exposure to a specific economic driver or current transmission through orders, shipments, pricing, mix, utilization, backlog, or a concrete local event. The official website fetch failed, and the remaining search results were inaccessible, irrelevant, or non-verifiable.",
+      "reason": "No prefetched company document provides the required structural exposure plus current measurable transmission or a concrete local event. Generic revenue growth cannot establish a specific economic driver.",
       "signature": null,
       "origin_research_run_id": "20260913T153722+0800-a1ec0450"
     },
@@ -98,7 +89,7 @@
       "ticker": "2838.TW",
       "driver_id": "UNMAPPED_OPPORTUNITY",
       "outcome": "UNKNOWN_AFTER_RESEARCH",
-      "reason": "The prefetched sources verify only that 2838.TW is 聯邦商業銀行股份有限公司 and provide generic monthly revenue. They do not establish a source-backed structural exposure to an enabled driver, a measurable current transmission fact, or a specific local event. The issuer website fetch failed, and the unrelated search results are not usable company evidence.",
+      "reason": "Structural identity supports a possible mapping to FINANCIALS_RATE_CREDIT_CYCLE, but the prefetched material contains no company-specific measurable transmission fact linking current rate, credit-quality, margin or loan-growth conditions to the company. The available monthly revenue record is explicitly generic revenue only and cannot establish the nominated economic mechanism.",
       "signature": null,
       "origin_research_run_id": "20260913T153722+0800-a1ec0450"
     },
@@ -106,8 +97,8 @@
       "thesis_id": "5f31cf752b2e49ae2405",
       "ticker": "2023.TW",
       "driver_id": "UNMAPPED_OPPORTUNITY",
-      "outcome": "SCHEMA_FAILED",
-      "reason": "COMPANY_DRIVER_STATE_INVALID",
+      "outcome": "UNKNOWN_AFTER_RESEARCH",
+      "reason": "已確認燁輝產品應用於洗衣機外殼及液晶顯示器後蓋，可解析為 CONSUMER_ELECTRONICS_CYCLE 的結構性暴露；但缺乏當期可量化公司傳導事實或具體本地事件，無法形成完整且可支持的公司機會。",
       "signature": null,
       "origin_research_run_id": "20260913T153722+0800-a1ec0450"
     },
@@ -116,7 +107,7 @@
       "ticker": "2548.TW",
       "driver_id": "UNMAPPED_OPPORTUNITY",
       "outcome": "UNKNOWN_AFTER_RESEARCH",
-      "reason": "The prefetched company sources establish that 華固 is a real-estate developer with residential and commercial property projects, and that 2026 cumulative revenue increased because of higher handover recognition. They do not establish a concrete current local event, measurable order or transmission fact, or a source-backed mapping to any enabled global driver taxonomy. The support and counter search results were contaminated by unrelated documents and therefore cannot support a company thesis.",
+      "reason": "No enabled driver or specific local event can be confirmed from the prefetched company evidence. The available revenue disclosure is generic handover recognition and does not establish driver-specific transmission.",
       "signature": null,
       "origin_research_run_id": "20260913T153722+0800-a1ec0450"
     },
@@ -125,7 +116,7 @@
       "ticker": "2449.TW",
       "driver_id": "UNMAPPED_OPPORTUNITY",
       "outcome": "UNKNOWN_AFTER_RESEARCH",
-      "reason": "The prefetched official company profile supports only broad semiconductor IC testing exposure, including wafer probing, final IC testing and burn-in testing. It does not identify a source-backed exposure to any exact enabled driver taxonomy ID. The official monthly revenue source reports generic revenue growth only and cannot establish current transmission through orders, shipments, pricing, mix, utilization, backlog or another driver-specific operating fact. The supplied support and counter search results were unrelated to 京元電子 and provide no usable company-specific causal evidence.",
+      "reason": "No source-backed exact taxonomy mapping, measurable current driver transmission, or concrete local event could be verified from the prefetched company documents. The official company profile and website provide structural testing-service identity only; the monthly revenue record is generic and cannot establish a specific economic driver.",
       "signature": null,
       "origin_research_run_id": "20260913T153722+0800-a1ec0450"
     },
@@ -134,7 +125,7 @@
       "ticker": "6742.TW",
       "driver_id": "UNMAPPED_OPPORTUNITY",
       "outcome": "UNKNOWN_AFTER_RESEARCH",
-      "reason": "The prefetched official issuer profile establishes only the company identity and website. The prefetched monthly revenue record is generic revenue evidence and cannot establish structural exposure, a specific economic mechanism, current transmission, or a local company event. The issuer website transport failed, while the remaining search results are unusable snippets or unrelated pages; therefore no complete company thesis can be supported or rejected.",
+      "reason": "No source-backed economic exposure or specific company event could be established from the deterministic company prefetch. The official issuer profile identifies 澤米科技股份有限公司 and the monthly revenue dataset reports generic revenue, but generic revenue does not establish a driver mechanism or company transmission.",
       "signature": null,
       "origin_research_run_id": "20260913T153722+0800-a1ec0450"
     },
@@ -142,8 +133,8 @@
       "thesis_id": "eeab5d03e0194cf9f85e",
       "ticker": "6112.TW",
       "driver_id": "UNMAPPED_OPPORTUNITY",
-      "outcome": "SCHEMA_FAILED",
-      "reason": "COMPANY_DRIVER_STATE_INVALID",
+      "outcome": "UNKNOWN_AFTER_RESEARCH",
+      "reason": "Unable to identify a source-backed exact taxonomy exposure or a measurable current company transmission fact from the deterministic prefetched documents.",
       "signature": null,
       "origin_research_run_id": "20260913T153722+0800-a1ec0450"
     },
@@ -151,8 +142,8 @@
       "thesis_id": "6e36cc24e19774212e44",
       "ticker": "6894.TWO",
       "driver_id": "UNMAPPED_OPPORTUNITY",
-      "outcome": "SCHEMA_FAILED",
-      "reason": "COMPANY_DRIVER_STATE_INVALID",
+      "outcome": "UNKNOWN_AFTER_RESEARCH",
+      "reason": "Structural business evidence is available, but no exact enabled driver mapping or concrete company-specific event with sufficient current transmission evidence was established. Official website evidence identifies copper-electrolytic recovery equipment, PCB functional anodes, and semiconductor/LCD/PCB applications. Official August 2026 revenue data attributes growth to increased electrolytic equipment and consumables sales from customer orders and inclusion of a new business, but this is insufficient to prove a specific nominated driver or local event.",
       "signature": null,
       "origin_research_run_id": "20260913T153722+0800-a1ec0450"
     }
