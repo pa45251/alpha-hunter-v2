@@ -32,12 +32,7 @@ def sealed_csv(name, out):
 
 
 def _independent_company_peers(peers: pd.DataFrame) -> pd.DataFrame:
-    """Remove ETF/fund wrappers before company-level confirmation.
-
-    Theme ETFs remain useful aggregate sensors, but an ETF and its constituents are not
-    independent observations. They therefore cannot both vote in the company-confirmation
-    channel used to upgrade a theme from DEVELOPING to CONFIRMED.
-    """
+    """Remove ETF/fund wrappers before company-level confirmation."""
     if peers.empty:
         return peers
     names = peers.get('name', pd.Series('', index=peers.index)).fillna('').astype(str).str.upper()
@@ -90,9 +85,6 @@ def international_price(theme, breadth, peers):
         return result
 
     independent = _company_breadth_row(p)
-    # When two or more complete company peers exist, recompute breadth without ETF wrappers.
-    # Thin themes may remain DEVELOPING using the scanner aggregate, but can never be upgraded
-    # to CONFIRMED by an ETF plus the same constituent move.
     price_breadth = independent if independent is not None else scanner_b
     trend, width = _breadth_score(price_breadth)
     states = company_peers.get('raw_leader_state', pd.Series(dtype=str)).dropna()
@@ -139,9 +131,14 @@ def attach_price_gates(candidates, out=Path('output')):
 
 
 def local_proven(research, candidate, as_of):
+    """Validate an independent local thesis.
+
+    A company may also have a mapped global exposure. That fact does not veto a separate
+    local thesis; the local thesis must instead be represented as its own UNMAPPED thesis
+    and prove that the specific local event is primary after testing the global alternative.
+    """
     from opportunity_advisory import evidence_valid
-    if (candidate.get('driver_id') != UNMAPPED or research.get('driver_id') != UNMAPPED
-            or candidate.get('known_global_link') is True):
+    if candidate.get('driver_id') != UNMAPPED or research.get('driver_id') != UNMAPPED:
         return False
     proof = research.get('local_scope_evidence')
     if not isinstance(proof, dict):
@@ -156,6 +153,11 @@ def local_proven(research, candidate, as_of):
 
 
 def thesis_gates(candidate, research, as_of):
+    """Return the first decision-blocking gate without conflating evidence classes.
+
+    Economic rejection and global price weakness are deliberately distinct. Price can veto
+    taking risk now, but it cannot prove that an economic driver is false.
+    """
     from opportunity_advisory import evidence_valid
     r = research or {}
     mapped = bool(candidate.get('driver_id')) and candidate.get('driver_id') != UNMAPPED
@@ -169,18 +171,33 @@ def thesis_gates(candidate, research, as_of):
               if evidence_valid(e, as_of, driver=candidate.get('driver_id')) and e.get('same_driver') is True
               and e.get('source_url') not in company_urls]
     state = r.get('driver_state', 'UNKNOWN')
-    rejected = candidate.get('driver_rejected') is True or state == 'REJECTED' or r.get('major_counter_evidence') is True
-    causal_state = 'REJECTED' if rejected else state if (causal or local) and state in PRICE_ACCEPTED else 'UNKNOWN'
+    economic_rejected = candidate.get('driver_rejected') is True or state == 'REJECTED' or r.get('major_counter_evidence') is True
+    price_weak = scope == 'GLOBAL' and price in PRICE_REJECTED
+    causal_state = 'REJECTED' if economic_rejected else state if (causal or local) and state in PRICE_ACCEPTED else 'UNKNOWN'
     transmission = bool(company and r.get('company_transmission') and r.get('counter_evidence_reviewed') is True
                         and r.get('major_counter_evidence') is False and r.get('driver_id') == candidate.get('driver_id'))
-    gap = ('GLOBAL_REJECTED' if rejected or (scope == 'GLOBAL' and price in PRICE_REJECTED)
+    gap = ('ECONOMIC_DRIVER_REJECTED' if economic_rejected
            else 'DRIVER_UNKNOWN' if scope == 'UNKNOWN'
+           else 'GLOBAL_PRICE_WEAK' if price_weak
            else 'GLOBAL_PRICE_UNCONFIRMED' if scope == 'GLOBAL' and price not in PRICE_ACCEPTED
            else 'CAUSAL_UNVERIFIED' if causal_state not in PRICE_ACCEPTED
            else 'COMPANY_TRANSMISSION_UNVERIFIED' if not transmission else 'ENTRY')
-    return dict(driver_scope=scope, international_price_state=price, international_causal_state=causal_state,
-                company_transmission_state='CONFIRMED' if transmission else 'UNKNOWN', missing_gate=gap,
-                research_task={'DRIVER_UNKNOWN':'IDENTIFY_DRIVER_AND_TEST_GLOBAL_ALTERNATIVE',
-                               'GLOBAL_REJECTED':'NONE', 'GLOBAL_PRICE_UNCONFIRMED':'WAIT_FOR_MARKET_DATA',
-                               'CAUSAL_UNVERIFIED':'INTERNATIONAL_CAUSAL',
-                               'COMPANY_TRANSMISSION_UNVERIFIED':'COMPANY_TRANSMISSION', 'ENTRY':'NONE'}[gap])
+    research_task = {
+        'ECONOMIC_DRIVER_REJECTED': 'NONE',
+        'DRIVER_UNKNOWN': 'IDENTIFY_DRIVER_AND_TEST_GLOBAL_ALTERNATIVE',
+        'GLOBAL_PRICE_WEAK': 'WAIT_FOR_MARKET_DATA',
+        'GLOBAL_PRICE_UNCONFIRMED': 'WAIT_FOR_MARKET_DATA',
+        'CAUSAL_UNVERIFIED': 'INTERNATIONAL_CAUSAL',
+        'COMPANY_TRANSMISSION_UNVERIFIED': 'COMPANY_TRANSMISSION',
+        'ENTRY': 'NONE',
+    }[gap]
+    return dict(
+        driver_scope=scope,
+        international_price_state=price,
+        international_causal_state=causal_state,
+        company_transmission_state='CONFIRMED' if transmission else 'UNKNOWN',
+        economic_driver_rejected=bool(economic_rejected),
+        global_price_risk_veto=bool(price_weak),
+        missing_gate=gap,
+        research_task=research_task,
+    )
