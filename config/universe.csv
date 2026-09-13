@@ -139,9 +139,8 @@ EQIX,Equinix,AI_Infrastructure,US,SPY,CORE
 DLR,Digital Realty,AI_Infrastructure,US,SPY,CORE
 NVT,nVent Electric,Power_Grid,US,SPY,CORE
 EMR,Emerson Electric,Power_Grid,US,SPY,CORE
-ABB,ABB ADR,Power_Grid,EU,SPY,CORE
+ABBN.SW,ABB,Power_Grid,EU,^SSMI,CORE
 CHKP,Check Point,Cybersecurity,US,SPY,CORE
-CYBR,CyberArk,Cybersecurity,US,SPY,CORE
 S,SentinelOne,Cybersecurity,US,SPY,CORE
 GD,General Dynamics,Defense,US,SPY,CORE
 HII,Huntington Ingalls,Defense,US,SPY,CORE
@@ -153,7 +152,7 @@ SIE.DE,Siemens,Industrials,EU,^STOXX,CORE
 PRY.MI,Prysmian,Power_Grid,EU,^STOXX,CORE
 NEX.PA,Nexans,Power_Grid,EU,^STOXX,CORE
 IFX.DE,Infineon Technologies,Semiconductor,EU,^STOXX,CORE
-STM.PA,STMicroelectronics,Semiconductor,EU,^STOXX,CORE
+STMPA.PA,STMicroelectronics,Semiconductor,EU,^STOXX,CORE
 ASM.AS,ASM International,Semiconductor_Equipment,EU,^STOXX,CORE
 BESI.AS,BE Semiconductor Industries,Semiconductor_Equipment,EU,^STOXX,CORE
 RHM.DE,Rheinmetall,Defense,EU,^STOXX,CORE
@@ -163,7 +162,7 @@ LDO.MI,Leonardo,Defense,EU,^STOXX,CORE
 SAP.DE,SAP,Software,EU,^STOXX,CORE
 MAERSK-B.CO,Maersk,Shipping,EU,^OMXC25,CORE
 HLAG.DE,Hapag-Lloyd,Shipping,EU,^STOXX,CORE
-ROG.SW,Roche,Biotech,EU,^SSMI,CORE
+ROP.SW,Roche,Biotech,EU,^SSMI,CORE
 NOVN.SW,Novartis,Biotech,EU,^SSMI,CORE
 SAN.PA,Sanofi,Biotech,EU,^STOXX,CORE
 6723.T,Renesas Electronics,Semiconductor,JP,^N225,CORE

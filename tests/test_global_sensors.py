@@ -49,7 +49,8 @@ def test_missing_local_benchmark_is_not_silently_spy(tmp_path):
 
 def test_core_universe_preserved():
     core = load_core('config/universe.csv')
-    assert len(core) == 221
+    # Delisted CYBR was intentionally removed in the 2026-09 Core-symbol hygiene pass.
+    assert len(core) == 220
     assert core.universe_layer.eq('CORE').all()
 
 

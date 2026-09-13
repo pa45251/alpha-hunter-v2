@@ -35,7 +35,8 @@ def test_daily_chain_seals_discovery_without_activating_drivers(tmp_path, monkey
         if ticker=='^UST2Y':close=np.linspace(4.5,4.1,200)
         return pd.DataFrame({'Open':close,'High':close*1.01,'Low':close*.99,
                              'Close':close,'Volume':10_000_000.},index=index)
-    def download(self,tickers,period):return {t:bars(t) for t in tickers if t!='ABB'}
+    # Deliberately drop one current Core sensor to prove missing-price coverage stays explicit.
+    def download(self,tickers,period):return {t:bars(t) for t in tickers if t!='ABBN.SW'}
     monkeypatch.setattr(market_data.YFinanceProvider,'download',download)
     monkeypatch.setattr(taiwan_sensor,'fetch_taiwan_universe',lambda:uni)
     monkeypatch.setattr(taiwan_sensor,'_download_chunked',lambda tickers,*a,**k:{t:bars(t) for t in tickers})
@@ -49,10 +50,10 @@ def test_daily_chain_seals_discovery_without_activating_drivers(tmp_path, monkey
     out=tmp_path/'output'
     manifest=json.loads((out/'manifest.json').read_text())
     assert manifest['status']=='PASS'
-    assert manifest['global']['core_universe_count']==221
-    assert manifest['global']['scanned_count']==220
+    assert manifest['global']['core_universe_count']==220
+    assert manifest['global']['scanned_count']==219
     quality=json.loads((out/'global_scan_quality.json').read_text())
-    assert quality['core_download']['missing_tickers']==['ABB']
+    assert quality['core_download']['missing_tickers']==['ABBN.SW']
     assert quality['discovery']['scanned_count']==433
     sealed={r['name'] for r in manifest['authoritative_files']}
     assert {'discovery_snapshot.csv','discovery_research_queue.csv','global_scan_quality.json'} <= sealed
