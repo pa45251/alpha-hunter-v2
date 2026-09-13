@@ -135,27 +135,35 @@ jobs:
           COPILOT_GITHUB_TOKEN: ${{ secrets.COPILOT_GITHUB_TOKEN }}
         run: |
           set +e
-          RESEARCH_PROMPT="$(cat RESEARCH_AGENT_PROMPT_V3.md)
+          {
+            cat RESEARCH_AGENT_PROMPT_V3.md
+            cat <<'EOF'
 
           IMPORTANT INPUT OVERRIDE: The authoritative admitted handoff is appended below. Research only research_targets and company_research_targets. Do not research deferred_candidates.
 
           DETERMINISTIC SEARCH TRANSPORT: The workflow already performed bounded discovery outside the model. The prefetch packet defines the only URLs eligible for canonical evidence. Search summaries are clues, not proof by themselves. Company-specific claims and shared-driver claims have separate source scopes. Price remains prohibited. UNKNOWN is correct when exact evidence is insufficient.
 
           --- BEGIN AUTHORITATIVE ADMITTED HANDOFF ---
-          $(cat /tmp/research_handoff.json)
+          EOF
+            cat /tmp/research_handoff.json
+            cat <<'EOF'
           --- END AUTHORITATIVE ADMITTED HANDOFF ---
 
           --- BEGIN DETERMINISTIC SOURCE PREFETCH ---
-          $(cat /tmp/research_prefetch_v3.json)
-          --- END DETERMINISTIC SOURCE PREFETCH ---"
+          EOF
+            cat /tmp/research_prefetch_v3.json
+            cat <<'EOF'
+          --- END DETERMINISTIC SOURCE PREFETCH ---
+          EOF
+          } > /tmp/research_prompt_v3.txt
           copilot \
             --agent=alpha-hunter-evidence-research \
-            -p "$RESEARCH_PROMPT" \
             -s \
             --allow-all-urls \
             --deny-tool='write,shell,memory' \
             --no-ask-user \
             --max-ai-credits=30 \
+            < /tmp/research_prompt_v3.txt \
             > output/research_result_v3.raw.txt \
             2> /tmp/copilot_research.err
           code=$?
@@ -165,6 +173,7 @@ jobs:
             sed -n '1,100p' /tmp/copilot_research.err || true
             echo '{}' > output/research_result_v3.raw.txt
           fi
+          rm -f /tmp/research_prompt_v3.txt
           exit 0
 
       - name: Deterministic fail-closed opportunity research ingest
