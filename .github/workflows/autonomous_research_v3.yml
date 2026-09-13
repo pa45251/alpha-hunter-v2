@@ -255,8 +255,6 @@ jobs:
         env:
           ALPHA_HUNTER_RESEARCH_TRANSPORT_PATH: /tmp/research_prefetch_v3.json
         run: |
-          # The ephemeral transport packet has already been removed. Final assertion therefore
-          # requires committed source-backed research or a same-snapshot challenger.
           unset ALPHA_HUNTER_RESEARCH_TRANSPORT_PATH
           python research_decision_source_gate_v3.py
           python - <<'PY'
@@ -287,6 +285,7 @@ jobs:
           done
           git add \
             output/research_result_v3.json \
+            output/exposure_resolution_v3.json \
             output/driver_activation_v3.csv \
             output/shadow_journal.jsonl \
             output/decision_board.csv \
