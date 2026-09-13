@@ -251,11 +251,15 @@ def build_prefetch(handoff: dict, *, timeout: float = 15.0, per_query: int = 5) 
     if company_input:
         extra = build_prefetch({'run_id': run_id, 'research_targets': company_input}, timeout=timeout, per_query=per_query)
         company_sources = extra['targets']
-        company_status = extra['status']
         official = official_company_revenue(company_input, timeout)
         for target in company_sources:
             target['candidate_sources'] = official.get(target.get('ticker'), []) + target['candidate_sources']
             target['candidate_source_count'] = len(target['candidate_sources'])
+        company_status = (
+            "PASS"
+            if any(int(target.get('candidate_source_count', 0)) > 0 for target in company_sources)
+            else "FAIL_CLOSED"
+        )
 
     status = "PASS" if (
         (driver_status in {"PASS", "NOT_REQUIRED"})
