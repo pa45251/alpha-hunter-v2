@@ -2,7 +2,7 @@
   "contract": "ALPHA_HUNTER_V3_VALIDATED_RESEARCH",
   "status": "PASS",
   "research_run_id": "20260913T111753+0800-9c2a2885",
-  "validated_at_utc": "2026-09-13T03:23:57.321367+00:00",
+  "validated_at_utc": "2026-09-13T03:27:13.806125+00:00",
   "target_driver_ids": [
     "DRY_BULK_FREIGHT",
     "NAND_STORAGE_CYCLE",
@@ -13,12 +13,12 @@
     {
       "driver_id": "DRY_BULK_FREIGHT",
       "state": "UNKNOWN",
-      "confidence": 0.63,
-      "primary_cause": "Evidence is conflicting: 2026 dry-bulk rates and Capesize demand were reported as strong, but BIMCO warned that the strength was partly rerouting-driven and could reverse into a 2027 supply glut; durability and breadth of the exact freight cycle remain unresolved.",
+      "confidence": 0.55,
+      "primary_cause": "Supportive evidence indicates stronger Capesize demand and higher dry-bulk rates, but counter-evidence indicates the 2026 strength may be driven by temporary rerouting and could reverse into a 2027 supply glut; the exact durable commodity-volume freight cycle remains unresolved.",
       "industry_scope": "INDUSTRY_WIDE",
       "supporting_evidence": [
         {
-          "claim": "A key dry-bulk freight-rate measure reached its highest level since December 2023, driven by rising Capesize demand and tightening vessel supply.",
+          "claim": "A key measure of bulk-shipping rates reached its highest level since December 2023, with rising Capesize demand and tightening vessel supply cited as drivers.",
           "source_title": "Dry-Bulk Shipping Rates Hit Two-Year High on Capesize Demand",
           "source_url": "https://gcaptain.com/dry-bulk-shipping-rates-hit-two-year-high-on-capesize-demand/",
           "published_at": "2026-05-07T00:07:00Z",
@@ -28,7 +28,7 @@
       ],
       "counter_evidence": [
         {
-          "claim": "BIMCO warned that apparent 2026 dry-bulk strength was substantially artificial and caused by forced rerouting, with the boost expected to reverse and supply potentially producing a 2027 glut.",
+          "claim": "BIMCO warned that apparent 2026 dry-bulk strength was substantially artificial because of forced rerouting and could reverse into a 2027 supply glut.",
           "source_title": "Dry bulk shipping faces 2027 supply glut: BIMCO warns Hormuz rerouting boost will reverse",
           "source_url": "https://www.msn.com/en-us/news/other/dry-bulk-shipping-faces-2027-supply-glut-bimco-warns-hormuz-rerouting-boost-will-reverse/ar-AA29coQf",
           "published_at": "2026-08-01T10:36:00Z",
@@ -37,171 +37,194 @@
         }
       ],
       "source_count": 2,
-      "event_date": "2026-08-01T00:00:00Z",
+      "event_date": null,
       "source_dates": [
-        "2026-05-07T00:00:00Z",
-        "2026-08-01T00:00:00Z"
+        "2026-05-07T00:07:00Z",
+        "2026-08-01T10:36:00Z"
       ],
-      "researched_at_utc": "2026-09-13T03:23:21Z",
+      "researched_at_utc": "2026-09-13T03:26:41.608Z",
       "research_run_id": "20260913T111753+0800-9c2a2885"
     },
     {
       "driver_id": "NAND_STORAGE_CYCLE",
       "state": "UNKNOWN",
-      "confidence": 0.46,
-      "primary_cause": "Available evidence indicates ongoing storage and NAND-related demand, but it does not establish a sufficiently time-consistent exact NAND pricing, controller/module, inventory, or utilization cycle; counter-search results were also broadly supportive rather than contradictory.",
+      "confidence": 0.3,
+      "primary_cause": "Available sources discuss storage and NAND-controller demand broadly, but they do not provide sufficiently specific, time-consistent evidence on NAND pricing, SSD/controller/module demand, and inventory; counter-search results were similarly broad or non-confirmatory.",
       "industry_scope": "INDUSTRY_WIDE",
       "supporting_evidence": [
         {
-          "claim": "The 2026 Future of Memory and Storage Conference highlighted continued growth in storage and memory markets and increasing AI-driven storage demand.",
-          "source_title": "2026 FMS Shows Storage And Memory Market Continued Growth",
-          "source_url": "https://www.forbes.com/sites/tomcoughlin/2026/08/16/2026-fms-shows-storage-and-memory-market-continued-growth/",
-          "published_at": "2026-08-16T16:45:00Z",
-          "event_date": "2026-08-16T00:00:00Z",
+          "claim": "The source describes potential for AI storage and NAND-controller demand, but does not quantify a current NAND pricing or inventory cycle.",
+          "source_title": "Silicon Motion Award Spotlights AI Storage And NAND Controller Potential",
+          "source_url": "https://finance.yahoo.com/news/silicon-motion-award-spotlights-ai-111135930.html",
+          "published_at": "2026-01-29T03:11:00Z",
+          "event_date": null,
           "evidence_type": "HIGH_QUALITY_REPORTING"
         }
       ],
       "counter_evidence": [
         {
-          "claim": "A NAND-controller company executive described structural changes in storage demand and argued that supply may not respond to demand in the historical manner, which does not provide evidence of a broad cyclical reversal.",
+          "claim": "The source describes structural changes in NAND demand and supply, but does not establish a current reversal or clear cycle state.",
           "source_title": "The Next NAND Decade: Why Supply Can’t Catch Demand The Way It Used To",
           "source_url": "https://www.forbes.com/councils/forbestechcouncil/2026/05/01/the-next-nand-decade-why-supply-cant-catch-demand-the-way-it-used-to/",
           "published_at": "2026-05-01T03:45:00Z",
-          "event_date": "2026-05-01T00:00:00Z",
+          "event_date": null,
+          "evidence_type": "HIGH_QUALITY_REPORTING"
+        },
+        {
+          "claim": "The 2026 Future of Memory and Storage Conference reported continued growth in storage and memory markets, but the evidence is not specific enough to establish the NAND/storage-controller cycle required here.",
+          "source_title": "2026 FMS Shows Storage And Memory Market Continued Growth",
+          "source_url": "https://www.forbes.com/sites/tomcoughlin/2026/08/16/2026-fms-shows-storage-and-memory-market-continued-growth/",
+          "published_at": "2026-08-16T16:45:00Z",
+          "event_date": null,
           "evidence_type": "HIGH_QUALITY_REPORTING"
         }
       ],
-      "source_count": 2,
-      "event_date": "2026-08-16T00:00:00Z",
+      "source_count": 3,
+      "event_date": null,
       "source_dates": [
-        "2026-05-01T00:00:00Z",
-        "2026-08-16T00:00:00Z"
+        "2026-01-29T03:11:00Z",
+        "2026-05-01T03:45:00Z",
+        "2026-08-16T16:45:00Z"
       ],
-      "researched_at_utc": "2026-09-13T03:23:21Z",
+      "researched_at_utc": "2026-09-13T03:26:41.608Z",
       "research_run_id": "20260913T111753+0800-9c2a2885"
     },
     {
       "driver_id": "COPPER_COMMODITY_TRADE_INVENTORY",
       "state": "UNKNOWN",
-      "confidence": 0.12,
-      "primary_cause": "No usable verifiable source was found establishing current copper pricing, exchange inventories, regional premia, tariff/trade dislocation, or physical-tightness conditions for the requested period; downstream cable or grid revenue evidence would not substitute for this driver evidence.",
+      "confidence": 0.05,
+      "primary_cause": "Support and counter searches did not yield a verifiable source establishing current LME/COMEX pricing, exchange inventories, regional premia, tariffs or physical copper tightness for the required period.",
       "industry_scope": "UNKNOWN",
       "supporting_evidence": [],
       "counter_evidence": [],
       "source_count": 0,
       "event_date": null,
       "source_dates": [],
-      "researched_at_utc": "2026-09-13T03:23:21Z",
+      "researched_at_utc": "2026-09-13T03:26:41.608Z",
       "research_run_id": "20260913T111753+0800-9c2a2885"
     }
   ],
   "company_opportunities": [],
-  "company_research_errors": [
-    "UNPREFETCHED_EVIDENCE_URL:2605.TW:DRY_BULK_FREIGHT:['https://gcaptain.com/dry-bulk-shipping-rates-hit-two-year-high-on-capesize-demand/']",
-    "COMPANY_RESEARCH_NOT_RETURNED:('2605.TW', 'DRY_BULK_FREIGHT')"
-  ],
+  "company_research_errors": [],
   "company_research_coverage": [
     {
       "ticker": "3176.TWO",
       "driver_id": "UNMAPPED_OPPORTUNITY",
       "status": "UNRESOLVED",
-      "reason": "August revenue rose 197.40% year over year and the issuer cited increased overseas revenue, but the available company evidence does not uniquely identify an existing taxonomy driver or establish a specific product, order, customer, or end-market mechanism."
-    },
-    {
-      "ticker": "4967.TW",
-      "driver_id": "NAND_STORAGE_CYCLE",
-      "status": "UNRESOLVED",
-      "reason": "Revenue rose 275.06% year over year and the issuer cited higher shipment volume and selling prices, but no sufficiently specific company disclosure distinguishes NAND/storage-cycle exposure from other memory-module demand, and independent international causal evidence is insufficient."
-    },
-    {
-      "ticker": "3044.TW",
-      "driver_id": "UNMAPPED_OPPORTUNITY",
-      "status": "UNRESOLVED",
-      "reason": "Revenue rose 65.48% year over year and the issuer cited increased customer orders and shipments, but the disclosure does not identify a unique existing driver taxonomy mapping."
-    },
-    {
-      "ticker": "2636.TW",
-      "driver_id": "UNMAPPED_OPPORTUNITY",
-      "status": "UNRESOLVED",
-      "reason": "Revenue rose 85.48% year over year and the issuer cited higher freight rates and cargo volume, but the evidence does not establish whether the exposure is container freight, dry bulk, forwarding, or another activity."
-    },
-    {
-      "ticker": "1609.TW",
-      "driver_id": "COPPER_COMMODITY_TRADE_INVENTORY",
-      "status": "UNRESOLVED",
-      "reason": "Revenue rose 34.84% year over year, but the available company disclosure provides no copper-price, inventory, premium, tariff, or physical-tightness transmission evidence; downstream revenue growth cannot activate the copper commodity driver."
-    },
-    {
-      "ticker": "4915.TW",
-      "driver_id": "UNMAPPED_OPPORTUNITY",
-      "status": "UNRESOLVED",
-      "reason": "Revenue rose 20.38% year over year, but no company-specific disclosure identifies the product, customer, or end-market mechanism needed to map it to an existing driver."
-    },
-    {
-      "ticker": "6150.TWO",
-      "driver_id": "UNMAPPED_OPPORTUNITY",
-      "status": "UNRESOLVED",
-      "reason": "Revenue increased month over month but declined 21.27% year over year and cumulative revenue declined 26.48%; no unique driver or positive measured causal chain is supported."
-    },
-    {
-      "ticker": "4951.TWO",
-      "driver_id": "UNMAPPED_OPPORTUNITY",
-      "status": "UNRESOLVED",
-      "reason": "Revenue was broadly flat year over year and the available official data does not identify a specific driver, order, product, or end-market mechanism."
-    },
-    {
-      "ticker": "5609.TWO",
-      "driver_id": "UNMAPPED_OPPORTUNITY",
-      "status": "UNRESOLVED",
-      "reason": "Revenue rose 39.05% year over year, but the available evidence does not distinguish container freight, air freight, forwarding volume, or another existing driver taxonomy."
-    },
-    {
-      "ticker": "2838.TW",
-      "driver_id": "UNMAPPED_OPPORTUNITY",
-      "status": "UNRESOLVED",
-      "reason": "Revenue rose 3.88% year over year, but monthly revenue data alone does not establish a specific rate, credit, loan-growth, or margin mechanism."
-    },
-    {
-      "ticker": "2023.TW",
-      "driver_id": "UNMAPPED_OPPORTUNITY",
-      "status": "UNRESOLVED",
-      "reason": "Revenue declined 14.31% year over year and cumulative revenue declined 6.72%; no positive company-specific mechanism supports mapping the opportunity to an existing driver."
-    },
-    {
-      "ticker": "2548.TW",
-      "driver_id": "UNMAPPED_OPPORTUNITY",
-      "status": "UNRESOLVED",
-      "reason": "Revenue increased because more property handovers were recognized, which is a company-specific accounting and project-recognition event but is insufficient to map to a unique existing global driver without project disclosure."
-    },
-    {
-      "ticker": "2449.TW",
-      "driver_id": "UNMAPPED_OPPORTUNITY",
-      "status": "UNRESOLVED",
-      "reason": "Revenue rose 31.58% year over year, but the available evidence does not identify whether growth came from testing demand, a specific customer, AI/HPC, or another taxonomy driver."
-    },
-    {
-      "ticker": "6742.TW",
-      "driver_id": "UNMAPPED_OPPORTUNITY",
-      "status": "UNRESOLVED",
-      "reason": "Revenue declined 6.89% year over year and cumulative revenue declined 39.38%; no positive measured causal mechanism supports an existing-driver mapping."
-    },
-    {
-      "ticker": "6112.TW",
-      "driver_id": "UNMAPPED_OPPORTUNITY",
-      "status": "UNRESOLVED",
-      "reason": "Revenue rose 18.79% year over year, but the available evidence does not identify a specific software, services, cybersecurity, cloud, or other existing driver mechanism."
-    },
-    {
-      "ticker": "6894.TWO",
-      "driver_id": "UNMAPPED_OPPORTUNITY",
-      "status": "UNRESOLVED",
-      "reason": "Revenue rose 67.83% year over year and the issuer cited increased electrolysis equipment and consumables sales plus inclusion of a new business entity, but the evidence does not uniquely map the exposure to an existing taxonomy driver."
+      "research_run_id": "20260913T111753+0800-9c2a2885",
+      "reason": "Official revenue increased and cited higher overseas revenue, but no source establishes a unique enabled-taxonomy driver or company-specific causal mechanism."
     },
     {
       "ticker": "2605.TW",
       "driver_id": "DRY_BULK_FREIGHT",
       "status": "UNRESOLVED",
-      "reason": "Research failed validation: UNPREFETCHED_EVIDENCE_URL:2605.TW:DRY_BULK_FREIGHT:['https://gcaptain.com/dry-bulk-shipping-rates-hit-two-year-high-on-capesize-demand/']"
+      "research_run_id": "20260913T111753+0800-9c2a2885",
+      "reason": "Revenue increased and the issuer attributed the increase to high freight rates, but independent evidence is conflicting and the available disclosure does not provide sufficient additional company transmission or international confirmation."
+    },
+    {
+      "ticker": "4967.TW",
+      "driver_id": "NAND_STORAGE_CYCLE",
+      "status": "UNRESOLVED",
+      "research_run_id": "20260913T111753+0800-9c2a2885",
+      "reason": "Revenue and shipments increased with higher selling prices, but the disclosure does not identify NAND/storage-controller exposure specifically and independent exact-driver evidence is insufficient."
+    },
+    {
+      "ticker": "3044.TW",
+      "driver_id": "UNMAPPED_OPPORTUNITY",
+      "status": "UNRESOLVED",
+      "research_run_id": "20260913T111753+0800-9c2a2885",
+      "reason": "Revenue increased because of customer order demand and shipments, but no unique enabled-taxonomy driver or product/end-market transmission is source-backed."
+    },
+    {
+      "ticker": "2636.TW",
+      "driver_id": "UNMAPPED_OPPORTUNITY",
+      "status": "UNRESOLVED",
+      "research_run_id": "20260913T111753+0800-9c2a2885",
+      "reason": "Revenue increased with freight rates and volume, but the available evidence does not distinguish container freight, dry bulk, or another enabled driver."
+    },
+    {
+      "ticker": "1609.TW",
+      "driver_id": "COPPER_COMMODITY_TRADE_INVENTORY",
+      "status": "UNRESOLVED",
+      "research_run_id": "20260913T111753+0800-9c2a2885",
+      "reason": "Revenue increased, but the company disclosure does not connect the change to copper commodity pricing, inventories, premia, tariffs, or physical tightness."
+    },
+    {
+      "ticker": "4915.TW",
+      "driver_id": "UNMAPPED_OPPORTUNITY",
+      "status": "UNRESOLVED",
+      "research_run_id": "20260913T111753+0800-9c2a2885",
+      "reason": "Revenue improved year over year, but no company-specific product, customer, order, or end-market evidence identifies a unique enabled-taxonomy driver."
+    },
+    {
+      "ticker": "6150.TWO",
+      "driver_id": "UNMAPPED_OPPORTUNITY",
+      "status": "UNRESOLVED",
+      "research_run_id": "20260913T111753+0800-9c2a2885",
+      "reason": "Monthly revenue improved sequentially but declined year over year; no unique driver or company transmission is supported."
+    },
+    {
+      "ticker": "4951.TWO",
+      "driver_id": "UNMAPPED_OPPORTUNITY",
+      "status": "UNRESOLVED",
+      "research_run_id": "20260913T111753+0800-9c2a2885",
+      "reason": "Revenue changes are small and no product, customer, order, or end-market evidence supports a unique enabled-taxonomy mapping."
+    },
+    {
+      "ticker": "5609.TWO",
+      "driver_id": "UNMAPPED_OPPORTUNITY",
+      "status": "UNRESOLVED",
+      "research_run_id": "20260913T111753+0800-9c2a2885",
+      "reason": "Revenue increased, but the available disclosure does not identify container freight, dry bulk, or another specific economic driver."
+    },
+    {
+      "ticker": "2838.TW",
+      "driver_id": "UNMAPPED_OPPORTUNITY",
+      "status": "UNRESOLVED",
+      "research_run_id": "20260913T111753+0800-9c2a2885",
+      "reason": "Revenue improved, but no NIM, credit quality, loan growth, or rate-sensitive operating evidence supports mapping to FINANCIALS_RATE_CREDIT_CYCLE."
+    },
+    {
+      "ticker": "2023.TW",
+      "driver_id": "UNMAPPED_OPPORTUNITY",
+      "status": "UNRESOLVED",
+      "research_run_id": "20260913T111753+0800-9c2a2885",
+      "reason": "Revenue declined year over year and sequentially; no enabled-taxonomy driver is supported."
+    },
+    {
+      "ticker": "2548.TW",
+      "driver_id": "UNMAPPED_OPPORTUNITY",
+      "status": "UNRESOLVED",
+      "research_run_id": "20260913T111753+0800-9c2a2885",
+      "reason": "Revenue rose because of higher recognized handover amounts, but no enabled-taxonomy driver or recurring operating mechanism is established."
+    },
+    {
+      "ticker": "2449.TW",
+      "driver_id": "UNMAPPED_OPPORTUNITY",
+      "status": "UNRESOLVED",
+      "research_run_id": "20260913T111753+0800-9c2a2885",
+      "reason": "Revenue improved, but the available evidence does not establish whether the change reflects AI/server demand, testing utilization, or another driver."
+    },
+    {
+      "ticker": "6742.TW",
+      "driver_id": "UNMAPPED_OPPORTUNITY",
+      "status": "UNRESOLVED",
+      "research_run_id": "20260913T111753+0800-9c2a2885",
+      "reason": "Revenue declined year over year and cumulative revenue declined materially; no enabled-taxonomy driver is supported."
+    },
+    {
+      "ticker": "6112.TW",
+      "driver_id": "UNMAPPED_OPPORTUNITY",
+      "status": "UNRESOLVED",
+      "research_run_id": "20260913T111753+0800-9c2a2885",
+      "reason": "Revenue improved year over year but declined sequentially; no company-specific cybersecurity, IT, or other enabled-driver transmission is supported."
+    },
+    {
+      "ticker": "6894.TWO",
+      "driver_id": "UNMAPPED_OPPORTUNITY",
+      "status": "UNRESOLVED",
+      "research_run_id": "20260913T111753+0800-9c2a2885",
+      "reason": "Revenue increased because electrolysis equipment and consumables sales rose and a new business was consolidated, but no existing taxonomy driver uniquely captures this mechanism."
     }
   ]
 }
