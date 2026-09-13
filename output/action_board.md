@@ -3,7 +3,7 @@
 - Run: `20260913T141036+0800-ad3eb00c`
 - Market session: `2026-09-11`
 - Risk regime: **NORMAL**
-- Causal evidence: `UNKNOWN_NO_CURRENT_RESEARCH`
+- Causal evidence: `V3_AUTONOMOUS_RESEARCH`
 - Core rule: price nominates; company facts define exposure; independent evidence validates the driver; company evidence validates transmission; price/risk decides timing.
 - Decision counts: BUY=0 / EARLY BUY=0 / WAIT=0 / RESEARCH=179 / PASS=18
 - RESEARCH is an unresolved evidence state, not a trading recommendation.
