@@ -1,8 +1,8 @@
-"""Run bounded research after deterministic gap-directed retrieval refinement.
+"""Run bounded OpenAI research after deterministic gap-directed retrieval refinement.
 
-This wrapper only changes execution semantics: company calls are serialized to avoid
-provider/CLI contention, and unverifiable company support is conservatively downgraded
-to UNKNOWN_AFTER_RESEARCH before ingest. Evidence gates are never relaxed.
+This wrapper serializes company calls, preserves bounded provider usage, and conservatively
+downgrades unverifiable company support to UNKNOWN_AFTER_RESEARCH before ingest. Evidence
+gates are never relaxed.
 """
 import concurrent.futures
 import json
@@ -12,6 +12,7 @@ from pathlib import Path
 import company_research_runner as base
 from company_research_terminal import identity
 from company_source_documents import verify_document_claim
+from openai_research_provider_v3 import provider_identity
 from research_targeted_retrieval_v1 import enhance_prefetch
 
 
@@ -31,14 +32,15 @@ class _SerialExecutor:
 
 def _logged_call(task, sources, shared, key, log_dir):
     payload, failure = base.invoke(task, sources, shared, key, log_dir)
-    if failure and str(failure[1]).startswith('CLI_EXIT_'):
-        path = log_dir / f'{key}.stderr.txt'
+    if failure:
+        path = log_dir / f'{key}.openai.json'
         try:
-            tail = ' '.join(path.read_text(errors='replace').split())[-1200:]
-        except OSError:
-            tail = ''
-        if tail:
-            print(f'copilot stderr {key}: {tail}', flush=True)
+            diagnostic = json.loads(path.read_text(encoding='utf-8'))
+            detail = str(diagnostic.get('response_body') or diagnostic.get('detail') or diagnostic.get('failure') or '')
+        except (OSError, ValueError, TypeError):
+            detail = ''
+        detail = ' '.join(detail.split())[-1200:]
+        print(f'openai research failure {key}: {failure}' + (f' detail={detail}' if detail else ''), flush=True)
     return payload, failure
 
 
@@ -168,11 +170,12 @@ def main():
         concurrent.futures.ThreadPoolExecutor = original_executor
 
     result = _downgrade_unverifiable_support(result, prefetch, handoff)
+    provider = provider_identity()
     Path('output/research_result_v3.raw.txt').write_text(json.dumps(result, ensure_ascii=False))
     Path('output/company_research_execution.json').write_text(
         json.dumps(dict(run_id=handoff['run_id'], tasks=result['execution_ledger'],
                         targeted_retrieval=prefetch.get('targeted_retrieval_version'),
-                        execution_mode='SERIAL_COMPANY_CALLS'), indent=2)
+                        execution_mode='OPENAI_SERIAL_COMPANY_CALLS', provider=provider), indent=2)
     )
 
 
