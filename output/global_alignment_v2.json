@@ -1,10 +1,10 @@
 {
   "source_run_id": "20260913T153722+0800-a1ec0450",
   "csv_sha256": "f5315e96be77d17edabcd4ce9d28f7c98224243a36f81a9249241f63ac1c9862",
-  "public_lineage_id": "c84df2fcefa19888a4edb4dfee232cbcc6053532a7b4024bfe8158ee419d1df9",
+  "public_lineage_id": "0a4607edb2105385317b1f2af481dd669376548d707dbd06cd502c29bac7ecb6",
   "contract": "ALPHA_HUNTER_GLOBAL_ALIGNMENT_V2",
   "schema_version": "2.0",
-  "generated_at": "2026-09-13T12:32:54.777583+00:00",
+  "generated_at": "2026-09-13T13:27:10.142552+00:00",
   "score_is_probability": false,
   "score_interpretation": "Relative alignment/evidence strength only; not a calibrated win probability.",
   "hard_rules": [

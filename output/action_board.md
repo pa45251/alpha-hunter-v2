@@ -18,7 +18,7 @@
 
 ### 1. 3176.TWO 基亞 — FACT_CHECK — EXPOSURE
 
-- **WHY:** CLI_EXIT_1
+- **WHY:** OPENAI_HTTP_429
 - **Driver:** Unmapped opportunity — research WHY
 - **Blocking stage:** EXPOSURE
 - **Driver state:** UNVERIFIED
@@ -43,7 +43,7 @@
 
 ### 2. 2605.TW 新興 — FACT_CHECK — ACTIVATION
 
-- **WHY:** CLI_EXIT_1
+- **WHY:** OPENAI_HTTP_429
 - **Driver:** Dry-bulk freight / commodity shipping cycle
 - **Blocking stage:** ACTIVATION
 - **Driver state:** UNVERIFIED
@@ -68,7 +68,7 @@
 
 ### 3. 4967.TW 十銓 — FACT_CHECK — ACTIVATION
 
-- **WHY:** CLI_EXIT_1
+- **WHY:** OPENAI_HTTP_429
 - **Driver:** NAND / storage controller and module cycle
 - **Blocking stage:** ACTIVATION
 - **Driver state:** UNVERIFIED
@@ -93,7 +93,7 @@
 
 ### 4. 3044.TW 健鼎 — FACT_CHECK — ACTIVATION
 
-- **WHY:** CLI_EXIT_1
+- **WHY:** OPENAI_HTTP_429
 - **Driver:** AI server shipment / ODM cycle
 - **Blocking stage:** ACTIVATION
 - **Driver state:** UNVERIFIED
@@ -118,7 +118,7 @@
 
 ### 5. 2636.TW 台驊控股 — FACT_CHECK — ACTIVATION
 
-- **WHY:** CLI_EXIT_1
+- **WHY:** OPENAI_HTTP_429
 - **Driver:** Container freight / liner shipping cycle
 - **Blocking stage:** ACTIVATION
 - **Driver state:** UNVERIFIED
@@ -143,7 +143,7 @@
 
 ### 6. 1609.TW 大亞 — FACT_CHECK — ACTIVATION
 
-- **WHY:** CLI_EXIT_1
+- **WHY:** OPENAI_HTTP_429
 - **Driver:** Copper commodity price / trade-inventory cycle
 - **Blocking stage:** ACTIVATION
 - **Driver state:** UNVERIFIED
@@ -168,7 +168,7 @@
 
 ### 7. 4951.TWO 精拓科 — FACT_CHECK — EXPOSURE
 
-- **WHY:** CLI_EXIT_1
+- **WHY:** OPENAI_HTTP_429
 - **Driver:** UNMAPPED / WHY?
 - **Blocking stage:** EXPOSURE
 - **Driver state:** UNVERIFIED
@@ -193,7 +193,7 @@
 
 ### 8. 5609.TWO 中菲行 — FACT_CHECK — EXPOSURE
 
-- **WHY:** CLI_EXIT_1
+- **WHY:** OPENAI_HTTP_429
 - **Driver:** UNMAPPED / WHY?
 - **Blocking stage:** EXPOSURE
 - **Driver state:** UNVERIFIED
@@ -218,7 +218,7 @@
 
 ### 9. 2838.TW 聯邦銀 — FACT_CHECK — ACTIVATION
 
-- **WHY:** CLI_EXIT_1
+- **WHY:** OPENAI_HTTP_429
 - **Driver:** Financials rate / credit / margin cycle
 - **Blocking stage:** ACTIVATION
 - **Driver state:** UNVERIFIED
@@ -243,7 +243,7 @@
 
 ### 10. 2023.TW 燁輝 — FACT_CHECK — EXPOSURE
 
-- **WHY:** CLI_EXIT_1
+- **WHY:** OPENAI_HTTP_429
 - **Driver:** UNMAPPED / WHY?
 - **Blocking stage:** EXPOSURE
 - **Driver state:** UNVERIFIED
@@ -268,7 +268,7 @@
 
 ### 11. 2548.TW 華固 — FACT_CHECK — EXPOSURE
 
-- **WHY:** CLI_EXIT_1
+- **WHY:** OPENAI_HTTP_429
 - **Driver:** UNMAPPED / WHY?
 - **Blocking stage:** EXPOSURE
 - **Driver state:** UNVERIFIED
@@ -293,7 +293,7 @@
 
 ### 12. 2449.TW 京元電子 — FACT_CHECK — EXPOSURE
 
-- **WHY:** CLI_EXIT_1
+- **WHY:** OPENAI_HTTP_429
 - **Driver:** UNMAPPED / WHY?
 - **Blocking stage:** EXPOSURE
 - **Driver state:** UNVERIFIED

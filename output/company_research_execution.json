@@ -6,7 +6,7 @@
       "cache_hit": false,
       "failure": [
         "TRANSPORT_FAILED",
-        "CLI_EXIT_1"
+        "OPENAI_HTTP_429"
       ]
     },
     {
@@ -14,7 +14,7 @@
       "cache_hit": false,
       "failure": [
         "TRANSPORT_FAILED",
-        "CLI_EXIT_1"
+        "OPENAI_HTTP_429"
       ]
     },
     {
@@ -22,7 +22,7 @@
       "cache_hit": false,
       "failure": [
         "TRANSPORT_FAILED",
-        "CLI_EXIT_1"
+        "OPENAI_HTTP_429"
       ]
     },
     {
@@ -30,7 +30,7 @@
       "cache_hit": false,
       "failure": [
         "TRANSPORT_FAILED",
-        "CLI_EXIT_1"
+        "OPENAI_HTTP_429"
       ]
     },
     {
@@ -38,7 +38,7 @@
       "cache_hit": false,
       "failure": [
         "TRANSPORT_FAILED",
-        "CLI_EXIT_1"
+        "OPENAI_HTTP_429"
       ]
     },
     {
@@ -46,7 +46,7 @@
       "cache_hit": false,
       "failure": [
         "TRANSPORT_FAILED",
-        "CLI_EXIT_1"
+        "OPENAI_HTTP_429"
       ]
     },
     {
@@ -54,7 +54,7 @@
       "cache_hit": false,
       "failure": [
         "TRANSPORT_FAILED",
-        "CLI_EXIT_1"
+        "OPENAI_HTTP_429"
       ]
     },
     {
@@ -62,7 +62,7 @@
       "cache_hit": false,
       "failure": [
         "TRANSPORT_FAILED",
-        "CLI_EXIT_1"
+        "OPENAI_HTTP_429"
       ]
     },
     {
@@ -70,7 +70,7 @@
       "cache_hit": false,
       "failure": [
         "TRANSPORT_FAILED",
-        "CLI_EXIT_1"
+        "OPENAI_HTTP_429"
       ]
     },
     {
@@ -78,7 +78,7 @@
       "cache_hit": false,
       "failure": [
         "TRANSPORT_FAILED",
-        "CLI_EXIT_1"
+        "OPENAI_HTTP_429"
       ]
     },
     {
@@ -86,7 +86,7 @@
       "cache_hit": false,
       "failure": [
         "TRANSPORT_FAILED",
-        "CLI_EXIT_1"
+        "OPENAI_HTTP_429"
       ]
     },
     {
@@ -94,7 +94,7 @@
       "cache_hit": false,
       "failure": [
         "TRANSPORT_FAILED",
-        "CLI_EXIT_1"
+        "OPENAI_HTTP_429"
       ]
     },
     {
@@ -102,7 +102,7 @@
       "cache_hit": false,
       "failure": [
         "TRANSPORT_FAILED",
-        "CLI_EXIT_1"
+        "OPENAI_HTTP_429"
       ]
     },
     {
@@ -110,7 +110,7 @@
       "cache_hit": false,
       "failure": [
         "TRANSPORT_FAILED",
-        "CLI_EXIT_1"
+        "OPENAI_HTTP_429"
       ]
     },
     {
@@ -118,7 +118,7 @@
       "cache_hit": false,
       "failure": [
         "TRANSPORT_FAILED",
-        "CLI_EXIT_1"
+        "OPENAI_HTTP_429"
       ]
     },
     {
@@ -126,10 +126,16 @@
       "cache_hit": false,
       "failure": [
         "TRANSPORT_FAILED",
-        "CLI_EXIT_1"
+        "OPENAI_HTTP_429"
       ]
     }
   ],
   "targeted_retrieval": "TARGETED_RETRIEVAL_V1",
-  "execution_mode": "SERIAL_COMPANY_CALLS"
+  "execution_mode": "OPENAI_SERIAL_COMPANY_CALLS",
+  "provider": {
+    "provider": "OPENAI_RESPONSES_API",
+    "provider_version": "OPENAI_RESEARCH_PROVIDER_V1",
+    "model": "gpt-5.6-terra",
+    "reasoning_effort": "high"
+  }
 }

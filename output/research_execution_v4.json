@@ -8,7 +8,7 @@
       "ticker": "3176.TWO",
       "driver_id": "UNMAPPED_OPPORTUNITY",
       "outcome": "TRANSPORT_FAILED",
-      "reason": "CLI_EXIT_1",
+      "reason": "OPENAI_HTTP_429",
       "signature": null,
       "origin_research_run_id": "20260913T153722+0800-a1ec0450"
     },
@@ -17,7 +17,7 @@
       "ticker": "2605.TW",
       "driver_id": "DRY_BULK_FREIGHT",
       "outcome": "TRANSPORT_FAILED",
-      "reason": "CLI_EXIT_1",
+      "reason": "OPENAI_HTTP_429",
       "signature": null,
       "origin_research_run_id": "20260913T153722+0800-a1ec0450"
     },
@@ -26,7 +26,7 @@
       "ticker": "4967.TW",
       "driver_id": "NAND_STORAGE_CYCLE",
       "outcome": "TRANSPORT_FAILED",
-      "reason": "CLI_EXIT_1",
+      "reason": "OPENAI_HTTP_429",
       "signature": null,
       "origin_research_run_id": "20260913T153722+0800-a1ec0450"
     },
@@ -35,7 +35,7 @@
       "ticker": "3044.TW",
       "driver_id": "AI_SERVER_SHIPMENTS",
       "outcome": "TRANSPORT_FAILED",
-      "reason": "CLI_EXIT_1",
+      "reason": "OPENAI_HTTP_429",
       "signature": null,
       "origin_research_run_id": "20260913T153722+0800-a1ec0450"
     },
@@ -44,7 +44,7 @@
       "ticker": "2636.TW",
       "driver_id": "CONTAINER_FREIGHT",
       "outcome": "TRANSPORT_FAILED",
-      "reason": "CLI_EXIT_1",
+      "reason": "OPENAI_HTTP_429",
       "signature": null,
       "origin_research_run_id": "20260913T153722+0800-a1ec0450"
     },
@@ -53,7 +53,7 @@
       "ticker": "1609.TW",
       "driver_id": "COPPER_COMMODITY_TRADE_INVENTORY",
       "outcome": "TRANSPORT_FAILED",
-      "reason": "CLI_EXIT_1",
+      "reason": "OPENAI_HTTP_429",
       "signature": null,
       "origin_research_run_id": "20260913T153722+0800-a1ec0450"
     },
@@ -62,7 +62,7 @@
       "ticker": "4951.TWO",
       "driver_id": "UNMAPPED_OPPORTUNITY",
       "outcome": "TRANSPORT_FAILED",
-      "reason": "CLI_EXIT_1",
+      "reason": "OPENAI_HTTP_429",
       "signature": null,
       "origin_research_run_id": "20260913T153722+0800-a1ec0450"
     },
@@ -71,7 +71,7 @@
       "ticker": "5609.TWO",
       "driver_id": "UNMAPPED_OPPORTUNITY",
       "outcome": "TRANSPORT_FAILED",
-      "reason": "CLI_EXIT_1",
+      "reason": "OPENAI_HTTP_429",
       "signature": null,
       "origin_research_run_id": "20260913T153722+0800-a1ec0450"
     },
@@ -80,7 +80,7 @@
       "ticker": "2838.TW",
       "driver_id": "FINANCIALS_RATE_CREDIT_CYCLE",
       "outcome": "TRANSPORT_FAILED",
-      "reason": "CLI_EXIT_1",
+      "reason": "OPENAI_HTTP_429",
       "signature": null,
       "origin_research_run_id": "20260913T153722+0800-a1ec0450"
     },
@@ -89,7 +89,7 @@
       "ticker": "2023.TW",
       "driver_id": "UNMAPPED_OPPORTUNITY",
       "outcome": "TRANSPORT_FAILED",
-      "reason": "CLI_EXIT_1",
+      "reason": "OPENAI_HTTP_429",
       "signature": null,
       "origin_research_run_id": "20260913T153722+0800-a1ec0450"
     },
@@ -98,7 +98,7 @@
       "ticker": "2548.TW",
       "driver_id": "UNMAPPED_OPPORTUNITY",
       "outcome": "TRANSPORT_FAILED",
-      "reason": "CLI_EXIT_1",
+      "reason": "OPENAI_HTTP_429",
       "signature": null,
       "origin_research_run_id": "20260913T153722+0800-a1ec0450"
     },
@@ -107,7 +107,7 @@
       "ticker": "2449.TW",
       "driver_id": "UNMAPPED_OPPORTUNITY",
       "outcome": "TRANSPORT_FAILED",
-      "reason": "CLI_EXIT_1",
+      "reason": "OPENAI_HTTP_429",
       "signature": null,
       "origin_research_run_id": "20260913T153722+0800-a1ec0450"
     },
@@ -116,7 +116,7 @@
       "ticker": "6742.TW",
       "driver_id": "UNMAPPED_OPPORTUNITY",
       "outcome": "TRANSPORT_FAILED",
-      "reason": "CLI_EXIT_1",
+      "reason": "OPENAI_HTTP_429",
       "signature": null,
       "origin_research_run_id": "20260913T153722+0800-a1ec0450"
     },
@@ -125,7 +125,7 @@
       "ticker": "6112.TW",
       "driver_id": "UNMAPPED_OPPORTUNITY",
       "outcome": "TRANSPORT_FAILED",
-      "reason": "CLI_EXIT_1",
+      "reason": "OPENAI_HTTP_429",
       "signature": null,
       "origin_research_run_id": "20260913T153722+0800-a1ec0450"
     },
@@ -134,7 +134,7 @@
       "ticker": "6894.TWO",
       "driver_id": "UNMAPPED_OPPORTUNITY",
       "outcome": "TRANSPORT_FAILED",
-      "reason": "CLI_EXIT_1",
+      "reason": "OPENAI_HTTP_429",
       "signature": null,
       "origin_research_run_id": "20260913T153722+0800-a1ec0450"
     }

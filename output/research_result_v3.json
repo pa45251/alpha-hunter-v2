@@ -2,7 +2,7 @@
   "contract": "ALPHA_HUNTER_V3_VALIDATED_RESEARCH",
   "status": "PARTIAL_FAIL_CLOSED",
   "research_run_id": "20260913T153722+0800-a1ec0450",
-  "validated_at_utc": "2026-09-13T12:32:49.491500+00:00",
+  "validated_at_utc": "2026-09-13T13:27:06.440479+00:00",
   "target_driver_ids": [
     "CONTAINER_FREIGHT",
     "DRY_BULK_FREIGHT",
@@ -24,7 +24,7 @@
       "source_count": 0,
       "event_date": null,
       "source_dates": [],
-      "researched_at_utc": "2026-09-13T12:32:49.491191+00:00",
+      "researched_at_utc": "2026-09-13T13:27:06.440219+00:00",
       "research_run_id": "20260913T153722+0800-a1ec0450"
     },
     {
@@ -38,7 +38,7 @@
       "source_count": 0,
       "event_date": null,
       "source_dates": [],
-      "researched_at_utc": "2026-09-13T12:32:49.491211+00:00",
+      "researched_at_utc": "2026-09-13T13:27:06.440235+00:00",
       "research_run_id": "20260913T153722+0800-a1ec0450"
     },
     {
@@ -52,7 +52,7 @@
       "source_count": 0,
       "event_date": null,
       "source_dates": [],
-      "researched_at_utc": "2026-09-13T12:32:49.491216+00:00",
+      "researched_at_utc": "2026-09-13T13:27:06.440239+00:00",
       "research_run_id": "20260913T153722+0800-a1ec0450"
     },
     {
@@ -66,7 +66,7 @@
       "source_count": 0,
       "event_date": null,
       "source_dates": [],
-      "researched_at_utc": "2026-09-13T12:32:49.491219+00:00",
+      "researched_at_utc": "2026-09-13T13:27:06.440241+00:00",
       "research_run_id": "20260913T153722+0800-a1ec0450"
     },
     {
@@ -80,7 +80,7 @@
       "source_count": 0,
       "event_date": null,
       "source_dates": [],
-      "researched_at_utc": "2026-09-13T12:32:49.491222+00:00",
+      "researched_at_utc": "2026-09-13T13:27:06.440243+00:00",
       "research_run_id": "20260913T153722+0800-a1ec0450"
     },
     {
@@ -94,7 +94,7 @@
       "source_count": 0,
       "event_date": null,
       "source_dates": [],
-      "researched_at_utc": "2026-09-13T12:32:49.491224+00:00",
+      "researched_at_utc": "2026-09-13T13:27:06.440245+00:00",
       "research_run_id": "20260913T153722+0800-a1ec0450"
     }
   ],
@@ -108,7 +108,7 @@
       "event_id": "",
       "status": "TRANSPORT_FAILED",
       "reason_code": "TRANSPORT_FAILED",
-      "reason": "CLI_EXIT_1",
+      "reason": "OPENAI_HTTP_429",
       "research_completed": false,
       "failure_code": "TRANSPORT_FAILED"
     },
@@ -119,7 +119,7 @@
       "event_id": "",
       "status": "TRANSPORT_FAILED",
       "reason_code": "TRANSPORT_FAILED",
-      "reason": "CLI_EXIT_1",
+      "reason": "OPENAI_HTTP_429",
       "research_completed": false,
       "failure_code": "TRANSPORT_FAILED"
     },
@@ -130,7 +130,7 @@
       "event_id": "",
       "status": "TRANSPORT_FAILED",
       "reason_code": "TRANSPORT_FAILED",
-      "reason": "CLI_EXIT_1",
+      "reason": "OPENAI_HTTP_429",
       "research_completed": false,
       "failure_code": "TRANSPORT_FAILED"
     },
@@ -141,7 +141,7 @@
       "event_id": "",
       "status": "TRANSPORT_FAILED",
       "reason_code": "TRANSPORT_FAILED",
-      "reason": "CLI_EXIT_1",
+      "reason": "OPENAI_HTTP_429",
       "research_completed": false,
       "failure_code": "TRANSPORT_FAILED"
     },
@@ -152,7 +152,7 @@
       "event_id": "",
       "status": "TRANSPORT_FAILED",
       "reason_code": "TRANSPORT_FAILED",
-      "reason": "CLI_EXIT_1",
+      "reason": "OPENAI_HTTP_429",
       "research_completed": false,
       "failure_code": "TRANSPORT_FAILED"
     },
@@ -163,7 +163,7 @@
       "event_id": "",
       "status": "TRANSPORT_FAILED",
       "reason_code": "TRANSPORT_FAILED",
-      "reason": "CLI_EXIT_1",
+      "reason": "OPENAI_HTTP_429",
       "research_completed": false,
       "failure_code": "TRANSPORT_FAILED"
     },
@@ -174,7 +174,7 @@
       "event_id": "",
       "status": "TRANSPORT_FAILED",
       "reason_code": "TRANSPORT_FAILED",
-      "reason": "CLI_EXIT_1",
+      "reason": "OPENAI_HTTP_429",
       "research_completed": false,
       "failure_code": "TRANSPORT_FAILED"
     },
@@ -185,7 +185,7 @@
       "event_id": "",
       "status": "TRANSPORT_FAILED",
       "reason_code": "TRANSPORT_FAILED",
-      "reason": "CLI_EXIT_1",
+      "reason": "OPENAI_HTTP_429",
       "research_completed": false,
       "failure_code": "TRANSPORT_FAILED"
     },
@@ -196,7 +196,7 @@
       "event_id": "",
       "status": "TRANSPORT_FAILED",
       "reason_code": "TRANSPORT_FAILED",
-      "reason": "CLI_EXIT_1",
+      "reason": "OPENAI_HTTP_429",
       "research_completed": false,
       "failure_code": "TRANSPORT_FAILED"
     },
@@ -207,7 +207,7 @@
       "event_id": "",
       "status": "TRANSPORT_FAILED",
       "reason_code": "TRANSPORT_FAILED",
-      "reason": "CLI_EXIT_1",
+      "reason": "OPENAI_HTTP_429",
       "research_completed": false,
       "failure_code": "TRANSPORT_FAILED"
     },
@@ -218,7 +218,7 @@
       "event_id": "",
       "status": "TRANSPORT_FAILED",
       "reason_code": "TRANSPORT_FAILED",
-      "reason": "CLI_EXIT_1",
+      "reason": "OPENAI_HTTP_429",
       "research_completed": false,
       "failure_code": "TRANSPORT_FAILED"
     },
@@ -229,7 +229,7 @@
       "event_id": "",
       "status": "TRANSPORT_FAILED",
       "reason_code": "TRANSPORT_FAILED",
-      "reason": "CLI_EXIT_1",
+      "reason": "OPENAI_HTTP_429",
       "research_completed": false,
       "failure_code": "TRANSPORT_FAILED"
     },
@@ -240,7 +240,7 @@
       "event_id": "",
       "status": "TRANSPORT_FAILED",
       "reason_code": "TRANSPORT_FAILED",
-      "reason": "CLI_EXIT_1",
+      "reason": "OPENAI_HTTP_429",
       "research_completed": false,
       "failure_code": "TRANSPORT_FAILED"
     },
@@ -251,7 +251,7 @@
       "event_id": "",
       "status": "TRANSPORT_FAILED",
       "reason_code": "TRANSPORT_FAILED",
-      "reason": "CLI_EXIT_1",
+      "reason": "OPENAI_HTTP_429",
       "research_completed": false,
       "failure_code": "TRANSPORT_FAILED"
     },
@@ -262,7 +262,7 @@
       "event_id": "",
       "status": "TRANSPORT_FAILED",
       "reason_code": "TRANSPORT_FAILED",
-      "reason": "CLI_EXIT_1",
+      "reason": "OPENAI_HTTP_429",
       "research_completed": false,
       "failure_code": "TRANSPORT_FAILED"
     }
@@ -275,7 +275,7 @@
       "event_id": "",
       "status": "TRANSPORT_FAILED",
       "reason_code": "TRANSPORT_FAILED",
-      "reason": "CLI_EXIT_1",
+      "reason": "OPENAI_HTTP_429",
       "research_completed": false
     },
     {
@@ -285,7 +285,7 @@
       "event_id": "",
       "status": "TRANSPORT_FAILED",
       "reason_code": "TRANSPORT_FAILED",
-      "reason": "CLI_EXIT_1",
+      "reason": "OPENAI_HTTP_429",
       "research_completed": false
     },
     {
@@ -295,7 +295,7 @@
       "event_id": "",
       "status": "TRANSPORT_FAILED",
       "reason_code": "TRANSPORT_FAILED",
-      "reason": "CLI_EXIT_1",
+      "reason": "OPENAI_HTTP_429",
       "research_completed": false
     },
     {
@@ -305,7 +305,7 @@
       "event_id": "",
       "status": "TRANSPORT_FAILED",
       "reason_code": "TRANSPORT_FAILED",
-      "reason": "CLI_EXIT_1",
+      "reason": "OPENAI_HTTP_429",
       "research_completed": false
     },
     {
@@ -315,7 +315,7 @@
       "event_id": "",
       "status": "TRANSPORT_FAILED",
       "reason_code": "TRANSPORT_FAILED",
-      "reason": "CLI_EXIT_1",
+      "reason": "OPENAI_HTTP_429",
       "research_completed": false
     },
     {
@@ -325,7 +325,7 @@
       "event_id": "",
       "status": "TRANSPORT_FAILED",
       "reason_code": "TRANSPORT_FAILED",
-      "reason": "CLI_EXIT_1",
+      "reason": "OPENAI_HTTP_429",
       "research_completed": false
     },
     {
@@ -335,7 +335,7 @@
       "event_id": "",
       "status": "TRANSPORT_FAILED",
       "reason_code": "TRANSPORT_FAILED",
-      "reason": "CLI_EXIT_1",
+      "reason": "OPENAI_HTTP_429",
       "research_completed": false
     },
     {
@@ -345,7 +345,7 @@
       "event_id": "",
       "status": "TRANSPORT_FAILED",
       "reason_code": "TRANSPORT_FAILED",
-      "reason": "CLI_EXIT_1",
+      "reason": "OPENAI_HTTP_429",
       "research_completed": false
     },
     {
@@ -355,7 +355,7 @@
       "event_id": "",
       "status": "TRANSPORT_FAILED",
       "reason_code": "TRANSPORT_FAILED",
-      "reason": "CLI_EXIT_1",
+      "reason": "OPENAI_HTTP_429",
       "research_completed": false
     },
     {
@@ -365,7 +365,7 @@
       "event_id": "",
       "status": "TRANSPORT_FAILED",
       "reason_code": "TRANSPORT_FAILED",
-      "reason": "CLI_EXIT_1",
+      "reason": "OPENAI_HTTP_429",
       "research_completed": false
     },
     {
@@ -375,7 +375,7 @@
       "event_id": "",
       "status": "TRANSPORT_FAILED",
       "reason_code": "TRANSPORT_FAILED",
-      "reason": "CLI_EXIT_1",
+      "reason": "OPENAI_HTTP_429",
       "research_completed": false
     },
     {
@@ -385,7 +385,7 @@
       "event_id": "",
       "status": "TRANSPORT_FAILED",
       "reason_code": "TRANSPORT_FAILED",
-      "reason": "CLI_EXIT_1",
+      "reason": "OPENAI_HTTP_429",
       "research_completed": false
     },
     {
@@ -395,7 +395,7 @@
       "event_id": "",
       "status": "TRANSPORT_FAILED",
       "reason_code": "TRANSPORT_FAILED",
-      "reason": "CLI_EXIT_1",
+      "reason": "OPENAI_HTTP_429",
       "research_completed": false
     },
     {
@@ -405,7 +405,7 @@
       "event_id": "",
       "status": "TRANSPORT_FAILED",
       "reason_code": "TRANSPORT_FAILED",
-      "reason": "CLI_EXIT_1",
+      "reason": "OPENAI_HTTP_429",
       "research_completed": false
     },
     {
@@ -415,7 +415,7 @@
       "event_id": "",
       "status": "TRANSPORT_FAILED",
       "reason_code": "TRANSPORT_FAILED",
-      "reason": "CLI_EXIT_1",
+      "reason": "OPENAI_HTTP_429",
       "research_completed": false
     }
   ],

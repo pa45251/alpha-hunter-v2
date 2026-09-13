@@ -1,7 +1,7 @@
 driver_id,activation_state,activation_confidence,as_of_utc,source_count,primary_cause,counter_evidence,source_summary,industry_scope,research_run_id,activation_source
-CONTAINER_FREIGHT,UNKNOWN,0.0,2026-09-13T12:32:49.491500+00:00,0,Autonomous research output missing or failed deterministic validation.,,,UNKNOWN,20260913T153722+0800-a1ec0450,V3_AUTONOMOUS_RESEARCH
-DRY_BULK_FREIGHT,UNKNOWN,0.0,2026-09-13T12:32:49.491500+00:00,0,Autonomous research output missing or failed deterministic validation.,,,UNKNOWN,20260913T153722+0800-a1ec0450,V3_AUTONOMOUS_RESEARCH
-AI_SERVER_SHIPMENTS,UNKNOWN,0.0,2026-09-13T12:32:49.491500+00:00,0,Autonomous research output missing or failed deterministic validation.,,,UNKNOWN,20260913T153722+0800-a1ec0450,V3_AUTONOMOUS_RESEARCH
-NAND_STORAGE_CYCLE,UNKNOWN,0.0,2026-09-13T12:32:49.491500+00:00,0,Autonomous research output missing or failed deterministic validation.,,,UNKNOWN,20260913T153722+0800-a1ec0450,V3_AUTONOMOUS_RESEARCH
-FINANCIALS_RATE_CREDIT_CYCLE,UNKNOWN,0.0,2026-09-13T12:32:49.491500+00:00,0,Autonomous research output missing or failed deterministic validation.,,,UNKNOWN,20260913T153722+0800-a1ec0450,V3_AUTONOMOUS_RESEARCH
-COPPER_COMMODITY_TRADE_INVENTORY,UNKNOWN,0.0,2026-09-13T12:32:49.491500+00:00,0,Autonomous research output missing or failed deterministic validation.,,,UNKNOWN,20260913T153722+0800-a1ec0450,V3_AUTONOMOUS_RESEARCH
+CONTAINER_FREIGHT,UNKNOWN,0.0,2026-09-13T13:27:06.440479+00:00,0,Autonomous research output missing or failed deterministic validation.,,,UNKNOWN,20260913T153722+0800-a1ec0450,V3_AUTONOMOUS_RESEARCH
+DRY_BULK_FREIGHT,UNKNOWN,0.0,2026-09-13T13:27:06.440479+00:00,0,Autonomous research output missing or failed deterministic validation.,,,UNKNOWN,20260913T153722+0800-a1ec0450,V3_AUTONOMOUS_RESEARCH
+AI_SERVER_SHIPMENTS,UNKNOWN,0.0,2026-09-13T13:27:06.440479+00:00,0,Autonomous research output missing or failed deterministic validation.,,,UNKNOWN,20260913T153722+0800-a1ec0450,V3_AUTONOMOUS_RESEARCH
+NAND_STORAGE_CYCLE,UNKNOWN,0.0,2026-09-13T13:27:06.440479+00:00,0,Autonomous research output missing or failed deterministic validation.,,,UNKNOWN,20260913T153722+0800-a1ec0450,V3_AUTONOMOUS_RESEARCH
+FINANCIALS_RATE_CREDIT_CYCLE,UNKNOWN,0.0,2026-09-13T13:27:06.440479+00:00,0,Autonomous research output missing or failed deterministic validation.,,,UNKNOWN,20260913T153722+0800-a1ec0450,V3_AUTONOMOUS_RESEARCH
+COPPER_COMMODITY_TRADE_INVENTORY,UNKNOWN,0.0,2026-09-13T13:27:06.440479+00:00,0,Autonomous research output missing or failed deterministic validation.,,,UNKNOWN,20260913T153722+0800-a1ec0450,V3_AUTONOMOUS_RESEARCH
