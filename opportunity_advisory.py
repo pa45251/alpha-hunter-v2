@@ -13,10 +13,11 @@ import pandas as pd
 from entry_structure_v2 import simple_atr, tw_stock_tick, _round_up_tick, _round_down_tick
 from entry_risk import entry_risk, risk_narrative
 
-VERSION = 'ORDERED_DRIVER_GATES_CANONICAL_RISK_3'
+VERSION = 'ORDERED_DRIVER_GATES_CANONICAL_RISK_4'
 METRICS = {'REVENUE', 'EPS', 'BACKLOG', 'ASP', 'SHIPMENT', 'ORDER', 'CAPEX',
            'UTILIZATION', 'PROJECT_RECOGNITION', 'FREIGHT_RATE', 'POWER_DEMAND', 'PRODUCTION'}
 ACTIONS = {'BUY', 'EARLY BUY', 'WAIT', 'PASS'}
+MAX_PLANNED_POSITION_FRACTION = 0.35
 
 
 def number(value, default=float('nan')):
@@ -71,6 +72,7 @@ def validate_company_research(row, run_id, targets, as_of):
             raise ValueError('COMPANY_RESEARCH_MISSING_' + field)
     if not isinstance(row.get('counter_evidence_reviewed'), bool) or not isinstance(row.get('major_counter_evidence'), bool):
         raise ValueError('COUNTER_REVIEW_REQUIRED')
+    # LOCAL is a separate thesis identity, never a relabelled mapped-global driver.
     if row['scope'] == 'LOCAL' and row.get('driver_id') != 'UNMAPPED_OPPORTUNITY':
         raise ValueError('GLOBAL_DRIVER_CANNOT_BYPASS_INTERNATIONAL_CHECK_AS_LOCAL')
     if row['scope'] == 'LOCAL' and not row.get('local_scope_reason'):
@@ -107,11 +109,7 @@ def regime_compatibility(risk, research):
 
 
 def price_plan(hist):
-    """Observed support/resistance, ATR noise buffer, no invented target return.
-
-    R/R is upside to an observed 120-session high, not a probability or forecast.
-    New highs use a disclosed base-range projection, never an assumed fixed 2R target.
-    """
+    """Observed support/resistance, ATR noise buffer, no invented target return."""
     out = dict(price_ok=False, confirmed=False, early_signal=False, severe=False,
                extended=False, technical='Price history unavailable', entry='Unavailable',
                invalidation='Unavailable', add_trigger='Unavailable', price_reason='Need sealed OHLCV',
@@ -177,19 +175,24 @@ def assess(candidate, research, risk, hist, as_of):
                     price_reason=plan['price_reason'] + ' Extended price: wait for a new base; do not chase.')
     if number(candidate.get('bias20')) >= 0.40 or number(candidate.get('ret_5d')) >= 0.40:
         plan.update(severe=True, price_ok=False, entry_state='WAIT_FOR_ENTRY')
-    row = dict(ticker=candidate.get('ticker'), name=candidate.get('name'),
+
+    ticker = candidate.get('ticker')
+    driver_id = candidate.get('driver_id')
+    thesis_identity = candidate.get('thesis_id') or f"{ticker}|{driver_id or 'UNMAPPED'}|{candidate.get('event_id') or ''}"
+    row = dict(ticker=ticker, name=candidate.get('name'), driver_id=driver_id, thesis_id=thesis_identity,
                driver=candidate.get('driver_label', 'UNMAPPED / WHY?'), driver_state='UNVERIFIED',
-               unmapped=candidate.get('driver_id') == 'UNMAPPED_OPPORTUNITY',
+               unmapped=driver_id == 'UNMAPPED_OPPORTUNITY',
                why='WHY unresolved: obtain company evidence before taking risk',
                international='Unverified — same-driver evidence required', relative='UNVERIFIED',
                regime='UNKNOWN', action='WAIT', main_risk='Unverified causal interpretation',
                what_would_make_us_wrong='A price-only story or weak company transmission',
-               planned_position_fraction=0.0, auto_trade_allowed=False,
-               wait_reason=gates['missing_gate'], **plan, **gates)
+               planned_position_fraction=0.0, planned_position_is_risk_budget=False,
+               auto_trade_allowed=False, wait_reason=gates['missing_gate'], **plan, **gates)
     if not research:
-        if plan['severe'] or gates['missing_gate'] == 'GLOBAL_REJECTED':
+        if plan['severe'] or gates['missing_gate'] in {'ECONOMIC_DRIVER_REJECTED', 'GLOBAL_PRICE_WEAK'}:
             row['action'] = 'PASS'
         return row
+
     row.update({k:research[k] for k in ['why','driver','driver_state','main_risk','main_counter_evidence','what_would_make_us_wrong']})
     row['regime'] = regime_compatibility(risk, research)
     company_urls = {e.get('source_url') for e in research.get('fundamental_evidence', []) if isinstance(e, dict)}
@@ -205,8 +208,11 @@ def assess(candidate, research, risk, hist, as_of):
         row['relative'] = 'GLOBAL AHEAD' if gap > 0.08 else 'TAIWAN AHEAD' if gap < -0.08 else 'TOGETHER'
     fundamental = [e for e in research.get('fundamental_evidence', []) if evidence_valid(e, as_of, ticker=row['ticker'])]
     row['evidence'] = fundamental
+    row['exposure_evidence'] = [e for e in research.get('exposure_evidence', []) if evidence_valid(e, as_of, ticker=row['ticker'])]
     row['company_transmission'] = research.get('company_transmission')
-    if (gates['missing_gate'] == 'GLOBAL_REJECTED' or row['driver_state'] == 'REJECTED' or research.get('major_counter_evidence') is True
+
+    if (gates['missing_gate'] in {'ECONOMIC_DRIVER_REJECTED', 'GLOBAL_PRICE_WEAK'}
+            or row['driver_state'] == 'REJECTED' or research.get('major_counter_evidence') is True
             or row['regime'] == 'ADVERSE' or plan['severe'] or candidate.get('reaction_state') == 'BROKEN'):
         row['action'] = 'PASS'
     elif (gates['missing_gate'] == 'ENTRY' and row['regime'] in {'SUPPORTIVE','NEUTRAL'}
@@ -215,7 +221,9 @@ def assess(candidate, research, risk, hist, as_of):
         operating_confirmed = len({e.get('metric') for e in fundamental}) >= 2 and len({e.get('source_url') for e in fundamental}) >= 2
         market_confirmed = gates['international_price_state'] in {'CONFIRMED', 'NOT_REQUIRED'}
         row['action'] = 'BUY' if market_confirmed and row['driver_state'] == 'CONFIRMED' and (plan['confirmed'] or operating_confirmed) else 'EARLY BUY'
-        row['planned_position_fraction'] = 0.35 if row['action'] == 'EARLY BUY' else 1.0
+        # Position fraction is a planning ceiling, never a risk budget or order instruction.
+        row['planned_position_fraction'] = MAX_PLANNED_POSITION_FRACTION
+
     row['wait_reason'] = gates['missing_gate'] if row['action'] == 'WAIT' else None
     if row['action'] == 'WAIT' and gates['missing_gate'] == 'ENTRY' and not plan['price_ok']:
         row['wait_reason'] = 'WAIT_FOR_ENTRY'
@@ -225,19 +233,20 @@ def assess(candidate, research, risk, hist, as_of):
 
 
 def rank_opportunities(rows, limit=5):
-    """Rank every nominated opportunity.
+    """Rank every nominated thesis without hiding multiple theses for one ticker.
 
-    `limit` is retained for backward compatibility with callers, but presentation
-    must not hide candidates. The canonical rule is that every unique candidate
-    survives ranking; action/evidence/research quality only changes order.
+    `limit` is retained for backward compatibility with callers. Dedupe is by thesis
+    identity, never ticker alone, so independent local/global theses and counter-evidence
+    are not silently collapsed.
     """
     ordered = sorted(rows, key=lambda r: ({'BUY':0,'EARLY BUY':1,'WAIT':2,'PASS':3}[r['action']],
                      0 if r.get('evidence') else 1, 0 if r.get('research_completed') else 1,
                      0 if r.get('price_ok') else 1, r.get('extended', False),
-                     -number(r.get('research_priority'),0), str(r.get('ticker'))))
+                     -number(r.get('research_priority'),0), str(r.get('ticker')), str(r.get('driver_id'))))
     result=[]; seen=set()
     for row in ordered:
-        if row['ticker'] in seen:
+        key = str(row.get('thesis_id') or f"{row.get('ticker')}|{row.get('driver_id') or row.get('driver') or ''}")
+        if key in seen:
             continue
-        result.append(row); seen.add(row['ticker'])
+        result.append(row); seen.add(key)
     return result
