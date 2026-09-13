@@ -43,7 +43,7 @@ def test_independent_company_breadth_excludes_etf_wrapper():
     assert breadth['independent_company_count'] == 3
 
 
-def test_international_price_fails_closed_when_only_etf_plus_two_companies():
+def test_etf_plus_single_company_cannot_upgrade_theme_to_confirmed():
     breadth = pd.DataFrame([{
         'theme': 'Cybersecurity',
         'breadth_confidence': 'MEDIUM',
@@ -58,11 +58,10 @@ def test_international_price_fails_closed_when_only_etf_plus_two_companies():
     peers = pd.DataFrame([
         _peer('HACK', 'Cybersecurity ETF'),
         _peer('PANW', 'Palo Alto Networks'),
-        _peer('CRWD', 'CrowdStrike'),
     ])
     result = international_price('Cybersecurity', breadth, peers)
-    assert result['international_price_state'] == 'UNKNOWN'
-    assert 'independent company breadth' in result['international_price_reason']
+    assert result['international_price_state'] == 'DEVELOPING'
+    assert 'SCANNER_AGGREGATE_THIN_THEME' in result['international_price_reason']
 
 
 def test_prefetch_allowlist_blocks_unseen_model_url(tmp_path, monkeypatch):
