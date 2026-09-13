@@ -15,6 +15,9 @@ on:
       - "research_repeat_guard_v4.py"
       - "research_execution_record_v4.py"
       - "research_ingest_v3.py"
+      - "research_quality_gate_v3.py"
+      - "research_decision_source_gate_v3.py"
+      - "research_activation_bridge_v3.py"
       - "driver_gates.py"
       - "opportunity_advisory.py"
   workflow_run:
@@ -163,7 +166,7 @@ jobs:
         env:
           PYTHONPATH: ${{ github.workspace }}
         run: |
-          python -m pytest -q tests/test_company_research_terminal.py tests/test_company_research_runner.py tests/test_research_contract_v3.py tests/test_research_activation_bridge_v3.py tests/test_research_source_prefetch_v3.py tests/test_research_quality_gate_v3.py tests/test_research_repeat_guard_v4.py tests/test_snapshot_lineage_v2.py tests/test_decision_state_v2.py tests/test_shadow_audit_v2.py tests/test_shadow_validation_v2.py
+          python -m pytest -q tests/test_company_research_terminal.py tests/test_company_research_runner.py tests/test_research_contract_v3.py tests/test_research_activation_bridge_v3.py tests/test_research_source_prefetch_v3.py tests/test_research_quality_gate_v3.py tests/test_research_decision_source_gate_v3.py tests/test_research_repeat_guard_v4.py tests/test_snapshot_lineage_v2.py tests/test_decision_state_v2.py tests/test_shadow_audit_v2.py tests/test_shadow_validation_v2.py
       - name: Remove unvalidated model output
         if: steps.handoff.outputs.has_work == 'true'
         run: rm -f output/research_result_v3.raw.txt
