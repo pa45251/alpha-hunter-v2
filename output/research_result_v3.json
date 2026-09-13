@@ -1,8 +1,8 @@
 {
   "contract": "ALPHA_HUNTER_V3_VALIDATED_RESEARCH",
   "status": "PASS",
-  "research_run_id": "20260913T141036+0800-ad3eb00c",
-  "validated_at_utc": "2026-09-13T06:18:45.096050+00:00",
+  "research_run_id": "20260913T153722+0800-a1ec0450",
+  "validated_at_utc": "2026-09-13T08:50:56.591037+00:00",
   "target_driver_ids": [
     "DRY_BULK_FREIGHT",
     "NAND_STORAGE_CYCLE",
@@ -13,73 +13,113 @@
     {
       "driver_id": "DRY_BULK_FREIGHT",
       "state": "UNKNOWN",
-      "confidence": 0.55,
-      "primary_cause": "Dry-bulk freight conditions appear to have strengthened in parts of 2026, but the available packet also describes the strength as potentially driven by rerouting and tightening vessel supply, while the exact current breadth and commodity-volume transmission remain unresolved.",
+      "confidence": 0.45,
+      "primary_cause": "Evidence indicates stronger Capesize freight conditions and higher apparent 2026 dry-bulk rates, but the evidence also attributes some strength to rerouting and warns of a prospective supply glut; the underlying commodity-volume cycle is therefore unresolved.",
       "industry_scope": "INDUSTRY_WIDE",
       "supporting_evidence": [
         {
-          "claim": "A key dry-bulk shipping-rate measure was reported at its highest level since December 2023, with the report attributing the move to rising Capesize demand and tightening ship supply.",
+          "claim": "A key measure of bulk-shipping rates reached its highest level since December 2023, driven by rising Capesize demand and tightening vessel supply.",
           "source_title": "Dry-Bulk Shipping Rates Hit Two-Year High on Capesize Demand",
           "source_url": "https://gcaptain.com/dry-bulk-shipping-rates-hit-two-year-high-on-capesize-demand/",
           "published_at": "2026-05-07T00:07:00+00:00",
           "evidence_type": "HIGH_QUALITY_REPORTING"
-        }
-      ],
-      "counter_evidence": [
+        },
         {
-          "claim": "The prefetched BIMCO-related reporting warns that apparent 2026 dry-bulk strength may be substantially artificial and may reverse as rerouting effects normalize, implying material uncertainty about underlying commodity-volume demand.",
+          "claim": "BIMCO-linked reporting described apparent 2026 dry-bulk strength and a potential reversal of the rerouting-related boost.",
           "source_title": "Dry bulk shipping faces 2027 supply glut: BIMCO warns Hormuz rerouting boost will reverse",
           "source_url": "https://www.msn.com/en-us/news/other/dry-bulk-shipping-faces-2027-supply-glut-bimco-warns-hormuz-rerouting-boost-will-reverse/ar-AA29coQf",
           "published_at": "2026-08-01T10:36:00+00:00",
           "evidence_type": "HIGH_QUALITY_REPORTING"
         }
       ],
-      "source_count": 2,
+      "counter_evidence": [
+        {
+          "claim": "The reported 2026 market strength was characterized as substantially artificial and driven by forced rerouting, with a 2027 supply glut risk that could reverse the boost.",
+          "source_title": "Dry bulk shipping faces 2027 supply glut: BIMCO warns Hormuz rerouting boost will reverse",
+          "source_url": "https://www.techtimes.com/articles/322617/20260801/dry-bulk-shipping-faces-2027-supply-glut-bimco-warns-hormuz-rerouting-boost-will-reverse.htm",
+          "published_at": "2026-08-01T10:36:00+00:00",
+          "evidence_type": "HIGH_QUALITY_REPORTING"
+        },
+        {
+          "claim": "Dry-bulk earnings are highly sensitive to freight rates, but the available report focuses on market valuation and does not establish durable commodity-volume demand.",
+          "source_title": "Euroseas Ltd Stock (MHY235261073): valuation in focus after strong bulk shipping cycle",
+          "source_url": "https://www.ad-hoc-news.de/boerse/news/ueberblick/euroseas-ltd-stock-mhy235261073-valuation-in-focus-after-strong-bulk/69529283",
+          "published_at": "2026-06-12T12:13:00+00:00",
+          "evidence_type": "HIGH_QUALITY_REPORTING"
+        }
+      ],
+      "source_count": 4,
       "event_date": null,
       "source_dates": [
         "2026-05-07T00:07:00+00:00",
+        "2026-06-12T12:13:00+00:00",
         "2026-08-01T10:36:00+00:00"
       ],
-      "researched_at_utc": "2026-09-13T06:18:18.175+00:00",
-      "research_run_id": "20260913T141036+0800-ad3eb00c"
+      "researched_at_utc": "2026-09-13T08:50:30.883+00:00",
+      "research_run_id": "20260913T153722+0800-a1ec0450"
     },
     {
       "driver_id": "NAND_STORAGE_CYCLE",
       "state": "UNKNOWN",
-      "confidence": 0.3,
-      "primary_cause": "The prefetched material indicates ongoing storage and memory demand discussion, but it does not provide sufficiently specific, independently verified evidence of a current NAND pricing, controller/module demand, or inventory-cycle change.",
+      "confidence": 0.35,
+      "primary_cause": "Available evidence points to continued storage growth and evolving NAND/controller demand, but it does not establish a sufficiently current, unambiguous NAND pricing, inventory or module-cycle change; the evidence is also indirect and mixed.",
       "industry_scope": "INDUSTRY_WIDE",
-      "supporting_evidence": [],
-      "counter_evidence": [
+      "supporting_evidence": [
         {
-          "claim": "The prefetched source material describes continued growth in the storage and memory market, but this is not sufficient to establish the exact current NAND/controller/module cycle or its pricing and inventory transmission.",
+          "claim": "The source discusses potential AI-storage and NAND-controller demand, but the available prefetched material does not provide a verified current cycle metric.",
+          "source_title": "Silicon Motion Award Spotlights AI Storage And NAND Controller Potential",
+          "source_url": "https://finance.yahoo.com/news/silicon-motion-award-spotlights-ai-111135930.html",
+          "published_at": "2026-01-29T03:11:00+00:00",
+          "evidence_type": "HIGH_QUALITY_REPORTING"
+        },
+        {
+          "claim": "The 2026 Future of Memory and Storage Conference was described as showing continued storage and memory market growth.",
           "source_title": "2026 FMS Shows Storage And Memory Market Continued Growth",
           "source_url": "https://www.forbes.com/sites/tomcoughlin/2026/08/16/2026-fms-shows-storage-and-memory-market-continued-growth/",
           "published_at": "2026-08-16T16:45:00+00:00",
           "evidence_type": "HIGH_QUALITY_REPORTING"
         }
       ],
-      "source_count": 1,
+      "counter_evidence": [
+        {
+          "claim": "The available source discusses NAND supply-demand dynamics but does not provide a time-consistent current pricing, inventory or module-transmission measure sufficient to confirm the nominated cycle.",
+          "source_title": "The Next NAND Decade: Why Supply Can’t Catch Demand The Way It Used To",
+          "source_url": "https://www.forbes.com/councils/forbestechcouncil/2026/05/01/the-next-nand-decade-why-supply-cant-catch-demand-the-way-it-used-to/",
+          "published_at": "2026-05-01T03:45:00+00:00",
+          "evidence_type": "HIGH_QUALITY_REPORTING"
+        },
+        {
+          "claim": "A report on Phison describes evolving storage demand and SSD adoption, but this is company- and theme-level evidence rather than proof of an industry-wide NAND cycle.",
+          "source_title": "Phison Electronics Corp highlights its NAND controller role as demand for storage keeps evolving",
+          "source_url": "https://www.ad-hoc-news.de/boerse/news/ueberblick/phison-electronics-corp-highlights-its-nand-controller-role-as-demand-for/69725587",
+          "published_at": "2026-07-08T12:14:00+00:00",
+          "evidence_type": "HIGH_QUALITY_REPORTING"
+        }
+      ],
+      "source_count": 4,
       "event_date": null,
       "source_dates": [
+        "2026-01-29T03:11:00+00:00",
+        "2026-05-01T03:45:00+00:00",
+        "2026-07-08T12:14:00+00:00",
         "2026-08-16T16:45:00+00:00"
       ],
-      "researched_at_utc": "2026-09-13T06:18:18.175+00:00",
-      "research_run_id": "20260913T141036+0800-ad3eb00c"
+      "researched_at_utc": "2026-09-13T08:50:30.883+00:00",
+      "research_run_id": "20260913T153722+0800-a1ec0450"
     },
     {
       "driver_id": "COPPER_COMMODITY_TRADE_INVENTORY",
       "state": "UNKNOWN",
       "confidence": 0.05,
-      "primary_cause": "No usable prefetched non-price source was available to verify current copper exchange inventories, physical tightness, regional premia, tariffs, or trade dislocations.",
+      "primary_cause": "No eligible prefetched shared-driver source established current copper pricing, exchange inventories, regional premia, trade dislocation or physical tightness.",
       "industry_scope": "UNKNOWN",
       "supporting_evidence": [],
       "counter_evidence": [],
       "source_count": 0,
       "event_date": null,
       "source_dates": [],
-      "researched_at_utc": "2026-09-13T06:18:18.175+00:00",
-      "research_run_id": "20260913T141036+0800-ad3eb00c"
+      "researched_at_utc": "2026-09-13T08:50:30.883+00:00",
+      "research_run_id": "20260913T153722+0800-a1ec0450"
     }
   ],
   "company_opportunities": [],
@@ -211,103 +251,103 @@
       "ticker": "3176.TWO",
       "status": "UNRESOLVED",
       "reason_code": "UNKNOWN_AFTER_RESEARCH",
-      "reason": "The prefetched official monthly revenue dataset shows an August 2026 revenue increase and notes increased overseas revenue, but does not identify the product, customer, end-market exposure, or a measurable driver-specific transmission fact."
+      "reason": "Prefetch returned only monthly revenue data; no source-backed structural exposure or specific company event was available."
     },
     {
       "ticker": "2605.TW",
       "status": "UNRESOLVED",
       "reason_code": "UNKNOWN_AFTER_RESEARCH",
-      "reason": "The prefetched official monthly revenue dataset reports August 2026 revenue growth and attributes the increase to freight rates remaining high, but it does not provide sufficient structural fleet or route exposure, nor independently verified current dry-bulk transmission metrics."
+      "reason": "Monthly revenue commentary references high freight rates, but no prefetched company source establishes structural dry-bulk exposure and measurable transmission separately."
     },
     {
       "ticker": "4967.TW",
       "status": "UNRESOLVED",
       "reason_code": "UNKNOWN_AFTER_RESEARCH",
-      "reason": "The prefetched official monthly revenue dataset reports higher shipments and selling prices, but does not establish NAND/storage-cycle exposure or distinguish NAND, DRAM, module, controller, and other product transmission."
+      "reason": "Monthly revenue reports higher shipments and selling prices, but no prefetched company source establishes NAND/storage exposure and driver-specific transmission separately."
     },
     {
       "ticker": "3044.TW",
       "status": "UNRESOLVED",
       "reason_code": "UNKNOWN_AFTER_RESEARCH",
-      "reason": "The prefetched official monthly revenue dataset attributes growth to customer order demand and shipments, but does not identify the relevant products, customers, end markets, or an exact enabled driver."
+      "reason": "Prefetch returned only monthly revenue data; no source-backed structural exposure or specific company event was available."
     },
     {
       "ticker": "2636.TW",
       "status": "UNRESOLVED",
       "reason_code": "UNKNOWN_AFTER_RESEARCH",
-      "reason": "The prefetched official monthly revenue dataset attributes growth to freight rates and volume versus the prior year, but does not establish a specific container, dry-bulk, forwarding, or other enabled-driver exposure."
+      "reason": "Monthly revenue commentary cites higher freight rates and cargo volume, but no prefetched company source establishes a sufficiently specific mapped exposure and transmission."
     },
     {
       "ticker": "1609.TW",
       "status": "UNRESOLVED",
       "reason_code": "UNKNOWN_AFTER_RESEARCH",
-      "reason": "The prefetched official monthly revenue dataset reports revenue growth but contains no product, customer, copper-inventory, pricing, physical-premium, or cable-volume evidence sufficient to establish a causal thesis."
+      "reason": "Monthly revenue data does not establish copper commodity trade-inventory exposure or transmission; no shared-driver evidence was prefetched."
     },
     {
       "ticker": "4915.TW",
       "status": "UNRESOLVED",
       "reason_code": "UNKNOWN_AFTER_RESEARCH",
-      "reason": "The prefetched official monthly revenue dataset reports revenue growth but does not identify the product or end-market mechanism responsible."
+      "reason": "Prefetch returned only monthly revenue data; no source-backed structural exposure or specific company event was available."
     },
     {
       "ticker": "6150.TWO",
       "status": "UNRESOLVED",
       "reason_code": "UNKNOWN_AFTER_RESEARCH",
-      "reason": "The prefetched official monthly revenue dataset shows year-over-year revenue and cumulative declines despite month-over-month improvement, but does not establish a source-backed product or end-market exposure."
+      "reason": "Monthly revenue increased month over month but declined year over year; no source-backed structural exposure or specific company event was available."
     },
     {
       "ticker": "4951.TWO",
       "status": "UNRESOLVED",
       "reason_code": "UNKNOWN_AFTER_RESEARCH",
-      "reason": "The prefetched official monthly revenue dataset shows broadly flat cumulative revenue and does not identify a driver-specific product, customer, or transmission mechanism."
+      "reason": "Monthly revenue data was nearly flat year over year; no source-backed structural exposure or specific company event was available."
     },
     {
       "ticker": "5609.TWO",
       "status": "UNRESOLVED",
       "reason_code": "UNKNOWN_AFTER_RESEARCH",
-      "reason": "The prefetched official monthly revenue dataset reports revenue growth but does not establish whether the change reflects container freight, air freight, forwarding volume, or another enabled driver."
+      "reason": "Monthly revenue increased year over year, but no source-backed structural exposure or specific company event was available."
     },
     {
       "ticker": "2838.TW",
       "status": "UNRESOLVED",
       "reason_code": "UNKNOWN_AFTER_RESEARCH",
-      "reason": "The prefetched official monthly revenue dataset reports revenue growth but contains no NIM, rate, credit-quality, loan-growth, or other financial-cycle evidence."
+      "reason": "Monthly revenue data alone does not establish a rate, credit or margin-cycle mechanism; no source-backed structural exposure or specific company event was available."
     },
     {
       "ticker": "2023.TW",
       "status": "UNRESOLVED",
       "reason_code": "UNKNOWN_AFTER_RESEARCH",
-      "reason": "The prefetched official monthly revenue dataset reports monthly and cumulative declines but does not identify the relevant steel product, pricing, demand, or enabled taxonomy exposure."
+      "reason": "Monthly and cumulative revenue declined year over year; no source-backed structural exposure or specific company event was available."
     },
     {
       "ticker": "2548.TW",
       "status": "UNRESOLVED",
       "reason_code": "UNKNOWN_AFTER_RESEARCH",
-      "reason": "The prefetched official monthly revenue dataset attributes cumulative growth to higher handover recognition, which is a company accounting/event fact but lacks sufficient project, contract, regulatory, or broader driver evidence for a supported local opportunity."
+      "reason": "Revenue growth was attributed to delivery recognition, but no source-backed structural exposure or specific company event relevant to an enabled driver was available."
     },
     {
       "ticker": "2449.TW",
       "status": "UNRESOLVED",
       "reason_code": "UNKNOWN_AFTER_RESEARCH",
-      "reason": "The prefetched official monthly revenue dataset reports growth but does not identify the product, customer, node, utilization, or end-market mechanism."
+      "reason": "Monthly revenue growth does not identify a specific economic driver; no source-backed structural exposure or specific company event was available."
     },
     {
       "ticker": "6742.TW",
       "status": "UNRESOLVED",
       "reason_code": "UNKNOWN_AFTER_RESEARCH",
-      "reason": "The prefetched official monthly revenue dataset reports significant cumulative decline and does not identify a source-backed product, customer, or enabled-driver exposure."
+      "reason": "Revenue declined cumulatively year over year; no source-backed structural exposure or specific company event was available."
     },
     {
       "ticker": "6112.TW",
       "status": "UNRESOLVED",
       "reason_code": "UNKNOWN_AFTER_RESEARCH",
-      "reason": "The prefetched official monthly revenue dataset reports growth but does not establish enterprise cybersecurity exposure, subscription/channel demand, or another exact enabled-driver mechanism."
+      "reason": "Monthly revenue data does not identify a specific economic driver; no source-backed structural exposure or specific company event was available."
     },
     {
       "ticker": "6894.TWO",
       "status": "UNRESOLVED",
       "reason_code": "UNKNOWN_AFTER_RESEARCH",
-      "reason": "The prefetched official monthly revenue dataset attributes growth to electrolyzer equipment and consumables sales plus inclusion of a new business, but does not establish an exact enabled taxonomy exposure or independently verified current transmission."
+      "reason": "Revenue commentary identifies electrolysis equipment and consumables demand, but no enabled taxonomy mapping is source-backed by the prefetched material."
     }
   ]
 }

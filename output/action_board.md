@@ -3,7 +3,7 @@
 - Run: `20260913T153722+0800-a1ec0450`
 - Market session: `2026-09-11`
 - Risk regime: **NORMAL**
-- Causal evidence: `UNKNOWN_NO_CURRENT_RESEARCH`
+- Causal evidence: `V3_AUTONOMOUS_RESEARCH`
 - Core rule: price nominates; non-price facts establish economic exposure/activation/transmission; price/risk decides timing.
 - Trading actions: BUY=0 / EARLY BUY=0 / WAIT=0 / PASS=25
 - Research workload: FACT_CHECK=17 / OBSERVE=147 / DROP_THIS_RUN=16 / NO_RESEARCH=0
