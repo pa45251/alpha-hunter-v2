@@ -1,8 +1,8 @@
 {
   "contract": "ALPHA_HUNTER_V3_VALIDATED_RESEARCH",
   "status": "PASS",
-  "research_run_id": "20260913T093325+0800-42de09ca",
-  "validated_at_utc": "2026-09-13T01:47:46.253914+00:00",
+  "research_run_id": "20260913T095442+0800-ee0329fb",
+  "validated_at_utc": "2026-09-13T01:58:45.306955+00:00",
   "target_driver_ids": [
     "DRY_BULK_FREIGHT",
     "NAND_STORAGE_CYCLE",
@@ -14,85 +14,120 @@
       "driver_id": "DRY_BULK_FREIGHT",
       "state": "UNKNOWN",
       "confidence": 0.58,
-      "primary_cause": "Evidence is conflicting: a May 2026 report described Capesize rates reaching a two-year high on stronger demand and tightening vessel supply, while August 2026 BIMCO-related reporting warned that apparent 2026 strength was substantially driven by forced rerouting and could reverse into a 2027 supply glut. The exact current BDI/Capesize/Panamax commodity-volume cycle is therefore not sufficiently time-consistent.",
+      "primary_cause": "Evidence supports a 2026 Capesize freight upswing, but counter-evidence says the apparent strength may be driven by temporary rerouting and could reverse into a 2027 supply glut; durable industry-wide BDI/Capesize/Panamax commodity-volume causality remains conflicting.",
       "industry_scope": "INDUSTRY_WIDE",
       "supporting_evidence": [
         {
-          "claim": "A key dry-bulk shipping rate measure reached its highest level since December 2023, driven by rising Capesize demand and tightening ship supply.",
+          "claim": "A key dry-bulk freight-rate measure reached its highest level since December 2023, driven by rising Capesize demand and tightening vessel supply.",
           "source_title": "Dry-Bulk Shipping Rates Hit Two-Year High on Capesize Demand",
           "source_url": "https://gcaptain.com/dry-bulk-shipping-rates-hit-two-year-high-on-capesize-demand/",
           "published_at": "2026-05-07T00:07:00Z",
-          "event_date": "2026-05-07T00:00:00Z",
+          "event_date": null,
           "evidence_type": "HIGH_QUALITY_REPORTING"
+        },
+        {
+          "claim": "BIMCO described apparent 2026 dry-bulk strength and linked it to forced rerouting effects.",
+          "source_title": "Dry bulk shipping faces 2027 supply glut: BIMCO warns Hormuz rerouting boost will reverse",
+          "source_url": "https://www.msn.com/en-us/news/other/dry-bulk-shipping-faces-2027-supply-glut-bimco-warns-hormuz-rerouting-boost-will-reverse/ar-AA29coQf",
+          "published_at": "2026-08-01T10:36:00Z",
+          "event_date": null,
+          "evidence_type": "INDUSTRY_DATA"
         }
       ],
       "counter_evidence": [
         {
-          "claim": "BIMCO warned that apparent 2026 dry-bulk strength was substantially artificial because of forced rerouting and could reverse into a 2027 supply glut.",
-          "source_title": "Dry Bulk Shipping Faces 2027 Supply Glut: BIMCO Warns Hormuz Rerouting Boost Will Reverse",
+          "claim": "BIMCO warned that the 2026 dry-bulk strength was substantially artificial from forced rerouting and that the boost would reverse, producing a possible 2027 supply glut.",
+          "source_title": "Dry bulk shipping faces 2027 supply glut: BIMCO warns Hormuz rerouting boost will reverse",
           "source_url": "https://www.techtimes.com/articles/322617/20260801/dry-bulk-shipping-faces-2027-supply-glut-bimco-warns-hormuz-rerouting-boost-will-reverse.htm",
           "published_at": "2026-08-01T10:36:00Z",
-          "event_date": "2026-08-01T00:00:00Z",
-          "evidence_type": "INDUSTRY_DATA"
+          "event_date": null,
+          "evidence_type": "HIGH_QUALITY_REPORTING"
+        },
+        {
+          "claim": "Dry-bulk earnings are highly sensitive to freight rates, making the apparent cycle vulnerable to rate and valuation reversal.",
+          "source_title": "Euroseas Ltd Stock (MHY235261073): valuation in focus after strong bulk shipping cycle",
+          "source_url": "https://www.ad-hoc-news.de/boerse/news/ueberblick/euroseas-ltd-stock-mhy235261073-valuation-in-focus-after-strong-bulk/69529283",
+          "published_at": "2026-06-12T12:13:00Z",
+          "event_date": null,
+          "evidence_type": "HIGH_QUALITY_REPORTING"
         }
       ],
-      "source_count": 2,
+      "source_count": 4,
       "event_date": null,
       "source_dates": [
         "2026-05-07T00:07:00Z",
+        "2026-06-12T12:13:00Z",
         "2026-08-01T10:36:00Z"
       ],
-      "researched_at_utc": "2026-09-13T01:47:21Z",
-      "research_run_id": "20260913T093325+0800-42de09ca"
+      "researched_at_utc": "2026-09-13T01:58:18Z",
+      "research_run_id": "20260913T095442+0800-ee0329fb"
     },
     {
       "driver_id": "NAND_STORAGE_CYCLE",
       "state": "UNKNOWN",
-      "confidence": 0.46,
-      "primary_cause": "Searches found evidence of continuing storage and memory demand growth, but not sufficiently specific, time-consistent evidence confirming a NAND pricing, SSD/controller/module inventory, and demand cycle. Available evidence does not establish the exact nominated cycle or resolve contradictory cycle-direction implications.",
+      "confidence": 0.42,
+      "primary_cause": "International evidence indicates continuing storage demand and AI-related NAND opportunity, but does not establish a synchronized NAND pricing, controller and module cycle; available evidence is insufficient and partly contradictory in scope.",
       "industry_scope": "INDUSTRY_WIDE",
       "supporting_evidence": [
         {
-          "claim": "The 2026 Future of Memory and Storage Conference highlighted continued growth in storage and memory demand driven by AI and data growth.",
-          "source_title": "2026 FMS Shows Storage And Memory Market Continued Growth",
-          "source_url": "https://www.forbes.com/sites/tomcoughlin/2026/08/16/2026-fms-shows-storage-and-memory-market-continued-growth/",
-          "published_at": "2026-08-16T16:45:00Z",
-          "event_date": "2026-08-16T00:00:00Z",
+          "claim": "A NAND-controller supplier described AI storage and NAND-controller opportunity, indicating evolving storage demand.",
+          "source_title": "Silicon Motion Award Spotlights AI Storage And NAND Controller Potential",
+          "source_url": "https://finance.yahoo.com/news/silicon-motion-award-spotlights-ai-111135930.html",
+          "published_at": "2026-01-29T03:11:00Z",
+          "event_date": null,
           "evidence_type": "HIGH_QUALITY_REPORTING"
         }
       ],
       "counter_evidence": [
         {
-          "claim": "The available search evidence discusses structural NAND demand and supply dynamics but does not verify the current exact NAND pricing, inventory, and module/controller cycle required for activation.",
+          "claim": "The 2026 Future of Memory and Storage Conference highlighted continued growth in storage and memory, which is broader than and does not independently confirm a NAND cycle.",
+          "source_title": "2026 FMS Shows Storage And Memory Market Continued Growth",
+          "source_url": "https://www.forbes.com/sites/tomcoughlin/2026/08/16/2026-fms-shows-storage-and-memory-market-continued-growth/",
+          "published_at": "2026-08-16T16:45:00Z",
+          "event_date": null,
+          "evidence_type": "HIGH_QUALITY_REPORTING"
+        },
+        {
+          "claim": "Phison described evolving storage demand and SSD adoption across consumer and data-center applications, without confirming synchronized NAND pricing or module-cycle improvement.",
+          "source_title": "Phison Electronics Corp highlights its NAND controller role as demand for storage keeps evolving",
+          "source_url": "https://www.ad-hoc-news.de/boerse/news/ueberblick/phison-electronics-corp-highlights-its-nand-controller-role-as-demand-for/69725587",
+          "published_at": "2026-07-08T12:14:00Z",
+          "event_date": null,
+          "evidence_type": "HIGH_QUALITY_REPORTING"
+        },
+        {
+          "claim": "A Phison executive argued that NAND supply cannot respond to demand as it did historically, challenging a simple conventional-cycle interpretation.",
           "source_title": "The Next NAND Decade: Why Supply Can’t Catch Demand The Way It Used To",
           "source_url": "https://www.forbes.com/councils/forbestechcouncil/2026/05/01/the-next-nand-decade-why-supply-cant-catch-demand-the-way-it-used-to/",
           "published_at": "2026-05-01T03:45:00Z",
-          "event_date": "2026-05-01T00:00:00Z",
+          "event_date": null,
           "evidence_type": "HIGH_QUALITY_REPORTING"
         }
       ],
-      "source_count": 2,
+      "source_count": 4,
       "event_date": null,
       "source_dates": [
-        "2026-08-16T16:45:00Z",
-        "2026-05-01T03:45:00Z"
+        "2026-01-29T03:11:00Z",
+        "2026-05-01T03:45:00Z",
+        "2026-07-08T12:14:00Z",
+        "2026-08-16T16:45:00Z"
       ],
-      "researched_at_utc": "2026-09-13T01:47:21Z",
-      "research_run_id": "20260913T093325+0800-42de09ca"
+      "researched_at_utc": "2026-09-13T01:58:18Z",
+      "research_run_id": "20260913T095442+0800-ee0329fb"
     },
     {
       "driver_id": "COPPER_COMMODITY_TRADE_INVENTORY",
       "state": "UNKNOWN",
-      "confidence": 0.2,
-      "primary_cause": "Support and counter searches did not yield a verifiable source confirming or contradicting the current LME/COMEX copper pricing, exchange inventories, regional premia, tariff or trade-dislocation conditions. Downstream cable or grid activity was not treated as evidence for this commodity driver.",
+      "confidence": 0.08,
+      "primary_cause": "Support and counter searches did not yield a verifiable current source establishing the exact combination of copper pricing, exchange inventories, regional premia, tariffs or physical tightness; downstream cable or grid revenue evidence cannot substitute for commodity evidence.",
       "industry_scope": "UNKNOWN",
       "supporting_evidence": [],
       "counter_evidence": [],
       "source_count": 0,
       "event_date": null,
       "source_dates": [],
-      "researched_at_utc": "2026-09-13T01:47:21Z",
-      "research_run_id": "20260913T093325+0800-42de09ca"
+      "researched_at_utc": "2026-09-13T01:58:18Z",
+      "research_run_id": "20260913T095442+0800-ee0329fb"
     }
   ],
   "company_opportunities": [],
@@ -102,103 +137,103 @@
       "ticker": "3176.TWO",
       "driver_id": "UNMAPPED_OPPORTUNITY",
       "status": "UNRESOLVED",
-      "reason": "Official monthly revenue shows August 2026 revenue increased 197.4% year over year and remarks cite increased overseas revenue, but no verifiable company-specific event or causal mechanism was found to explain the opportunity; global alternatives remain untested."
+      "reason": "Official MOPS data shows August 2026 revenue of 329175 thousand TWD, up 197.4% YoY, with issuer remark that overseas revenue increased. Searches found no verifiable company-specific event or disclosure identifying the causal driver, and no global alternative could be tested."
     },
     {
       "ticker": "2605.TW",
       "driver_id": "DRY_BULK_FREIGHT",
       "status": "UNRESOLVED",
-      "reason": "Official monthly revenue shows August 2026 revenue increased 58.8% year over year and the issuer attributes the increase to freight rates remaining high, but the global dry-bulk driver remains causally conflicting and independent company transmission evidence is insufficient."
+      "reason": "Official MOPS data shows August 2026 revenue up 58.8% YoY and cumulative revenue up 38.7%, with the issuer attributing the increase to freight rates remaining high. The global dry-bulk evidence is conflicting and does not independently confirm a durable cycle, so the company transmission gate remains unresolved."
     },
     {
       "ticker": "4967.TW",
       "driver_id": "NAND_STORAGE_CYCLE",
       "status": "UNRESOLVED",
-      "reason": "Official monthly revenue shows August 2026 revenue increased 275.1% year over year, attributed to higher shipments and selling prices, but exact NAND/storage-cycle causality and independent international confirmation are insufficient."
+      "reason": "Official MOPS data shows August 2026 revenue up 275.1% YoY and cumulative revenue up 87.0%, attributed to higher shipment volume and selling prices. Independent international evidence for the exact NAND/storage cycle and company-specific transmission is insufficient."
     },
     {
       "ticker": "3044.TW",
       "driver_id": "UNMAPPED_OPPORTUNITY",
       "status": "UNRESOLVED",
-      "reason": "Official monthly revenue shows August 2026 revenue increased 65.5% year over year due to customer orders and shipments, but no distinct company-specific mechanism or tested global alternative was verified."
+      "reason": "Official MOPS data shows August 2026 revenue up 65.5% YoY and cumulative revenue up 38.7%, attributed to increased customer orders and shipments. Searches found no verifiable specific event or disclosure establishing the causal driver."
     },
     {
       "ticker": "2636.TW",
       "driver_id": "UNMAPPED_OPPORTUNITY",
       "status": "UNRESOLVED",
-      "reason": "Official monthly revenue shows August 2026 revenue increased 85.5% year over year and attributes growth to higher freight rates and cargo volume, but no distinct company-specific mechanism or tested global alternative was verified."
+      "reason": "Official MOPS data shows August 2026 revenue up 85.5% YoY and cumulative revenue up 17.9%, attributed to higher freight rates and cargo volume versus the prior year. The exact opportunity remains unmapped and no distinct company-specific mechanism was verified."
     },
     {
       "ticker": "1609.TW",
       "driver_id": "COPPER_COMMODITY_TRADE_INVENTORY",
       "status": "UNRESOLVED",
-      "reason": "Official monthly revenue shows August 2026 revenue increased 34.8% year over year, but this does not establish copper commodity pricing, inventory, trade-dislocation, or physical-tightness causality and no verifiable driver evidence was found."
+      "reason": "Official MOPS data shows August 2026 revenue up 34.8% YoY and cumulative revenue up 20.0%, but contains no copper-specific transmission evidence. Exact copper pricing, inventory, trade-dislocation and physical-tightness evidence was not verifiably obtained."
     },
     {
       "ticker": "4915.TW",
       "driver_id": "UNMAPPED_OPPORTUNITY",
       "status": "UNRESOLVED",
-      "reason": "Official monthly revenue shows August 2026 revenue increased 20.4% year over year, but no company-specific event or causal mechanism and no tested global alternative were verified."
+      "reason": "Official MOPS data shows August 2026 revenue up 20.4% YoY and cumulative revenue up 13.3%. Searches found no verifiable company-specific event, order, guidance or industry mechanism explaining the nomination."
     },
     {
       "ticker": "6150.TWO",
       "driver_id": "UNMAPPED_OPPORTUNITY",
       "status": "UNRESOLVED",
-      "reason": "Official monthly revenue increased 19.9% month over month but declined 21.3% year over year and cumulative revenue declined 26.5%; no supportive company-specific causal mechanism or tested global alternative was verified."
+      "reason": "Official MOPS data shows August 2026 revenue up 19.9% MoM but down 21.3% YoY and cumulative revenue down 26.5%. No company-specific causal event or validated alternative driver was found."
     },
     {
       "ticker": "4951.TWO",
       "driver_id": "UNMAPPED_OPPORTUNITY",
       "status": "UNRESOLVED",
-      "reason": "Official monthly revenue increased 3.2% year over year and cumulative revenue increased 0.4%, but no measured improvement with a supported causal mechanism or tested global alternative was verified."
+      "reason": "Official MOPS data shows August 2026 revenue up 3.2% YoY and cumulative revenue up only 0.4%. Searches found no measured improvement or company-specific causal disclosure sufficient to establish a thesis."
     },
     {
       "ticker": "5609.TWO",
       "driver_id": "UNMAPPED_OPPORTUNITY",
       "status": "UNRESOLVED",
-      "reason": "Official monthly revenue shows August 2026 revenue increased 39.1% year over year and cumulative revenue increased 20.9%, but no distinct company-specific mechanism or tested global alternative was verified."
+      "reason": "Official MOPS data shows August 2026 revenue up 39.1% YoY and cumulative revenue up 20.9%, but no specific causal driver was disclosed or independently verified."
     },
     {
       "ticker": "2838.TW",
       "driver_id": "UNMAPPED_OPPORTUNITY",
       "status": "UNRESOLVED",
-      "reason": "Official monthly revenue shows August 2026 revenue increased 3.9% year over year and cumulative revenue increased 15.8%, but no company-specific causal mechanism or tested global alternative was verified."
+      "reason": "Official MOPS data shows August 2026 revenue up 3.9% YoY and cumulative revenue up 15.8%. Searches found no verifiable event or mechanism linking the company to the nomination."
     },
     {
       "ticker": "2023.TW",
       "driver_id": "UNMAPPED_OPPORTUNITY",
       "status": "UNRESOLVED",
-      "reason": "Official monthly revenue declined 14.3% year over year and cumulative revenue declined 6.7%; no supportive company-specific causal mechanism or tested global alternative was verified."
+      "reason": "Official MOPS data shows August 2026 revenue down 14.3% YoY and cumulative revenue down 6.7%, providing no measured improvement for a causal thesis. No company-specific catalyst was verified."
     },
     {
       "ticker": "2548.TW",
       "driver_id": "UNMAPPED_OPPORTUNITY",
       "status": "UNRESOLVED",
-      "reason": "Official monthly revenue increased 139.5% year over year and the issuer attributes cumulative growth to higher recognized handover amounts, but no further company-specific confirmation or tested global alternative was verified."
+      "reason": "Official MOPS data shows August 2026 revenue up 139.5% YoY and cumulative revenue up 105.3%, with the issuer attributing the increase to higher handover recognition. This is a project-recognition fact, but no independently verified event establishes the broader nominated driver."
     },
     {
       "ticker": "2449.TW",
       "driver_id": "UNMAPPED_OPPORTUNITY",
       "status": "UNRESOLVED",
-      "reason": "Official monthly revenue shows August 2026 revenue increased 31.6% year over year and cumulative revenue increased 35.5%, but no company-specific causal mechanism or tested global alternative was verified."
+      "reason": "Official MOPS data shows August 2026 revenue up 31.6% YoY and cumulative revenue up 35.5%, but no specific company project, order, customer or industry mechanism was verified."
     },
     {
       "ticker": "6742.TW",
       "driver_id": "UNMAPPED_OPPORTUNITY",
       "status": "UNRESOLVED",
-      "reason": "Official monthly revenue declined 6.9% year over year and cumulative revenue declined 39.4%; no supportive company-specific causal mechanism or tested global alternative was verified."
+      "reason": "Official MOPS data shows August 2026 revenue down 6.9% YoY and cumulative revenue down 39.4%. Searches found no measured improvement or company-specific causal disclosure."
     },
     {
       "ticker": "6112.TW",
       "driver_id": "UNMAPPED_OPPORTUNITY",
       "status": "UNRESOLVED",
-      "reason": "Official monthly revenue increased 18.8% year over year and cumulative revenue increased 18.3%, but no company-specific causal mechanism or tested global alternative was verified."
+      "reason": "Official MOPS data shows August 2026 revenue up 18.8% YoY and cumulative revenue up 18.3%, but no specific causal driver or company transmission was verified."
     },
     {
       "ticker": "6894.TWO",
       "driver_id": "UNMAPPED_OPPORTUNITY",
       "status": "UNRESOLVED",
-      "reason": "Official monthly revenue increased 67.8% year over year and the issuer attributes growth to customer demand for electrolyzer equipment and consumables plus inclusion of a new business, but no independent confirmation or tested global alternative was verified."
+      "reason": "Official MOPS data shows August 2026 revenue up 67.8% YoY and cumulative revenue up 66.8%, attributed to increased sales of electrolytic equipment and consumables, inclusion of a new business entity and expanded operating scope. The exact broader driver remains unverified."
     }
   ]
 }

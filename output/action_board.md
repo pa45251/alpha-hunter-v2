@@ -3,14 +3,14 @@
 - Run: `20260913T095442+0800-ee0329fb`
 - Market session: `2026-09-11`
 - Risk regime: **NORMAL**
-- Causal evidence: `UNKNOWN_NO_CURRENT_RESEARCH`
+- Causal evidence: `V3_AUTONOMOUS_RESEARCH`
 - Core rule: find the anomaly -> understand WHY -> validate the same driver globally -> act only if price still offers a setup.
 
 ## Simple Opportunity Brief
 
 ### 1. 3176.TWO 基亞 — WAIT
 
-- **WHY:** WHY unresolved: obtain company evidence before taking risk
+- **WHY:** Official MOPS data shows August 2026 revenue of 329175 thousand TWD, up 197.4% YoY, with issuer remark that overseas revenue increased. Searches found no verifiable company-specific event or disclosure identifying the causal driver, and no global alternative could be tested.
 - **Driver:** Unmapped opportunity — research WHY
 - **Driver state:** UNVERIFIED
 - **Company transmission:** Unverified
@@ -28,12 +28,12 @@
 - **Invalidation:** Exit on loss of 34.05; thesis failure also invalidates
 - **Add trigger:** Close above 41 with volume >=1.2x prior median; thesis still supported and recheck R/R
 - **Main counter-evidence:** Unverified
-- **Main risk:** Unverified causal interpretation
+- **Main risk:** Exact company / driver transmission remains unverified; no entry recommendation
 - **What would make us wrong:** A price-only story or weak company transmission
 
 ### 2. 2605.TW 新興 — WAIT
 
-- **WHY:** WHY unresolved: obtain company evidence before taking risk
+- **WHY:** Official MOPS data shows August 2026 revenue up 58.8% YoY and cumulative revenue up 38.7%, with the issuer attributing the increase to freight rates remaining high. The global dry-bulk evidence is conflicting and does not independently confirm a durable cycle, so the company transmission gate remains unresolved.
 - **Driver:** Dry-bulk freight / commodity shipping cycle
 - **Driver state:** UNVERIFIED
 - **Company transmission:** Unverified
@@ -51,12 +51,12 @@
 - **Invalidation:** Exit on loss of 34.05; thesis failure also invalidates
 - **Add trigger:** Close above 39.6 with volume >=1.2x prior median; thesis still supported and recheck R/R
 - **Main counter-evidence:** Unverified
-- **Main risk:** Unverified causal interpretation
+- **Main risk:** Exact company / driver transmission remains unverified; no entry recommendation
 - **What would make us wrong:** A price-only story or weak company transmission
 
 ### 3. 4967.TW 十銓 — WAIT
 
-- **WHY:** WHY unresolved: obtain company evidence before taking risk
+- **WHY:** Official MOPS data shows August 2026 revenue up 275.1% YoY and cumulative revenue up 87.0%, attributed to higher shipment volume and selling prices. Independent international evidence for the exact NAND/storage cycle and company-specific transmission is insufficient.
 - **Driver:** NAND / storage controller and module cycle
 - **Driver state:** UNVERIFIED
 - **Company transmission:** Unverified
@@ -74,12 +74,12 @@
 - **Invalidation:** Exit on loss of 268; thesis failure also invalidates
 - **Add trigger:** Close above 294 with volume >=1.2x prior median; thesis still supported and recheck R/R
 - **Main counter-evidence:** Unverified
-- **Main risk:** Unverified causal interpretation
+- **Main risk:** Exact company / driver transmission remains unverified; no entry recommendation
 - **What would make us wrong:** A price-only story or weak company transmission
 
 ### 4. 3044.TW 健鼎 — WAIT
 
-- **WHY:** WHY unresolved: obtain company evidence before taking risk
+- **WHY:** Official MOPS data shows August 2026 revenue up 65.5% YoY and cumulative revenue up 38.7%, attributed to increased customer orders and shipments. Searches found no verifiable specific event or disclosure establishing the causal driver.
 - **Driver:** UNMAPPED / WHY?
 - **Driver state:** UNVERIFIED
 - **Company transmission:** Unverified
@@ -97,12 +97,12 @@
 - **Invalidation:** Exit on loss of 470; thesis failure also invalidates
 - **Add trigger:** Close above 521 with volume >=1.2x prior median; thesis still supported and recheck R/R
 - **Main counter-evidence:** Unverified
-- **Main risk:** Unverified causal interpretation
+- **Main risk:** Exact company / driver transmission remains unverified; no entry recommendation
 - **What would make us wrong:** A price-only story or weak company transmission
 
 ### 5. 2636.TW 台驊控股 — WAIT
 
-- **WHY:** WHY unresolved: obtain company evidence before taking risk
+- **WHY:** Official MOPS data shows August 2026 revenue up 85.5% YoY and cumulative revenue up 17.9%, attributed to higher freight rates and cargo volume versus the prior year. The exact opportunity remains unmapped and no distinct company-specific mechanism was verified.
 - **Driver:** UNMAPPED / WHY?
 - **Driver state:** UNVERIFIED
 - **Company transmission:** Unverified
@@ -120,12 +120,12 @@
 - **Invalidation:** Exit on loss of 67.5; thesis failure also invalidates
 - **Add trigger:** Close above 79.5 with volume >=1.2x prior median; thesis still supported and recheck R/R
 - **Main counter-evidence:** Unverified
-- **Main risk:** Unverified causal interpretation
+- **Main risk:** Exact company / driver transmission remains unverified; no entry recommendation
 - **What would make us wrong:** A price-only story or weak company transmission
 
 ### 6. 1609.TW 大亞 — WAIT
 
-- **WHY:** WHY unresolved: obtain company evidence before taking risk
+- **WHY:** Official MOPS data shows August 2026 revenue up 34.8% YoY and cumulative revenue up 20.0%, but contains no copper-specific transmission evidence. Exact copper pricing, inventory, trade-dislocation and physical-tightness evidence was not verifiably obtained.
 - **Driver:** Copper commodity price / trade-inventory cycle
 - **Driver state:** UNVERIFIED
 - **Company transmission:** Unverified
@@ -143,12 +143,12 @@
 - **Invalidation:** Exit on loss of 36.5; thesis failure also invalidates
 - **Add trigger:** Close above 38.95 with volume >=1.2x prior median; thesis still supported and recheck R/R
 - **Main counter-evidence:** Unverified
-- **Main risk:** Unverified causal interpretation
+- **Main risk:** Exact company / driver transmission remains unverified; no entry recommendation
 - **What would make us wrong:** A price-only story or weak company transmission
 
 ### 7. 4915.TW 致伸 — WAIT
 
-- **WHY:** WHY unresolved: obtain company evidence before taking risk
+- **WHY:** Official MOPS data shows August 2026 revenue up 20.4% YoY and cumulative revenue up 13.3%. Searches found no verifiable company-specific event, order, guidance or industry mechanism explaining the nomination.
 - **Driver:** UNMAPPED / WHY?
 - **Driver state:** UNVERIFIED
 - **Company transmission:** Unverified
@@ -166,12 +166,12 @@
 - **Invalidation:** Exit on loss of 58.7; thesis failure also invalidates
 - **Add trigger:** Close above 63.3 with volume >=1.2x prior median; thesis still supported and recheck R/R
 - **Main counter-evidence:** Unverified
-- **Main risk:** Unverified causal interpretation
+- **Main risk:** Exact company / driver transmission remains unverified; no entry recommendation
 - **What would make us wrong:** A price-only story or weak company transmission
 
 ### 8. 6150.TWO 撼訊 — WAIT
 
-- **WHY:** WHY unresolved: obtain company evidence before taking risk
+- **WHY:** Official MOPS data shows August 2026 revenue up 19.9% MoM but down 21.3% YoY and cumulative revenue down 26.5%. No company-specific causal event or validated alternative driver was found.
 - **Driver:** UNMAPPED / WHY?
 - **Driver state:** UNVERIFIED
 - **Company transmission:** Unverified
@@ -189,12 +189,12 @@
 - **Invalidation:** Exit on loss of 58.3; thesis failure also invalidates
 - **Add trigger:** Close above 64.2 with volume >=1.2x prior median; thesis still supported and recheck R/R
 - **Main counter-evidence:** Unverified
-- **Main risk:** Unverified causal interpretation
+- **Main risk:** Exact company / driver transmission remains unverified; no entry recommendation
 - **What would make us wrong:** A price-only story or weak company transmission
 
 ### 9. 4951.TWO 精拓科 — WAIT
 
-- **WHY:** WHY unresolved: obtain company evidence before taking risk
+- **WHY:** Official MOPS data shows August 2026 revenue up 3.2% YoY and cumulative revenue up only 0.4%. Searches found no measured improvement or company-specific causal disclosure sufficient to establish a thesis.
 - **Driver:** UNMAPPED / WHY?
 - **Driver state:** UNVERIFIED
 - **Company transmission:** Unverified
@@ -212,12 +212,12 @@
 - **Invalidation:** Exit on loss of 76.6; thesis failure also invalidates
 - **Add trigger:** Close above 83.5 with volume >=1.2x prior median; thesis still supported and recheck R/R
 - **Main counter-evidence:** Unverified
-- **Main risk:** Unverified causal interpretation
+- **Main risk:** Exact company / driver transmission remains unverified; no entry recommendation
 - **What would make us wrong:** A price-only story or weak company transmission
 
 ### 10. 5609.TWO 中菲行 — WAIT
 
-- **WHY:** WHY unresolved: obtain company evidence before taking risk
+- **WHY:** Official MOPS data shows August 2026 revenue up 39.1% YoY and cumulative revenue up 20.9%, but no specific causal driver was disclosed or independently verified.
 - **Driver:** UNMAPPED / WHY?
 - **Driver state:** UNVERIFIED
 - **Company transmission:** Unverified
@@ -235,12 +235,12 @@
 - **Invalidation:** Exit on loss of 77.4; thesis failure also invalidates
 - **Add trigger:** Close above 80.9 with volume >=1.2x prior median; thesis still supported and recheck R/R
 - **Main counter-evidence:** Unverified
-- **Main risk:** Unverified causal interpretation
+- **Main risk:** Exact company / driver transmission remains unverified; no entry recommendation
 - **What would make us wrong:** A price-only story or weak company transmission
 
 ### 11. 2838.TW 聯邦銀 — WAIT
 
-- **WHY:** WHY unresolved: obtain company evidence before taking risk
+- **WHY:** Official MOPS data shows August 2026 revenue up 3.9% YoY and cumulative revenue up 15.8%. Searches found no verifiable event or mechanism linking the company to the nomination.
 - **Driver:** UNMAPPED / WHY?
 - **Driver state:** UNVERIFIED
 - **Company transmission:** Unverified
@@ -258,12 +258,12 @@
 - **Invalidation:** Exit on loss of 19.95; thesis failure also invalidates
 - **Add trigger:** Close above 21.45 with volume >=1.2x prior median; thesis still supported and recheck R/R
 - **Main counter-evidence:** Unverified
-- **Main risk:** Unverified causal interpretation
+- **Main risk:** Exact company / driver transmission remains unverified; no entry recommendation
 - **What would make us wrong:** A price-only story or weak company transmission
 
 ### 12. 2023.TW 燁輝 — WAIT
 
-- **WHY:** WHY unresolved: obtain company evidence before taking risk
+- **WHY:** Official MOPS data shows August 2026 revenue down 14.3% YoY and cumulative revenue down 6.7%, providing no measured improvement for a causal thesis. No company-specific catalyst was verified.
 - **Driver:** UNMAPPED / WHY?
 - **Driver state:** UNVERIFIED
 - **Company transmission:** Unverified
@@ -281,12 +281,12 @@
 - **Invalidation:** Exit on loss of 13.5; thesis failure also invalidates
 - **Add trigger:** Close above 14.3 with volume >=1.2x prior median; thesis still supported and recheck R/R
 - **Main counter-evidence:** Unverified
-- **Main risk:** Unverified causal interpretation
+- **Main risk:** Exact company / driver transmission remains unverified; no entry recommendation
 - **What would make us wrong:** A price-only story or weak company transmission
 
 ### 13. 2548.TW 華固 — WAIT
 
-- **WHY:** WHY unresolved: obtain company evidence before taking risk
+- **WHY:** Official MOPS data shows August 2026 revenue up 139.5% YoY and cumulative revenue up 105.3%, with the issuer attributing the increase to higher handover recognition. This is a project-recognition fact, but no independently verified event establishes the broader nominated driver.
 - **Driver:** UNMAPPED / WHY?
 - **Driver state:** UNVERIFIED
 - **Company transmission:** Unverified
@@ -304,12 +304,12 @@
 - **Invalidation:** Exit on loss of 92.5; thesis failure also invalidates
 - **Add trigger:** Close above 98.7 with volume >=1.2x prior median; thesis still supported and recheck R/R
 - **Main counter-evidence:** Unverified
-- **Main risk:** Unverified causal interpretation
+- **Main risk:** Exact company / driver transmission remains unverified; no entry recommendation
 - **What would make us wrong:** A price-only story or weak company transmission
 
 ### 14. 2449.TW 京元電子 — WAIT
 
-- **WHY:** WHY unresolved: obtain company evidence before taking risk
+- **WHY:** Official MOPS data shows August 2026 revenue up 31.6% YoY and cumulative revenue up 35.5%, but no specific company project, order, customer or industry mechanism was verified.
 - **Driver:** UNMAPPED / WHY?
 - **Driver state:** UNVERIFIED
 - **Company transmission:** Unverified
@@ -327,12 +327,12 @@
 - **Invalidation:** Exit on loss of 246; thesis failure also invalidates
 - **Add trigger:** Close above 287 with volume >=1.2x prior median; thesis still supported and recheck R/R
 - **Main counter-evidence:** Unverified
-- **Main risk:** Unverified causal interpretation
+- **Main risk:** Exact company / driver transmission remains unverified; no entry recommendation
 - **What would make us wrong:** A price-only story or weak company transmission
 
 ### 15. 6742.TW 澤米 — WAIT
 
-- **WHY:** WHY unresolved: obtain company evidence before taking risk
+- **WHY:** Official MOPS data shows August 2026 revenue down 6.9% YoY and cumulative revenue down 39.4%. Searches found no measured improvement or company-specific causal disclosure.
 - **Driver:** UNMAPPED / WHY?
 - **Driver state:** UNVERIFIED
 - **Company transmission:** Unverified
@@ -350,12 +350,12 @@
 - **Invalidation:** Exit on loss of 42.45; thesis failure also invalidates
 - **Add trigger:** Close above 50.15 with volume >=1.2x prior median; thesis still supported and recheck R/R
 - **Main counter-evidence:** Unverified
-- **Main risk:** Unverified causal interpretation
+- **Main risk:** Exact company / driver transmission remains unverified; no entry recommendation
 - **What would make us wrong:** A price-only story or weak company transmission
 
 ### 16. 6112.TW 邁達特 — WAIT
 
-- **WHY:** WHY unresolved: obtain company evidence before taking risk
+- **WHY:** Official MOPS data shows August 2026 revenue up 18.8% YoY and cumulative revenue up 18.3%, but no specific causal driver or company transmission was verified.
 - **Driver:** UNMAPPED / WHY?
 - **Driver state:** UNVERIFIED
 - **Company transmission:** Unverified
@@ -373,12 +373,12 @@
 - **Invalidation:** Exit on loss of 43.85; thesis failure also invalidates
 - **Add trigger:** Close above 47.65 with volume >=1.2x prior median; thesis still supported and recheck R/R
 - **Main counter-evidence:** Unverified
-- **Main risk:** Unverified causal interpretation
+- **Main risk:** Exact company / driver transmission remains unverified; no entry recommendation
 - **What would make us wrong:** A price-only story or weak company transmission
 
 ### 17. 6894.TWO 衛司特 — WAIT
 
-- **WHY:** WHY unresolved: obtain company evidence before taking risk
+- **WHY:** Official MOPS data shows August 2026 revenue up 67.8% YoY and cumulative revenue up 66.8%, attributed to increased sales of electrolytic equipment and consumables, inclusion of a new business entity and expanded operating scope. The exact broader driver remains unverified.
 - **Driver:** UNMAPPED / WHY?
 - **Driver state:** UNVERIFIED
 - **Company transmission:** Unverified
@@ -396,7 +396,7 @@
 - **Invalidation:** Exit on loss of 328; thesis failure also invalidates
 - **Add trigger:** Close above 377 with volume >=1.2x prior median; thesis still supported and recheck R/R
 - **Main counter-evidence:** Unverified
-- **Main risk:** Unverified causal interpretation
+- **Main risk:** Exact company / driver transmission remains unverified; no entry recommendation
 - **What would make us wrong:** A price-only story or weak company transmission
 
 ### 18. 6179.TWO 亞通 — WAIT
