@@ -1,9 +1,9 @@
 # Alpha Hunter — Action Board
 
-- Run: `20260913T150831+0800-e625fba2`
+- Run: `20260913T214428+0800-2aa1bd21`
 - Market session: `2026-09-11`
 - Risk regime: **NORMAL**
-- Causal evidence: `V3_AUTONOMOUS_RESEARCH`
+- Causal evidence: `UNKNOWN_NO_CURRENT_RESEARCH`
 - Core rule: price nominates; company facts define exposure; independent evidence validates the driver; company evidence validates transmission; price/risk decides timing.
 - Decision counts: BUY=0 / EARLY BUY=0 / WAIT=0 / RESEARCH=179 / PASS=18
 - RESEARCH is an unresolved evidence state, not a trading recommendation.
@@ -16,7 +16,7 @@
 
 ### 1. 3176.TWO 基亞 — RESEARCH — EXPOSURE
 
-- **WHY:** Official monthly revenue increased 197.4% year over year and the issuer noted increased overseas revenue, but no source-backed product, customer, end-market, order, or revenue-mix evidence uniquely maps the company to an enabled driver taxonomy ID.
+- **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** Unmapped opportunity — research WHY
 - **Blocking stage:** EXPOSURE
 - **Driver state:** UNVERIFIED
@@ -35,12 +35,12 @@
 - **Invalidation:** Exit on loss of 34.05; thesis failure also invalidates
 - **Add trigger:** Close above 41 with volume >=1.2x prior median; thesis still supported and recheck R/R
 - **Main counter-evidence:** Unverified
-- **Main risk:** Exact company / driver transmission remains unverified; no entry recommendation
+- **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
 ### 2. 2605.TW 新興 — RESEARCH — ACTIVATION
 
-- **WHY:** Monthly revenue increased 58.8% year over year and the issuer attributed the increase to freight rates remaining high, but independent international causal evidence for the exact dry-bulk mechanism and company-specific transmission is insufficient.
+- **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** Dry-bulk freight / commodity shipping cycle
 - **Blocking stage:** ACTIVATION
 - **Driver state:** UNVERIFIED
@@ -59,12 +59,12 @@
 - **Invalidation:** Exit on loss of 34.05; thesis failure also invalidates
 - **Add trigger:** Close above 39.6 with volume >=1.2x prior median; thesis still supported and recheck R/R
 - **Main counter-evidence:** Unverified
-- **Main risk:** Exact company / driver transmission remains unverified; no entry recommendation
+- **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
 ### 3. 4967.TW 十銓 — RESEARCH — ACTIVATION
 
-- **WHY:** Monthly revenue increased 275.1% year over year, with the issuer citing higher shipment volume and selling prices, but the evidence does not establish that the improvement is specifically a NAND/storage-controller/module cycle rather than another memory product or company-specific factor.
+- **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** NAND / storage controller and module cycle
 - **Blocking stage:** ACTIVATION
 - **Driver state:** UNVERIFIED
@@ -83,12 +83,12 @@
 - **Invalidation:** Exit on loss of 268; thesis failure also invalidates
 - **Add trigger:** Close above 294 with volume >=1.2x prior median; thesis still supported and recheck R/R
 - **Main counter-evidence:** Unverified
-- **Main risk:** Exact company / driver transmission remains unverified; no entry recommendation
+- **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
 ### 4. 3044.TW 健鼎 — RESEARCH — EXPOSURE
 
-- **WHY:** Monthly revenue increased 65.5% year over year and the issuer cited customer order demand and shipments, but no source-backed product, customer, end-market, or order evidence uniquely maps the company to an enabled driver taxonomy ID.
+- **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
 - **Blocking stage:** EXPOSURE
 - **Driver state:** UNVERIFIED
@@ -107,12 +107,12 @@
 - **Invalidation:** Exit on loss of 470; thesis failure also invalidates
 - **Add trigger:** Close above 521 with volume >=1.2x prior median; thesis still supported and recheck R/R
 - **Main counter-evidence:** Unverified
-- **Main risk:** Exact company / driver transmission remains unverified; no entry recommendation
+- **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
 ### 5. 2636.TW 台驊控股 — RESEARCH — EXPOSURE
 
-- **WHY:** Monthly revenue increased 85.5% year over year and the issuer cited higher freight rates and cargo volume, but the available evidence does not distinguish container, dry-bulk, forwarding, or company-specific effects well enough for a unique taxonomy mapping.
+- **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
 - **Blocking stage:** EXPOSURE
 - **Driver state:** UNVERIFIED
@@ -131,12 +131,12 @@
 - **Invalidation:** Exit on loss of 67.5; thesis failure also invalidates
 - **Add trigger:** Close above 79.5 with volume >=1.2x prior median; thesis still supported and recheck R/R
 - **Main counter-evidence:** Unverified
-- **Main risk:** Exact company / driver transmission remains unverified; no entry recommendation
+- **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
 ### 6. 1609.TW 大亞 — RESEARCH — ACTIVATION
 
-- **WHY:** Monthly revenue increased 34.8% year over year, but no current external evidence verifies the exact copper price, inventory, trade-dislocation, or physical-tightness mechanism or its transmission to cable revenue.
+- **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** Copper commodity price / trade-inventory cycle
 - **Blocking stage:** ACTIVATION
 - **Driver state:** UNVERIFIED
@@ -155,12 +155,12 @@
 - **Invalidation:** Exit on loss of 36.5; thesis failure also invalidates
 - **Add trigger:** Close above 38.95 with volume >=1.2x prior median; thesis still supported and recheck R/R
 - **Main counter-evidence:** Unverified
-- **Main risk:** Exact company / driver transmission remains unverified; no entry recommendation
+- **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
 ### 7. 4915.TW 致伸 — RESEARCH — EXPOSURE
 
-- **WHY:** Monthly revenue increased 20.4% year over year, but no source-backed product, customer, end-market, order, or revenue-mix evidence uniquely maps the company to an enabled driver taxonomy ID.
+- **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
 - **Blocking stage:** EXPOSURE
 - **Driver state:** UNVERIFIED
@@ -179,12 +179,12 @@
 - **Invalidation:** Exit on loss of 58.7; thesis failure also invalidates
 - **Add trigger:** Close above 63.3 with volume >=1.2x prior median; thesis still supported and recheck R/R
 - **Main counter-evidence:** Unverified
-- **Main risk:** Exact company / driver transmission remains unverified; no entry recommendation
+- **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
 ### 8. 6150.TWO 撼訊 — RESEARCH — EXPOSURE
 
-- **WHY:** Monthly revenue declined 21.3% year over year and cumulative revenue declined 26.5%; no source-backed evidence identifies a unique enabled driver or explains the observed company-specific movement.
+- **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
 - **Blocking stage:** EXPOSURE
 - **Driver state:** UNVERIFIED
@@ -203,12 +203,12 @@
 - **Invalidation:** Exit on loss of 58.3; thesis failure also invalidates
 - **Add trigger:** Close above 64.2 with volume >=1.2x prior median; thesis still supported and recheck R/R
 - **Main counter-evidence:** Unverified
-- **Main risk:** Exact company / driver transmission remains unverified; no entry recommendation
+- **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
 ### 9. 4951.TWO 精拓科 — RESEARCH — EXPOSURE
 
-- **WHY:** Monthly revenue was only 3.2% above the prior year and cumulative revenue was nearly flat; no source-backed product, customer, end-market, or order evidence uniquely maps the company to an enabled driver taxonomy ID.
+- **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
 - **Blocking stage:** EXPOSURE
 - **Driver state:** UNVERIFIED
@@ -227,12 +227,12 @@
 - **Invalidation:** Exit on loss of 76.6; thesis failure also invalidates
 - **Add trigger:** Close above 83.5 with volume >=1.2x prior median; thesis still supported and recheck R/R
 - **Main counter-evidence:** Unverified
-- **Main risk:** Exact company / driver transmission remains unverified; no entry recommendation
+- **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
 ### 10. 5609.TWO 中菲行 — RESEARCH — EXPOSURE
 
-- **WHY:** Monthly revenue increased 39.1% year over year, but no evidence separates container freight, air freight, forwarding volume, or company-specific factors sufficiently to select one enabled driver.
+- **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
 - **Blocking stage:** EXPOSURE
 - **Driver state:** UNVERIFIED
@@ -251,12 +251,12 @@
 - **Invalidation:** Exit on loss of 77.4; thesis failure also invalidates
 - **Add trigger:** Close above 80.9 with volume >=1.2x prior median; thesis still supported and recheck R/R
 - **Main counter-evidence:** Unverified
-- **Main risk:** Exact company / driver transmission remains unverified; no entry recommendation
+- **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
 ### 11. 2838.TW 聯邦銀 — RESEARCH — EXPOSURE
 
-- **WHY:** Monthly revenue increased 3.9% year over year, but no source-backed evidence identifies whether the relevant mechanism is NIM, credit, loan growth, fees, or a company-specific event.
+- **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
 - **Blocking stage:** EXPOSURE
 - **Driver state:** UNVERIFIED
@@ -275,12 +275,12 @@
 - **Invalidation:** Exit on loss of 19.95; thesis failure also invalidates
 - **Add trigger:** Close above 21.45 with volume >=1.2x prior median; thesis still supported and recheck R/R
 - **Main counter-evidence:** Unverified
-- **Main risk:** Exact company / driver transmission remains unverified; no entry recommendation
+- **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
 ### 12. 2023.TW 燁輝 — RESEARCH — EXPOSURE
 
-- **WHY:** Monthly revenue declined 14.3% year over year and cumulative revenue declined 6.7%; no source-backed evidence uniquely identifies an enabled steel, commodity, or downstream-demand driver.
+- **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
 - **Blocking stage:** EXPOSURE
 - **Driver state:** UNVERIFIED
@@ -299,7 +299,7 @@
 - **Invalidation:** Exit on loss of 13.5; thesis failure also invalidates
 - **Add trigger:** Close above 14.3 with volume >=1.2x prior median; thesis still supported and recheck R/R
 - **Main counter-evidence:** Unverified
-- **Main risk:** Exact company / driver transmission remains unverified; no entry recommendation
+- **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
 - 5 additional research-eligible candidates remain in the canonical JSON ledger.
