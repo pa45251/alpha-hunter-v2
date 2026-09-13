@@ -28,13 +28,7 @@ def _read_json(path: Path) -> dict[str, Any]:
 
 
 def build_research_handoff(out_dir: str | Path = "output") -> dict[str, Any]:
-    """Build the terminal, non-circular handoff for the Research Layer.
-
-    The manifest cryptographically authenticates scanner outputs. canonical_gate.py
-    validates that manifest and produces gate_report.json + research_packet.json.
-    This terminal handoff then hashes those three already-finalized artifacts. Nothing
-    upstream hashes research_handoff.json, so there is no circular hash dependency.
-    """
+    """Build the terminal, non-circular handoff for the Research Layer."""
     out = Path(out_dir)
     manifest_path = out / "manifest.json"
     gate_path = out / "gate_report.json"
@@ -142,6 +136,8 @@ def build_research_handoff(out_dir: str | Path = "output") -> dict[str, Any]:
 def company_research_targets(out: Path = Path('output'), limit: int | None = None, *, research_only: bool = True) -> list[dict]:
     """Select decision-changing gaps; legacy limit never truncates nominations."""
     import pandas as pd
+    from driver_gates import sealed_csv
+
     manifest = _read_json(out / 'manifest.json')
     run_id = manifest['run_id']
     frames = []
@@ -157,10 +153,15 @@ def company_research_targets(out: Path = Path('output'), limit: int | None = Non
             x['ticker'] = x['taiwan_ticker']
         if 'ticker' in x:
             frames.append(x)
+
+    # taiwan_candidates.csv is already an authoritative manifest-hashed snapshot. Older
+    # scanner versions did not stamp run_id into the CSV itself; filtering a missing run_id
+    # silently deleted every otherwise-valid unmapped candidate. Consume the sealed file
+    # instead: its manifest hash is the lineage authority, and sealed_csv additionally checks
+    # run_id when a future scanner version includes that column.
     candidates_path = out / 'taiwan_candidates.csv'
     if candidates_path.exists():
-        candidates = pd.read_csv(candidates_path)
-        candidates = candidates[candidates.get('run_id', pd.Series('', index=candidates.index)).astype(str).eq(run_id)]
+        candidates = sealed_csv('taiwan_candidates.csv', out)
         mapped = {str(t) for f in frames for t in f['ticker']}
         candidates = candidates[~candidates.ticker.astype(str).isin(mapped)].copy()
         candidates['driver_id'] = 'UNMAPPED_OPPORTUNITY'
@@ -169,11 +170,13 @@ def company_research_targets(out: Path = Path('output'), limit: int | None = Non
         frames.append(candidates)
     if not frames:
         return []
+
     x = pd.concat(frames, ignore_index=True)
     x['research_priority'] = pd.to_numeric(x.get('reverse_research_priority', pd.Series(index=x.index, dtype=float)), errors='coerce').fillna(
         pd.to_numeric(x.get('research_priority_score', pd.Series(index=x.index, dtype=float)), errors='coerce')).fillna(0)
     x['_extended'] = x['reaction_state'].isin(['EXTENDED', 'BROKEN'])
     x = x.sort_values(['_extended','research_priority'], ascending=[True,False]).drop_duplicates(['ticker','driver_id'])
+
     from driver_gates import attach_price_gates, thesis_gates
     from opportunity_advisory import price_plan
     from canonical_evidence import read_evidence
@@ -185,6 +188,7 @@ def company_research_targets(out: Path = Path('output'), limit: int | None = Non
             'global_peer_evidence','transmission_gap_proxy','economic_role','research_priority','bias20','ret_5d']
     records = x[[c for c in cols if c in x]].astype(object).where(pd.notna(x[[c for c in cols if c in x]]), None).to_dict('records')
     records = attach_price_gates(records, out)
+
     current_research = {}
     research_path = out / 'research_result_v3.json'
     if research_path.exists():
@@ -211,9 +215,8 @@ def company_research_targets(out: Path = Path('output'), limit: int | None = Non
                 rejected.add(r['driver_id'])
         except (ValueError, TypeError):
             continue
-    # A known global mapping on any nominated edge prevents an unmapped local escape.
+
     global_tickers = {c['ticker'] for c in records if c.get('driver_id') != 'UNMAPPED_OPPORTUNITY'}
-    from driver_gates import sealed_csv
     try:
         graph = sealed_csv('structural_exposure_graph.csv', out)
         global_codes = set(graph['taiwan_code'].astype(str).str.split('.').str[0].str.zfill(4))
@@ -229,7 +232,6 @@ def company_research_targets(out: Path = Path('output'), limit: int | None = Non
         c['research_eligible'] = c['entry_research_ready'] and c['research_task'] not in {'NONE','WAIT_FOR_MARKET_DATA'}
         if not c['entry_research_ready'] and c['missing_gate'] != 'GLOBAL_REJECTED':
             c['research_task'] = 'WAIT_FOR_ENTRY'
-    # The board retains all states; the research lane consumes only actionable gaps.
     return [c for c in records if c['research_eligible']] if research_only else records
 
 
@@ -239,7 +241,6 @@ def decision_research_handoff(out: Path = Path('output')) -> dict:
     eligible = [c for c in all_candidates if c['research_eligible']]
     driver_ids = {c['driver_id'] for c in eligible if c['missing_gate'] == 'CAUSAL_UNVERIFIED'}
     from driver_gates import sealed_csv
-    # The packet's Top-30 is a presentation summary, not a nomination authority.
     queue = (sealed_csv('causal_research_queue.csv', out).to_dict('records')
              if (out / 'causal_research_queue.csv').exists() else packet.get('research_queue_top30', []))
     drivers = [r for r in queue if r['driver_id'] in driver_ids]
