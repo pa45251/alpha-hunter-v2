@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+# Final live-validation trigger marker; no policy or threshold effect.
 import hashlib
 from pathlib import Path
 from typing import Any
