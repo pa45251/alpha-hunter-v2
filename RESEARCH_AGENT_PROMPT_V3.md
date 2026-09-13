@@ -7,7 +7,9 @@ PRICE CANNOT CREATE CAUSALITY.
 Price, returns, relative strength, technical patterns, Taiwan price reaction, or scanner ranking may nominate a driver for research but may never be supporting causal evidence.
 
 ## Input
-The workflow appends an authoritative compact handoff containing only decision-changing evidence gaps, selected by deterministic gates. Research those driver targets in order, and the separately nominated company_research_targets for the advisory extension below. Do not invent or substitute driver IDs.
+The workflow appends an authoritative compact handoff containing only decision-changing evidence gaps, selected by deterministic gates. Research those driver targets in order, and the separately nominated company_research_targets for the advisory extension below.
+
+Do not invent driver IDs. For an already mapped company, never substitute its nominated driver. The only exception is an `UNMAPPED_OPPORTUNITY` exposure-resolution task: you may propose exactly one `resolved_driver_id`, but it MUST be selected from `allowed_driver_taxonomy` in the handoff. If no single existing driver is directly supported by company evidence, leave the exposure unresolved.
 
 ## Required search protocol
 For EACH target driver, you MUST make a real attempt to discover current external evidence before returning UNKNOWN.
@@ -37,7 +39,7 @@ ACTIVE requires time-consistent external evidence for the exact driver. INACTIVE
 UNKNOWN is valid when the evidence is genuinely insufficient, but `source_count = 0` should occur only after actual web-search attempts fail to yield any verifiable source for that driver. Never fabricate a source or date to avoid UNKNOWN.
 
 ## Evidence rules
-Every evidence item must contain:
+Every driver evidence item must contain:
 - claim
 - source_title
 - source_url (http/https)
@@ -54,6 +56,7 @@ Schema:
 {
   "contract": "ALPHA_HUNTER_V3_AUTONOMOUS_RESEARCH",
   "research_run_id": "<copy input run_id>",
+  "exposure_resolutions": [],
   "company_opportunities": [],
   "company_research_coverage": [],
   "results": [
@@ -76,12 +79,51 @@ Schema:
 
 For UNKNOWN, `primary_cause` must say what exact evidence is missing or conflicting. `source_count` is the count of unique source URLs across supporting and counter evidence. Do not fabricate a source or date.
 
+## Exposure resolution for UNMAPPED opportunities
+When `research_task=IDENTIFY_DRIVER_AND_TEST_GLOBAL_ALTERNATIVE` and the nominated driver is `UNMAPPED_OPPORTUNITY`, first answer the structural CAN question: what existing economic driver can actually change this company's revenue, ASP, shipments, orders, backlog, utilization or capex exposure?
+
+You may return an `exposure_resolutions` row ONLY when all of the following hold:
+1. `resolved_driver_id` is an exact enabled ID from `allowed_driver_taxonomy`.
+2. Current company-specific non-price evidence directly connects the company's products, customers, end-market, orders, shipments, pricing or revenue mix to that driver.
+3. The mapping is more specific than a broad fashionable theme. Generic AI, semiconductor, energy or biotech association is insufficient.
+4. You considered plausible alternative existing drivers and still found one uniquely best-supported mapping.
+5. You do not claim that the driver is ACTIVE yet. Exposure resolution only answers CAN; activation remains a later gate.
+
+Exposure-resolution object:
+```json
+{
+  "ticker": "EXACT_NOMINATED_TICKER",
+  "nominated_driver_id": "UNMAPPED_OPPORTUNITY",
+  "resolved_driver_id": "EXACT_EXISTING_DRIVER_ID",
+  "research_run_id": "EXACT_HANDOFF_RUN_ID",
+  "mechanism": "How the company's actual business is economically exposed to this driver",
+  "company_evidence": [
+    {
+      "ticker": "EXACT_NOMINATED_TICKER",
+      "claim": "Company-specific non-price fact supporting the structural exposure",
+      "source_title": "Actual source title",
+      "source_url": "https://actual-prefetched-source",
+      "published_at": "ACTUAL_TIMESTAMP",
+      "available_at": "ACTUAL_OR_OBSERVED_TIMESTAMP",
+      "evidence_type": "COMPANY_PRIMARY"
+    }
+  ]
+}
+```
+
+If the evidence supports multiple possible drivers, no existing driver, or only a generic theme, do NOT force a mapping. Return `company_research_coverage` with status=UNRESOLVED and explain the ambiguity. Never create a new taxonomy ID and never edit the structural graph.
+
 Operational note: reruns must evaluate the exact checked-out branch snapshot so newly source-backed transmission edges are consumed by the downstream decision layer.
-Company opportunity advisory (separate from driver activation):
-Research each company_research_targets item, including UNMAPPED / WHY, using company_targets in the source prefetch and primary company disclosures. Return a top-level company_opportunities list. For unresolved cases, return company_research_coverage entries with ticker, driver_id, status=UNRESOLVED, and a specific missing-evidence reason; do not invent a thesis. Every nominated company must appear either in company_opportunities or company_research_coverage. Do not add a taxonomy edge. Keep driver results unchanged.
-Each company object: ticker, driver_id (exact nominated ID, even UNMAPPED_OPPORTUNITY), research_run_id, why, driver (economic mechanism in words), driver_state (DEVELOPING|CONFIRMED|REJECTED), scope (LOCAL|GLOBAL), company_transmission, rate_sensitive (boolean with economic justification in main_risk), local_scope_reason (mandatory for LOCAL), fundamental_evidence, international_evidence, counter_evidence_reviewed (boolean), major_counter_evidence (boolean), main_risk, main_counter_evidence, what_would_make_us_wrong. main_counter_evidence must state the strongest observed opposing fact or explicitly state what was searched and that none was found; do not substitute an invented fact or generic hypothetical risk.
+
+## Company opportunity advisory (separate from driver activation)
+Research each company_research_targets item using company_targets in the source prefetch and primary company disclosures. For an already mapped driver, return a top-level company_opportunities list when all required fields are supported. For unresolved cases, return company_research_coverage entries with ticker, driver_id, status=UNRESOLVED, and a specific missing-evidence reason. Every nominated company must be represented by company_opportunities, exposure_resolutions, or company_research_coverage. Do not add a taxonomy edge. Keep driver results unchanged.
+
+Each company object: ticker, driver_id (exact nominated ID), research_run_id, why, driver (economic mechanism in words), driver_state (DEVELOPING|CONFIRMED|REJECTED), scope (LOCAL|GLOBAL), company_transmission, rate_sensitive (boolean with economic justification in main_risk), local_scope_reason (mandatory for LOCAL), fundamental_evidence, international_evidence, counter_evidence_reviewed (boolean), major_counter_evidence (boolean), main_risk, main_counter_evidence, what_would_make_us_wrong. main_counter_evidence must state the strongest observed opposing fact or explicitly state what was searched and that none was found; do not substitute an invented fact or generic hypothetical risk.
+
 DEVELOPING means at least one measured fundamental improvement already supports the causal chain; it does not require every confirmation. CONFIRMED requires independent further operating confirmation. Never label evidence percentages as probabilities. Known mapped global driver IDs cannot be classified LOCAL to bypass international checks. LOCAL is reserved for a provisional UNMAPPED_OPPORTUNITY with a distinct company-specific economic mechanism. A LOCAL classification requires a specific company project/order/earnings mechanism; lack of international evidence alone is not a reason to declare LOCAL.
+
 Each fundamental evidence: ticker, claim, metric (REVENUE|EPS|BACKLOG|ASP|SHIPMENT|ORDER|CAPEX|UTILIZATION|PROJECT_RECOGNITION|FREIGHT_RATE|POWER_DEMAND|PRODUCTION), direction (SUPPORTS), source_title, source_url, published_at, available_at. Cite an actual measured improvement, not a generic macro narrative or price movement. Publication and availability must precede research time; prefer recent original disclosures. Evidence older than 120 days is not entry support.
+
 For GLOBAL, international_evidence must use the same schema with driver_id and same_driver=true and describe the EXACT economic mechanism. HBM is not commodity DRAM; dry bulk is not containers; a vendor beat is not automatically a Taiwan reseller benefit. Company transmission needs its own source-backed evidence. Price/entry/size/action are computed deterministically, never supplied by the model.
 
 Official monthly revenue snapshots in company_targets are original TWSE/TPEx data. Their available_at is the retrieval time, not the original issuer announcement time. Preserve available_at; never backdate knowledge using the revenue month or export date. The row contains current monthly revenue, MoM/YoY changes, cumulative growth and issuer remarks. Use these operating facts to investigate WHY; revenue growth alone does not prove a particular global driver, an EPS increase, or a company project mechanism.
@@ -110,29 +152,14 @@ If an official endpoint is unavailable after its bounded retry, report that tran
 
 rate_sensitive means sensitivity to real interest yields, long-end Treasury yields, liquidity and financing costs. It does NOT mean sensitivity to freight rates, commodity prices or product selling prices. Explain the chosen interest-rate sensitivity in main_risk for both true and false.
 
-
 Ordered driver gates (authoritative advisory contract):
 Driver -> international PRICE -> international CAUSAL -> company transmission -> entry.
 The scanner alone supplies international_price_state. Never write or override it.
-When research_task is IDENTIFY_DRIVER_AND_TEST_GLOBAL_ALTERNATIVE, identify the
-mechanism and test global alternatives first; revenue/EPS/orders alone do not
-establish LOCAL. UNKNOWN remains UNKNOWN; return unresolved coverage if needed.
-For INTERNATIONAL_CAUSAL, validate the nominated global driver before researching
-its company transmission. If rejected or unresolved, do not manufacture a company
-buy thesis. Company evidence cannot change driver identity or override any veto.
-LOCAL requires local_scope_evidence with event_type (CORPORATE_ACTION,
-REGULATORY_DECISION, TAIWAN_POLICY, COMPANY_SPECIFIC_CONTRACT),
-global_industry_not_primary=true, global_alternative_test, event_to_price_mechanism,
-event_evidence and global_alternative_evidence. Both evidence objects require the
-same source/title/metric/direction/published_at/available_at/ticker fields as company
-evidence, from distinct URLs. Explain why the specific event is primary and the
-relevant global industry alternative is not; lack of a mapped peer is not proof.
-known_global_link=true forbids this provisional LOCAL route. Do not relabel a
-known global thesis. scope may remain UNKNOWN. Existing international_evidence
-is non-price causal evidence, not international price confirmation.
-Do not research deferred_candidates. GLOBAL_REJECTED and ENTRY-only gaps do not
-need company fundamentals. Credit/time bounds are transport limits, not Top-N
-stock rankings. Return explicit unresolved coverage when evidence is insufficient.
+When research_task is IDENTIFY_DRIVER_AND_TEST_GLOBAL_ALTERNATIVE, resolve CAN only by mapping to `allowed_driver_taxonomy`; do not invent a driver. Revenue/EPS/orders alone do not establish LOCAL. UNKNOWN remains UNKNOWN when a unique existing mapping cannot be source-backed.
+For INTERNATIONAL_CAUSAL, validate the nominated global driver before researching its company transmission. If rejected or unresolved, do not manufacture a company buy thesis. Company evidence cannot change driver identity or override any veto.
+LOCAL requires local_scope_evidence with event_type (CORPORATE_ACTION, REGULATORY_DECISION, TAIWAN_POLICY, COMPANY_SPECIFIC_CONTRACT), global_industry_not_primary=true, global_alternative_test, event_to_price_mechanism, event_evidence and global_alternative_evidence. Both evidence objects require the same source/title/metric/direction/published_at/available_at/ticker fields as company evidence, from distinct URLs. Explain why the specific event is primary and the relevant global industry alternative is not; lack of a mapped peer is not proof.
+known_global_link=true forbids this provisional LOCAL route. Do not relabel a known global thesis. scope may remain UNKNOWN. Existing international_evidence is non-price causal evidence, not international price confirmation.
+Do not research deferred_candidates. GLOBAL_REJECTED and ENTRY-only gaps do not need company fundamentals. Credit/time bounds are transport limits, not Top-N stock rankings. Return explicit unresolved coverage when evidence is insufficient.
 
 Research nominations come from the full sealed canonical queue, not its Top-30 presentation summary.
 

@@ -62,18 +62,18 @@ def main() -> None:
     if not results:
         if not (research.get('company_opportunities') or research.get('company_research_coverage')):
             raise RuntimeError('V3 activation bridge research results missing')
-        # Company-only research cannot activate a canonical global driver. Explicit
-        # UNKNOWN rows preserve same-run lineage without inventing driver evidence.
         results = [dict(driver_id=d, state='UNKNOWN', confidence=0, source_count=0,
                         research_run_id=run_id) for d in sorted(queue_ids)]
 
-    # Freshness must be anchored to the deterministic validator clock, not a model-supplied
-    # researched_at timestamp. Model output can be rounded a few seconds/minutes into the future,
-    # which would otherwise create a negative activation age and silently invalidate a valid row.
     validated_at = str(research.get("validated_at_utc", "")).strip()
     validated_ts = pd.to_datetime(validated_at, utc=True, errors="coerce")
     if not validated_at or pd.isna(validated_ts):
         raise RuntimeError("V3 activation bridge missing/invalid deterministic validated_at_utc")
+
+    # Resolve only the structural CAN gate. The resolver can map an UNMAPPED company
+    # to an existing taxonomy driver, but it cannot activate that driver or grant an entry.
+    from exposure_resolution_v3 import main as resolve_exposure
+    resolve_exposure()
 
     rows = []
     seen: set[str] = set()
