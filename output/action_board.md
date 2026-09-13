@@ -5,20 +5,20 @@
 - Risk regime: **NORMAL**
 - Causal evidence: `V3_AUTONOMOUS_RESEARCH`
 - Core rule: price nominates; non-price facts establish economic exposure/activation/transmission; price/risk decides timing.
-- Company research: {'SUPPORTED': 0, 'REJECTED': 0, 'UNKNOWN_AFTER_RESEARCH': 16, 'TRANSPORT_FAILED': 0, 'SCHEMA_FAILED': 0}; completed=True
+- Company research: {'SUPPORTED': 0, 'REJECTED': 0, 'UNKNOWN_AFTER_RESEARCH': 9, 'TRANSPORT_FAILED': 5, 'SCHEMA_FAILED': 1}; completed=False
 - Trading actions: BUY=0 / EARLY BUY=0 / WAIT=0 / PASS=25
 - Research workload: FACT_CHECK=15 / OBSERVE=149 / DROP_THIS_RUN=16 / NO_RESEARCH=0
 - FACT_CHECK is the bounded model-research workload. OBSERVE/DEFERRED rows are not LLM tasks until a wake condition changes.
 
 ## Trading Decision Queue
 
-- No thesis-qualified BUY / EARLY BUY / WAIT in this snapshot.
+- Company research is incomplete. Zero qualified actions is not a market conclusion; inspect transport/schema outcomes.
 
 ## Active Fact-Check Queue
 
 ### 1. 3176.TWO 基亞 — FACT_CHECK — EXPOSURE
 
-- **WHY:** The prefetched sources do not establish a decision-changing company exposure or specific local event. Official profile evidence is limited to company identity; official website transport failed; monthly revenue is generic and cannot establish a driver mechanism.
+- **WHY:** The prefetched company sources do not provide a verified source-backed product, customer, end-market or structural economic exposure, nor a current measurable order, shipment, pricing, backlog, utilization or project-transmission fact. The official issuer website fetch failed with HTTP 403, and the remaining retrieved support and counter documents are unrelated or generic revenue data without source quotes establishing the required company facts.
 - **Driver:** Unmapped opportunity — research WHY
 - **Blocking stage:** EXPOSURE
 - **Driver state:** UNVERIFIED
@@ -43,7 +43,7 @@
 
 ### 2. 2605.TW 新興 — FACT_CHECK — ACTIVATION
 
-- **WHY:** Structural dry-bulk exposure is supported, but current company-specific transmission to the nominated dry-bulk freight driver cannot be established from the prefetched evidence. Generic monthly revenue growth and tanker fleet-expansion disclosures are insufficient.
+- **WHY:** The prefetched official company source supports structural dry-bulk exposure: the company describes itself as a dry-bulk shipping operator serving energy and steel customers and reports a fleet including Kamsarmax, Capesize and ore carriers. However, the available current company evidence concerns tanker acquisitions and a sale-and-leaseback transaction, not a measurable current dry-bulk transmission fact such as dry-bulk orders, shipments, realized freight rates, TCE, utilization, backlog or segment financial performance. The required company-specific transmission and counter-evidence facts remain unresolved.
 - **Driver:** Dry-bulk freight / commodity shipping cycle
 - **Blocking stage:** ACTIVATION
 - **Driver state:** UNVERIFIED
@@ -68,7 +68,7 @@
 
 ### 3. 4967.TW 十銓 — FACT_CHECK — ACTIVATION
 
-- **WHY:** Structural exposure is supported by the company's prefetched official website, which lists SSD, memory card, USB flash drive and memory products. However, no prefetched company document provides a current measurable fact linking 4967.TW's operating performance specifically to NAND pricing, storage-controller/module demand, inventory, storage-unit shipments or cycle-specific orders. The official August 2026 revenue disclosure attributes growth to increased shipments and higher selling prices but is generic and cannot establish NAND cycle transmission.
+- **WHY:** Structural NAND/storage exposure is supported, but current company-specific transmission into storage shipments, orders, ASP, inventory, utilization or product mix remains unverified. The available monthly revenue data is generic and cannot establish the nominated driver.
 - **Driver:** NAND / storage controller and module cycle
 - **Blocking stage:** ACTIVATION
 - **Driver state:** UNVERIFIED
@@ -93,7 +93,7 @@
 
 ### 4. 3044.TW 健鼎 — FACT_CHECK — ACTIVATION
 
-- **WHY:** The prefetched company evidence supports only broad structural exposure to servers and workstations. It does not establish AI-server products, rack shipments, ODM backlog, AI-specific orders, shipments, pricing, utilization, or another measurable transmission fact tied specifically to the AI server shipment / ODM cycle. The available monthly revenue increase is generic and cannot establish this driver.
+- **WHY:** The prefetched company evidence supports only broad structural exposure to servers/workstations. It does not establish AI-server products, AI-server customers, rack shipments, ODM backlog, AI-specific orders, or measurable company transmission to the nominated AI server shipment / ODM cycle.
 - **Driver:** AI server shipment / ODM cycle
 - **Blocking stage:** ACTIVATION
 - **Driver state:** UNVERIFIED
@@ -116,34 +116,9 @@
 - **Main risk:** Exact company / driver transmission remains unverified; no entry recommendation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 5. 2636.TW 台驊控股 — FACT_CHECK — ACTIVATION
+### 5. 1609.TW 大亞 — FACT_CHECK — ACTIVATION
 
-- **WHY:** 公司結構性海運曝險及當期運價與貨量增加均有公司 prefetched 證據；但 exact-driver 的 deterministic shared-driver prefetch 沒有可驗證的非價格證據，無法確認全球貨櫃運價或班輪利用率週期，故不能支持或拒絕該 thesis。
-- **Driver:** Container freight / liner shipping cycle
-- **Blocking stage:** ACTIVATION
-- **Driver state:** UNVERIFIED
-- **International price:** DEVELOPING
-- **International causal:** UNKNOWN
-- **Current gate:** CAUSAL_UNVERIFIED
-- **Research state:** FACT_CHECK
-- **Research question:** Is Container freight / liner shipping cycle currently changing in the real economy on non-price evidence, and what is the strongest counter-evidence?
-- **Wake condition:** SOURCE_OR_SETUP_CHANGE
-- **International evidence:** Unverified — same-driver evidence required
-- **Relative:** UNVERIFIED
-- **Regime:** UNKNOWN
-- **Technical state:** Early strength / support recovery
-- **Why price:** Worst-zone downside (71.1 - 67.5) / 71.1 = 5.06%; within 8% policy limit; Observed 120-session resistance: 2.17R before costs (technical reference, not a price target).
-- **Entry state:** ENTRY_READY
-- **Entry:** 70.7–71.1
-- **Actual price risk:** Worst-zone downside (71.1 - 67.5) / 71.1 = 5.06%; within 8% policy limit
-- **Invalidation:** Exit on loss of 67.5; thesis failure also invalidates
-- **Add trigger:** Close above 79.5 with volume >=1.2x prior median; thesis still supported and recheck R/R
-- **Main risk:** Exact company / driver transmission remains unverified; no entry recommendation
-- **What would make us wrong:** A price-only story or weak company transmission
-
-### 6. 1609.TW 大亞 — FACT_CHECK — ACTIVATION
-
-- **WHY:** Structural copper-wire exposure is supported by the issuer website, but current copper-specific company transmission and its counter-evidence cannot be established from the prefetched documents. Generic monthly revenue growth is insufficient.
+- **WHY:** The company has source-backed structural exposure to copper wire and cable products, but current copper-specific economic transmission cannot be verified from the deterministic prefetch. Generic revenue growth is insufficient, and no usable current copper-market evidence was prefetched for the shared driver.
 - **Driver:** Copper commodity price / trade-inventory cycle
 - **Blocking stage:** ACTIVATION
 - **Driver state:** UNVERIFIED
@@ -166,9 +141,9 @@
 - **Main risk:** Exact company / driver transmission remains unverified; no entry recommendation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 7. 4951.TWO 精拓科 — FACT_CHECK — EXPOSURE
+### 6. 4951.TWO 精拓科 — FACT_CHECK — EXPOSURE
 
-- **WHY:** No source-backed exact taxonomy mapping, current driver-specific company transmission, or concrete local event was established from the prefetched documents. Generic monthly revenue and broad product descriptions are insufficient.
+- **WHY:** The prefetched company disclosures identify broad products including Super I/O, interface bridges, hardware-monitoring sensors, CAN-bus transceivers, and USB Type-C power-management solutions, but do not establish a specific enabled-driver exposure, customer or end-market transmission, current orders, shipments, pricing, backlog, utilization, or other measurable driver-linked operating fact. The prefetched counter and reach results are not relevant company evidence.
 - **Driver:** UNMAPPED / WHY?
 - **Blocking stage:** EXPOSURE
 - **Driver state:** UNVERIFIED
@@ -191,9 +166,9 @@
 - **Main risk:** Exact company / driver transmission remains unverified; no entry recommendation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 8. 5609.TWO 中菲行 — FACT_CHECK — EXPOSURE
+### 7. 5609.TWO 中菲行 — FACT_CHECK — EXPOSURE
 
-- **WHY:** No prefetched company document provides the required structural exposure plus current measurable transmission or a concrete local event. Generic revenue growth cannot establish a specific economic driver.
+- **WHY:** No complete evidence-backed company opportunity can be established. Structural exposure to an enabled driver and a current measurable transmission fact are both unresolved; generic monthly revenue growth is insufficient.
 - **Driver:** UNMAPPED / WHY?
 - **Blocking stage:** EXPOSURE
 - **Driver state:** UNVERIFIED
@@ -216,9 +191,34 @@
 - **Main risk:** Exact company / driver transmission remains unverified; no entry recommendation
 - **What would make us wrong:** A price-only story or weak company transmission
 
+### 8. 2838.TW 聯邦銀 — FACT_CHECK — ACTIVATION
+
+- **WHY:** Structural exposure is source-backed, but current company-specific transmission into net interest margin, rates, credit quality, loan growth, loan pricing or funding costs cannot be established from the prefetched documents. Generic monthly revenue growth is insufficient.
+- **Driver:** Financials rate / credit / margin cycle
+- **Blocking stage:** ACTIVATION
+- **Driver state:** UNVERIFIED
+- **International price:** DEVELOPING
+- **International causal:** UNKNOWN
+- **Current gate:** CAUSAL_UNVERIFIED
+- **Research state:** FACT_CHECK
+- **Research question:** Is Financials rate / credit / margin cycle currently changing in the real economy on non-price evidence, and what is the strongest counter-evidence?
+- **Wake condition:** SOURCE_OR_SETUP_CHANGE
+- **International evidence:** Unverified — same-driver evidence required
+- **Relative:** UNVERIFIED
+- **Regime:** UNKNOWN
+- **Technical state:** Early strength / support recovery
+- **Why price:** Worst-zone downside (21 - 19.95) / 21 = 5.00%; within 8% policy limit; Observed 120-session resistance: 2.37R before costs (technical reference, not a price target).
+- **Entry state:** ENTRY_READY
+- **Entry:** 21–21
+- **Actual price risk:** Worst-zone downside (21 - 19.95) / 21 = 5.00%; within 8% policy limit
+- **Invalidation:** Exit on loss of 19.95; thesis failure also invalidates
+- **Add trigger:** Close above 21.45 with volume >=1.2x prior median; thesis still supported and recheck R/R
+- **Main risk:** Exact company / driver transmission remains unverified; no entry recommendation
+- **What would make us wrong:** A price-only story or weak company transmission
+
 ### 9. 2023.TW 燁輝 — FACT_CHECK — EXPOSURE
 
-- **WHY:** 已確認燁輝產品應用於洗衣機外殼及液晶顯示器後蓋，可解析為 CONSUMER_ELECTRONICS_CYCLE 的結構性暴露；但缺乏當期可量化公司傳導事實或具體本地事件，無法形成完整且可支持的公司機會。
+- **WHY:** No source-backed exact driver mapping, current driver-specific transmission fact, or concrete local event could be established from the deterministic company prefetch. Generic monthly revenue decline is insufficient to identify causality.
 - **Driver:** UNMAPPED / WHY?
 - **Blocking stage:** EXPOSURE
 - **Driver state:** UNVERIFIED
@@ -241,9 +241,34 @@
 - **Main risk:** Exact company / driver transmission remains unverified; no entry recommendation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 10. 2548.TW 華固 — FACT_CHECK — EXPOSURE
+### 10. 2636.TW 台驊控股 — FACT_CHECK — ACTIVATION
 
-- **WHY:** No enabled driver or specific local event can be confirmed from the prefetched company evidence. The available revenue disclosure is generic handover recognition and does not establish driver-specific transmission.
+- **WHY:** COMPANY_CLAIM_QUOTE_NOT_IN_DOCUMENT
+- **Driver:** Container freight / liner shipping cycle
+- **Blocking stage:** ACTIVATION
+- **Driver state:** UNVERIFIED
+- **International price:** DEVELOPING
+- **International causal:** UNKNOWN
+- **Current gate:** CAUSAL_UNVERIFIED
+- **Research state:** FACT_CHECK
+- **Research question:** Is Container freight / liner shipping cycle currently changing in the real economy on non-price evidence, and what is the strongest counter-evidence?
+- **Wake condition:** SOURCE_OR_SETUP_CHANGE
+- **International evidence:** Unverified — same-driver evidence required
+- **Relative:** UNVERIFIED
+- **Regime:** UNKNOWN
+- **Technical state:** Early strength / support recovery
+- **Why price:** Worst-zone downside (71.1 - 67.5) / 71.1 = 5.06%; within 8% policy limit; Observed 120-session resistance: 2.17R before costs (technical reference, not a price target).
+- **Entry state:** ENTRY_READY
+- **Entry:** 70.7–71.1
+- **Actual price risk:** Worst-zone downside (71.1 - 67.5) / 71.1 = 5.06%; within 8% policy limit
+- **Invalidation:** Exit on loss of 67.5; thesis failure also invalidates
+- **Add trigger:** Close above 79.5 with volume >=1.2x prior median; thesis still supported and recheck R/R
+- **Main risk:** Exact company / driver transmission remains unverified; no entry recommendation
+- **What would make us wrong:** A price-only story or weak company transmission
+
+### 11. 2548.TW 華固 — FACT_CHECK — EXPOSURE
+
+- **WHY:** CLI_EXIT_1
 - **Driver:** UNMAPPED / WHY?
 - **Blocking stage:** EXPOSURE
 - **Driver state:** UNVERIFIED
@@ -266,9 +291,9 @@
 - **Main risk:** Exact company / driver transmission remains unverified; no entry recommendation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 11. 2449.TW 京元電子 — FACT_CHECK — EXPOSURE
+### 12. 2449.TW 京元電子 — FACT_CHECK — EXPOSURE
 
-- **WHY:** No source-backed exact taxonomy mapping, measurable current driver transmission, or concrete local event could be verified from the prefetched company documents. The official company profile and website provide structural testing-service identity only; the monthly revenue record is generic and cannot establish a specific economic driver.
+- **WHY:** CLI_EXIT_1
 - **Driver:** UNMAPPED / WHY?
 - **Blocking stage:** EXPOSURE
 - **Driver state:** UNVERIFIED
@@ -288,31 +313,6 @@
 - **Actual price risk:** Worst-zone downside (263 - 246) / 263 = 6.46%; within 8% policy limit
 - **Invalidation:** Exit on loss of 246; thesis failure also invalidates
 - **Add trigger:** Close above 287 with volume >=1.2x prior median; thesis still supported and recheck R/R
-- **Main risk:** Exact company / driver transmission remains unverified; no entry recommendation
-- **What would make us wrong:** A price-only story or weak company transmission
-
-### 12. 6742.TW 澤米 — FACT_CHECK — EXPOSURE
-
-- **WHY:** No source-backed economic exposure or specific company event could be established from the deterministic company prefetch. The official issuer profile identifies 澤米科技股份有限公司 and the monthly revenue dataset reports generic revenue, but generic revenue does not establish a driver mechanism or company transmission.
-- **Driver:** UNMAPPED / WHY?
-- **Blocking stage:** EXPOSURE
-- **Driver state:** UNVERIFIED
-- **International price:** UNKNOWN
-- **International causal:** UNKNOWN
-- **Current gate:** DRIVER_UNKNOWN
-- **Research state:** FACT_CHECK
-- **Research question:** Which source-backed economic exposure or specific company event can materially affect 澤米, independent of its stock price?
-- **Wake condition:** SOURCE_OR_SETUP_CHANGE
-- **International evidence:** Unverified — same-driver evidence required
-- **Relative:** UNVERIFIED
-- **Regime:** UNKNOWN
-- **Technical state:** Early strength / support recovery
-- **Why price:** Worst-zone downside (45.2 - 42.45) / 45.2 = 6.08%; within 8% policy limit; Observed 120-session resistance: 10.80R before costs (technical reference, not a price target).
-- **Entry state:** ENTRY_READY
-- **Entry:** 44.8–45.2
-- **Actual price risk:** Worst-zone downside (45.2 - 42.45) / 45.2 = 6.08%; within 8% policy limit
-- **Invalidation:** Exit on loss of 42.45; thesis failure also invalidates
-- **Add trigger:** Close above 50.15 with volume >=1.2x prior median; thesis still supported and recheck R/R
 - **Main risk:** Exact company / driver transmission remains unverified; no entry recommendation
 - **What would make us wrong:** A price-only story or weak company transmission
 

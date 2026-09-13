@@ -37,11 +37,6 @@
       "failure": null
     },
     {
-      "task_id": "5d194e16513acc309b20",
-      "cache_hit": false,
-      "failure": null
-    },
-    {
       "task_id": "1f431ca62f0e4a94f958",
       "cache_hit": false,
       "failure": null
@@ -52,7 +47,7 @@
       "failure": null
     },
     {
-      "task_id": "4123e4f73f402c8242b2",
+      "task_id": "a19b37ca6a1136814a50",
       "cache_hit": false,
       "failure": null
     },
@@ -64,27 +59,43 @@
     {
       "task_id": "c336ac071256aa13d3a1",
       "cache_hit": false,
-      "failure": null
+      "failure": [
+        "TRANSPORT_FAILED",
+        "CLI_EXIT_1"
+      ]
     },
     {
       "task_id": "b587b715300f9120658b",
       "cache_hit": false,
-      "failure": null
+      "failure": [
+        "TRANSPORT_FAILED",
+        "CLI_EXIT_1"
+      ]
     },
     {
       "task_id": "72f243e93e9907646351",
       "cache_hit": false,
-      "failure": null
+      "failure": [
+        "TRANSPORT_FAILED",
+        "CLI_EXIT_1"
+      ]
     },
     {
       "task_id": "eeab5d03e0194cf9f85e",
       "cache_hit": false,
-      "failure": null
+      "failure": [
+        "TRANSPORT_FAILED",
+        "CLI_EXIT_1"
+      ]
     },
     {
       "task_id": "6e36cc24e19774212e44",
       "cache_hit": false,
-      "failure": null
+      "failure": [
+        "TRANSPORT_FAILED",
+        "CLI_EXIT_1"
+      ]
     }
-  ]
+  ],
+  "targeted_retrieval": "TARGETED_RETRIEVAL_V1"
 }
