@@ -49,11 +49,13 @@ def test_D_good_thesis_with_bad_actual_risk_waits_for_entry():
     validate_plan(row)
 
 
-def test_E_good_entry_cannot_rescue_rejected_global():
+def test_E_good_entry_cannot_rescue_weak_global_price():
     c=candidate();c['international_price_state']='REJECTED'
     row=assess(c,research(),risk(),history(),ASOF)
     assert row['risk_gate'] and row['action']=='PASS'
-    assert row['missing_gate']=='GLOBAL_REJECTED'
+    assert row['missing_gate']=='GLOBAL_PRICE_WEAK'
+    assert row['global_price_risk_veto'] is True
+    assert row['economic_driver_rejected'] is False
 
 
 @pytest.mark.parametrize('hist',[history,wide_risk_history])

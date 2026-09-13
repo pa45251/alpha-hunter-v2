@@ -3,7 +3,7 @@ from __future__ import annotations
 import hashlib
 import json
 import os
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any
 from zoneinfo import ZoneInfo
@@ -14,7 +14,7 @@ EXPECTED_BRANCH = os.getenv("GITHUB_REF_NAME", "main")
 EXPECTED_SCHEMA = "2.6"
 EXPECTED_SCANNER_PREFIX = "2.6"
 EXPOSURE_CACHE_CONTRACT = "ALPHA_HUNTER_V3_EXPOSURE_RESOLUTION_CACHE"
-EXPOSURE_CACHE_MAX_AGE_DAYS = 120
+SLOW_EXPOSURE_FALLBACK_DAYS = 365
 
 
 def _sha256(path: Path) -> str:
@@ -47,7 +47,8 @@ def _driver_taxonomy() -> dict[str, dict]:
     return rows
 
 
-def _fresh_exposure_cache(out: Path, now: datetime) -> dict[str, dict]:
+def _fresh_exposure_cache(out: Path, now: datetime) -> dict[str, list[dict]]:
+    """Return source-backed slow facts without laundering their age on cache reads."""
     path = out / 'exposure_resolution_v3.json'
     if not path.exists():
         return {}
@@ -57,40 +58,60 @@ def _fresh_exposure_cache(out: Path, now: datetime) -> dict[str, dict]:
         return {}
     if payload.get('contract') != EXPOSURE_CACHE_CONTRACT or payload.get('status') != 'PASS':
         return {}
-    result = {}
+    result: dict[str, list[dict]] = {}
+    cutoff = now.astimezone(timezone.utc)
     for row in payload.get('resolutions') or []:
-        if not isinstance(row, dict) or not row.get('ticker'):
+        if not isinstance(row, dict) or not row.get('ticker') or row.get('revoked') is True:
             continue
         try:
-            validated = datetime.fromisoformat(str(row.get('validated_at_utc')).replace('Z', '+00:00'))
-            if validated.tzinfo is None:
-                validated = validated.replace(tzinfo=timezone.utc)
-            age = (now - validated.astimezone(timezone.utc)).days
+            expires = datetime.fromisoformat(str(row.get('valid_until_utc') or '').replace('Z', '+00:00'))
+            if expires.tzinfo is None:
+                expires = expires.replace(tzinfo=timezone.utc)
         except (TypeError, ValueError):
-            continue
-        if 0 <= age <= EXPOSURE_CACHE_MAX_AGE_DAYS:
-            result[str(row['ticker'])] = row
+            try:
+                source_time = datetime.fromisoformat(str(row.get('source_available_at') or '').replace('Z', '+00:00'))
+                if source_time.tzinfo is None:
+                    source_time = source_time.replace(tzinfo=timezone.utc)
+                expires = source_time + timedelta(days=SLOW_EXPOSURE_FALLBACK_DAYS)
+            except (TypeError, ValueError):
+                continue
+        if cutoff <= expires.astimezone(timezone.utc) and row.get('source_urls'):
+            result.setdefault(str(row['ticker']), []).append(row)
     return result
 
 
 def _apply_exposure_cache(records: list[dict], out: Path, now: datetime) -> list[dict]:
+    """Expand an unmapped nomination into every still-valid source-backed exposure."""
     taxonomy = _driver_taxonomy()
     cache = _fresh_exposure_cache(out, now)
+    expanded: list[dict] = []
     for row in records:
         if row.get('driver_id') != 'UNMAPPED_OPPORTUNITY':
+            expanded.append(row)
             continue
-        cached = cache.get(str(row.get('ticker')))
-        meta = taxonomy.get(str((cached or {}).get('resolved_driver_id')))
-        if not meta:
+        cached_rows = cache.get(str(row.get('ticker')), [])
+        valid = []
+        for cached in cached_rows:
+            meta = taxonomy.get(str(cached.get('resolved_driver_id')))
+            if meta:
+                valid.append((cached, meta))
+        if not valid:
+            expanded.append(row)
             continue
-        row['original_driver_id'] = 'UNMAPPED_OPPORTUNITY'
-        row['driver_id'] = meta['driver_id']
-        row['driver_label'] = meta['driver_label']
-        row['global_theme'] = meta['global_theme']
-        row['driver_scope'] = meta['driver_scope']
-        row['exposure_resolution_status'] = 'PROVISIONAL_SOURCE_BACKED'
-        row['exposure_resolution_mechanism'] = cached.get('mechanism')
-    return records
+        for cached, meta in valid:
+            mapped = dict(row)
+            mapped['original_driver_id'] = 'UNMAPPED_OPPORTUNITY'
+            mapped['driver_id'] = meta['driver_id']
+            mapped['driver_label'] = meta['driver_label']
+            mapped['global_theme'] = meta['global_theme']
+            mapped['driver_scope'] = meta['driver_scope']
+            mapped['exposure_resolution_status'] = 'PROVISIONAL_SOURCE_BACKED'
+            mapped['exposure_resolution_mechanism'] = cached.get('mechanism')
+            mapped['exposure_source_urls'] = list(cached.get('source_urls') or [])
+            mapped['exposure_valid_until_utc'] = cached.get('valid_until_utc')
+            mapped['exposure_origin_research_run_id'] = cached.get('origin_research_run_id')
+            expanded.append(mapped)
+    return expanded
 
 
 def build_research_handoff(out_dir: str | Path = "output") -> dict[str, Any]:
@@ -177,7 +198,7 @@ def build_research_handoff(out_dir: str | Path = "output") -> dict[str, Any]:
         "gate_status": gate["gate_status"],
         "causal_rule": "PRICE_CANNOT_CREATE_CAUSALITY",
         "transport_policy": {
-            "source_identity": "GitHub repository pa45251/alpha-hunter-v2 branch main only",
+            "source_identity": f"GitHub repository {EXPECTED_REPOSITORY} branch {EXPECTED_BRANCH} only",
             "preferred_transport": "GitHub connector exact path output/research_handoff.json",
             "fallback_transport": f"https://raw.githubusercontent.com/{EXPECTED_REPOSITORY}/{EXPECTED_BRANCH}/output/research_handoff.json",
             "do_not_substitute": [
@@ -293,7 +314,7 @@ def company_research_targets(out: Path = Path('output'), limit: int | None = Non
         hist = pd.DataFrame(item['data'], columns=item['columns'], index=pd.to_datetime(item['index'])) if item else None
         c['entry_research_ready'] = bool(price_plan(hist)['price_ok'] and c.get('reaction_state') not in {'EXTENDED','BROKEN'})
         c['research_eligible'] = c['entry_research_ready'] and c['research_task'] not in {'NONE','WAIT_FOR_MARKET_DATA'}
-        if not c['entry_research_ready'] and c['missing_gate'] != 'GLOBAL_REJECTED':
+        if not c['entry_research_ready'] and c['missing_gate'] not in {'ECONOMIC_DRIVER_REJECTED', 'GLOBAL_PRICE_WEAK'}:
             c['research_task'] = 'WAIT_FOR_ENTRY'
     return [c for c in records if c['research_eligible']] if research_only else records
 

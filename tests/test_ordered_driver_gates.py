@@ -17,13 +17,16 @@ def candidate(**kw):
 
 
 @pytest.mark.parametrize('state', ['WEAK', 'WEAKENING', 'REJECTED'])
-def test_A_global_veto_beats_beautiful_company_even_without_ingest(state):
+def test_A_global_price_veto_is_not_economic_rejection(state):
     c = candidate(); c['international_price_state'] = state
     r = research(driver_state='CONFIRMED', fundamental_evidence=[evidence(), evidence(metric='EPS')])
     row = assess(c, r, risk(), history(), ASOF)
     assert row['action'] == 'PASS'
-    assert row['missing_gate'] == 'GLOBAL_REJECTED'
-    assert row['research_task'] == 'NONE'
+    assert row['missing_gate'] == 'GLOBAL_PRICE_WEAK'
+    assert row['international_causal_state'] == 'CONFIRMED'
+    assert row['economic_driver_rejected'] is False
+    assert row['global_price_risk_veto'] is True
+    assert row['research_task'] == 'WAIT_FOR_MARKET_DATA'
     assert row['planned_position_fraction'] == 0
 
 
@@ -35,7 +38,7 @@ def test_B_unknown_is_not_local_from_backlog_or_scope_reason():
         validate_company_research(r, 'run', {(c['ticker'], c['driver_id'])}, ASOF)
 
 
-def test_C_proven_independent_event_can_use_local_path():
+def test_C_proven_independent_local_event_can_coexist_with_global_exposure():
     c = candidate(); c['driver_id'] = 'UNMAPPED_OPPORTUNITY'
     r = research(driver_id=c['driver_id'], scope='LOCAL', local_scope_reason='Exclusive Taiwan award',
                  local_scope_evidence=local_proof(), international_evidence=[])
@@ -45,7 +48,11 @@ def test_C_proven_independent_event_can_use_local_path():
     assert row['driver_scope'] == 'LOCAL'
     assert row['international_price_state'] == 'NOT_REQUIRED'
     c['known_global_link'] = True
-    assert assess(c, r, risk(), history(), ASOF)['action'] == 'WAIT'
+    # A known global exposure cannot relabel that global thesis LOCAL, but it also cannot
+    # veto a separately identified UNMAPPED local-event thesis with independent proof.
+    row2 = assess(c, r, risk(), history(), ASOF)
+    assert row2['action'] == 'EARLY BUY'
+    assert row2['driver_scope'] == 'LOCAL'
 
 
 @pytest.mark.parametrize('key', ['event_evidence', 'global_alternative_evidence'])
@@ -64,6 +71,13 @@ def test_D_developing_price_and_cause_are_separate_and_allow_early_buy():
     assert assess(candidate(), research(international_evidence=[]), risk(), history(), ASOF)['missing_gate'] == 'CAUSAL_UNVERIFIED'
     c = candidate(); c.pop('international_price_state')
     assert assess(c, research(), risk(), history(), ASOF)['missing_gate'] == 'GLOBAL_PRICE_UNCONFIRMED'
+
+
+def test_economic_rejection_is_distinct_from_price_weakness():
+    row = assess(candidate(driver_rejected=True), research(driver_state='CONFIRMED'), risk(), history(), ASOF)
+    assert row['action'] == 'PASS'
+    assert row['missing_gate'] == 'ECONOMIC_DRIVER_REJECTED'
+    assert row['economic_driver_rejected'] is True
 
 
 def test_E_valid_thesis_with_extended_entry_needs_no_fundamental_research():
@@ -95,13 +109,13 @@ def sealed_fixture(out, weak=False, count=1, extended=False):
     return out
 
 
-def test_F_rejected_global_is_not_sent_to_company_or_driver_research(tmp_path):
+def test_F_weak_global_price_is_observed_not_sent_to_causal_research(tmp_path):
     out = sealed_fixture(tmp_path/'output', weak=True)
     all_rows = company_research_targets(out, research_only=False)
-    assert all_rows[0]['missing_gate'] == 'GLOBAL_REJECTED'
+    assert all_rows[0]['missing_gate'] == 'GLOBAL_PRICE_WEAK'
     plan = decision_research_handoff(out)
     assert not plan['company_research_targets'] and not plan['research_targets']
-    assert plan['deferred_candidates'][0]['research_task'] == 'NONE'
+    assert plan['deferred_candidates'][0]['research_task'] == 'WAIT_FOR_MARKET_DATA'
 
 
 def test_coverage_is_decision_gap_based_not_top_five(tmp_path):
@@ -135,7 +149,9 @@ def test_unknown_data_is_not_rejected_price():
 def test_company_cannot_forge_price_gate():
     c = candidate(); c['international_price_state'] = 'REJECTED'
     r = research(international_price_state='CONFIRMED', scope='LOCAL', local_scope_reason='Good company')
-    assert assess(c, r, risk(), history(), ASOF)['action'] == 'PASS'
+    row = assess(c, r, risk(), history(), ASOF)
+    assert row['action'] == 'PASS'
+    assert row['missing_gate'] == 'GLOBAL_PRICE_WEAK'
 
 
 def test_v2_causal_active_cannot_override_attached_price_veto():

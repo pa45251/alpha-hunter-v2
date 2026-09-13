@@ -48,8 +48,8 @@ def main() -> None:
         raise RuntimeError("V3 activation bridge missing manifest run_id")
     if research.get("contract") != "ALPHA_HUNTER_V3_VALIDATED_RESEARCH":
         raise RuntimeError("V3 activation bridge research contract mismatch")
-    if research.get("status") != "PASS":
-        raise RuntimeError(f"V3 activation bridge research status is not PASS: {research.get('status')}")
+    if research.get("status") not in {"PASS", "PARTIAL_FAIL_CLOSED"}:
+        raise RuntimeError(f"V3 activation bridge research status is not usable: {research.get('status')}")
     if str(research.get("research_run_id", "")) != run_id:
         raise RuntimeError("V3 activation bridge MIXED_SNAPSHOT_DATA: research/manifest run_id mismatch")
     if "run_id" not in queue.columns or queue.empty or not queue["run_id"].astype(str).eq(run_id).all():
@@ -60,20 +60,27 @@ def main() -> None:
     if not isinstance(results, list):
         raise RuntimeError("V3 activation bridge research results missing")
     if not results:
-        if not (research.get('company_opportunities') or research.get('company_research_coverage')):
-            raise RuntimeError('V3 activation bridge research results missing')
-        results = [dict(driver_id=d, state='UNKNOWN', confidence=0, source_count=0,
-                        research_run_id=run_id) for d in sorted(queue_ids)]
+        if not (research.get("company_opportunities") or research.get("company_research_coverage")):
+            raise RuntimeError("V3 activation bridge research results missing")
+        results = [dict(
+            driver_id=d, state="UNKNOWN", confidence=0, source_count=0,
+            research_run_id=run_id,
+        ) for d in sorted(queue_ids)]
 
     validated_at = str(research.get("validated_at_utc", "")).strip()
     validated_ts = pd.to_datetime(validated_at, utc=True, errors="coerce")
     if not validated_at or pd.isna(validated_ts):
         raise RuntimeError("V3 activation bridge missing/invalid deterministic validated_at_utc")
 
-    # Resolve only the structural CAN gate. The resolver can map an UNMAPPED company
-    # to an existing taxonomy driver, but it cannot activate that driver or grant an entry.
-    from exposure_resolution_v3 import main as resolve_exposure
-    resolve_exposure()
+    # Resolve structural exposure separately from current driver activation. Exposure
+    # cache entries retain their original source timing and may represent more than one
+    # thesis for the same company; they never activate a driver or grant an entry.
+    from exposure_resolution_multi_v4 import resolve
+    exposure_result = resolve()
+    print(
+        "Exposure cache before activation: "
+        f"status={exposure_result['status']} accepted={exposure_result['accepted']} retained={exposure_result['retained']}"
+    )
 
     rows = []
     seen: set[str] = set()
