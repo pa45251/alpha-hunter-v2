@@ -1,14 +1,14 @@
 {
   "contract": "ALPHA_HUNTER_RESEARCH_EXECUTION_V4",
   "run_id": "20260913T153722+0800-a1ec0450",
-  "research_status": "PARTIAL_FAIL_CLOSED",
+  "research_status": "PASS",
   "items": [
     {
       "thesis_id": "dbd739811243091319dc",
       "ticker": "3176.TWO",
       "driver_id": "UNMAPPED_OPPORTUNITY",
-      "outcome": "UNKNOWN_AFTER_RESEARCH",
-      "reason": "No usable prefetched company-primary source establishes a specific structural exposure, current measurable transmission fact, or concrete local event for 基亞. The official profile contains only issuer identity and the available monthly revenue record is generic revenue-only evidence; the official website fetch failed and the remaining fetched sources are unrelated or unusable.",
+      "outcome": "SCHEMA_FAILED",
+      "reason": "COMPANY_DRIVER_STATE_INVALID",
       "signature": null,
       "origin_research_run_id": "20260913T153722+0800-a1ec0450"
     },
@@ -17,7 +17,7 @@
       "ticker": "2605.TW",
       "driver_id": "DRY_BULK_FREIGHT",
       "outcome": "SCHEMA_FAILED",
-      "reason": "UNPREFETCHED_EVIDENCE_URL:DRIVER:2605.TW:DRY_BULK_FREIGHT:['https://www.techtimes.com/articles/322617/20260801/dry-bulk-shipping-faces-2027-supply-glut-hormuz-rerouting-boost-will-reverse.htm']",
+      "reason": "COMPANY_DRIVER_STATE_INVALID",
       "signature": null,
       "origin_research_run_id": "20260913T153722+0800-a1ec0450"
     },
@@ -26,16 +26,16 @@
       "ticker": "4967.TW",
       "driver_id": "NAND_STORAGE_CYCLE",
       "outcome": "SCHEMA_FAILED",
-      "reason": "COMPANY_RESEARCH_RUN_MISMATCH",
+      "reason": "COMPANY_DRIVER_STATE_INVALID",
       "signature": null,
       "origin_research_run_id": "20260913T153722+0800-a1ec0450"
     },
     {
-      "thesis_id": "2b6916caf03d05fa1729",
+      "thesis_id": "7d3698b6b83b3df6cb0d",
       "ticker": "3044.TW",
-      "driver_id": "UNMAPPED_OPPORTUNITY",
+      "driver_id": "AI_SERVER_SHIPMENTS",
       "outcome": "SCHEMA_FAILED",
-      "reason": "COMPANY_RESEARCH_RUN_MISMATCH",
+      "reason": "EXPOSURE_RESOLUTION_REQUIRES_UNMAPPED_TARGET",
       "signature": null,
       "origin_research_run_id": "20260913T153722+0800-a1ec0450"
     },
@@ -44,7 +44,7 @@
       "ticker": "2636.TW",
       "driver_id": "UNMAPPED_OPPORTUNITY",
       "outcome": "SCHEMA_FAILED",
-      "reason": "COMPANY_RESEARCH_RUN_MISMATCH",
+      "reason": "COMPANY_DRIVER_STATE_INVALID",
       "signature": null,
       "origin_research_run_id": "20260913T153722+0800-a1ec0450"
     },
@@ -53,7 +53,7 @@
       "ticker": "1609.TW",
       "driver_id": "COPPER_COMMODITY_TRADE_INVENTORY",
       "outcome": "SCHEMA_FAILED",
-      "reason": "COMPANY_RESEARCH_RUN_MISMATCH",
+      "reason": "EXPOSURE_RESOLUTION_REQUIRES_UNMAPPED_TARGET",
       "signature": null,
       "origin_research_run_id": "20260913T153722+0800-a1ec0450"
     },
@@ -62,7 +62,7 @@
       "ticker": "4915.TW",
       "driver_id": "UNMAPPED_OPPORTUNITY",
       "outcome": "SCHEMA_FAILED",
-      "reason": "AMBIGUOUS_OR_UNNOMINATED_COMPANY_IDENTITY",
+      "reason": "COMPANY_DRIVER_STATE_INVALID",
       "signature": null,
       "origin_research_run_id": "20260913T153722+0800-a1ec0450"
     },
@@ -71,7 +71,7 @@
       "ticker": "6150.TWO",
       "driver_id": "UNMAPPED_OPPORTUNITY",
       "outcome": "SCHEMA_FAILED",
-      "reason": "COMPANY_RESEARCH_RUN_MISMATCH",
+      "reason": "COMPANY_DRIVER_STATE_INVALID",
       "signature": null,
       "origin_research_run_id": "20260913T153722+0800-a1ec0450"
     },
@@ -79,8 +79,8 @@
       "thesis_id": "1f431ca62f0e4a94f958",
       "ticker": "4951.TWO",
       "driver_id": "UNMAPPED_OPPORTUNITY",
-      "outcome": "SCHEMA_FAILED",
-      "reason": "COMPANY_RESEARCH_RUN_MISMATCH",
+      "outcome": "UNKNOWN_AFTER_RESEARCH",
+      "reason": "No source-backed economic exposure or specific local event was supported by the admitted company evidence. The issuer materials describe a broad mixed semiconductor product portfolio but do not provide a measurable current transmission fact (orders, shipments, backlog, pricing, utilization or a concrete event) tied to any enabled taxonomy driver.",
       "signature": null,
       "origin_research_run_id": "20260913T153722+0800-a1ec0450"
     },
@@ -89,7 +89,7 @@
       "ticker": "5609.TWO",
       "driver_id": "UNMAPPED_OPPORTUNITY",
       "outcome": "UNKNOWN_AFTER_RESEARCH",
-      "reason": "The prefetched official profile verifies only that 5609.TWO is 中菲行國際物流股份有限公司 and provides its website. The prefetched monthly revenue record is generic revenue only and cannot establish exposure to container freight, dry-bulk freight, or another enabled driver, current transmission, or a specific local event. The official website transport failed, and the other prefetched search results are unrelated or unusable.",
+      "reason": "The prefetched official profile only identifies 中菲行國際物流股份有限公司 and its website. The available company revenue record is generic revenue-only evidence and cannot establish exposure to a specific economic driver or current transmission through orders, shipments, pricing, mix, utilization, backlog, or a concrete local event. The official website fetch failed, and the remaining search results were inaccessible, irrelevant, or non-verifiable.",
       "signature": null,
       "origin_research_run_id": "20260913T153722+0800-a1ec0450"
     },
@@ -98,7 +98,7 @@
       "ticker": "2838.TW",
       "driver_id": "UNMAPPED_OPPORTUNITY",
       "outcome": "UNKNOWN_AFTER_RESEARCH",
-      "reason": "The prefetched official profile verifies only that 2838.TW is 聯邦商業銀行股份有限公司. The available monthly revenue record is generic revenue and cannot establish a specific economic exposure, current transmission fact, or concrete local event. The issuer homepage transport failed, and the remaining prefetched search results are unrelated or unusable.",
+      "reason": "The prefetched sources verify only that 2838.TW is 聯邦商業銀行股份有限公司 and provide generic monthly revenue. They do not establish a source-backed structural exposure to an enabled driver, a measurable current transmission fact, or a specific local event. The issuer website fetch failed, and the unrelated search results are not usable company evidence.",
       "signature": null,
       "origin_research_run_id": "20260913T153722+0800-a1ec0450"
     },
@@ -107,7 +107,7 @@
       "ticker": "2023.TW",
       "driver_id": "UNMAPPED_OPPORTUNITY",
       "outcome": "SCHEMA_FAILED",
-      "reason": "COMPANY_RESEARCH_RUN_MISMATCH",
+      "reason": "COMPANY_DRIVER_STATE_INVALID",
       "signature": null,
       "origin_research_run_id": "20260913T153722+0800-a1ec0450"
     },
@@ -115,8 +115,8 @@
       "thesis_id": "c336ac071256aa13d3a1",
       "ticker": "2548.TW",
       "driver_id": "UNMAPPED_OPPORTUNITY",
-      "outcome": "SCHEMA_FAILED",
-      "reason": "COMPANY_RESEARCH_RUN_MISMATCH",
+      "outcome": "UNKNOWN_AFTER_RESEARCH",
+      "reason": "The prefetched company sources establish that 華固 is a real-estate developer with residential and commercial property projects, and that 2026 cumulative revenue increased because of higher handover recognition. They do not establish a concrete current local event, measurable order or transmission fact, or a source-backed mapping to any enabled global driver taxonomy. The support and counter search results were contaminated by unrelated documents and therefore cannot support a company thesis.",
       "signature": null,
       "origin_research_run_id": "20260913T153722+0800-a1ec0450"
     },
@@ -124,8 +124,8 @@
       "thesis_id": "b587b715300f9120658b",
       "ticker": "2449.TW",
       "driver_id": "UNMAPPED_OPPORTUNITY",
-      "outcome": "SCHEMA_FAILED",
-      "reason": "COMPANY_RESEARCH_RUN_MISMATCH",
+      "outcome": "UNKNOWN_AFTER_RESEARCH",
+      "reason": "The prefetched official company profile supports only broad semiconductor IC testing exposure, including wafer probing, final IC testing and burn-in testing. It does not identify a source-backed exposure to any exact enabled driver taxonomy ID. The official monthly revenue source reports generic revenue growth only and cannot establish current transmission through orders, shipments, pricing, mix, utilization, backlog or another driver-specific operating fact. The supplied support and counter search results were unrelated to 京元電子 and provide no usable company-specific causal evidence.",
       "signature": null,
       "origin_research_run_id": "20260913T153722+0800-a1ec0450"
     },
@@ -134,7 +134,7 @@
       "ticker": "6742.TW",
       "driver_id": "UNMAPPED_OPPORTUNITY",
       "outcome": "UNKNOWN_AFTER_RESEARCH",
-      "reason": "The prefetched company evidence does not establish a source-backed product, customer, end-market exposure, measurable current transmission fact, or concrete company-specific event. The official profile only identifies 澤米科技股份有限公司 and its website; the monthly revenue record is generic revenue and cannot establish a driver mechanism. Other fetched sources are unrelated to the company.",
+      "reason": "The prefetched official issuer profile establishes only the company identity and website. The prefetched monthly revenue record is generic revenue evidence and cannot establish structural exposure, a specific economic mechanism, current transmission, or a local company event. The issuer website transport failed, while the remaining search results are unusable snippets or unrelated pages; therefore no complete company thesis can be supported or rejected.",
       "signature": null,
       "origin_research_run_id": "20260913T153722+0800-a1ec0450"
     },
@@ -143,7 +143,7 @@
       "ticker": "6112.TW",
       "driver_id": "UNMAPPED_OPPORTUNITY",
       "outcome": "SCHEMA_FAILED",
-      "reason": "COMPANY_RESEARCH_RUN_MISMATCH",
+      "reason": "COMPANY_DRIVER_STATE_INVALID",
       "signature": null,
       "origin_research_run_id": "20260913T153722+0800-a1ec0450"
     },
@@ -152,7 +152,7 @@
       "ticker": "6894.TWO",
       "driver_id": "UNMAPPED_OPPORTUNITY",
       "outcome": "SCHEMA_FAILED",
-      "reason": "COMPANY_RESEARCH_RUN_MISMATCH",
+      "reason": "COMPANY_DRIVER_STATE_INVALID",
       "signature": null,
       "origin_research_run_id": "20260913T153722+0800-a1ec0450"
     }
