@@ -5,6 +5,7 @@ from research_repeat_guard_v4 import filter_repeats
 
 def _handoff():
     return {
+        "run_id": "run-1",
         "company_research_targets": [
             {
                 "ticker": "1111.TW",
@@ -54,6 +55,7 @@ def _signature(question, urls):
 
 def test_same_unresolved_question_and_sources_is_skipped():
     previous = {
+        "run_id": "run-1",
         "items": [{
             "thesis_id": "thesis-a",
             "outcome": "UNRESOLVED",
@@ -68,6 +70,7 @@ def test_same_unresolved_question_and_sources_is_skipped():
 
 def test_new_source_wakes_previously_unresolved_question():
     previous = {
+        "run_id": "run-1",
         "items": [{
             "thesis_id": "thesis-a",
             "outcome": "UNRESOLVED",
@@ -81,9 +84,24 @@ def test_new_source_wakes_previously_unresolved_question():
 
 def test_resolved_previous_item_is_not_silently_skipped_as_unknown():
     previous = {
+        "run_id": "run-1",
         "items": [{
             "thesis_id": "thesis-a",
             "outcome": "RESOLVED",
+            "signature": _signature("Is A active?", ["https://example.com/a"]),
+        }]
+    }
+    filtered, skipped = filter_repeats(_handoff(), _prefetch(), previous)
+    assert len(filtered["company_research_targets"]) == 2
+    assert skipped == []
+
+
+def test_old_run_cannot_be_renamed_into_current_research():
+    previous = {
+        "run_id": "old-run",
+        "items": [{
+            "thesis_id": "thesis-a",
+            "outcome": "UNRESOLVED",
             "signature": _signature("Is A active?", ["https://example.com/a"]),
         }]
     }
