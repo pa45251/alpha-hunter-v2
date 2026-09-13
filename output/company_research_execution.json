@@ -4,57 +4,90 @@
     {
       "task_id": "shared",
       "cache_hit": false,
-      "failure": null
+      "failure": [
+        "TRANSPORT_FAILED",
+        "CLI_EXIT_1"
+      ]
     },
     {
       "task_id": "dbd739811243091319dc",
       "cache_hit": false,
-      "failure": null
+      "failure": [
+        "TRANSPORT_FAILED",
+        "CLI_EXIT_1"
+      ]
     },
     {
       "task_id": "725fd0ddcafbbd6a8d90",
       "cache_hit": false,
-      "failure": null
+      "failure": [
+        "TRANSPORT_FAILED",
+        "CLI_EXIT_1"
+      ]
     },
     {
       "task_id": "830447445162a2de686b",
       "cache_hit": false,
-      "failure": null
+      "failure": [
+        "TRANSPORT_FAILED",
+        "CLI_EXIT_1"
+      ]
     },
     {
       "task_id": "7d3698b6b83b3df6cb0d",
       "cache_hit": false,
-      "failure": null
+      "failure": [
+        "TRANSPORT_FAILED",
+        "CLI_EXIT_1"
+      ]
     },
     {
       "task_id": "89533de48e0ba9fefdb1",
       "cache_hit": false,
-      "failure": null
+      "failure": [
+        "TRANSPORT_FAILED",
+        "CLI_EXIT_1"
+      ]
     },
     {
       "task_id": "aca52818bf1b820ccd7d",
       "cache_hit": false,
-      "failure": null
+      "failure": [
+        "TRANSPORT_FAILED",
+        "CLI_EXIT_1"
+      ]
     },
     {
       "task_id": "1f431ca62f0e4a94f958",
       "cache_hit": false,
-      "failure": null
+      "failure": [
+        "TRANSPORT_FAILED",
+        "CLI_EXIT_1"
+      ]
     },
     {
       "task_id": "277933895a5b30f6d534",
       "cache_hit": false,
-      "failure": null
+      "failure": [
+        "TRANSPORT_FAILED",
+        "CLI_EXIT_1"
+      ]
     },
     {
       "task_id": "a19b37ca6a1136814a50",
       "cache_hit": false,
-      "failure": null
+      "failure": [
+        "TRANSPORT_FAILED",
+        "CLI_EXIT_1"
+      ]
     },
     {
       "task_id": "5f31cf752b2e49ae2405",
       "cache_hit": false,
-      "failure": null
+      "failure": [
+        "TRANSPORT_FAILED",
+        "CLI_EXIT_1"
+      ]
     },
     {
       "task_id": "c336ac071256aa13d3a1",
@@ -97,5 +130,6 @@
       ]
     }
   ],
-  "targeted_retrieval": "TARGETED_RETRIEVAL_V1"
+  "targeted_retrieval": "TARGETED_RETRIEVAL_V1",
+  "execution_mode": "SERIAL_COMPANY_CALLS"
 }

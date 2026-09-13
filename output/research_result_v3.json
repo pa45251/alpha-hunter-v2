@@ -1,8 +1,8 @@
 {
   "contract": "ALPHA_HUNTER_V3_VALIDATED_RESEARCH",
-  "status": "PASS",
+  "status": "PARTIAL_FAIL_CLOSED",
   "research_run_id": "20260913T153722+0800-a1ec0450",
-  "validated_at_utc": "2026-09-13T12:23:09.215933+00:00",
+  "validated_at_utc": "2026-09-13T12:32:49.491500+00:00",
   "target_driver_ids": [
     "CONTAINER_FREIGHT",
     "DRY_BULK_FREIGHT",
@@ -16,165 +16,200 @@
     {
       "driver_id": "CONTAINER_FREIGHT",
       "state": "UNKNOWN",
-      "confidence": 0.68,
-      "primary_cause": "Evidence is conflicting: June reported sharply higher container rates and strong demand, while July reported falling rates as capacity increased and demand softened. The available evidence does not establish a consistent current industry-wide cycle.",
-      "industry_scope": "INDUSTRY_WIDE",
-      "supporting_evidence": [
-        {
-          "claim": "Ocean spot freight rates rose 23% week over week to $3,433 per 40-foot container, with Shanghai-to-Los Angeles rates up 31% and Shanghai-to-New York rates up 20%; the report attributed the move to strong container demand and reduced blank sailings.",
-          "source_title": "Ocean Freight Rates Surge to Start June, Kicking Off Early Peak Season",
-          "source_url": "https://wwd.com/sourcing-journal/logistics/freight-rates-early-peak-shipping-season-june-container-shipping-msc-drewry-1238997327/",
-          "published_at": "2026-06-05T06:55:00+00:00",
-          "event_date": "2026-06-05",
-          "evidence_type": "HIGH_QUALITY_REPORTING"
-        }
-      ],
-      "counter_evidence": [
-        {
-          "claim": "Container spot rates fell 4% week over week to $4,374 per 40-foot container, with Drewry attributing the decline to increased capacity and easing demand; blank sailings also declined.",
-          "source_title": "Container Spot Rates Fall as Capacity Growth Pressures Freight Rates",
-          "source_url": "https://gcaptain.com/container-spot-rates-fall-as-capacity-growth-pressures-freight-rates/",
-          "published_at": "2026-07-23T08:31:00+00:00",
-          "event_date": "2026-07-23",
-          "evidence_type": "HIGH_QUALITY_REPORTING"
-        }
-      ],
-      "source_count": 2,
+      "confidence": 0.0,
+      "primary_cause": "Autonomous research output missing or failed deterministic validation.",
+      "industry_scope": "UNKNOWN",
+      "supporting_evidence": [],
+      "counter_evidence": [],
+      "source_count": 0,
       "event_date": null,
-      "source_dates": [
-        "2026-06-05T06:55:00+00:00",
-        "2026-07-23T08:31:00+00:00"
-      ],
-      "researched_at_utc": "2026-09-13T12:22:04.958Z",
+      "source_dates": [],
+      "researched_at_utc": "2026-09-13T12:32:49.491191+00:00",
       "research_run_id": "20260913T153722+0800-a1ec0450"
     },
     {
       "driver_id": "DRY_BULK_FREIGHT",
-      "state": "ACTIVE",
-      "confidence": 0.72,
-      "primary_cause": "Capesize demand and constrained vessel availability lifted dry-bulk freight rates, with reported support from strong bulk-commodity exports and iron-ore shipment disruptions. The outlook remains exposed to a potential future supply overhang.",
-      "industry_scope": "INDUSTRY_WIDE",
-      "supporting_evidence": [
-        {
-          "claim": "The Baltic Dry Index rose 5.6% to 2,991 points, extending a four-session gain, while the Capesize market strengthened sharply on tightening Pacific ship availability, disruptions to Brazilian iron-ore exports and expected strong bulk-commodity exports.",
-          "source_title": "Dry-Bulk Shipping Rates Hit Two-Year High on Capesize Demand",
-          "source_url": "https://gcaptain.com/dry-bulk-shipping-rates-hit-two-year-high-on-capesize-demand/",
-          "published_at": "2026-05-07T00:07:00+00:00",
-          "event_date": "2026-05-07",
-          "evidence_type": "HIGH_QUALITY_REPORTING"
-        }
-      ],
-      "counter_evidence": [
-        {
-          "claim": "The dry-bulk supply-demand balance was described as supportive in 2026 but expected to weaken in 2027 as Panamax and Supramax deliveries increase and current geopolitical and weather-related capacity distortions potentially normalize.",
-          "source_title": "Dry Bulk Shipping Faces 2027 Supply Glut: BIMCO Warns Hormuz Rerouting Boost Will Reverse",
-          "source_url": "https://www.techtimes.com/articles/322617/20260801/dry-bulk-shipping-faces-2027-supply-glut-bimco-warns-hormuz-rerouting-boost-will-reverse.htm",
-          "published_at": "2026-08-01T10:36:00+00:00",
-          "event_date": "2026-08-01",
-          "evidence_type": "OTHER_NONPRICE"
-        }
-      ],
-      "source_count": 2,
-      "event_date": "2026-05-07",
-      "source_dates": [
-        "2026-05-07T00:07:00+00:00",
-        "2026-08-01T10:36:00+00:00"
-      ],
-      "researched_at_utc": "2026-09-13T12:22:04.958Z",
+      "state": "UNKNOWN",
+      "confidence": 0.0,
+      "primary_cause": "Autonomous research output missing or failed deterministic validation.",
+      "industry_scope": "UNKNOWN",
+      "supporting_evidence": [],
+      "counter_evidence": [],
+      "source_count": 0,
+      "event_date": null,
+      "source_dates": [],
+      "researched_at_utc": "2026-09-13T12:32:49.491211+00:00",
       "research_run_id": "20260913T153722+0800-a1ec0450"
     },
     {
       "driver_id": "AI_SERVER_SHIPMENTS",
       "state": "UNKNOWN",
       "confidence": 0.0,
-      "primary_cause": "No usable prefetched non-price evidence was available to confirm or refute current AI-server shipments, rack shipments, ODM backlog or server-unit demand.",
+      "primary_cause": "Autonomous research output missing or failed deterministic validation.",
       "industry_scope": "UNKNOWN",
       "supporting_evidence": [],
       "counter_evidence": [],
       "source_count": 0,
       "event_date": null,
       "source_dates": [],
-      "researched_at_utc": "2026-09-13T12:22:04.958Z",
+      "researched_at_utc": "2026-09-13T12:32:49.491216+00:00",
       "research_run_id": "20260913T153722+0800-a1ec0450"
     },
     {
       "driver_id": "NAND_STORAGE_CYCLE",
       "state": "UNKNOWN",
-      "confidence": 0.38,
-      "primary_cause": "Available sources describe long-term AI-related NAND and storage demand, but do not provide sufficiently current, direct evidence of NAND pricing, controller/module shipments, inventory or a confirmed current cycle. The evidence is therefore insufficient for activation.",
-      "industry_scope": "INDUSTRY_WIDE",
-      "supporting_evidence": [
-        {
-          "claim": "The article argues that AI inference, data retention and SSD-first architectures are creating sustained NAND-intensive demand while NAND supply expansion remains limited and cautious.",
-          "source_title": "The Next NAND Decade: Why Supply Can’t Catch Demand The Way It Used To",
-          "source_url": "https://www.forbes.com/councils/forbestechcouncil/2026/05/01/the-next-nand-decade-why-supply-cant-catch-demand-the-way-it-used-to/",
-          "published_at": "2026-05-01T03:45:00+00:00",
-          "event_date": "2026-05-01",
-          "evidence_type": "OTHER_NONPRICE"
-        },
-        {
-          "claim": "Silicon Motion was described as developing NAND flash controllers and AI-focused storage solutions, but the article expressly states that the award does not indicate future financial results.",
-          "source_title": "Silicon Motion Award Spotlights AI Storage And NAND Controller Potential",
-          "source_url": "https://finance.yahoo.com/news/silicon-motion-award-spotlights-ai-111135930.html",
-          "published_at": "2026-01-29T03:11:00+00:00",
-          "event_date": "2026-01-29",
-          "evidence_type": "OTHER_NONPRICE"
-        }
-      ],
+      "confidence": 0.0,
+      "primary_cause": "Autonomous research output missing or failed deterministic validation.",
+      "industry_scope": "UNKNOWN",
+      "supporting_evidence": [],
       "counter_evidence": [],
-      "source_count": 2,
+      "source_count": 0,
       "event_date": null,
-      "source_dates": [
-        "2026-01-29T03:11:00+00:00",
-        "2026-05-01T03:45:00+00:00"
-      ],
-      "researched_at_utc": "2026-09-13T12:22:04.958Z",
+      "source_dates": [],
+      "researched_at_utc": "2026-09-13T12:32:49.491219+00:00",
       "research_run_id": "20260913T153722+0800-a1ec0450"
     },
     {
       "driver_id": "FINANCIALS_RATE_CREDIT_CYCLE",
       "state": "UNKNOWN",
       "confidence": 0.0,
-      "primary_cause": "No usable prefetched non-price evidence was available to assess current net interest margins, rates, credit quality or loan growth.",
+      "primary_cause": "Autonomous research output missing or failed deterministic validation.",
       "industry_scope": "UNKNOWN",
       "supporting_evidence": [],
       "counter_evidence": [],
       "source_count": 0,
       "event_date": null,
       "source_dates": [],
-      "researched_at_utc": "2026-09-13T12:22:04.958Z",
+      "researched_at_utc": "2026-09-13T12:32:49.491222+00:00",
       "research_run_id": "20260913T153722+0800-a1ec0450"
     },
     {
       "driver_id": "COPPER_COMMODITY_TRADE_INVENTORY",
       "state": "UNKNOWN",
       "confidence": 0.0,
-      "primary_cause": "No usable prefetched non-price evidence was available to assess current copper exchange inventories, physical tightness, regional premia, trade dislocations or commodity pricing conditions.",
+      "primary_cause": "Autonomous research output missing or failed deterministic validation.",
       "industry_scope": "UNKNOWN",
       "supporting_evidence": [],
       "counter_evidence": [],
       "source_count": 0,
       "event_date": null,
       "source_dates": [],
-      "researched_at_utc": "2026-09-13T12:22:04.958Z",
+      "researched_at_utc": "2026-09-13T12:32:49.491224+00:00",
       "research_run_id": "20260913T153722+0800-a1ec0450"
     }
   ],
   "company_opportunities": [],
-  "company_research_errors": [
-    "COMPANY_CLAIM_QUOTE_NOT_IN_DOCUMENT"
-  ],
+  "company_research_errors": [],
   "company_research_failures": [
+    {
+      "thesis_id": "dbd739811243091319dc",
+      "ticker": "3176.TWO",
+      "driver_id": "UNMAPPED_OPPORTUNITY",
+      "event_id": "",
+      "status": "TRANSPORT_FAILED",
+      "reason_code": "TRANSPORT_FAILED",
+      "reason": "CLI_EXIT_1",
+      "research_completed": false,
+      "failure_code": "TRANSPORT_FAILED"
+    },
+    {
+      "thesis_id": "725fd0ddcafbbd6a8d90",
+      "ticker": "2605.TW",
+      "driver_id": "DRY_BULK_FREIGHT",
+      "event_id": "",
+      "status": "TRANSPORT_FAILED",
+      "reason_code": "TRANSPORT_FAILED",
+      "reason": "CLI_EXIT_1",
+      "research_completed": false,
+      "failure_code": "TRANSPORT_FAILED"
+    },
+    {
+      "thesis_id": "830447445162a2de686b",
+      "ticker": "4967.TW",
+      "driver_id": "NAND_STORAGE_CYCLE",
+      "event_id": "",
+      "status": "TRANSPORT_FAILED",
+      "reason_code": "TRANSPORT_FAILED",
+      "reason": "CLI_EXIT_1",
+      "research_completed": false,
+      "failure_code": "TRANSPORT_FAILED"
+    },
+    {
+      "thesis_id": "7d3698b6b83b3df6cb0d",
+      "ticker": "3044.TW",
+      "driver_id": "AI_SERVER_SHIPMENTS",
+      "event_id": "",
+      "status": "TRANSPORT_FAILED",
+      "reason_code": "TRANSPORT_FAILED",
+      "reason": "CLI_EXIT_1",
+      "research_completed": false,
+      "failure_code": "TRANSPORT_FAILED"
+    },
     {
       "thesis_id": "89533de48e0ba9fefdb1",
       "ticker": "2636.TW",
       "driver_id": "CONTAINER_FREIGHT",
       "event_id": "",
-      "status": "SCHEMA_FAILED",
-      "reason_code": "SCHEMA_FAILED",
-      "reason": "COMPANY_CLAIM_QUOTE_NOT_IN_DOCUMENT",
+      "status": "TRANSPORT_FAILED",
+      "reason_code": "TRANSPORT_FAILED",
+      "reason": "CLI_EXIT_1",
       "research_completed": false,
-      "failure_code": "SCHEMA_FAILED"
+      "failure_code": "TRANSPORT_FAILED"
+    },
+    {
+      "thesis_id": "aca52818bf1b820ccd7d",
+      "ticker": "1609.TW",
+      "driver_id": "COPPER_COMMODITY_TRADE_INVENTORY",
+      "event_id": "",
+      "status": "TRANSPORT_FAILED",
+      "reason_code": "TRANSPORT_FAILED",
+      "reason": "CLI_EXIT_1",
+      "research_completed": false,
+      "failure_code": "TRANSPORT_FAILED"
+    },
+    {
+      "thesis_id": "1f431ca62f0e4a94f958",
+      "ticker": "4951.TWO",
+      "driver_id": "UNMAPPED_OPPORTUNITY",
+      "event_id": "",
+      "status": "TRANSPORT_FAILED",
+      "reason_code": "TRANSPORT_FAILED",
+      "reason": "CLI_EXIT_1",
+      "research_completed": false,
+      "failure_code": "TRANSPORT_FAILED"
+    },
+    {
+      "thesis_id": "277933895a5b30f6d534",
+      "ticker": "5609.TWO",
+      "driver_id": "UNMAPPED_OPPORTUNITY",
+      "event_id": "",
+      "status": "TRANSPORT_FAILED",
+      "reason_code": "TRANSPORT_FAILED",
+      "reason": "CLI_EXIT_1",
+      "research_completed": false,
+      "failure_code": "TRANSPORT_FAILED"
+    },
+    {
+      "thesis_id": "a19b37ca6a1136814a50",
+      "ticker": "2838.TW",
+      "driver_id": "FINANCIALS_RATE_CREDIT_CYCLE",
+      "event_id": "",
+      "status": "TRANSPORT_FAILED",
+      "reason_code": "TRANSPORT_FAILED",
+      "reason": "CLI_EXIT_1",
+      "research_completed": false,
+      "failure_code": "TRANSPORT_FAILED"
+    },
+    {
+      "thesis_id": "5f31cf752b2e49ae2405",
+      "ticker": "2023.TW",
+      "driver_id": "UNMAPPED_OPPORTUNITY",
+      "event_id": "",
+      "status": "TRANSPORT_FAILED",
+      "reason_code": "TRANSPORT_FAILED",
+      "reason": "CLI_EXIT_1",
+      "research_completed": false,
+      "failure_code": "TRANSPORT_FAILED"
     },
     {
       "thesis_id": "c336ac071256aa13d3a1",
@@ -238,49 +273,49 @@
       "ticker": "3176.TWO",
       "driver_id": "UNMAPPED_OPPORTUNITY",
       "event_id": "",
-      "status": "UNKNOWN_AFTER_RESEARCH",
-      "reason_code": "UNKNOWN_AFTER_RESEARCH",
-      "reason": "The prefetched company sources do not provide a verified source-backed product, customer, end-market or structural economic exposure, nor a current measurable order, shipment, pricing, backlog, utilization or project-transmission fact. The official issuer website fetch failed with HTTP 403, and the remaining retrieved support and counter documents are unrelated or generic revenue data without source quotes establishing the required company facts.",
-      "research_completed": true
+      "status": "TRANSPORT_FAILED",
+      "reason_code": "TRANSPORT_FAILED",
+      "reason": "CLI_EXIT_1",
+      "research_completed": false
     },
     {
       "thesis_id": "725fd0ddcafbbd6a8d90",
       "ticker": "2605.TW",
       "driver_id": "DRY_BULK_FREIGHT",
       "event_id": "",
-      "status": "UNKNOWN_AFTER_RESEARCH",
-      "reason_code": "UNKNOWN_AFTER_RESEARCH",
-      "reason": "The prefetched official company source supports structural dry-bulk exposure: the company describes itself as a dry-bulk shipping operator serving energy and steel customers and reports a fleet including Kamsarmax, Capesize and ore carriers. However, the available current company evidence concerns tanker acquisitions and a sale-and-leaseback transaction, not a measurable current dry-bulk transmission fact such as dry-bulk orders, shipments, realized freight rates, TCE, utilization, backlog or segment financial performance. The required company-specific transmission and counter-evidence facts remain unresolved.",
-      "research_completed": true
+      "status": "TRANSPORT_FAILED",
+      "reason_code": "TRANSPORT_FAILED",
+      "reason": "CLI_EXIT_1",
+      "research_completed": false
     },
     {
       "thesis_id": "830447445162a2de686b",
       "ticker": "4967.TW",
       "driver_id": "NAND_STORAGE_CYCLE",
       "event_id": "",
-      "status": "UNKNOWN_AFTER_RESEARCH",
-      "reason_code": "UNKNOWN_AFTER_RESEARCH",
-      "reason": "Structural NAND/storage exposure is supported, but current company-specific transmission into storage shipments, orders, ASP, inventory, utilization or product mix remains unverified. The available monthly revenue data is generic and cannot establish the nominated driver.",
-      "research_completed": true
+      "status": "TRANSPORT_FAILED",
+      "reason_code": "TRANSPORT_FAILED",
+      "reason": "CLI_EXIT_1",
+      "research_completed": false
     },
     {
       "thesis_id": "7d3698b6b83b3df6cb0d",
       "ticker": "3044.TW",
       "driver_id": "AI_SERVER_SHIPMENTS",
       "event_id": "",
-      "status": "UNKNOWN_AFTER_RESEARCH",
-      "reason_code": "UNKNOWN_AFTER_RESEARCH",
-      "reason": "The prefetched company evidence supports only broad structural exposure to servers/workstations. It does not establish AI-server products, AI-server customers, rack shipments, ODM backlog, AI-specific orders, or measurable company transmission to the nominated AI server shipment / ODM cycle.",
-      "research_completed": true
+      "status": "TRANSPORT_FAILED",
+      "reason_code": "TRANSPORT_FAILED",
+      "reason": "CLI_EXIT_1",
+      "research_completed": false
     },
     {
       "thesis_id": "89533de48e0ba9fefdb1",
       "ticker": "2636.TW",
       "driver_id": "CONTAINER_FREIGHT",
       "event_id": "",
-      "status": "SCHEMA_FAILED",
-      "reason_code": "SCHEMA_FAILED",
-      "reason": "COMPANY_CLAIM_QUOTE_NOT_IN_DOCUMENT",
+      "status": "TRANSPORT_FAILED",
+      "reason_code": "TRANSPORT_FAILED",
+      "reason": "CLI_EXIT_1",
       "research_completed": false
     },
     {
@@ -288,50 +323,50 @@
       "ticker": "1609.TW",
       "driver_id": "COPPER_COMMODITY_TRADE_INVENTORY",
       "event_id": "",
-      "status": "UNKNOWN_AFTER_RESEARCH",
-      "reason_code": "UNKNOWN_AFTER_RESEARCH",
-      "reason": "The company has source-backed structural exposure to copper wire and cable products, but current copper-specific economic transmission cannot be verified from the deterministic prefetch. Generic revenue growth is insufficient, and no usable current copper-market evidence was prefetched for the shared driver.",
-      "research_completed": true
+      "status": "TRANSPORT_FAILED",
+      "reason_code": "TRANSPORT_FAILED",
+      "reason": "CLI_EXIT_1",
+      "research_completed": false
     },
     {
       "thesis_id": "1f431ca62f0e4a94f958",
       "ticker": "4951.TWO",
       "driver_id": "UNMAPPED_OPPORTUNITY",
       "event_id": "",
-      "status": "UNKNOWN_AFTER_RESEARCH",
-      "reason_code": "UNKNOWN_AFTER_RESEARCH",
-      "reason": "The prefetched company disclosures identify broad products including Super I/O, interface bridges, hardware-monitoring sensors, CAN-bus transceivers, and USB Type-C power-management solutions, but do not establish a specific enabled-driver exposure, customer or end-market transmission, current orders, shipments, pricing, backlog, utilization, or other measurable driver-linked operating fact. The prefetched counter and reach results are not relevant company evidence.",
-      "research_completed": true
+      "status": "TRANSPORT_FAILED",
+      "reason_code": "TRANSPORT_FAILED",
+      "reason": "CLI_EXIT_1",
+      "research_completed": false
     },
     {
       "thesis_id": "277933895a5b30f6d534",
       "ticker": "5609.TWO",
       "driver_id": "UNMAPPED_OPPORTUNITY",
       "event_id": "",
-      "status": "UNKNOWN_AFTER_RESEARCH",
-      "reason_code": "UNKNOWN_AFTER_RESEARCH",
-      "reason": "No complete evidence-backed company opportunity can be established. Structural exposure to an enabled driver and a current measurable transmission fact are both unresolved; generic monthly revenue growth is insufficient.",
-      "research_completed": true
+      "status": "TRANSPORT_FAILED",
+      "reason_code": "TRANSPORT_FAILED",
+      "reason": "CLI_EXIT_1",
+      "research_completed": false
     },
     {
       "thesis_id": "a19b37ca6a1136814a50",
       "ticker": "2838.TW",
       "driver_id": "FINANCIALS_RATE_CREDIT_CYCLE",
       "event_id": "",
-      "status": "UNKNOWN_AFTER_RESEARCH",
-      "reason_code": "UNKNOWN_AFTER_RESEARCH",
-      "reason": "Structural exposure is source-backed, but current company-specific transmission into net interest margin, rates, credit quality, loan growth, loan pricing or funding costs cannot be established from the prefetched documents. Generic monthly revenue growth is insufficient.",
-      "research_completed": true
+      "status": "TRANSPORT_FAILED",
+      "reason_code": "TRANSPORT_FAILED",
+      "reason": "CLI_EXIT_1",
+      "research_completed": false
     },
     {
       "thesis_id": "5f31cf752b2e49ae2405",
       "ticker": "2023.TW",
       "driver_id": "UNMAPPED_OPPORTUNITY",
       "event_id": "",
-      "status": "UNKNOWN_AFTER_RESEARCH",
-      "reason_code": "UNKNOWN_AFTER_RESEARCH",
-      "reason": "No source-backed exact driver mapping, current driver-specific transmission fact, or concrete local event could be established from the deterministic company prefetch. Generic monthly revenue decline is insufficient to identify causality.",
-      "research_completed": true
+      "status": "TRANSPORT_FAILED",
+      "reason_code": "TRANSPORT_FAILED",
+      "reason": "CLI_EXIT_1",
+      "research_completed": false
     },
     {
       "thesis_id": "c336ac071256aa13d3a1",
@@ -390,9 +425,9 @@
     "counts": {
       "SUPPORTED": 0,
       "REJECTED": 0,
-      "UNKNOWN_AFTER_RESEARCH": 9,
-      "TRANSPORT_FAILED": 5,
-      "SCHEMA_FAILED": 1
+      "UNKNOWN_AFTER_RESEARCH": 0,
+      "TRANSPORT_FAILED": 15,
+      "SCHEMA_FAILED": 0
     },
     "exhaustive": true,
     "research_complete": false
