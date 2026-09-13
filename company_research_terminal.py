@@ -82,3 +82,11 @@ def finalize(targets, opportunities, coverage, failures, default_failure=None):
                    counts={s: counts[s] for s in OUTCOMES},
                    exhaustive=True, research_complete=all(r['research_completed'] for r in terminal))
     return accepted, terminal, summary, diagnostics
+
+
+def lookup(rows, target):
+    """Never reuse a sibling event's research merely because ticker/driver match."""
+    matches = [r for r in rows if isinstance(r, dict) and r.get('ticker') == target.get('ticker')
+               and r.get('driver_id') == target.get('driver_id')
+               and (r.get('event_id') or '') == (target.get('event_id') or '')]
+    return matches[0] if len(matches) == 1 else None

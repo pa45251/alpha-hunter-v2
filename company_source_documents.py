@@ -14,7 +14,7 @@ from urllib.parse import urljoin, urlparse
 import requests
 from lxml import html
 
-MAX_BYTES = 2_000_000
+MAX_BYTES = 8_000_000
 MAX_CHARS = 30000
 
 
@@ -22,6 +22,19 @@ def public_url(url):
     parsed = urlparse(url)
     if parsed.scheme not in {'http', 'https'} or not parsed.hostname or parsed.username or parsed.password:
         raise ValueError('NON_PUBLIC_SOURCE_URL')
+    host = parsed.hostname.lower().rstrip('.')
+    if host == 'localhost' or host.endswith(('.localhost', '.local', '.internal')):
+        raise ValueError('NON_PUBLIC_SOURCE_HOST')
+    try:
+        literal = ipaddress.ip_address(host)
+    except ValueError:
+        literal = None
+    if literal is not None and not literal.is_global:
+        raise ValueError('NON_PUBLIC_SOURCE_ADDRESS')
+    # With an environment HTTP proxy, DNS and destination enforcement belong to that
+    # proxy. Local DNS may intentionally be unavailable in managed execution.
+    if requests.utils.get_environ_proxies(url):
+        return url
     for info in socket.getaddrinfo(parsed.hostname, parsed.port or (443 if parsed.scheme == 'https' else 80)):
         if not ipaddress.ip_address(info[4][0]).is_global:
             raise ValueError('NON_PUBLIC_SOURCE_ADDRESS')
@@ -63,8 +76,12 @@ def acquire(source, timeout=12):
         text = ' '.join(text.split())[:MAX_CHARS]
         if len(text) < 100:
             raise ValueError('EMPTY_OR_UNREADABLE_DOCUMENT')
+        observed = _utcnow()
+        if not row.get('published_at'):
+            row['published_at'] = observed
+            row['date_basis'] = 'CURRENT_DOCUMENT_OBSERVED_AT; original publication unknown'
         row.update(document_text=text, document_sha256=hashlib.sha256(text.encode()).hexdigest(),
-                   fetched_at=_utcnow(), available_at=_utcnow(), fetch_status='FETCHED', resolved_url=url)
+                   fetched_at=observed, available_at=observed, fetch_status='FETCHED', resolved_url=url)
         row['_links'] = links
     except Exception as exc:
         row.update(fetch_status='TRANSPORT_FAILED', fetch_error=f'{type(exc).__name__}: {exc}')
@@ -105,7 +122,7 @@ def official_profiles(targets, timeout=15):
 def enrich_company_sources(targets, company_sources, timeout=12):
     """Two complementary roles, with bounded official-page traversal per issuer."""
     profiles = official_profiles(targets, timeout)
-    for target in company_sources:
+    def enrich(target):
         ticker = target['ticker']
         profile = profiles.get(ticker)
         sources = target['candidate_sources']
@@ -124,7 +141,15 @@ def enrich_company_sources(targets, company_sources, timeout=12):
                     picked = next((u for u,label in links if urlparse(u).hostname == urlparse(home).hostname
                                    and re.search(pattern, label, re.I)), None)
                     if picked:
-                        sources.append(acquire(dict(source_url=picked, source_title=lane, search_lane=lane), timeout))
+                        page = acquire(dict(source_url=picked, source_title=lane, search_lane=lane), timeout)
+                        sources.append(page)
+                        if lane == 'CURRENT_TRANSMISSION':
+                            reports = [(u,label) for u,label in page.pop('_links', [])
+                                       if '.pdf' in urlparse(u).path.lower()]
+                            # A bounded second hop gets actual issuer disclosures instead of
+                            # treating an investor-relations index as operating evidence.
+                            for report,label in reports[:2]:
+                                sources.append(acquire(dict(source_url=report, source_title=label or 'Issuer disclosure', search_lane=lane), timeout))
         seen, final = set(), []
         for source in sources:
             url = source['source_url']
@@ -144,6 +169,11 @@ def enrich_company_sources(targets, company_sources, timeout=12):
         target['candidate_source_count'] = len(final)
         target['document_count'] = sum(s.get('fetch_status') == 'FETCHED' for s in final)
         target['retrieval_status'] = 'FETCHED' if target['document_count'] else 'TRANSPORT_FAILED'
+        print(f"company documents {ticker}: fetched={target['document_count']} candidates={len(final)}", flush=True)
+        return target
+    from concurrent.futures import ThreadPoolExecutor
+    with ThreadPoolExecutor(max_workers=4) as pool:
+        company_sources = list(pool.map(enrich, company_sources))
     return company_sources
 
 

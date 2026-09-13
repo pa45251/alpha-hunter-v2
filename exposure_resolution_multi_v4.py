@@ -120,6 +120,18 @@ def resolve() -> dict:
             continue
         if not all(_valid_company_evidence(item, ticker, cutoff, allowed_urls) for item in evidence):
             continue
+        import os
+        transport = json.loads(Path(os.getenv('ALPHA_HUNTER_RESEARCH_TRANSPORT_PATH', '/tmp/research_prefetch_v3.json')).read_text())
+        if transport.get('document_contract') == 'EXACT_COMPANY_DOCUMENT_V1':
+            from company_source_documents import verify_document_claim
+            documents = {s['source_url']: s for t in transport.get('company_targets', [])
+                         if t.get('ticker') == ticker and t.get('driver_id') == 'UNMAPPED_OPPORTUNITY'
+                         for s in t.get('candidate_sources', [])}
+            try:
+                for item in evidence:
+                    verify_document_claim(item, documents, specific=True)
+            except ValueError:
+                continue
         available = [pd.to_datetime(item.get("available_at"), utc=True, errors="coerce") for item in evidence]
         available = [x for x in available if not pd.isna(x)]
         published = [pd.to_datetime(item.get("published_at"), utc=True, errors="coerce") for item in evidence]

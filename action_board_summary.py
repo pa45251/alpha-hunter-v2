@@ -77,18 +77,18 @@ def _select_opportunities(limit: int = 5) -> list[dict]:
     histories = load_histories(list({r['ticker'] for r in candidates}))
     research = load('research_result_v3.json')
     now = datetime.now(timezone.utc).isoformat()
-    accepted = {}
-    coverage = {}
+    accepted = []
+    coverage = []
     targets = {(r['ticker'], r['driver_id']) for r in candidates}
-    if (research.get('status') == 'PASS' and research.get('research_run_id') == run_id):
-        coverage = {(r.get('ticker'), r.get('driver_id')): r for r in research.get('company_research_coverage', []) if isinstance(r, dict)}
+    if (research.get('status') in {'PASS', 'PARTIAL_FAIL_CLOSED'} and research.get('research_run_id') == run_id):
+        coverage = [r for r in research.get('company_research_coverage', []) if isinstance(r, dict)]
         for r in research.get('company_opportunities') or []:
             try:
                 validate_company_research(r, run_id, targets, now)
-                accepted[(r['ticker'], r['driver_id'])] = r
+                accepted.append(r)
             except (ValueError, TypeError):
                 continue
-    rejected = {r.get('driver_id') for r in research.get('results', []) if r.get('state') == 'INACTIVE'} if research.get('research_run_id') == run_id and research.get('status') == 'PASS' else set()
+    rejected = {r.get('driver_id') for r in research.get('results', []) if r.get('state') == 'INACTIVE'} if research.get('research_run_id') == run_id and research.get('status') in {'PASS', 'PARTIAL_FAIL_CLOSED'} else set()
 
     admitted = apply_admission(decision_research_handoff(OUT), out=OUT)
     admission_by_thesis: dict[str, dict] = {}
@@ -105,11 +105,12 @@ def _select_opportunities(limit: int = 5) -> list[dict]:
         candidate['thesis_id'] = candidate.get('thesis_id') or thesis_id(
             str(candidate.get('ticker')), str(candidate.get('driver_id')), candidate.get('event_id')
         )
-        evidence = accepted.get((candidate['ticker'], candidate['driver_id']))
+        from company_research_terminal import lookup
+        evidence = lookup(accepted, candidate)
         row = assess(candidate, evidence, load('risk_regime.json'), histories.get(candidate['ticker']), now)
         from entry_risk import validate_plan
         validate_plan(row)
-        checked = coverage.get((candidate['ticker'], candidate['driver_id']))
+        checked = lookup(coverage, candidate)
         row['research_completed'] = bool(evidence or (checked and checked.get('status') in {'SUPPORTED', 'REJECTED', 'UNKNOWN_AFTER_RESEARCH'}))
         row['research_terminal_outcome'] = checked.get('status') if checked else None
         if checked and not evidence:

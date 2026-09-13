@@ -283,17 +283,17 @@ def company_research_targets(out: Path = Path('output'), limit: int | None = Non
     if research_path.exists():
         payload = _read_json(research_path)
         if (payload.get('contract') == 'ALPHA_HUNTER_V3_VALIDATED_RESEARCH'
-                and payload.get('status') == 'PASS' and payload.get('research_run_id') == run_id):
+                and payload.get('status') in {'PASS', 'PARTIAL_FAIL_CLOSED'} and payload.get('research_run_id') == run_id):
             current_research = payload
     from opportunity_advisory import validate_company_research
     from research_contract_v3 import validate_research_result
     now = now_dt.isoformat()
-    company = {}
+    company = []
     nominated = {(c['ticker'], c['driver_id']) for c in records}
     for r in current_research.get('company_opportunities', []):
         try:
             validate_company_research(r, run_id, nominated, now)
-            company[(r['ticker'], r['driver_id'])] = r
+            company.append(r)
         except (ValueError, TypeError):
             continue
     rejected = set()
@@ -314,7 +314,8 @@ def company_research_targets(out: Path = Path('output'), limit: int | None = Non
     for c in records:
         c['known_global_link'] = c['ticker'] in global_tickers or global_codes is None or c['ticker'].split('.')[0] in global_codes
         c['driver_rejected'] = c['driver_id'] in rejected
-        c.update(thesis_gates(c, company.get((c['ticker'], c['driver_id'])), now))
+        from company_research_terminal import lookup
+        c.update(thesis_gates(c, lookup(company, c), now))
         item = saved.get(c['ticker'])
         hist = pd.DataFrame(item['data'], columns=item['columns'], index=pd.to_datetime(item['index'])) if item else None
         plan = price_plan(hist)

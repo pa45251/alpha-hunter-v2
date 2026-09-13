@@ -5,6 +5,11 @@ on:
   push:
     branches: ["repair/**"]
     paths:
+      - ".github/workflows/autonomous_research_v3.yml"
+      - "company_research_*.py"
+      - "company_source_documents.py"
+      - "research_handoff.py"
+      - "research_source_prefetch_v3.py"
       - "RESEARCH_AGENT_PROMPT_V3.md"
       - "research_admission_v4.py"
       - "research_repeat_guard_v4.py"
@@ -120,6 +125,7 @@ jobs:
           has_work = bool(compact['research_targets'] or compact['company_research_targets'])
           with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
               f.write('has_work=' + str(has_work).lower() + '\n')
+          Path('output/research_admission_audit.json').write_text(json.dumps(compact.get('admission_completeness'), ensure_ascii=False, indent=2))
           print('research admission:', compact.get('admission_summary'))
           print('shared driver questions:', [x.get('driver_id') for x in compact['research_targets']])
           PY
@@ -253,6 +259,7 @@ jobs:
           path: |
             output/research_result_v3.json
             output/company_research_execution.json
+            output/research_admission_audit.json
             output/opportunity_advisory.json
             output/manifest.json
           retention-days: 14

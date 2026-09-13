@@ -95,9 +95,17 @@ def evaluate(path: Path = RESULT, transport_path: Path | None = None) -> dict:
         transport_path = Path(os.getenv("ALPHA_HUNTER_RESEARCH_TRANSPORT_PATH", str(DEFAULT_TRANSPORT)))
     transport = _transport_quality(transport_path, run_id, len(results))
 
+    terminal = data.get('company_terminal_summary') or {}
+    coverage = data.get('company_research_coverage') or []
+    from company_research_terminal import OUTCOMES
+    terminal_accounting = bool(terminal.get('exhaustive') is True
+        and terminal.get('admitted') == len(coverage)
+        and len({r.get('thesis_id') for r in coverage}) == len(coverage)
+        and all(r.get('status') in OUTCOMES for r in coverage))
+
     quality_pass = bool(
         status in {"PASS", PARTIAL_STATUS}
-        and ((len(results) > 0 and (evidence_pass or transport["transport_pass"])) or company_only_pass)
+        and ((len(results) > 0 and (evidence_pass or transport["transport_pass"])) or company_only_pass or terminal_accounting)
     )
     return {
         "status": status,
@@ -108,6 +116,8 @@ def evaluate(path: Path = RESULT, transport_path: Path | None = None) -> dict:
         "evidence_pass": evidence_pass,
         "company_only_pass": company_only_pass,
         "quality_pass": quality_pass,
+        "company_terminal_accounting_pass": terminal_accounting,
+        "company_research_complete": terminal.get("research_complete") is True,
         **transport,
     }
 

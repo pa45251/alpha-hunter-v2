@@ -87,7 +87,8 @@ def run(handoff, prefetch, cache_path, log_dir, call=invoke):
         driver_docs = [t for t in prefetch.get('targets', []) if t.get('driver_id') == target['driver_id']]
         tasks.append((identity(target), dict(base, research_targets=[], company_research_targets=[target]),
                       dict(prefetch, targets=driver_docs, company_targets=company_docs)))
-    for key, task, sources in tasks:
+    def perform(item):
+        key, task, sources = item
         # Include shared findings in the company cache dependency.
         sig = fingerprint(dict(task, shared_driver_research=merged['results']), sources)
         prior = cache['items'].get(key)
@@ -110,20 +111,31 @@ def run(handoff, prefetch, cache_path, log_dir, call=invoke):
                         raise ValueError('COMPANY_CALL_CANNOT_WRITE_SHARED_DRIVER_RESULTS')
                 except ValueError as exc:
                     payload, failure = None, ('SCHEMA_FAILED', str(exc))
+        if payload and key == 'shared' and any(payload.get(field) for field in FIELDS if field != 'results'):
+            payload, failure = None, ('SCHEMA_FAILED', 'SHARED_CALL_CANNOT_WRITE_COMPANY_RESULTS')
+        return key, task, sig, reused, payload, failure
+
+    def collect(result):
+        key, task, sig, reused, payload, failure = result
+        if not reused:
             cache['items'][key] = dict(signature=sig, payload=payload, failure=failure)
             cache_path.parent.mkdir(parents=True, exist_ok=True)
             cache_path.write_text(json.dumps(cache, ensure_ascii=False))
         if failure and key != 'shared':
             merged['company_execution_failures'].append(dict(task['company_research_targets'][0], failure_code=failure[0], reason=failure[1]))
-        if payload and key == 'shared':
-            if any(payload.get(field) for field in FIELDS if field != 'results'):
-                payload = None
-                failure = ('SCHEMA_FAILED', 'SHARED_CALL_CANNOT_WRITE_COMPANY_RESULTS')
         if payload:
             for field in FIELDS:
                 merged[field].extend(payload.get(field, []))
         ledger.append(dict(task_id=key, cache_hit=reused, failure=failure))
         print(f'research task {key}: cache_hit={reused} failure={failure}', flush=True)
+
+    if tasks and tasks[0][0] == 'shared':
+        collect(perform(tasks.pop(0)))
+    from concurrent.futures import ThreadPoolExecutor
+    with ThreadPoolExecutor(max_workers=3) as pool:
+        # map preserves nomination order regardless of completion order.
+        for result in pool.map(perform, tasks):
+            collect(result)
     merged['execution_ledger'] = ledger
     return merged
 

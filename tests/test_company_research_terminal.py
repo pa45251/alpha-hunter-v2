@@ -49,3 +49,10 @@ def test_separate_local_events_keep_identity():
 def test_unbacked_rejection_is_schema_failure():
     _, rows, _, _ = finalize([target()], [], [dict(target(), status='REJECTED', reason='Model says no')], [])
     assert rows[0]['status'] == 'SCHEMA_FAILED'
+
+
+def test_event_lookup_does_not_reuse_sibling_transmission():
+    from company_research_terminal import lookup
+    a, b = target('UNMAPPED_OPPORTUNITY','A'), target('UNMAPPED_OPPORTUNITY','B')
+    assert lookup([a], b) is None
+    assert lookup([a,b],b) == b
