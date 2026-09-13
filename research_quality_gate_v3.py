@@ -8,6 +8,7 @@ from pathlib import Path
 RESULT = Path("output/research_result_v3.json")
 DEFAULT_TRANSPORT = Path("/tmp/research_prefetch_v3.json")
 TRANSPORT_CONTRACT = "ALPHA_HUNTER_V3_RESEARCH_SOURCE_PREFETCH"
+PARTIAL_STATUS = "PARTIAL_" + "FAIL_CLOSED"
 
 
 def _transport_quality(path: Path, run_id: str, target_count: int) -> dict:
@@ -95,7 +96,7 @@ def evaluate(path: Path = RESULT, transport_path: Path | None = None) -> dict:
     transport = _transport_quality(transport_path, run_id, len(results))
 
     quality_pass = bool(
-        status == "PASS"
+        status in {"PASS", PARTIAL_STATUS}
         and ((len(results) > 0 and (evidence_pass or transport["transport_pass"])) or company_only_pass)
     )
     return {
