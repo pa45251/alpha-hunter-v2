@@ -57,7 +57,6 @@ def _extract_text(body: dict[str, Any]) -> str:
 def _write_log(log_dir: Path, call_id: str, data: dict[str, Any]) -> None:
     log_dir.mkdir(parents=True, exist_ok=True)
     safe = dict(data)
-    # Logs are local workflow diagnostics only; never persist authorization material.
     safe.pop("api_key", None)
     (log_dir / f"{call_id}.openai.json").write_text(
         json.dumps(safe, ensure_ascii=False, indent=2), encoding="utf-8"
@@ -106,14 +105,8 @@ def invoke_research(
         "reasoning": {"effort": identity["reasoning_effort"]},
         "store": False,
         "input": [
-            {
-                "role": "developer",
-                "content": [{"type": "input_text", "text": developer_instructions}],
-            },
-            {
-                "role": "user",
-                "content": [{"type": "input_text", "text": json.dumps(user_payload, ensure_ascii=False)}],
-            },
+            {"role": "developer", "content": [{"type": "input_text", "text": developer_instructions}]},
+            {"role": "user", "content": [{"type": "input_text", "text": json.dumps(user_payload, ensure_ascii=False)}]},
         ],
     }
 
@@ -131,13 +124,11 @@ def invoke_research(
 
     if not response.ok:
         code = f"OPENAI_HTTP_{response.status_code}"
-        _write_log(
-            log_dir,
-            call_id,
-            {**identity, "failure": code, "response_body": response.text[-4000:]},
-        )
+        _write_log(log_dir, call_id, {**identity, "failure": code, "response_body": response.text[-4000:]})
         return None, ("TRANSPORT_FAILED", code)
 
+    body: dict[str, Any] = {}
+    text = ""
     try:
         body = response.json()
         text = _extract_text(body)
@@ -152,7 +143,7 @@ def invoke_research(
             raise ValueError("MODEL_LIST_SCHEMA_INVALID")
         if payload.get("company_execution_failures"):
             raise ValueError("MODEL_CANNOT_ASSIGN_EXECUTION_FAILURE")
-    except (ValueError, TypeError, json.JSONDecodeError) as exc:
+    except Exception as exc:
         code = str(exc) or type(exc).__name__
         _write_log(
             log_dir,
@@ -160,8 +151,8 @@ def invoke_research(
             {
                 **identity,
                 "failure": code,
-                "response_id": (body.get("id") if isinstance(locals().get("body"), dict) else None),
-                "output_text_tail": (locals().get("text") or "")[-8000:],
+                "response_id": body.get("id") if isinstance(body, dict) else None,
+                "output_text_tail": text[-8000:],
             },
         )
         return None, ("SCHEMA_FAILED", code)
@@ -175,11 +166,6 @@ def invoke_research(
     _write_log(
         log_dir,
         call_id,
-        {
-            **identity,
-            "status": "PASS",
-            "response_id": body.get("id"),
-            "usage": body.get("usage"),
-        },
+        {**identity, "status": "PASS", "response_id": body.get("id"), "usage": body.get("usage")},
     )
     return payload, None
