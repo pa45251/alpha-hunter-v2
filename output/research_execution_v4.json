@@ -1,343 +1,161 @@
 {
   "contract": "ALPHA_HUNTER_RESEARCH_EXECUTION_V4",
   "run_id": "20260913T153722+0800-a1ec0450",
-  "research_status": "PASS",
+  "research_status": "PARTIAL_FAIL_CLOSED",
   "items": [
     {
       "thesis_id": "dbd739811243091319dc",
       "ticker": "3176.TWO",
       "driver_id": "UNMAPPED_OPPORTUNITY",
-      "outcome": "UNRESOLVED",
-      "reason": null,
-      "signature": {
-        "question": "Which source-backed economic exposure or specific company event can materially affect 基亞, independent of its stock price?",
-        "urls": [
-          "https://mopsfin.twse.com.tw/opendata/t187ap05_O.csv"
-        ],
-        "wake": [
-          "PERSISTENT",
-          "UNKNOWN",
-          true
-        ]
-      },
+      "outcome": "UNKNOWN_AFTER_RESEARCH",
+      "reason": "No usable prefetched company-primary source establishes a specific structural exposure, current measurable transmission fact, or concrete local event for 基亞. The official profile contains only issuer identity and the available monthly revenue record is generic revenue-only evidence; the official website fetch failed and the remaining fetched sources are unrelated or unusable.",
+      "signature": null,
       "origin_research_run_id": "20260913T153722+0800-a1ec0450"
     },
     {
       "thesis_id": "725fd0ddcafbbd6a8d90",
       "ticker": "2605.TW",
       "driver_id": "DRY_BULK_FREIGHT",
-      "outcome": "UNRESOLVED",
-      "reason": null,
-      "signature": {
-        "question": "Is Dry-bulk freight / commodity shipping cycle currently changing in the real economy on non-price evidence, and what is the strongest counter-evidence?",
-        "urls": [
-          "https://gcaptain.com/dry-bulk-shipping-rates-hit-two-year-high-on-capesize-demand/",
-          "https://mopsfin.twse.com.tw/opendata/t187ap05_L.csv",
-          "https://www.ad-hoc-news.de/boerse/news/ueberblick/euroseas-ltd-stock-mhy235261073-valuation-in-focus-after-strong-bulk/69529283",
-          "https://www.msn.com/en-us/money/economy/dry-bulk-shipping-faces-2027-supply-glut-bimco-warns-hormuz-rerouting-boost-will-reverse/ar-AA29coQf",
-          "https://www.msn.com/en-us/news/other/dry-bulk-shipping-faces-2027-supply-glut-bimco-warns-hormuz-rerouting-boost-will-reverse/ar-AA29coQf",
-          "https://www.techtimes.com/articles/322617/20260801/dry-bulk-shipping-faces-2027-supply-glut-bimco-warns-hormuz-rerouting-boost-will-reverse.htm"
-        ],
-        "wake": [
-          "PERSISTENT",
-          "DEVELOPING",
-          true
-        ]
-      },
+      "outcome": "SCHEMA_FAILED",
+      "reason": "UNPREFETCHED_EVIDENCE_URL:DRIVER:2605.TW:DRY_BULK_FREIGHT:['https://www.techtimes.com/articles/322617/20260801/dry-bulk-shipping-faces-2027-supply-glut-hormuz-rerouting-boost-will-reverse.htm']",
+      "signature": null,
       "origin_research_run_id": "20260913T153722+0800-a1ec0450"
     },
     {
       "thesis_id": "830447445162a2de686b",
       "ticker": "4967.TW",
       "driver_id": "NAND_STORAGE_CYCLE",
-      "outcome": "UNRESOLVED",
-      "reason": null,
-      "signature": {
-        "question": "Is NAND / storage controller and module cycle currently changing in the real economy on non-price evidence, and what is the strongest counter-evidence?",
-        "urls": [
-          "https://finance.yahoo.com/news/silicon-motion-award-spotlights-ai-111135930.html",
-          "https://mopsfin.twse.com.tw/opendata/t187ap05_L.csv",
-          "https://www.ad-hoc-news.de/boerse/news/ueberblick/phison-electronics-corp-highlights-its-nand-controller-role-as-demand-for/69725587",
-          "https://www.forbes.com/councils/forbestechcouncil/2026/05/01/the-next-nand-decade-why-supply-cant-catch-demand-the-way-it-used-to/",
-          "https://www.forbes.com/sites/tomcoughlin/2026/08/16/2026-fms-shows-storage-and-memory-market-continued-growth/"
-        ],
-        "wake": [
-          "PERSISTENT",
-          "DEVELOPING",
-          true
-        ]
-      },
+      "outcome": "SCHEMA_FAILED",
+      "reason": "COMPANY_RESEARCH_RUN_MISMATCH",
+      "signature": null,
       "origin_research_run_id": "20260913T153722+0800-a1ec0450"
     },
     {
       "thesis_id": "2b6916caf03d05fa1729",
       "ticker": "3044.TW",
       "driver_id": "UNMAPPED_OPPORTUNITY",
-      "outcome": "UNRESOLVED",
-      "reason": null,
-      "signature": {
-        "question": "Which source-backed economic exposure or specific company event can materially affect 健鼎, independent of its stock price?",
-        "urls": [
-          "https://mopsfin.twse.com.tw/opendata/t187ap05_L.csv"
-        ],
-        "wake": [
-          "CONFIRMING",
-          "UNKNOWN",
-          true
-        ]
-      },
+      "outcome": "SCHEMA_FAILED",
+      "reason": "COMPANY_RESEARCH_RUN_MISMATCH",
+      "signature": null,
       "origin_research_run_id": "20260913T153722+0800-a1ec0450"
     },
     {
       "thesis_id": "91de2ab926e80b8ee119",
       "ticker": "2636.TW",
       "driver_id": "UNMAPPED_OPPORTUNITY",
-      "outcome": "UNRESOLVED",
-      "reason": null,
-      "signature": {
-        "question": "Which source-backed economic exposure or specific company event can materially affect 台驊控股, independent of its stock price?",
-        "urls": [
-          "https://mopsfin.twse.com.tw/opendata/t187ap05_L.csv"
-        ],
-        "wake": [
-          "PERSISTENT",
-          "UNKNOWN",
-          true
-        ]
-      },
+      "outcome": "SCHEMA_FAILED",
+      "reason": "COMPANY_RESEARCH_RUN_MISMATCH",
+      "signature": null,
       "origin_research_run_id": "20260913T153722+0800-a1ec0450"
     },
     {
       "thesis_id": "aca52818bf1b820ccd7d",
       "ticker": "1609.TW",
       "driver_id": "COPPER_COMMODITY_TRADE_INVENTORY",
-      "outcome": "UNRESOLVED",
-      "reason": null,
-      "signature": {
-        "question": "Is Copper commodity price / trade-inventory cycle currently changing in the real economy on non-price evidence, and what is the strongest counter-evidence?",
-        "urls": [
-          "https://mopsfin.twse.com.tw/opendata/t187ap05_L.csv"
-        ],
-        "wake": [
-          "PRE_CONFIRMATION",
-          "DEVELOPING",
-          true
-        ]
-      },
+      "outcome": "SCHEMA_FAILED",
+      "reason": "COMPANY_RESEARCH_RUN_MISMATCH",
+      "signature": null,
       "origin_research_run_id": "20260913T153722+0800-a1ec0450"
     },
     {
       "thesis_id": "f904c2652a110a7b62ac",
       "ticker": "4915.TW",
       "driver_id": "UNMAPPED_OPPORTUNITY",
-      "outcome": "UNRESOLVED",
-      "reason": null,
-      "signature": {
-        "question": "Which source-backed economic exposure or specific company event can materially affect 致伸, independent of its stock price?",
-        "urls": [
-          "https://mopsfin.twse.com.tw/opendata/t187ap05_L.csv"
-        ],
-        "wake": [
-          "CONFIRMING",
-          "UNKNOWN",
-          true
-        ]
-      },
+      "outcome": "SCHEMA_FAILED",
+      "reason": "AMBIGUOUS_OR_UNNOMINATED_COMPANY_IDENTITY",
+      "signature": null,
       "origin_research_run_id": "20260913T153722+0800-a1ec0450"
     },
     {
       "thesis_id": "5d194e16513acc309b20",
       "ticker": "6150.TWO",
       "driver_id": "UNMAPPED_OPPORTUNITY",
-      "outcome": "UNRESOLVED",
-      "reason": null,
-      "signature": {
-        "question": "Which source-backed economic exposure or specific company event can materially affect 撼訊, independent of its stock price?",
-        "urls": [
-          "https://mopsfin.twse.com.tw/opendata/t187ap05_O.csv"
-        ],
-        "wake": [
-          "CONFIRMING",
-          "UNKNOWN",
-          true
-        ]
-      },
+      "outcome": "SCHEMA_FAILED",
+      "reason": "COMPANY_RESEARCH_RUN_MISMATCH",
+      "signature": null,
       "origin_research_run_id": "20260913T153722+0800-a1ec0450"
     },
     {
       "thesis_id": "1f431ca62f0e4a94f958",
       "ticker": "4951.TWO",
       "driver_id": "UNMAPPED_OPPORTUNITY",
-      "outcome": "UNRESOLVED",
-      "reason": null,
-      "signature": {
-        "question": "Which source-backed economic exposure or specific company event can materially affect 精拓科, independent of its stock price?",
-        "urls": [
-          "https://mopsfin.twse.com.tw/opendata/t187ap05_O.csv"
-        ],
-        "wake": [
-          "CONFIRMING",
-          "UNKNOWN",
-          true
-        ]
-      },
+      "outcome": "SCHEMA_FAILED",
+      "reason": "COMPANY_RESEARCH_RUN_MISMATCH",
+      "signature": null,
       "origin_research_run_id": "20260913T153722+0800-a1ec0450"
     },
     {
       "thesis_id": "277933895a5b30f6d534",
       "ticker": "5609.TWO",
       "driver_id": "UNMAPPED_OPPORTUNITY",
-      "outcome": "UNRESOLVED",
-      "reason": null,
-      "signature": {
-        "question": "Which source-backed economic exposure or specific company event can materially affect 中菲行, independent of its stock price?",
-        "urls": [
-          "https://mopsfin.twse.com.tw/opendata/t187ap05_O.csv"
-        ],
-        "wake": [
-          "PERSISTENT",
-          "UNKNOWN",
-          true
-        ]
-      },
+      "outcome": "UNKNOWN_AFTER_RESEARCH",
+      "reason": "The prefetched official profile verifies only that 5609.TWO is 中菲行國際物流股份有限公司 and provides its website. The prefetched monthly revenue record is generic revenue only and cannot establish exposure to container freight, dry-bulk freight, or another enabled driver, current transmission, or a specific local event. The official website transport failed, and the other prefetched search results are unrelated or unusable.",
+      "signature": null,
       "origin_research_run_id": "20260913T153722+0800-a1ec0450"
     },
     {
       "thesis_id": "4123e4f73f402c8242b2",
       "ticker": "2838.TW",
       "driver_id": "UNMAPPED_OPPORTUNITY",
-      "outcome": "UNRESOLVED",
-      "reason": null,
-      "signature": {
-        "question": "Which source-backed economic exposure or specific company event can materially affect 聯邦銀, independent of its stock price?",
-        "urls": [
-          "https://mopsfin.twse.com.tw/opendata/t187ap05_L.csv"
-        ],
-        "wake": [
-          "UNKNOWN",
-          "UNKNOWN",
-          true
-        ]
-      },
+      "outcome": "UNKNOWN_AFTER_RESEARCH",
+      "reason": "The prefetched official profile verifies only that 2838.TW is 聯邦商業銀行股份有限公司. The available monthly revenue record is generic revenue and cannot establish a specific economic exposure, current transmission fact, or concrete local event. The issuer homepage transport failed, and the remaining prefetched search results are unrelated or unusable.",
+      "signature": null,
       "origin_research_run_id": "20260913T153722+0800-a1ec0450"
     },
     {
       "thesis_id": "5f31cf752b2e49ae2405",
       "ticker": "2023.TW",
       "driver_id": "UNMAPPED_OPPORTUNITY",
-      "outcome": "UNRESOLVED",
-      "reason": null,
-      "signature": {
-        "question": "Which source-backed economic exposure or specific company event can materially affect 燁輝, independent of its stock price?",
-        "urls": [
-          "https://mopsfin.twse.com.tw/opendata/t187ap05_L.csv"
-        ],
-        "wake": [
-          "UNKNOWN",
-          "UNKNOWN",
-          true
-        ]
-      },
+      "outcome": "SCHEMA_FAILED",
+      "reason": "COMPANY_RESEARCH_RUN_MISMATCH",
+      "signature": null,
       "origin_research_run_id": "20260913T153722+0800-a1ec0450"
     },
     {
       "thesis_id": "c336ac071256aa13d3a1",
       "ticker": "2548.TW",
       "driver_id": "UNMAPPED_OPPORTUNITY",
-      "outcome": "UNRESOLVED",
-      "reason": null,
-      "signature": {
-        "question": "Which source-backed economic exposure or specific company event can materially affect 華固, independent of its stock price?",
-        "urls": [
-          "https://mopsfin.twse.com.tw/opendata/t187ap05_L.csv"
-        ],
-        "wake": [
-          "UNKNOWN",
-          "UNKNOWN",
-          true
-        ]
-      },
+      "outcome": "SCHEMA_FAILED",
+      "reason": "COMPANY_RESEARCH_RUN_MISMATCH",
+      "signature": null,
       "origin_research_run_id": "20260913T153722+0800-a1ec0450"
     },
     {
       "thesis_id": "b587b715300f9120658b",
       "ticker": "2449.TW",
       "driver_id": "UNMAPPED_OPPORTUNITY",
-      "outcome": "UNRESOLVED",
-      "reason": null,
-      "signature": {
-        "question": "Which source-backed economic exposure or specific company event can materially affect 京元電子, independent of its stock price?",
-        "urls": [
-          "https://mopsfin.twse.com.tw/opendata/t187ap05_L.csv"
-        ],
-        "wake": [
-          "UNKNOWN",
-          "UNKNOWN",
-          true
-        ]
-      },
+      "outcome": "SCHEMA_FAILED",
+      "reason": "COMPANY_RESEARCH_RUN_MISMATCH",
+      "signature": null,
       "origin_research_run_id": "20260913T153722+0800-a1ec0450"
     },
     {
       "thesis_id": "72f243e93e9907646351",
       "ticker": "6742.TW",
       "driver_id": "UNMAPPED_OPPORTUNITY",
-      "outcome": "UNRESOLVED",
-      "reason": null,
-      "signature": {
-        "question": "Which source-backed economic exposure or specific company event can materially affect 澤米, independent of its stock price?",
-        "urls": [
-          "https://mopsfin.twse.com.tw/opendata/t187ap05_L.csv"
-        ],
-        "wake": [
-          "UNKNOWN",
-          "UNKNOWN",
-          true
-        ]
-      },
+      "outcome": "UNKNOWN_AFTER_RESEARCH",
+      "reason": "The prefetched company evidence does not establish a source-backed product, customer, end-market exposure, measurable current transmission fact, or concrete company-specific event. The official profile only identifies 澤米科技股份有限公司 and its website; the monthly revenue record is generic revenue and cannot establish a driver mechanism. Other fetched sources are unrelated to the company.",
+      "signature": null,
       "origin_research_run_id": "20260913T153722+0800-a1ec0450"
     },
     {
       "thesis_id": "eeab5d03e0194cf9f85e",
       "ticker": "6112.TW",
       "driver_id": "UNMAPPED_OPPORTUNITY",
-      "outcome": "UNRESOLVED",
-      "reason": null,
-      "signature": {
-        "question": "Which source-backed economic exposure or specific company event can materially affect 邁達特, independent of its stock price?",
-        "urls": [
-          "https://mopsfin.twse.com.tw/opendata/t187ap05_L.csv"
-        ],
-        "wake": [
-          "PRE_CONFIRMATION",
-          "UNKNOWN",
-          true
-        ]
-      },
+      "outcome": "SCHEMA_FAILED",
+      "reason": "COMPANY_RESEARCH_RUN_MISMATCH",
+      "signature": null,
       "origin_research_run_id": "20260913T153722+0800-a1ec0450"
     },
     {
       "thesis_id": "6e36cc24e19774212e44",
       "ticker": "6894.TWO",
       "driver_id": "UNMAPPED_OPPORTUNITY",
-      "outcome": "UNRESOLVED",
-      "reason": null,
-      "signature": {
-        "question": "Which source-backed economic exposure or specific company event can materially affect 衛司特, independent of its stock price?",
-        "urls": [
-          "https://mopsfin.twse.com.tw/opendata/t187ap05_O.csv"
-        ],
-        "wake": [
-          "UNKNOWN",
-          "UNKNOWN",
-          true
-        ]
-      },
+      "outcome": "SCHEMA_FAILED",
+      "reason": "COMPANY_RESEARCH_RUN_MISMATCH",
+      "signature": null,
       "origin_research_run_id": "20260913T153722+0800-a1ec0450"
     }
   ],
-  "repeat_guard": {
-    "skipped": [],
-    "skipped_count": 0
-  }
+  "repeat_guard": {}
 }

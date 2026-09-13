@@ -1,0 +1,98 @@
+{
+  "run_id": "20260913T153722+0800-a1ec0450",
+  "tasks": [
+    {
+      "task_id": "shared",
+      "cache_hit": false,
+      "failure": null
+    },
+    {
+      "task_id": "dbd739811243091319dc",
+      "cache_hit": false,
+      "failure": null
+    },
+    {
+      "task_id": "725fd0ddcafbbd6a8d90",
+      "cache_hit": false,
+      "failure": null
+    },
+    {
+      "task_id": "830447445162a2de686b",
+      "cache_hit": false,
+      "failure": null
+    },
+    {
+      "task_id": "2b6916caf03d05fa1729",
+      "cache_hit": false,
+      "failure": null
+    },
+    {
+      "task_id": "91de2ab926e80b8ee119",
+      "cache_hit": false,
+      "failure": null
+    },
+    {
+      "task_id": "aca52818bf1b820ccd7d",
+      "cache_hit": false,
+      "failure": null
+    },
+    {
+      "task_id": "f904c2652a110a7b62ac",
+      "cache_hit": false,
+      "failure": [
+        "SCHEMA_FAILED",
+        "AMBIGUOUS_OR_UNNOMINATED_COMPANY_IDENTITY"
+      ]
+    },
+    {
+      "task_id": "5d194e16513acc309b20",
+      "cache_hit": false,
+      "failure": null
+    },
+    {
+      "task_id": "1f431ca62f0e4a94f958",
+      "cache_hit": false,
+      "failure": null
+    },
+    {
+      "task_id": "277933895a5b30f6d534",
+      "cache_hit": false,
+      "failure": null
+    },
+    {
+      "task_id": "4123e4f73f402c8242b2",
+      "cache_hit": false,
+      "failure": null
+    },
+    {
+      "task_id": "5f31cf752b2e49ae2405",
+      "cache_hit": false,
+      "failure": null
+    },
+    {
+      "task_id": "c336ac071256aa13d3a1",
+      "cache_hit": false,
+      "failure": null
+    },
+    {
+      "task_id": "b587b715300f9120658b",
+      "cache_hit": false,
+      "failure": null
+    },
+    {
+      "task_id": "72f243e93e9907646351",
+      "cache_hit": false,
+      "failure": null
+    },
+    {
+      "task_id": "eeab5d03e0194cf9f85e",
+      "cache_hit": false,
+      "failure": null
+    },
+    {
+      "task_id": "6e36cc24e19774212e44",
+      "cache_hit": false,
+      "failure": null
+    }
+  ]
+}

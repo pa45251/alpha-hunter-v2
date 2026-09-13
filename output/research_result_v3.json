@@ -1,353 +1,404 @@
 {
   "contract": "ALPHA_HUNTER_V3_VALIDATED_RESEARCH",
-  "status": "PASS",
+  "status": "PARTIAL_FAIL_CLOSED",
   "research_run_id": "20260913T153722+0800-a1ec0450",
-  "validated_at_utc": "2026-09-13T08:50:56.591037+00:00",
+  "validated_at_utc": "2026-09-13T10:52:44.259066+00:00",
   "target_driver_ids": [
     "DRY_BULK_FREIGHT",
     "NAND_STORAGE_CYCLE",
     "COPPER_COMMODITY_TRADE_INVENTORY"
   ],
-  "errors": [],
+  "errors": [
+    "DRY_BULK_FREIGHT: source_count must equal unique evidence URLs",
+    "NAND_STORAGE_CYCLE: source_count must equal unique evidence URLs"
+  ],
   "results": [
     {
       "driver_id": "DRY_BULK_FREIGHT",
       "state": "UNKNOWN",
-      "confidence": 0.45,
-      "primary_cause": "Evidence indicates stronger Capesize freight conditions and higher apparent 2026 dry-bulk rates, but the evidence also attributes some strength to rerouting and warns of a prospective supply glut; the underlying commodity-volume cycle is therefore unresolved.",
-      "industry_scope": "INDUSTRY_WIDE",
-      "supporting_evidence": [
-        {
-          "claim": "A key measure of bulk-shipping rates reached its highest level since December 2023, driven by rising Capesize demand and tightening vessel supply.",
-          "source_title": "Dry-Bulk Shipping Rates Hit Two-Year High on Capesize Demand",
-          "source_url": "https://gcaptain.com/dry-bulk-shipping-rates-hit-two-year-high-on-capesize-demand/",
-          "published_at": "2026-05-07T00:07:00+00:00",
-          "evidence_type": "HIGH_QUALITY_REPORTING"
-        },
-        {
-          "claim": "BIMCO-linked reporting described apparent 2026 dry-bulk strength and a potential reversal of the rerouting-related boost.",
-          "source_title": "Dry bulk shipping faces 2027 supply glut: BIMCO warns Hormuz rerouting boost will reverse",
-          "source_url": "https://www.msn.com/en-us/news/other/dry-bulk-shipping-faces-2027-supply-glut-bimco-warns-hormuz-rerouting-boost-will-reverse/ar-AA29coQf",
-          "published_at": "2026-08-01T10:36:00+00:00",
-          "evidence_type": "HIGH_QUALITY_REPORTING"
-        }
-      ],
-      "counter_evidence": [
-        {
-          "claim": "The reported 2026 market strength was characterized as substantially artificial and driven by forced rerouting, with a 2027 supply glut risk that could reverse the boost.",
-          "source_title": "Dry bulk shipping faces 2027 supply glut: BIMCO warns Hormuz rerouting boost will reverse",
-          "source_url": "https://www.techtimes.com/articles/322617/20260801/dry-bulk-shipping-faces-2027-supply-glut-bimco-warns-hormuz-rerouting-boost-will-reverse.htm",
-          "published_at": "2026-08-01T10:36:00+00:00",
-          "evidence_type": "HIGH_QUALITY_REPORTING"
-        },
-        {
-          "claim": "Dry-bulk earnings are highly sensitive to freight rates, but the available report focuses on market valuation and does not establish durable commodity-volume demand.",
-          "source_title": "Euroseas Ltd Stock (MHY235261073): valuation in focus after strong bulk shipping cycle",
-          "source_url": "https://www.ad-hoc-news.de/boerse/news/ueberblick/euroseas-ltd-stock-mhy235261073-valuation-in-focus-after-strong-bulk/69529283",
-          "published_at": "2026-06-12T12:13:00+00:00",
-          "evidence_type": "HIGH_QUALITY_REPORTING"
-        }
-      ],
-      "source_count": 4,
-      "event_date": null,
-      "source_dates": [
-        "2026-05-07T00:07:00+00:00",
-        "2026-06-12T12:13:00+00:00",
-        "2026-08-01T10:36:00+00:00"
-      ],
-      "researched_at_utc": "2026-09-13T08:50:30.883+00:00",
-      "research_run_id": "20260913T153722+0800-a1ec0450"
-    },
-    {
-      "driver_id": "NAND_STORAGE_CYCLE",
-      "state": "UNKNOWN",
-      "confidence": 0.35,
-      "primary_cause": "Available evidence points to continued storage growth and evolving NAND/controller demand, but it does not establish a sufficiently current, unambiguous NAND pricing, inventory or module-cycle change; the evidence is also indirect and mixed.",
-      "industry_scope": "INDUSTRY_WIDE",
-      "supporting_evidence": [
-        {
-          "claim": "The source discusses potential AI-storage and NAND-controller demand, but the available prefetched material does not provide a verified current cycle metric.",
-          "source_title": "Silicon Motion Award Spotlights AI Storage And NAND Controller Potential",
-          "source_url": "https://finance.yahoo.com/news/silicon-motion-award-spotlights-ai-111135930.html",
-          "published_at": "2026-01-29T03:11:00+00:00",
-          "evidence_type": "HIGH_QUALITY_REPORTING"
-        },
-        {
-          "claim": "The 2026 Future of Memory and Storage Conference was described as showing continued storage and memory market growth.",
-          "source_title": "2026 FMS Shows Storage And Memory Market Continued Growth",
-          "source_url": "https://www.forbes.com/sites/tomcoughlin/2026/08/16/2026-fms-shows-storage-and-memory-market-continued-growth/",
-          "published_at": "2026-08-16T16:45:00+00:00",
-          "evidence_type": "HIGH_QUALITY_REPORTING"
-        }
-      ],
-      "counter_evidence": [
-        {
-          "claim": "The available source discusses NAND supply-demand dynamics but does not provide a time-consistent current pricing, inventory or module-transmission measure sufficient to confirm the nominated cycle.",
-          "source_title": "The Next NAND Decade: Why Supply Can’t Catch Demand The Way It Used To",
-          "source_url": "https://www.forbes.com/councils/forbestechcouncil/2026/05/01/the-next-nand-decade-why-supply-cant-catch-demand-the-way-it-used-to/",
-          "published_at": "2026-05-01T03:45:00+00:00",
-          "evidence_type": "HIGH_QUALITY_REPORTING"
-        },
-        {
-          "claim": "A report on Phison describes evolving storage demand and SSD adoption, but this is company- and theme-level evidence rather than proof of an industry-wide NAND cycle.",
-          "source_title": "Phison Electronics Corp highlights its NAND controller role as demand for storage keeps evolving",
-          "source_url": "https://www.ad-hoc-news.de/boerse/news/ueberblick/phison-electronics-corp-highlights-its-nand-controller-role-as-demand-for/69725587",
-          "published_at": "2026-07-08T12:14:00+00:00",
-          "evidence_type": "HIGH_QUALITY_REPORTING"
-        }
-      ],
-      "source_count": 4,
-      "event_date": null,
-      "source_dates": [
-        "2026-01-29T03:11:00+00:00",
-        "2026-05-01T03:45:00+00:00",
-        "2026-07-08T12:14:00+00:00",
-        "2026-08-16T16:45:00+00:00"
-      ],
-      "researched_at_utc": "2026-09-13T08:50:30.883+00:00",
-      "research_run_id": "20260913T153722+0800-a1ec0450"
-    },
-    {
-      "driver_id": "COPPER_COMMODITY_TRADE_INVENTORY",
-      "state": "UNKNOWN",
-      "confidence": 0.05,
-      "primary_cause": "No eligible prefetched shared-driver source established current copper pricing, exchange inventories, regional premia, trade dislocation or physical tightness.",
+      "confidence": 0.0,
+      "primary_cause": "Autonomous research output missing or failed deterministic validation.",
       "industry_scope": "UNKNOWN",
       "supporting_evidence": [],
       "counter_evidence": [],
       "source_count": 0,
       "event_date": null,
       "source_dates": [],
-      "researched_at_utc": "2026-09-13T08:50:30.883+00:00",
+      "researched_at_utc": "2026-09-13T10:52:44.258712+00:00",
+      "research_run_id": "20260913T153722+0800-a1ec0450"
+    },
+    {
+      "driver_id": "NAND_STORAGE_CYCLE",
+      "state": "UNKNOWN",
+      "confidence": 0.0,
+      "primary_cause": "Autonomous research output missing or failed deterministic validation.",
+      "industry_scope": "UNKNOWN",
+      "supporting_evidence": [],
+      "counter_evidence": [],
+      "source_count": 0,
+      "event_date": null,
+      "source_dates": [],
+      "researched_at_utc": "2026-09-13T10:52:44.258716+00:00",
+      "research_run_id": "20260913T153722+0800-a1ec0450"
+    },
+    {
+      "driver_id": "COPPER_COMMODITY_TRADE_INVENTORY",
+      "state": "UNKNOWN",
+      "confidence": 0.99,
+      "primary_cause": "No prefetched, verifiable non-price evidence was available for current copper pricing, exchange inventories, regional premia, trade dislocations, or physical tightness.",
+      "industry_scope": "UNKNOWN",
+      "supporting_evidence": [],
+      "counter_evidence": [],
+      "source_count": 0,
+      "event_date": null,
+      "source_dates": [],
+      "researched_at_utc": "2026-09-13T10:51:11.311Z",
       "research_run_id": "20260913T153722+0800-a1ec0450"
     }
   ],
   "company_opportunities": [],
   "company_research_errors": [
-    "COMPANY_RESEARCH_NOT_RETURNED:('1609.TW', 'COPPER_COMMODITY_TRADE_INVENTORY')",
-    "COMPANY_RESEARCH_NOT_RETURNED:('2023.TW', 'UNMAPPED_OPPORTUNITY')",
-    "COMPANY_RESEARCH_NOT_RETURNED:('2449.TW', 'UNMAPPED_OPPORTUNITY')",
-    "COMPANY_RESEARCH_NOT_RETURNED:('2548.TW', 'UNMAPPED_OPPORTUNITY')",
-    "COMPANY_RESEARCH_NOT_RETURNED:('2605.TW', 'DRY_BULK_FREIGHT')",
-    "COMPANY_RESEARCH_NOT_RETURNED:('2636.TW', 'UNMAPPED_OPPORTUNITY')",
-    "COMPANY_RESEARCH_NOT_RETURNED:('2838.TW', 'UNMAPPED_OPPORTUNITY')",
-    "COMPANY_RESEARCH_NOT_RETURNED:('3044.TW', 'UNMAPPED_OPPORTUNITY')",
-    "COMPANY_RESEARCH_NOT_RETURNED:('3176.TWO', 'UNMAPPED_OPPORTUNITY')",
-    "COMPANY_RESEARCH_NOT_RETURNED:('4915.TW', 'UNMAPPED_OPPORTUNITY')",
-    "COMPANY_RESEARCH_NOT_RETURNED:('4951.TWO', 'UNMAPPED_OPPORTUNITY')",
-    "COMPANY_RESEARCH_NOT_RETURNED:('4967.TW', 'NAND_STORAGE_CYCLE')",
-    "COMPANY_RESEARCH_NOT_RETURNED:('5609.TWO', 'UNMAPPED_OPPORTUNITY')",
-    "COMPANY_RESEARCH_NOT_RETURNED:('6112.TW', 'UNMAPPED_OPPORTUNITY')",
-    "COMPANY_RESEARCH_NOT_RETURNED:('6150.TWO', 'UNMAPPED_OPPORTUNITY')",
-    "COMPANY_RESEARCH_NOT_RETURNED:('6742.TW', 'UNMAPPED_OPPORTUNITY')",
-    "COMPANY_RESEARCH_NOT_RETURNED:('6894.TWO', 'UNMAPPED_OPPORTUNITY')"
+    "UNPREFETCHED_EVIDENCE_URL:DRIVER:2605.TW:DRY_BULK_FREIGHT:['https://www.techtimes.com/articles/322617/20260801/dry-bulk-shipping-faces-2027-supply-glut-hormuz-rerouting-boost-will-reverse.htm']",
+    "COMPANY_RESEARCH_RUN_MISMATCH",
+    "COMPANY_RESEARCH_RUN_MISMATCH",
+    "COMPANY_RESEARCH_RUN_MISMATCH",
+    "COMPANY_RESEARCH_RUN_MISMATCH",
+    "COMPANY_RESEARCH_RUN_MISMATCH",
+    "COMPANY_RESEARCH_RUN_MISMATCH",
+    "COMPANY_RESEARCH_RUN_MISMATCH",
+    "COMPANY_RESEARCH_RUN_MISMATCH",
+    "COMPANY_RESEARCH_RUN_MISMATCH",
+    "COMPANY_RESEARCH_RUN_MISMATCH",
+    "COMPANY_RESEARCH_RUN_MISMATCH"
   ],
   "company_research_failures": [
     {
-      "ticker": "1609.TW",
-      "driver_id": "COPPER_COMMODITY_TRADE_INVENTORY",
-      "failure_code": "NOT_RETURNED",
-      "reason": "COMPANY_RESEARCH_NOT_RETURNED:('1609.TW', 'COPPER_COMMODITY_TRADE_INVENTORY')"
-    },
-    {
-      "ticker": "2023.TW",
-      "driver_id": "UNMAPPED_OPPORTUNITY",
-      "failure_code": "NOT_RETURNED",
-      "reason": "COMPANY_RESEARCH_NOT_RETURNED:('2023.TW', 'UNMAPPED_OPPORTUNITY')"
-    },
-    {
-      "ticker": "2449.TW",
-      "driver_id": "UNMAPPED_OPPORTUNITY",
-      "failure_code": "NOT_RETURNED",
-      "reason": "COMPANY_RESEARCH_NOT_RETURNED:('2449.TW', 'UNMAPPED_OPPORTUNITY')"
-    },
-    {
-      "ticker": "2548.TW",
-      "driver_id": "UNMAPPED_OPPORTUNITY",
-      "failure_code": "NOT_RETURNED",
-      "reason": "COMPANY_RESEARCH_NOT_RETURNED:('2548.TW', 'UNMAPPED_OPPORTUNITY')"
-    },
-    {
+      "thesis_id": "725fd0ddcafbbd6a8d90",
       "ticker": "2605.TW",
       "driver_id": "DRY_BULK_FREIGHT",
-      "failure_code": "NOT_RETURNED",
-      "reason": "COMPANY_RESEARCH_NOT_RETURNED:('2605.TW', 'DRY_BULK_FREIGHT')"
+      "event_id": "",
+      "status": "SCHEMA_FAILED",
+      "reason_code": "SCHEMA_FAILED",
+      "reason": "UNPREFETCHED_EVIDENCE_URL:DRIVER:2605.TW:DRY_BULK_FREIGHT:['https://www.techtimes.com/articles/322617/20260801/dry-bulk-shipping-faces-2027-supply-glut-hormuz-rerouting-boost-will-reverse.htm']",
+      "research_completed": false,
+      "failure_code": "SCHEMA_FAILED"
     },
     {
-      "ticker": "2636.TW",
-      "driver_id": "UNMAPPED_OPPORTUNITY",
-      "failure_code": "NOT_RETURNED",
-      "reason": "COMPANY_RESEARCH_NOT_RETURNED:('2636.TW', 'UNMAPPED_OPPORTUNITY')"
-    },
-    {
-      "ticker": "2838.TW",
-      "driver_id": "UNMAPPED_OPPORTUNITY",
-      "failure_code": "NOT_RETURNED",
-      "reason": "COMPANY_RESEARCH_NOT_RETURNED:('2838.TW', 'UNMAPPED_OPPORTUNITY')"
-    },
-    {
-      "ticker": "3044.TW",
-      "driver_id": "UNMAPPED_OPPORTUNITY",
-      "failure_code": "NOT_RETURNED",
-      "reason": "COMPANY_RESEARCH_NOT_RETURNED:('3044.TW', 'UNMAPPED_OPPORTUNITY')"
-    },
-    {
-      "ticker": "3176.TWO",
-      "driver_id": "UNMAPPED_OPPORTUNITY",
-      "failure_code": "NOT_RETURNED",
-      "reason": "COMPANY_RESEARCH_NOT_RETURNED:('3176.TWO', 'UNMAPPED_OPPORTUNITY')"
-    },
-    {
-      "ticker": "4915.TW",
-      "driver_id": "UNMAPPED_OPPORTUNITY",
-      "failure_code": "NOT_RETURNED",
-      "reason": "COMPANY_RESEARCH_NOT_RETURNED:('4915.TW', 'UNMAPPED_OPPORTUNITY')"
-    },
-    {
-      "ticker": "4951.TWO",
-      "driver_id": "UNMAPPED_OPPORTUNITY",
-      "failure_code": "NOT_RETURNED",
-      "reason": "COMPANY_RESEARCH_NOT_RETURNED:('4951.TWO', 'UNMAPPED_OPPORTUNITY')"
-    },
-    {
+      "thesis_id": "830447445162a2de686b",
       "ticker": "4967.TW",
       "driver_id": "NAND_STORAGE_CYCLE",
-      "failure_code": "NOT_RETURNED",
-      "reason": "COMPANY_RESEARCH_NOT_RETURNED:('4967.TW', 'NAND_STORAGE_CYCLE')"
+      "event_id": "",
+      "status": "SCHEMA_FAILED",
+      "reason_code": "SCHEMA_FAILED",
+      "reason": "COMPANY_RESEARCH_RUN_MISMATCH",
+      "research_completed": false,
+      "failure_code": "SCHEMA_FAILED"
     },
     {
-      "ticker": "5609.TWO",
+      "thesis_id": "2b6916caf03d05fa1729",
+      "ticker": "3044.TW",
       "driver_id": "UNMAPPED_OPPORTUNITY",
-      "failure_code": "NOT_RETURNED",
-      "reason": "COMPANY_RESEARCH_NOT_RETURNED:('5609.TWO', 'UNMAPPED_OPPORTUNITY')"
+      "event_id": "",
+      "status": "SCHEMA_FAILED",
+      "reason_code": "SCHEMA_FAILED",
+      "reason": "COMPANY_RESEARCH_RUN_MISMATCH",
+      "research_completed": false,
+      "failure_code": "SCHEMA_FAILED"
     },
     {
-      "ticker": "6112.TW",
+      "thesis_id": "91de2ab926e80b8ee119",
+      "ticker": "2636.TW",
       "driver_id": "UNMAPPED_OPPORTUNITY",
-      "failure_code": "NOT_RETURNED",
-      "reason": "COMPANY_RESEARCH_NOT_RETURNED:('6112.TW', 'UNMAPPED_OPPORTUNITY')"
+      "event_id": "",
+      "status": "SCHEMA_FAILED",
+      "reason_code": "SCHEMA_FAILED",
+      "reason": "COMPANY_RESEARCH_RUN_MISMATCH",
+      "research_completed": false,
+      "failure_code": "SCHEMA_FAILED"
     },
     {
+      "thesis_id": "aca52818bf1b820ccd7d",
+      "ticker": "1609.TW",
+      "driver_id": "COPPER_COMMODITY_TRADE_INVENTORY",
+      "event_id": "",
+      "status": "SCHEMA_FAILED",
+      "reason_code": "SCHEMA_FAILED",
+      "reason": "COMPANY_RESEARCH_RUN_MISMATCH",
+      "research_completed": false,
+      "failure_code": "SCHEMA_FAILED"
+    },
+    {
+      "thesis_id": "f904c2652a110a7b62ac",
+      "ticker": "4915.TW",
+      "driver_id": "UNMAPPED_OPPORTUNITY",
+      "event_id": "",
+      "status": "SCHEMA_FAILED",
+      "reason_code": "SCHEMA_FAILED",
+      "reason": "AMBIGUOUS_OR_UNNOMINATED_COMPANY_IDENTITY",
+      "research_completed": false,
+      "failure_code": "SCHEMA_FAILED"
+    },
+    {
+      "thesis_id": "5d194e16513acc309b20",
       "ticker": "6150.TWO",
       "driver_id": "UNMAPPED_OPPORTUNITY",
-      "failure_code": "NOT_RETURNED",
-      "reason": "COMPANY_RESEARCH_NOT_RETURNED:('6150.TWO', 'UNMAPPED_OPPORTUNITY')"
+      "event_id": "",
+      "status": "SCHEMA_FAILED",
+      "reason_code": "SCHEMA_FAILED",
+      "reason": "COMPANY_RESEARCH_RUN_MISMATCH",
+      "research_completed": false,
+      "failure_code": "SCHEMA_FAILED"
     },
     {
-      "ticker": "6742.TW",
+      "thesis_id": "1f431ca62f0e4a94f958",
+      "ticker": "4951.TWO",
       "driver_id": "UNMAPPED_OPPORTUNITY",
-      "failure_code": "NOT_RETURNED",
-      "reason": "COMPANY_RESEARCH_NOT_RETURNED:('6742.TW', 'UNMAPPED_OPPORTUNITY')"
+      "event_id": "",
+      "status": "SCHEMA_FAILED",
+      "reason_code": "SCHEMA_FAILED",
+      "reason": "COMPANY_RESEARCH_RUN_MISMATCH",
+      "research_completed": false,
+      "failure_code": "SCHEMA_FAILED"
     },
     {
+      "thesis_id": "5f31cf752b2e49ae2405",
+      "ticker": "2023.TW",
+      "driver_id": "UNMAPPED_OPPORTUNITY",
+      "event_id": "",
+      "status": "SCHEMA_FAILED",
+      "reason_code": "SCHEMA_FAILED",
+      "reason": "COMPANY_RESEARCH_RUN_MISMATCH",
+      "research_completed": false,
+      "failure_code": "SCHEMA_FAILED"
+    },
+    {
+      "thesis_id": "c336ac071256aa13d3a1",
+      "ticker": "2548.TW",
+      "driver_id": "UNMAPPED_OPPORTUNITY",
+      "event_id": "",
+      "status": "SCHEMA_FAILED",
+      "reason_code": "SCHEMA_FAILED",
+      "reason": "COMPANY_RESEARCH_RUN_MISMATCH",
+      "research_completed": false,
+      "failure_code": "SCHEMA_FAILED"
+    },
+    {
+      "thesis_id": "b587b715300f9120658b",
+      "ticker": "2449.TW",
+      "driver_id": "UNMAPPED_OPPORTUNITY",
+      "event_id": "",
+      "status": "SCHEMA_FAILED",
+      "reason_code": "SCHEMA_FAILED",
+      "reason": "COMPANY_RESEARCH_RUN_MISMATCH",
+      "research_completed": false,
+      "failure_code": "SCHEMA_FAILED"
+    },
+    {
+      "thesis_id": "eeab5d03e0194cf9f85e",
+      "ticker": "6112.TW",
+      "driver_id": "UNMAPPED_OPPORTUNITY",
+      "event_id": "",
+      "status": "SCHEMA_FAILED",
+      "reason_code": "SCHEMA_FAILED",
+      "reason": "COMPANY_RESEARCH_RUN_MISMATCH",
+      "research_completed": false,
+      "failure_code": "SCHEMA_FAILED"
+    },
+    {
+      "thesis_id": "6e36cc24e19774212e44",
       "ticker": "6894.TWO",
       "driver_id": "UNMAPPED_OPPORTUNITY",
-      "failure_code": "NOT_RETURNED",
-      "reason": "COMPANY_RESEARCH_NOT_RETURNED:('6894.TWO', 'UNMAPPED_OPPORTUNITY')"
+      "event_id": "",
+      "status": "SCHEMA_FAILED",
+      "reason_code": "SCHEMA_FAILED",
+      "reason": "COMPANY_RESEARCH_RUN_MISMATCH",
+      "research_completed": false,
+      "failure_code": "SCHEMA_FAILED"
     }
   ],
   "company_research_coverage": [
     {
+      "thesis_id": "dbd739811243091319dc",
       "ticker": "3176.TWO",
-      "status": "UNRESOLVED",
+      "driver_id": "UNMAPPED_OPPORTUNITY",
+      "event_id": "",
+      "status": "UNKNOWN_AFTER_RESEARCH",
       "reason_code": "UNKNOWN_AFTER_RESEARCH",
-      "reason": "Prefetch returned only monthly revenue data; no source-backed structural exposure or specific company event was available."
+      "reason": "No usable prefetched company-primary source establishes a specific structural exposure, current measurable transmission fact, or concrete local event for 基亞. The official profile contains only issuer identity and the available monthly revenue record is generic revenue-only evidence; the official website fetch failed and the remaining fetched sources are unrelated or unusable.",
+      "research_completed": true
     },
     {
+      "thesis_id": "725fd0ddcafbbd6a8d90",
       "ticker": "2605.TW",
-      "status": "UNRESOLVED",
-      "reason_code": "UNKNOWN_AFTER_RESEARCH",
-      "reason": "Monthly revenue commentary references high freight rates, but no prefetched company source establishes structural dry-bulk exposure and measurable transmission separately."
+      "driver_id": "DRY_BULK_FREIGHT",
+      "event_id": "",
+      "status": "SCHEMA_FAILED",
+      "reason_code": "SCHEMA_FAILED",
+      "reason": "UNPREFETCHED_EVIDENCE_URL:DRIVER:2605.TW:DRY_BULK_FREIGHT:['https://www.techtimes.com/articles/322617/20260801/dry-bulk-shipping-faces-2027-supply-glut-hormuz-rerouting-boost-will-reverse.htm']",
+      "research_completed": false
     },
     {
+      "thesis_id": "830447445162a2de686b",
       "ticker": "4967.TW",
-      "status": "UNRESOLVED",
-      "reason_code": "UNKNOWN_AFTER_RESEARCH",
-      "reason": "Monthly revenue reports higher shipments and selling prices, but no prefetched company source establishes NAND/storage exposure and driver-specific transmission separately."
+      "driver_id": "NAND_STORAGE_CYCLE",
+      "event_id": "",
+      "status": "SCHEMA_FAILED",
+      "reason_code": "SCHEMA_FAILED",
+      "reason": "COMPANY_RESEARCH_RUN_MISMATCH",
+      "research_completed": false
     },
     {
+      "thesis_id": "2b6916caf03d05fa1729",
       "ticker": "3044.TW",
-      "status": "UNRESOLVED",
-      "reason_code": "UNKNOWN_AFTER_RESEARCH",
-      "reason": "Prefetch returned only monthly revenue data; no source-backed structural exposure or specific company event was available."
+      "driver_id": "UNMAPPED_OPPORTUNITY",
+      "event_id": "",
+      "status": "SCHEMA_FAILED",
+      "reason_code": "SCHEMA_FAILED",
+      "reason": "COMPANY_RESEARCH_RUN_MISMATCH",
+      "research_completed": false
     },
     {
+      "thesis_id": "91de2ab926e80b8ee119",
       "ticker": "2636.TW",
-      "status": "UNRESOLVED",
-      "reason_code": "UNKNOWN_AFTER_RESEARCH",
-      "reason": "Monthly revenue commentary cites higher freight rates and cargo volume, but no prefetched company source establishes a sufficiently specific mapped exposure and transmission."
+      "driver_id": "UNMAPPED_OPPORTUNITY",
+      "event_id": "",
+      "status": "SCHEMA_FAILED",
+      "reason_code": "SCHEMA_FAILED",
+      "reason": "COMPANY_RESEARCH_RUN_MISMATCH",
+      "research_completed": false
     },
     {
+      "thesis_id": "aca52818bf1b820ccd7d",
       "ticker": "1609.TW",
-      "status": "UNRESOLVED",
-      "reason_code": "UNKNOWN_AFTER_RESEARCH",
-      "reason": "Monthly revenue data does not establish copper commodity trade-inventory exposure or transmission; no shared-driver evidence was prefetched."
+      "driver_id": "COPPER_COMMODITY_TRADE_INVENTORY",
+      "event_id": "",
+      "status": "SCHEMA_FAILED",
+      "reason_code": "SCHEMA_FAILED",
+      "reason": "COMPANY_RESEARCH_RUN_MISMATCH",
+      "research_completed": false
     },
     {
+      "thesis_id": "f904c2652a110a7b62ac",
       "ticker": "4915.TW",
-      "status": "UNRESOLVED",
-      "reason_code": "UNKNOWN_AFTER_RESEARCH",
-      "reason": "Prefetch returned only monthly revenue data; no source-backed structural exposure or specific company event was available."
+      "driver_id": "UNMAPPED_OPPORTUNITY",
+      "event_id": "",
+      "status": "SCHEMA_FAILED",
+      "reason_code": "SCHEMA_FAILED",
+      "reason": "AMBIGUOUS_OR_UNNOMINATED_COMPANY_IDENTITY",
+      "research_completed": false
     },
     {
+      "thesis_id": "5d194e16513acc309b20",
       "ticker": "6150.TWO",
-      "status": "UNRESOLVED",
-      "reason_code": "UNKNOWN_AFTER_RESEARCH",
-      "reason": "Monthly revenue increased month over month but declined year over year; no source-backed structural exposure or specific company event was available."
+      "driver_id": "UNMAPPED_OPPORTUNITY",
+      "event_id": "",
+      "status": "SCHEMA_FAILED",
+      "reason_code": "SCHEMA_FAILED",
+      "reason": "COMPANY_RESEARCH_RUN_MISMATCH",
+      "research_completed": false
     },
     {
+      "thesis_id": "1f431ca62f0e4a94f958",
       "ticker": "4951.TWO",
-      "status": "UNRESOLVED",
-      "reason_code": "UNKNOWN_AFTER_RESEARCH",
-      "reason": "Monthly revenue data was nearly flat year over year; no source-backed structural exposure or specific company event was available."
+      "driver_id": "UNMAPPED_OPPORTUNITY",
+      "event_id": "",
+      "status": "SCHEMA_FAILED",
+      "reason_code": "SCHEMA_FAILED",
+      "reason": "COMPANY_RESEARCH_RUN_MISMATCH",
+      "research_completed": false
     },
     {
+      "thesis_id": "277933895a5b30f6d534",
       "ticker": "5609.TWO",
-      "status": "UNRESOLVED",
+      "driver_id": "UNMAPPED_OPPORTUNITY",
+      "event_id": "",
+      "status": "UNKNOWN_AFTER_RESEARCH",
       "reason_code": "UNKNOWN_AFTER_RESEARCH",
-      "reason": "Monthly revenue increased year over year, but no source-backed structural exposure or specific company event was available."
+      "reason": "The prefetched official profile verifies only that 5609.TWO is 中菲行國際物流股份有限公司 and provides its website. The prefetched monthly revenue record is generic revenue only and cannot establish exposure to container freight, dry-bulk freight, or another enabled driver, current transmission, or a specific local event. The official website transport failed, and the other prefetched search results are unrelated or unusable.",
+      "research_completed": true
     },
     {
+      "thesis_id": "4123e4f73f402c8242b2",
       "ticker": "2838.TW",
-      "status": "UNRESOLVED",
+      "driver_id": "UNMAPPED_OPPORTUNITY",
+      "event_id": "",
+      "status": "UNKNOWN_AFTER_RESEARCH",
       "reason_code": "UNKNOWN_AFTER_RESEARCH",
-      "reason": "Monthly revenue data alone does not establish a rate, credit or margin-cycle mechanism; no source-backed structural exposure or specific company event was available."
+      "reason": "The prefetched official profile verifies only that 2838.TW is 聯邦商業銀行股份有限公司. The available monthly revenue record is generic revenue and cannot establish a specific economic exposure, current transmission fact, or concrete local event. The issuer homepage transport failed, and the remaining prefetched search results are unrelated or unusable.",
+      "research_completed": true
     },
     {
+      "thesis_id": "5f31cf752b2e49ae2405",
       "ticker": "2023.TW",
-      "status": "UNRESOLVED",
-      "reason_code": "UNKNOWN_AFTER_RESEARCH",
-      "reason": "Monthly and cumulative revenue declined year over year; no source-backed structural exposure or specific company event was available."
+      "driver_id": "UNMAPPED_OPPORTUNITY",
+      "event_id": "",
+      "status": "SCHEMA_FAILED",
+      "reason_code": "SCHEMA_FAILED",
+      "reason": "COMPANY_RESEARCH_RUN_MISMATCH",
+      "research_completed": false
     },
     {
+      "thesis_id": "c336ac071256aa13d3a1",
       "ticker": "2548.TW",
-      "status": "UNRESOLVED",
-      "reason_code": "UNKNOWN_AFTER_RESEARCH",
-      "reason": "Revenue growth was attributed to delivery recognition, but no source-backed structural exposure or specific company event relevant to an enabled driver was available."
+      "driver_id": "UNMAPPED_OPPORTUNITY",
+      "event_id": "",
+      "status": "SCHEMA_FAILED",
+      "reason_code": "SCHEMA_FAILED",
+      "reason": "COMPANY_RESEARCH_RUN_MISMATCH",
+      "research_completed": false
     },
     {
+      "thesis_id": "b587b715300f9120658b",
       "ticker": "2449.TW",
-      "status": "UNRESOLVED",
-      "reason_code": "UNKNOWN_AFTER_RESEARCH",
-      "reason": "Monthly revenue growth does not identify a specific economic driver; no source-backed structural exposure or specific company event was available."
+      "driver_id": "UNMAPPED_OPPORTUNITY",
+      "event_id": "",
+      "status": "SCHEMA_FAILED",
+      "reason_code": "SCHEMA_FAILED",
+      "reason": "COMPANY_RESEARCH_RUN_MISMATCH",
+      "research_completed": false
     },
     {
+      "thesis_id": "72f243e93e9907646351",
       "ticker": "6742.TW",
-      "status": "UNRESOLVED",
+      "driver_id": "UNMAPPED_OPPORTUNITY",
+      "event_id": "",
+      "status": "UNKNOWN_AFTER_RESEARCH",
       "reason_code": "UNKNOWN_AFTER_RESEARCH",
-      "reason": "Revenue declined cumulatively year over year; no source-backed structural exposure or specific company event was available."
+      "reason": "The prefetched company evidence does not establish a source-backed product, customer, end-market exposure, measurable current transmission fact, or concrete company-specific event. The official profile only identifies 澤米科技股份有限公司 and its website; the monthly revenue record is generic revenue and cannot establish a driver mechanism. Other fetched sources are unrelated to the company.",
+      "research_completed": true
     },
     {
+      "thesis_id": "eeab5d03e0194cf9f85e",
       "ticker": "6112.TW",
-      "status": "UNRESOLVED",
-      "reason_code": "UNKNOWN_AFTER_RESEARCH",
-      "reason": "Monthly revenue data does not identify a specific economic driver; no source-backed structural exposure or specific company event was available."
+      "driver_id": "UNMAPPED_OPPORTUNITY",
+      "event_id": "",
+      "status": "SCHEMA_FAILED",
+      "reason_code": "SCHEMA_FAILED",
+      "reason": "COMPANY_RESEARCH_RUN_MISMATCH",
+      "research_completed": false
     },
     {
+      "thesis_id": "6e36cc24e19774212e44",
       "ticker": "6894.TWO",
-      "status": "UNRESOLVED",
-      "reason_code": "UNKNOWN_AFTER_RESEARCH",
-      "reason": "Revenue commentary identifies electrolysis equipment and consumables demand, but no enabled taxonomy mapping is source-backed by the prefetched material."
+      "driver_id": "UNMAPPED_OPPORTUNITY",
+      "event_id": "",
+      "status": "SCHEMA_FAILED",
+      "reason_code": "SCHEMA_FAILED",
+      "reason": "COMPANY_RESEARCH_RUN_MISMATCH",
+      "research_completed": false
     }
-  ]
+  ],
+  "company_terminal_summary": {
+    "admitted": 17,
+    "terminal_count": 17,
+    "counts": {
+      "SUPPORTED": 0,
+      "REJECTED": 0,
+      "UNKNOWN_AFTER_RESEARCH": 4,
+      "TRANSPORT_FAILED": 0,
+      "SCHEMA_FAILED": 13
+    },
+    "exhaustive": true,
+    "research_complete": false
+  }
 }
