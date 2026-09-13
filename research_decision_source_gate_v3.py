@@ -57,6 +57,33 @@ def main() -> None:
         )
         return
 
+    # A fully executed research lane may legitimately find no admissible driver source at all.
+    # That is an investment UNKNOWN, not an execution outage, provided deterministic search ran,
+    # every shared-driver result stayed UNKNOWN, and every admitted company thesis reached a
+    # terminal non-execution outcome. Downstream may then continue only in fail-closed mode.
+    exhaustive_no_evidence = bool(
+        usable
+        and q.get("company_terminal_accounting_pass")
+        and q.get("company_research_complete")
+        and q.get("target_count", 0) > 0
+        and q.get("active_or_inactive", 0) == 0
+        and q.get("total_sources", 0) == 0
+        and q.get("transport_present")
+        and q.get("transport_status") == "FAIL_CLOSED"
+        and q.get("query_attempt_count", 0) >= 2 * q.get("target_count", 0)
+        and q.get("successful_query_count", 0) > 0
+        and q.get("candidate_source_count", 0) == 0
+    )
+    if exhaustive_no_evidence:
+        print(
+            "decision-source evidence gate PASS via exhaustive no-evidence research: "
+            f"drivers={q['target_count']} searches={q['query_attempt_count']} "
+            f"successful_searches={q['successful_query_count']} company_research_complete=true. "
+            "All driver rows remain source-free UNKNOWN; downstream evaluation is fail-closed and "
+            "cannot create causal activation or a trade from this path."
+        )
+        return
+
     challenger_ok, accepted, challenger_sources, reason = _challenger_is_valid()
     if challenger_ok:
         print(
