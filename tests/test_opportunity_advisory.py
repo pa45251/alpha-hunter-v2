@@ -113,6 +113,14 @@ def test_research_ingest_roundtrip_preserves_company_advisory_without_activating
     if missing_transmission:
         company.pop('company_transmission')
     (out/'research_result_v3.raw.txt').write_text(json.dumps({'contract':'ALPHA_HUNTER_V3_AUTONOMOUS_RESEARCH','research_run_id':'run','results':[driver],'company_opportunities':[company]}))
+    transport=tmp_path/'prefetch.json'
+    transport.write_text(json.dumps({
+        'contract':'ALPHA_HUNTER_V3_RESEARCH_SOURCE_PREFETCH','status':'PASS','research_run_id':'run',
+        'targets':[{'driver_id':'EXACT_DRIVER','candidate_sources':[]}],
+        'company_targets':[{'ticker':'9999.TW','driver_id':'EXACT_DRIVER','candidate_sources':[
+            {'source_url':'https://example.com/filing'},
+            {'source_url':'https://example.com/independent-industry'}]}]}))
+    monkeypatch.setenv('ALPHA_HUNTER_RESEARCH_TRANSPORT_PATH',str(transport))
     monkeypatch.setattr(ingest,'_utcnow',lambda:ASOF)
     import research_handoff
     monkeypatch.setattr(research_handoff, 'decision_research_handoff', lambda *a: dict(run_id='run', research_targets=[{'driver_id':'EXACT_DRIVER'}], company_research_targets=[{'ticker':'9999.TW','driver_id':'EXACT_DRIVER'}]))
