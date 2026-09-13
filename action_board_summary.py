@@ -28,6 +28,21 @@ from canonical_evidence import assert_output_lineage
 OUT = Path("output")
 run_id = assert_output_lineage(["decision_packet.json", "risk_regime.json"])
 
+RESEARCH_GATES = {
+    'DRIVER_UNKNOWN',
+    'GLOBAL_PRICE_UNCONFIRMED',
+    'CAUSAL_UNVERIFIED',
+    'COMPANY_TRANSMISSION_UNVERIFIED',
+}
+BLOCKING_STAGE = {
+    'DRIVER_UNKNOWN': 'EXPOSURE',
+    'GLOBAL_PRICE_UNCONFIRMED': 'ACTIVATION',
+    'CAUSAL_UNVERIFIED': 'ACTIVATION',
+    'COMPANY_TRANSMISSION_UNVERIFIED': 'TRANSMISSION',
+    'ENTRY': 'ENTRY',
+    'GLOBAL_REJECTED': 'REJECTED',
+}
+
 
 def load(name: str) -> dict:
     path = OUT / name
@@ -51,6 +66,19 @@ def read_csv(name: str) -> pd.DataFrame:
 
 def md(value) -> str:
     return str(value if value is not None else "UNKNOWN").replace("|", "/").replace("\n", " ")
+
+
+def _decision_state(row: dict) -> str:
+    """Keep evidence incompleteness separate from an actual trading WAIT.
+
+    RESEARCH is an assessment state, not a fifth trading action. A true WAIT is reserved
+    for a thesis that has reached the ENTRY gate but whose timing/setup is not ready.
+    """
+    if row.get('action') == 'PASS':
+        return 'PASS'
+    if row.get('missing_gate') in RESEARCH_GATES:
+        return 'RESEARCH'
+    return str(row.get('action') or 'WAIT')
 
 
 def _select_opportunities(limit: int = 5) -> list[dict]:
@@ -87,6 +115,9 @@ def _select_opportunities(limit: int = 5) -> list[dict]:
             row['why'] = str(checked.get('reason') or row['why'])
             row['main_risk'] = 'Exact company / driver transmission remains unverified; no entry recommendation'
         row['research_priority'] = candidate.get('research_priority', 0)
+        row['research_eligible'] = bool(candidate.get('research_eligible'))
+        row['blocking_stage'] = BLOCKING_STAGE.get(row.get('missing_gate'), 'EXPOSURE')
+        row['decision_state'] = _decision_state(row)
         rows.append(row)
     top = rank_opportunities(rows, limit)
     from opportunity_advisory import VERSION
@@ -94,10 +125,31 @@ def _select_opportunities(limit: int = 5) -> list[dict]:
     payload = dict(policy_version=VERSION, risk_contract=RISK_CONTRACT, source_run_id=run_id, generated_at_utc=now,
                    public_lineage_id=(load('decision_packet.json').get('decision_bridge') or {}).get('public_lineage_id'),
                    auto_trade_allowed=False, top_opportunities=top, all_candidates=rows)
-    # Git publication preserves all nominations for prospective audits, not just winners.
+    # Git publication preserves every nomination for prospective audits; the Markdown board
+    # below spends human attention only on qualified trading decisions and active research.
     cleaned = json.loads(pd.Series([payload]).to_json(orient='values'))[0]
     (OUT / 'opportunity_advisory.json').write_text(json.dumps(cleaned, ensure_ascii=False, indent=2), encoding='utf-8')
     return top
+
+
+def _render_row(lines: list[str], row: dict, index: int, label: str) -> None:
+    lines += [f"### {index}. {md(row['ticker'])} {md(row['name'])} — {label}", ""]
+    for field_label, key in [('WHY', 'why'), ('Driver', 'driver'), ('Blocking stage', 'blocking_stage'),
+                             ('Driver state', 'driver_state'), ('Company transmission', 'company_transmission'),
+                             ('International price', 'international_price_state'),
+                             ('International causal', 'international_causal_state'),
+                             ('Current gate', 'missing_gate'), ('International evidence', 'international'),
+                             ('Relative', 'relative'), ('Regime', 'regime'), ('Technical state', 'technical'),
+                             ('Why price', 'price_reason'), ('Entry state', 'entry_state'), ('Entry', 'entry'),
+                             ('Actual price risk', 'risk_summary'), ('Invalidation', 'invalidation'),
+                             ('Add trigger', 'add_trigger'), ('Main counter-evidence', 'main_counter_evidence'),
+                             ('Main risk', 'main_risk'), ('What would make us wrong', 'what_would_make_us_wrong')]:
+        lines.append(f"- **{field_label}:** {md(row.get(key, 'Unverified'))}")
+    if row.get('action') == 'EARLY BUY':
+        lines.append('- **Initial size:** 35% of planned position; reassess before adding.')
+    for evidence in row.get('evidence', []) + row.get('international_evidence', []):
+        lines.append(f"- Evidence: {md(evidence['claim'])} [{md(evidence['source_title'])}]({evidence['source_url']})")
+    lines.append('')
 
 
 packet = load("decision_packet.json")
@@ -106,44 +158,59 @@ activation = packet.get("activation_layer") or {}
 launch = packet.get("launch_layer") or {}
 opportunities = _select_opportunities(5)
 
+trade_rows = [r for r in opportunities if r.get('decision_state') in {'BUY', 'EARLY BUY', 'WAIT'}]
+research_rows = [r for r in opportunities if r.get('decision_state') == 'RESEARCH' and r.get('research_eligible')]
+deferred_research = [r for r in opportunities if r.get('decision_state') == 'RESEARCH' and not r.get('research_eligible')]
+pass_rows = [r for r in opportunities if r.get('decision_state') == 'PASS']
+counts = {
+    'BUY': sum(r.get('decision_state') == 'BUY' for r in opportunities),
+    'EARLY BUY': sum(r.get('decision_state') == 'EARLY BUY' for r in opportunities),
+    'WAIT': sum(r.get('decision_state') == 'WAIT' for r in opportunities),
+    'RESEARCH': sum(r.get('decision_state') == 'RESEARCH' for r in opportunities),
+    'PASS': sum(r.get('decision_state') == 'PASS' for r in opportunities),
+}
+
 lines = [
     "# Alpha Hunter — Action Board", "",
     f"- Run: `{run_id}`",
     f"- Market session: `{regime.get('risk_snapshot_date', 'UNKNOWN')}`",
     f"- Risk regime: **{regime.get('regime', 'UNKNOWN')}**",
     f"- Causal evidence: `{activation.get('source', 'UNKNOWN')}`",
-    "- Core rule: find the anomaly -> understand WHY -> validate the same driver globally -> act only if price still offers a setup.",
+    "- Core rule: price nominates; company facts define exposure; independent evidence validates the driver; company evidence validates transmission; price/risk decides timing.",
+    f"- Decision counts: BUY={counts['BUY']} / EARLY BUY={counts['EARLY BUY']} / WAIT={counts['WAIT']} / RESEARCH={counts['RESEARCH']} / PASS={counts['PASS']}",
+    "- RESEARCH is an unresolved evidence state, not a trading recommendation.",
     "",
-    "## Simple Opportunity Brief", "",
+    "## Trading Decision Queue", "",
 ]
 
-if opportunities:
-    for i, row in enumerate(opportunities, 1):
-        lines += [f"### {i}. {md(row['ticker'])} {md(row['name'])} — {row['action']}", ""]
-        for label, key in [('WHY', 'why'), ('Driver', 'driver'), ('Driver state', 'driver_state'),
-                           ('Company transmission', 'company_transmission'),
-                           ('International price', 'international_price_state'),
-                           ('International causal', 'international_causal_state'),
-                           ('Current gate', 'missing_gate'), ('International evidence', 'international'), ('Relative', 'relative'),
-                           ('Regime', 'regime'), ('Technical state', 'technical'),
-                           ('Why price', 'price_reason'), ('Entry state', 'entry_state'), ('Entry', 'entry'),
-                           ('Actual price risk', 'risk_summary'),
-                           ('Invalidation', 'invalidation'), ('Add trigger', 'add_trigger'),
-                           ('Main counter-evidence', 'main_counter_evidence'), ('Main risk', 'main_risk'), ('What would make us wrong', 'what_would_make_us_wrong')]:
-            lines.append(f"- **{label}:** {md(row.get(key, 'Unverified'))}")
-        if row['action'] == 'EARLY BUY':
-            lines.append('- **Initial size:** 35% of planned position; reassess before adding.')
-        for evidence in row.get('evidence', []) + row.get('international_evidence', []):
-            lines.append(f"- Evidence: {md(evidence['claim'])} [{md(evidence['source_title'])}]({evidence['source_url']})")
-        lines.append('')
+if trade_rows:
+    for i, row in enumerate(trade_rows, 1):
+        _render_row(lines, row, i, row['decision_state'])
 else:
-    lines.append('- No sufficiently researched opportunity in this snapshot.')
+    lines.append('- No thesis-qualified BUY / EARLY BUY / WAIT in this snapshot.')
+
+lines += ["", "## Active Research Queue", ""]
+if research_rows:
+    # This is presentation-only. The canonical JSON retains every candidate; showing the
+    # first 12 prevents unresolved evidence from consuming the entire human attention budget.
+    for i, row in enumerate(research_rows[:12], 1):
+        _render_row(lines, row, i, f"RESEARCH — {row['blocking_stage']}")
+    if len(research_rows) > 12:
+        lines.append(f"- {len(research_rows) - 12} additional research-eligible candidates remain in the canonical JSON ledger.")
+else:
+    lines.append('- No price-relevant unresolved candidate requires active research.')
+
 lines += [
+    "", "## Ledger Summary", "",
+    f"- Deferred unresolved candidates: {len(deferred_research)}",
+    f"- PASS candidates: {len(pass_rows)}",
+    f"- Total canonical candidates retained for audit: {len(opportunities)}",
     '', '- BUY / EARLY BUY are advisory views at the displayed entry zone, never brokerage orders.',
+    '- WAIT means the thesis reached the entry stage but timing/setup is not ready; unresolved evidence is shown as RESEARCH instead.',
     '- A gap outside the zone or new thesis counter-evidence requires reassessment before taking risk.',
     '- Prices and R/R use sealed closed sessions; upside references are resistance or disclosed base-height scenarios, not return forecasts.',
     '- Automatic order execution remains disabled. Frozen execution permissions are unchanged.', '',
 ]
 
 (OUT / "action_board.md").write_text("\n".join(lines), encoding="utf-8")
-print(f"Wrote simplified canonical action board: run_id={run_id} opportunities={len(opportunities)}")
+print(f"Wrote first-principles action board: run_id={run_id} decisions={len(trade_rows)} active_research={len(research_rows)} total={len(opportunities)}")
