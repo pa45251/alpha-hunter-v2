@@ -12,7 +12,7 @@ import subprocess
 from company_research_terminal import identity, resolve_identity
 from research_ingest_v3 import _extract_json
 
-VERSION = 'COMPANY_DOCUMENT_TERMINAL_V3'
+VERSION = 'COMPANY_DOCUMENT_TERMINAL_V4'
 FIELDS = ('results', 'company_opportunities', 'company_research_coverage', 'exposure_resolutions', 'company_execution_failures')
 
 
@@ -32,7 +32,6 @@ def fingerprint(handoff, prefetch):
 
 
 def _bind_field(row, key, expected, error):
-    """Fill redundant task metadata only when omitted; explicit contradictions fail closed."""
     supplied = row.get(key)
     expected_cmp = '' if expected is None else str(expected)
     if supplied not in {None, ''} and str(supplied) != expected_cmp:
@@ -41,10 +40,12 @@ def _bind_field(row, key, expected, error):
 
 
 def _bind_isolated_payload(payload, target, run_id):
-    """Bind rows to the one authoritative thesis already selected by deterministic code.
+    """Bind redundant identity metadata and conservatively drop non-actionable extras.
 
-    This never creates evidence or a thesis.  It only removes the need for an LLM to
-    perfectly repeat metadata already fixed by the isolated task envelope.
+    The isolated task already fixes the only admissible thesis. Missing identity/run metadata
+    can therefore be restored deterministically. Contradictions still fail closed. An LLM
+    cannot create support by emitting an unresolved opportunity or an out-of-scope exposure
+    proposal: those extras are discarded, while the explicit terminal coverage row remains.
     """
     target_tid = identity(target)
     event_id = target.get('event_id') or ''
@@ -63,19 +64,29 @@ def _bind_isolated_payload(payload, target, run_id):
             normalized.append(resolve_identity(row, [target]))
         payload[field] = normalized
 
-    # Exposure resolution is only a proposal from an UNMAPPED thesis.  Missing envelope
-    # metadata is deterministic; a contradictory proposal remains a schema failure.
+    unknown_coverage = any(
+        row.get('status') in {'UNKNOWN_AFTER_RESEARCH', 'UNRESOLVED'}
+        and row.get('reason_code') in {None, '', 'UNKNOWN_AFTER_RESEARCH'}
+        for row in payload.get('company_research_coverage', [])
+    )
+    if unknown_coverage:
+        payload['company_opportunities'] = [
+            row for row in payload.get('company_opportunities', [])
+            if row.get('driver_state') not in {None, '', 'UNKNOWN', 'UNVERIFIED'}
+        ]
+
     normalized_exposure = []
-    for original in payload.get('exposure_resolutions', []):
-        if not isinstance(original, dict):
-            raise ValueError('NON_OBJECT_EXPOSURE_RESOLUTION')
-        if target.get('driver_id') != 'UNMAPPED_OPPORTUNITY':
-            raise ValueError('EXPOSURE_RESOLUTION_REQUIRES_UNMAPPED_TARGET')
-        row = dict(original)
-        _bind_field(row, 'ticker', target['ticker'], 'EXPOSURE_TICKER_MISMATCH')
-        _bind_field(row, 'nominated_driver_id', 'UNMAPPED_OPPORTUNITY', 'EXPOSURE_NOMINATION_MISMATCH')
-        _bind_field(row, 'research_run_id', run_id, 'EXPOSURE_RESEARCH_RUN_MISMATCH')
-        normalized_exposure.append(row)
+    if target.get('driver_id') == 'UNMAPPED_OPPORTUNITY':
+        for original in payload.get('exposure_resolutions', []):
+            if not isinstance(original, dict):
+                raise ValueError('NON_OBJECT_EXPOSURE_RESOLUTION')
+            row = dict(original)
+            _bind_field(row, 'ticker', target['ticker'], 'EXPOSURE_TICKER_MISMATCH')
+            _bind_field(row, 'nominated_driver_id', 'UNMAPPED_OPPORTUNITY', 'EXPOSURE_NOMINATION_MISMATCH')
+            _bind_field(row, 'research_run_id', run_id, 'EXPOSURE_RESEARCH_RUN_MISMATCH')
+            normalized_exposure.append(row)
+    # A mapped thesis has no authority to create another exposure mapping. Extra proposals
+    # are simply ignored; they cannot support or reject the current thesis.
     payload['exposure_resolutions'] = normalized_exposure
     return payload
 
