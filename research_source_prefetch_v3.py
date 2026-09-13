@@ -122,7 +122,9 @@ def _query_for(target: dict, lane: str) -> str:
         company = str(target.get('name') or '') + ' ' + str(target['ticker']).split('.')[0]
         task = target.get('research_task')
         if task == 'IDENTIFY_DRIVER_AND_TEST_GLOBAL_ALTERNATIVE':
-            terms = '重大訊息 特定事件 產業驅動' if lane == 'SUPPORT' else '全球同業 產業週期 替代解釋'
+            # CAN-stage discovery must search slow-moving company facts first. Event/news
+            # language biases the model toward post-hoc catalysts instead of structural exposure.
+            terms = '產品 應用 客戶 終端市場 營收 法說' if lane == 'SUPPORT' else '全球同業 產業週期 替代解釋'
         else:
             terms = '訂單 營收 傳導 ' + str(target.get('driver_label') or '') if lane == 'SUPPORT' else '訂單取消 需求衰退'
         return f'{company} {terms} {datetime.now(timezone.utc).year}'
