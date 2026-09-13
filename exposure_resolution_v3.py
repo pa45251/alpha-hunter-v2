@@ -62,3 +62,91 @@ def existing_cache(cutoff: pd.Timestamp, taxonomy: dict[str, dict]) -> dict[str,
             if 0 <= (cutoff - stamped).days <= MAX_AGE_DAYS:
                 kept[ticker] = row
     return kept
+
+
+def main() -> None:
+    validated = json.loads((OUT / "research_result_v3.json").read_text(encoding="utf-8"))
+    run_id = str(validated.get("research_run_id") or "")
+    cutoff_text = str(validated.get("validated_at_utc") or "")
+    cutoff = pd.to_datetime(cutoff_text, utc=True, errors="coerce")
+    if validated.get("status") != "PASS" or not run_id or pd.isna(cutoff):
+        raise RuntimeError("EXPOSURE_RESOLUTION_REQUIRES_VALIDATED_RESEARCH")
+
+    from research_ingest_v3 import _extract_json, _prefetch_allowlists
+    raw = _extract_json(RAW.read_text(encoding="utf-8"))
+    handoff = json.loads(HANDOFF.read_text(encoding="utf-8"))
+    if str(raw.get("research_run_id") or "") != run_id or str(handoff.get("run_id") or "") != run_id:
+        raise RuntimeError("EXPOSURE_RESOLUTION_RUN_MISMATCH")
+    _driver_allow, company_allow = _prefetch_allowlists(run_id)
+
+    taxonomy = enabled_taxonomy()
+    handoff_ids = {
+        str(row.get("driver_id") or "")
+        for row in (handoff.get("allowed_driver_taxonomy") or [])
+        if isinstance(row, dict)
+    }
+    allowed_ids = set(taxonomy).intersection(handoff_ids)
+    nominated = {
+        (str(row.get("ticker") or ""), str(row.get("driver_id") or ""))
+        for row in (handoff.get("company_research_targets") or [])
+        if isinstance(row, dict)
+    }
+    proposals = [row for row in (raw.get("exposure_resolutions") or []) if isinstance(row, dict)]
+    counts = {}
+    for row in proposals:
+        ticker = str(row.get("ticker") or "")
+        counts[ticker] = counts.get(ticker, 0) + 1
+
+    cache = existing_cache(cutoff, taxonomy)
+    accepted = 0
+    for row in proposals:
+        ticker = str(row.get("ticker") or "")
+        resolved = str(row.get("resolved_driver_id") or "")
+        mechanism = str(row.get("mechanism") or "").strip()
+        evidence = row.get("company_evidence") or []
+        if counts.get(ticker) != 1:
+            print(f"Exposure unresolved {ticker}: ambiguous proposals")
+            continue
+        if (ticker, "UNMAPPED_OPPORTUNITY") not in nominated:
+            print(f"Exposure unresolved {ticker}: not nominated as UNMAPPED")
+            continue
+        if str(row.get("nominated_driver_id") or "") != "UNMAPPED_OPPORTUNITY":
+            print(f"Exposure unresolved {ticker}: nominated driver mismatch")
+            continue
+        if str(row.get("research_run_id") or "") != run_id or resolved not in allowed_ids:
+            print(f"Exposure unresolved {ticker}: invalid existing driver {resolved}")
+            continue
+        allowed_urls = company_allow.get((ticker, "UNMAPPED_OPPORTUNITY"), set())
+        if not mechanism or not isinstance(evidence, list) or not evidence:
+            print(f"Exposure unresolved {ticker}: missing mechanism/evidence")
+            continue
+        if not all(valid_evidence(item, ticker, cutoff, allowed_urls) for item in evidence):
+            print(f"Exposure unresolved {ticker}: evidence validation failed")
+            continue
+        urls = sorted({str(item.get("source_url")) for item in evidence})
+        meta = taxonomy[resolved]
+        cache[ticker] = {
+            "ticker": ticker,
+            "resolved_driver_id": resolved,
+            "driver_label": str(meta.get("driver_label") or ""),
+            "global_theme": str(meta.get("global_theme") or ""),
+            "mechanism": mechanism,
+            "source_urls": urls,
+            "source_count": len(urls),
+            "validated_at_utc": cutoff_text,
+            "research_run_id": run_id,
+            "mapping_status": "PROVISIONAL_SOURCE_BACKED",
+        }
+        accepted += 1
+
+    CACHE.write_text(json.dumps({
+        "contract": CONTRACT,
+        "status": "PASS",
+        "updated_at_utc": cutoff_text,
+        "resolutions": sorted(cache.values(), key=lambda row: str(row.get("ticker"))),
+    }, ensure_ascii=False, indent=2), encoding="utf-8")
+    print(f"Exposure resolution PASS: accepted={accepted} retained={len(cache)}")
+
+
+if __name__ == "__main__":
+    main()
