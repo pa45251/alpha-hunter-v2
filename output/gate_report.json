@@ -3,13 +3,13 @@
   "gate_version": "1.0",
   "gate_status": "PASS",
   "failure_code": null,
-  "validated_at_taipei": "2026-09-13T07:56:35.909990+08:00",
+  "validated_at_taipei": "2026-09-13T08:57:14.137500+08:00",
   "repository": "pa45251/alpha-hunter-v2",
-  "branch": "main",
+  "branch": "repair/core-sensor-symbol-hygiene-live",
   "schema_version": "2.6",
   "scanner_version": "2.6.1",
-  "run_id": "20260913T075247+0800-234de76c",
-  "manifest_sha256": "54e30524a0719fcd386b176e33f9efe86184d20d6eb7cf6c2860726ad05f0b69",
+  "run_id": "20260913T085416+0800-f2e0830b",
+  "manifest_sha256": "bb27e75c954925a8626fa635f20b934804c611c7c06cf2bc1f00ccada6c8f22f",
   "checks": [
     {
       "name": "repository_identity",
@@ -20,7 +20,7 @@
     {
       "name": "branch_identity",
       "passed": true,
-      "detail": "expected=main; actual=main",
+      "detail": "expected=repair/core-sensor-symbol-hygiene-live; actual=repair/core-sensor-symbol-hygiene-live",
       "severity": "HARD"
     },
     {
@@ -56,13 +56,13 @@
     {
       "name": "manifest_run_id",
       "passed": true,
-      "detail": "run_id=20260913T075247+0800-234de76c",
+      "detail": "run_id=20260913T085416+0800-f2e0830b",
       "severity": "HARD"
     },
     {
       "name": "canonical_manifest_url",
       "passed": true,
-      "detail": "expected=https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/manifest.json; actual=https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/manifest.json",
+      "detail": "expected=https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/repair/core-sensor-symbol-hygiene-live/output/manifest.json; actual=https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/repair/core-sensor-symbol-hygiene-live/output/manifest.json",
       "severity": "HARD"
     },
     {
@@ -80,7 +80,7 @@
     {
       "name": "run_consistency",
       "passed": true,
-      "detail": "all=20260913T075247+0800-234de76c",
+      "detail": "all=20260913T085416+0800-f2e0830b",
       "severity": "HARD"
     },
     {

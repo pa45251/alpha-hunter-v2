@@ -2,18 +2,18 @@
   "contract": "ALPHA_HUNTER_V2_6_1_RESEARCH_HANDOFF",
   "handoff_version": "1.0",
   "handoff_status": "PASS",
-  "generated_at_taipei": "2026-09-13T07:56:43.733388+08:00",
+  "generated_at_taipei": "2026-09-13T08:57:24.905488+08:00",
   "repository": "pa45251/alpha-hunter-v2",
-  "branch": "main",
+  "branch": "repair/core-sensor-symbol-hygiene-live",
   "schema_version": "2.6",
   "scanner_version": "2.6.1",
-  "run_id": "20260913T075247+0800-234de76c",
+  "run_id": "20260913T085416+0800-f2e0830b",
   "gate_status": "PASS",
   "causal_rule": "PRICE_CANNOT_CREATE_CAUSALITY",
   "transport_policy": {
     "source_identity": "GitHub repository pa45251/alpha-hunter-v2 branch main only",
     "preferred_transport": "GitHub connector exact path output/research_handoff.json",
-    "fallback_transport": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/research_handoff.json",
+    "fallback_transport": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/repair/core-sensor-symbol-hygiene-live/output/research_handoff.json",
     "do_not_substitute": [
       "Streamlit tables",
       "GitHub search results",
@@ -25,28 +25,28 @@
   "artifacts": {
     "manifest": {
       "relative_path": "output/manifest.json",
-      "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/manifest.json",
-      "sha256": "54e30524a0719fcd386b176e33f9efe86184d20d6eb7cf6c2860726ad05f0b69",
-      "bytes": 20067
+      "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/repair/core-sensor-symbol-hygiene-live/output/manifest.json",
+      "sha256": "bb27e75c954925a8626fa635f20b934804c611c7c06cf2bc1f00ccada6c8f22f",
+      "bytes": 20813
     },
     "gate_report": {
       "relative_path": "output/gate_report.json",
-      "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/gate_report.json",
-      "sha256": "4075221c77198519fa3988d858f709a33970122812557042767fe51205096617",
-      "bytes": 3899
+      "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/repair/core-sensor-symbol-hygiene-live/output/gate_report.json",
+      "sha256": "8199e673653c66b45835d7612f77e45c62a87bf57b9eae5b38e0879d1d1b9dfd",
+      "bytes": 4069
     },
     "research_packet": {
       "relative_path": "output/research_packet.json",
-      "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/research_packet.json",
-      "sha256": "0685d9867e820ad91bd151598057b0a034ae44196f4ac364c927688dbefee4a6",
-      "bytes": 236135
+      "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/repair/core-sensor-symbol-hygiene-live/output/research_packet.json",
+      "sha256": "f32b5d520c6bf0c5e1a638e89661d4e4bb3342fb5465f6694a54254b87e9450a",
+      "bytes": 236737
     }
   },
   "research_entrypoint": {
     "relative_path": "output/research_packet.json",
-    "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/research_packet.json",
-    "sha256": "0685d9867e820ad91bd151598057b0a034ae44196f4ac364c927688dbefee4a6",
-    "bytes": 236135
+    "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/repair/core-sensor-symbol-hygiene-live/output/research_packet.json",
+    "sha256": "f32b5d520c6bf0c5e1a638e89661d4e4bb3342fb5465f6694a54254b87e9450a",
+    "bytes": 236737
   },
   "research_rule": "Research may begin only when handoff_status=PASS, gate_status=PASS, run_id is consistent, and the fetched research_packet SHA256 matches this handoff."
 }

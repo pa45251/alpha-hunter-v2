@@ -1,26 +1,16 @@
 {
-  "generated_at_utc": "2026-09-12T23:53:43.845239+00:00",
+  "generated_at_utc": "2026-09-13T00:55:07.210126+00:00",
   "core": {
-    "universe_count": 221,
-    "scanned_count": 217,
-    "missing_feature_tickers": [
-      "ABB",
-      "CYBR",
-      "ROG.SW",
-      "STM.PA"
-    ],
+    "universe_count": 220,
+    "scanned_count": 220,
+    "missing_feature_tickers": [],
     "local_rs_missing_tickers": []
   },
   "core_download": {
     "provider": "yfinance",
-    "requested_count": 234,
-    "received_count": 230,
-    "missing_tickers": [
-      "ABB",
-      "CYBR",
-      "STM.PA",
-      "ROG.SW"
-    ],
+    "requested_count": 233,
+    "received_count": 233,
+    "missing_tickers": [],
     "attempts": {
       "SPY": 1,
       "QQQ": 1,
@@ -162,9 +152,8 @@
       "DLR": 1,
       "NVT": 1,
       "EMR": 1,
-      "ABB": 3,
+      "ABBN.SW": 1,
       "CHKP": 1,
-      "CYBR": 3,
       "S": 1,
       "GD": 1,
       "HII": 1,
@@ -176,7 +165,7 @@
       "PRY.MI": 1,
       "NEX.PA": 1,
       "IFX.DE": 1,
-      "STM.PA": 3,
+      "STMPA.PA": 1,
       "ASM.AS": 1,
       "BESI.AS": 1,
       "RHM.DE": 1,
@@ -186,7 +175,7 @@
       "SAP.DE": 1,
       "MAERSK-B.CO": 1,
       "HLAG.DE": 1,
-      "ROG.SW": 3,
+      "ROP.SW": 1,
       "NOVN.SW": 1,
       "SAN.PA": 1,
       "6723.T": 1,
@@ -245,9 +234,9 @@
       "1093.HK": 1,
       "^N225": 1,
       "^KS11": 1,
+      "^SSMI": 1,
       "^STOXX": 1,
       "^OMXC25": 1,
-      "^SSMI": 1,
       "^KQ11": 1,
       "^HSI": 1,
       "^VIX": 1,
@@ -257,14 +246,9 @@
       "EWT": 1,
       "^TNX": 1
     },
-    "errors": {
-      "ABB": "NO_VALID_CLOSE",
-      "CYBR": "NO_VALID_CLOSE",
-      "STM.PA": "NO_VALID_CLOSE",
-      "ROG.SW": "NO_VALID_CLOSE"
-    },
+    "errors": {},
     "deadline_reached": false,
-    "elapsed_seconds": 16.088
+    "elapsed_seconds": 13.235
   },
   "discovery": {
     "source": "https://raw.githubusercontent.com/datasets/s-and-p-500-companies/main/data/constituents.csv",
@@ -272,7 +256,7 @@
     "member_count": 503,
     "sha256": "2f340b4557af4525bb170c7e349251fd922bb1622eb2508940a472e4edf943cc",
     "status": "PARTIAL_PRICE_DATA",
-    "age_days": 0.66,
+    "age_days": 0.7,
     "error": "",
     "discovery_count": 433,
     "membership_status": "READY",
@@ -723,7 +707,7 @@
       },
       "errors": {},
       "deadline_reached": false,
-      "elapsed_seconds": 30.761
+      "elapsed_seconds": 25.205
     }
   },
   "discovery_can_activate_driver": false
