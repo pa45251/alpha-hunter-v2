@@ -17,7 +17,14 @@ def _urls(prefetch: dict, ticker: str, driver_id: str) -> list[str]:
 
 
 def filter_repeats(handoff: dict, prefetch: dict, previous: dict | None) -> tuple[dict, list[dict]]:
+    """Identify unchanged unresolved work without laundering evidence across snapshots.
+
+    Reuse here is intentionally same-run only. Cross-run reuse belongs in explicit fact
+    caches with source availability/expiry metadata, not by renaming an old research run.
+    """
     previous = previous or {}
+    if str(previous.get("run_id") or "") != str(handoff.get("run_id") or ""):
+        previous = {}
     old = {str(x.get("thesis_id")): x for x in previous.get("items") or [] if isinstance(x, dict)}
     kept = []
     skipped = []
@@ -33,11 +40,11 @@ def filter_repeats(handoff: dict, prefetch: dict, previous: dict | None) -> tupl
         if prior.get("outcome") == "UNRESOLVED" and prior.get("signature") == signature:
             skipped.append({"thesis_id": thesis, "ticker": row.get("ticker"), "driver_id": row.get("driver_id"), "reason": "NO_NEW_EVIDENCE_OR_SETUP_CHANGE"})
             continue
-        row = dict(row)
-        row["repeat_signature"] = signature
-        kept.append(row)
-        if row.get("missing_gate") == "CAUSAL_UNVERIFIED":
-            needed_drivers.add(str(row.get("driver_id") or ""))
+        item = dict(row)
+        item["repeat_signature"] = signature
+        kept.append(item)
+        if item.get("missing_gate") == "CAUSAL_UNVERIFIED":
+            needed_drivers.add(str(item.get("driver_id") or ""))
 
     filtered = dict(handoff)
     filtered["company_research_targets"] = kept
