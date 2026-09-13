@@ -1,0 +1,19 @@
+name: Alpha Hunter Live Research Trigger
+
+on:
+  push:
+    branches: ["repair/exposure-resolution-live"]
+    paths: [".alpha-hunter/research_watchdog.json"]
+
+permissions:
+  actions: write
+  contents: read
+
+jobs:
+  dispatch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dispatch existing autonomous research workflow on this branch
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run autonomous_research_v3.yml --repo "${{ github.repository }}" --ref "${{ github.ref_name }}"
