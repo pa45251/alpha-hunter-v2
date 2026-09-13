@@ -17,7 +17,6 @@ if __name__ == "__main__" and "--refresh" in sys.argv:
     for script in ["risk_regime.py", "global_alignment_v2.py", "entry_plan_run_v2.py"]:
         subprocess.run([sys.executable, script], check=True)
     subprocess.run([sys.executable, __file__], check=True)
-    # Keep exact V2 plans as diagnostics; the daily brief exposes only four advisory actions.
     result = subprocess.run([sys.executable, "entry_plan_trace_v2.py"], check=False)
     if result.returncode:
         print("WARNING: optional entry trace failed; daily action board is intact")
@@ -28,19 +27,14 @@ from canonical_evidence import assert_output_lineage
 OUT = Path("output")
 run_id = assert_output_lineage(["decision_packet.json", "risk_regime.json"])
 
-RESEARCH_GATES = {
-    'DRIVER_UNKNOWN',
-    'GLOBAL_PRICE_UNCONFIRMED',
-    'CAUSAL_UNVERIFIED',
-    'COMPANY_TRANSMISSION_UNVERIFIED',
-}
 BLOCKING_STAGE = {
     'DRIVER_UNKNOWN': 'EXPOSURE',
-    'GLOBAL_PRICE_UNCONFIRMED': 'ACTIVATION',
+    'GLOBAL_PRICE_WEAK': 'PRICE_RISK',
+    'GLOBAL_PRICE_UNCONFIRMED': 'PRICE_RISK',
     'CAUSAL_UNVERIFIED': 'ACTIVATION',
     'COMPANY_TRANSMISSION_UNVERIFIED': 'TRANSMISSION',
     'ENTRY': 'ENTRY',
-    'GLOBAL_REJECTED': 'REJECTED',
+    'ECONOMIC_DRIVER_REJECTED': 'REJECTED',
 }
 
 
@@ -54,38 +48,31 @@ def load(name: str) -> dict:
         return {}
 
 
-def read_csv(name: str) -> pd.DataFrame:
-    path = OUT / name
-    if not path.exists():
-        return pd.DataFrame()
-    try:
-        return pd.read_csv(path, dtype={"taiwan_code": str, "code": str})
-    except Exception:
-        return pd.DataFrame()
-
-
 def md(value) -> str:
     return str(value if value is not None else "UNKNOWN").replace("|", "/").replace("\n", " ")
 
 
-def _decision_state(row: dict) -> str:
-    """Keep evidence incompleteness separate from an actual trading WAIT.
+def _trading_action(row: dict) -> str | None:
+    """Return only a qualified trading action.
 
-    RESEARCH is an assessment state, not a fifth trading action. A true WAIT is reserved
-    for a thesis that has reached the ENTRY gate but whose timing/setup is not ready.
+    Evidence-unresolved rows may retain the legacy internal WAIT field for compatibility,
+    but they are not user-facing WAIT decisions until the thesis has reached ENTRY.
     """
-    if row.get('action') == 'PASS':
-        return 'PASS'
-    if row.get('missing_gate') in RESEARCH_GATES:
-        return 'RESEARCH'
-    return str(row.get('action') or 'WAIT')
+    action = str(row.get('action') or '')
+    if action in {'BUY', 'EARLY BUY', 'PASS'}:
+        return action
+    if action == 'WAIT' and row.get('missing_gate') == 'ENTRY':
+        return 'WAIT'
+    return None
 
 
 def _select_opportunities(limit: int = 5) -> list[dict]:
     from opportunity_advisory import assess, rank_opportunities, validate_company_research
     from canonical_evidence import load_histories
-    from research_handoff import company_research_targets
+    from research_handoff import company_research_targets, decision_research_handoff
+    from research_admission_v4 import apply_admission, thesis_id
     from datetime import datetime, timezone
+
     candidates = company_research_targets(OUT, research_only=False)
     histories = load_histories(list({r['ticker'] for r in candidates}))
     research = load('research_result_v3.json')
@@ -102,9 +89,22 @@ def _select_opportunities(limit: int = 5) -> list[dict]:
             except (ValueError, TypeError):
                 continue
     rejected = {r.get('driver_id') for r in research.get('results', []) if r.get('state') == 'INACTIVE'} if research.get('research_run_id') == run_id and research.get('status') == 'PASS' else set()
+
+    admitted = apply_admission(decision_research_handoff(OUT), out=OUT)
+    admission_by_thesis: dict[str, dict] = {}
+    for item in admitted.get('company_research_targets') or []:
+        if isinstance(item, dict) and item.get('thesis_id'):
+            admission_by_thesis[str(item['thesis_id'])] = item
+    for item in admitted.get('deferred_candidates') or []:
+        if isinstance(item, dict) and item.get('thesis_id'):
+            admission_by_thesis[str(item['thesis_id'])] = item
+
     rows = []
     for candidate in candidates:
         candidate['driver_rejected'] = candidate['driver_id'] in rejected
+        candidate['thesis_id'] = candidate.get('thesis_id') or thesis_id(
+            str(candidate.get('ticker')), str(candidate.get('driver_id')), candidate.get('event_id')
+        )
         evidence = accepted.get((candidate['ticker'], candidate['driver_id']))
         row = assess(candidate, evidence, load('risk_regime.json'), histories.get(candidate['ticker']), now)
         from entry_risk import validate_plan
@@ -115,18 +115,32 @@ def _select_opportunities(limit: int = 5) -> list[dict]:
             row['why'] = str(checked.get('reason') or row['why'])
             row['main_risk'] = 'Exact company / driver transmission remains unverified; no entry recommendation'
         row['research_priority'] = candidate.get('research_priority', 0)
-        row['research_eligible'] = bool(candidate.get('research_eligible'))
+        admission = admission_by_thesis.get(str(row.get('thesis_id'))) or {}
+        row['research_state'] = str(admission.get('admission_state') or 'NO_RESEARCH')
+        row['research_question'] = admission.get('research_question')
+        row['admission_reason'] = admission.get('admission_reason')
+        row['wake_condition'] = admission.get('wake_condition')
         row['blocking_stage'] = BLOCKING_STAGE.get(row.get('missing_gate'), 'EXPOSURE')
-        row['decision_state'] = _decision_state(row)
+        row['trading_action'] = _trading_action(row)
+        # decision_state is retained for existing consumers, but now means qualified action
+        # or explicitly UNQUALIFIED rather than overloading RESEARCH as a trading action.
+        row['decision_state'] = row['trading_action'] or 'UNQUALIFIED'
         rows.append(row)
+
     top = rank_opportunities(rows, limit)
     from opportunity_advisory import VERSION
     from entry_risk import RISK_CONTRACT
-    payload = dict(policy_version=VERSION, risk_contract=RISK_CONTRACT, source_run_id=run_id, generated_at_utc=now,
-                   public_lineage_id=(load('decision_packet.json').get('decision_bridge') or {}).get('public_lineage_id'),
-                   auto_trade_allowed=False, top_opportunities=top, all_candidates=rows)
-    # Git publication preserves every nomination for prospective audits; the Markdown board
-    # below spends human attention only on qualified trading decisions and active research.
+    payload = dict(
+        policy_version=VERSION,
+        risk_contract=RISK_CONTRACT,
+        source_run_id=run_id,
+        generated_at_utc=now,
+        public_lineage_id=(load('decision_packet.json').get('decision_bridge') or {}).get('public_lineage_id'),
+        auto_trade_allowed=False,
+        research_admission_summary=admitted.get('admission_summary') or {},
+        top_opportunities=top,
+        all_candidates=rows,
+    )
     cleaned = json.loads(pd.Series([payload]).to_json(orient='values'))[0]
     (OUT / 'opportunity_advisory.json').write_text(json.dumps(cleaned, ensure_ascii=False, indent=2), encoding='utf-8')
     return top
@@ -134,19 +148,24 @@ def _select_opportunities(limit: int = 5) -> list[dict]:
 
 def _render_row(lines: list[str], row: dict, index: int, label: str) -> None:
     lines += [f"### {index}. {md(row['ticker'])} {md(row['name'])} — {label}", ""]
-    for field_label, key in [('WHY', 'why'), ('Driver', 'driver'), ('Blocking stage', 'blocking_stage'),
-                             ('Driver state', 'driver_state'), ('Company transmission', 'company_transmission'),
-                             ('International price', 'international_price_state'),
-                             ('International causal', 'international_causal_state'),
-                             ('Current gate', 'missing_gate'), ('International evidence', 'international'),
-                             ('Relative', 'relative'), ('Regime', 'regime'), ('Technical state', 'technical'),
-                             ('Why price', 'price_reason'), ('Entry state', 'entry_state'), ('Entry', 'entry'),
-                             ('Actual price risk', 'risk_summary'), ('Invalidation', 'invalidation'),
-                             ('Add trigger', 'add_trigger'), ('Main counter-evidence', 'main_counter_evidence'),
-                             ('Main risk', 'main_risk'), ('What would make us wrong', 'what_would_make_us_wrong')]:
-        lines.append(f"- **{field_label}:** {md(row.get(key, 'Unverified'))}")
-    if row.get('action') == 'EARLY BUY':
-        lines.append('- **Initial size:** 35% of planned position; reassess before adding.')
+    fields = [
+        ('WHY', 'why'), ('Driver', 'driver'), ('Blocking stage', 'blocking_stage'),
+        ('Driver state', 'driver_state'), ('Company transmission', 'company_transmission'),
+        ('International price', 'international_price_state'), ('International causal', 'international_causal_state'),
+        ('Current gate', 'missing_gate'), ('Research state', 'research_state'),
+        ('Research question', 'research_question'), ('Wake condition', 'wake_condition'),
+        ('International evidence', 'international'), ('Relative', 'relative'), ('Regime', 'regime'),
+        ('Technical state', 'technical'), ('Why price', 'price_reason'), ('Entry state', 'entry_state'),
+        ('Entry', 'entry'), ('Actual price risk', 'risk_summary'), ('Invalidation', 'invalidation'),
+        ('Add trigger', 'add_trigger'), ('Main counter-evidence', 'main_counter_evidence'),
+        ('Main risk', 'main_risk'), ('What would make us wrong', 'what_would_make_us_wrong'),
+    ]
+    for field_label, key in fields:
+        value = row.get(key)
+        if value not in {None, ''}:
+            lines.append(f"- **{field_label}:** {md(value)}")
+    if row.get('trading_action') in {'BUY', 'EARLY BUY'}:
+        lines.append('- **Planned-position ceiling:** 35% of planned position; this is not a risk budget or order size.')
     for evidence in row.get('evidence', []) + row.get('international_evidence', []):
         lines.append(f"- Evidence: {md(evidence['claim'])} [{md(evidence['source_title'])}]({evidence['source_url']})")
     lines.append('')
@@ -155,19 +174,23 @@ def _render_row(lines: list[str], row: dict, index: int, label: str) -> None:
 packet = load("decision_packet.json")
 regime = load("risk_regime.json")
 activation = packet.get("activation_layer") or {}
-launch = packet.get("launch_layer") or {}
 opportunities = _select_opportunities(5)
 
-trade_rows = [r for r in opportunities if r.get('decision_state') in {'BUY', 'EARLY BUY', 'WAIT'}]
-research_rows = [r for r in opportunities if r.get('decision_state') == 'RESEARCH' and r.get('research_eligible')]
-deferred_research = [r for r in opportunities if r.get('decision_state') == 'RESEARCH' and not r.get('research_eligible')]
-pass_rows = [r for r in opportunities if r.get('decision_state') == 'PASS']
-counts = {
-    'BUY': sum(r.get('decision_state') == 'BUY' for r in opportunities),
-    'EARLY BUY': sum(r.get('decision_state') == 'EARLY BUY' for r in opportunities),
-    'WAIT': sum(r.get('decision_state') == 'WAIT' for r in opportunities),
-    'RESEARCH': sum(r.get('decision_state') == 'RESEARCH' for r in opportunities),
-    'PASS': sum(r.get('decision_state') == 'PASS' for r in opportunities),
+trade_rows = [r for r in opportunities if r.get('trading_action') in {'BUY', 'EARLY BUY', 'WAIT'}]
+pass_rows = [r for r in opportunities if r.get('trading_action') == 'PASS']
+fact_rows = [r for r in opportunities if r.get('research_state') == 'FACT_CHECK' and not r.get('trading_action')]
+observe_rows = [r for r in opportunities if r.get('research_state') == 'OBSERVE' and not r.get('trading_action')]
+drop_rows = [r for r in opportunities if r.get('research_state') == 'DROP_THIS_RUN' and not r.get('trading_action')]
+no_research_rows = [r for r in opportunities if r.get('research_state') == 'NO_RESEARCH' and not r.get('trading_action')]
+trade_counts = {
+    action: sum(r.get('trading_action') == action for r in opportunities)
+    for action in ['BUY', 'EARLY BUY', 'WAIT', 'PASS']
+}
+research_counts = {
+    'FACT_CHECK': len(fact_rows),
+    'OBSERVE': len(observe_rows),
+    'DROP_THIS_RUN': len(drop_rows),
+    'NO_RESEARCH': len(no_research_rows),
 }
 
 lines = [
@@ -176,41 +199,46 @@ lines = [
     f"- Market session: `{regime.get('risk_snapshot_date', 'UNKNOWN')}`",
     f"- Risk regime: **{regime.get('regime', 'UNKNOWN')}**",
     f"- Causal evidence: `{activation.get('source', 'UNKNOWN')}`",
-    "- Core rule: price nominates; company facts define exposure; independent evidence validates the driver; company evidence validates transmission; price/risk decides timing.",
-    f"- Decision counts: BUY={counts['BUY']} / EARLY BUY={counts['EARLY BUY']} / WAIT={counts['WAIT']} / RESEARCH={counts['RESEARCH']} / PASS={counts['PASS']}",
-    "- RESEARCH is an unresolved evidence state, not a trading recommendation.",
+    "- Core rule: price nominates; non-price facts establish economic exposure/activation/transmission; price/risk decides timing.",
+    f"- Trading actions: BUY={trade_counts['BUY']} / EARLY BUY={trade_counts['EARLY BUY']} / WAIT={trade_counts['WAIT']} / PASS={trade_counts['PASS']}",
+    f"- Research workload: FACT_CHECK={research_counts['FACT_CHECK']} / OBSERVE={research_counts['OBSERVE']} / DROP_THIS_RUN={research_counts['DROP_THIS_RUN']} / NO_RESEARCH={research_counts['NO_RESEARCH']}",
+    "- FACT_CHECK is the bounded model-research workload. OBSERVE/DEFERRED rows are not LLM tasks until a wake condition changes.",
     "",
     "## Trading Decision Queue", "",
 ]
 
 if trade_rows:
     for i, row in enumerate(trade_rows, 1):
-        _render_row(lines, row, i, row['decision_state'])
+        _render_row(lines, row, i, row['trading_action'])
 else:
     lines.append('- No thesis-qualified BUY / EARLY BUY / WAIT in this snapshot.')
 
-lines += ["", "## Active Research Queue", ""]
-if research_rows:
-    # This is presentation-only. The canonical JSON retains every candidate; showing the
-    # first 12 prevents unresolved evidence from consuming the entire human attention budget.
-    for i, row in enumerate(research_rows[:12], 1):
-        _render_row(lines, row, i, f"RESEARCH — {row['blocking_stage']}")
-    if len(research_rows) > 12:
-        lines.append(f"- {len(research_rows) - 12} additional research-eligible candidates remain in the canonical JSON ledger.")
+lines += ["", "## Active Fact-Check Queue", ""]
+if fact_rows:
+    for i, row in enumerate(fact_rows[:12], 1):
+        _render_row(lines, row, i, f"FACT_CHECK — {row['blocking_stage']}")
+    if len(fact_rows) > 12:
+        lines.append(f"- {len(fact_rows) - 12} additional admitted fact checks remain in the canonical JSON ledger.")
 else:
-    lines.append('- No price-relevant unresolved candidate requires active research.')
+    lines.append('- No candidate currently requires model fact research.')
 
 lines += [
     "", "## Ledger Summary", "",
-    f"- Deferred unresolved candidates: {len(deferred_research)}",
+    f"- Observe / wake-condition candidates: {len(observe_rows)}",
+    f"- Dropped this run by deterministic veto: {len(drop_rows)}",
+    f"- Other unqualified rows requiring no current research: {len(no_research_rows)}",
     f"- PASS candidates: {len(pass_rows)}",
-    f"- Total canonical candidates retained for audit: {len(opportunities)}",
+    f"- Total canonical theses retained for audit: {len(opportunities)}",
     '', '- BUY / EARLY BUY are advisory views at the displayed entry zone, never brokerage orders.',
-    '- WAIT means the thesis reached the entry stage but timing/setup is not ready; unresolved evidence is shown as RESEARCH instead.',
+    '- WAIT is reserved for a thesis that reached ENTRY but is waiting for a concrete timing/setup condition.',
+    '- UNKNOWN does not automatically create a research job; FACT_CHECK admission requires a decision-changing factual question.',
     '- A gap outside the zone or new thesis counter-evidence requires reassessment before taking risk.',
     '- Prices and R/R use sealed closed sessions; upside references are resistance or disclosed base-height scenarios, not return forecasts.',
     '- Automatic order execution remains disabled. Frozen execution permissions are unchanged.', '',
 ]
 
 (OUT / "action_board.md").write_text("\n".join(lines), encoding="utf-8")
-print(f"Wrote first-principles action board: run_id={run_id} decisions={len(trade_rows)} active_research={len(research_rows)} total={len(opportunities)}")
+print(
+    f"Wrote first-principles action board: run_id={run_id} "
+    f"trade_decisions={len(trade_rows)} fact_checks={len(fact_rows)} total={len(opportunities)}"
+)
