@@ -11,6 +11,8 @@ from research_contract_v3 import ResearchContractError, validate_research_result
 PACKET = Path("output/research_packet.json")
 RAW = Path("output/research_result_v3.raw.txt")
 OUT = Path("output/research_result_v3.json")
+DEFAULT_PREFETCH = Path("/tmp/research_prefetch_v3.json")
+PREFETCH_CONTRACT = "ALPHA_HUNTER_V3_RESEARCH_SOURCE_PREFETCH"
 
 
 def _utcnow() -> str:
@@ -18,18 +20,10 @@ def _utcnow() -> str:
 
 
 def _extract_json(text: str):
-    """Extract one top-level JSON object without relaxing downstream validation.
-
-    Copilot CLI can occasionally wrap an otherwise valid JSON object with brief
-    prose/tool chatter. We tolerate only that transport noise. The extracted
-    object must still pass the exact research contract, run_id, target and
-    evidence validators below.
-    """
+    """Extract one top-level JSON object without relaxing downstream validation."""
     text = text.strip().lstrip("\ufeff")
     if not text:
         raise ResearchContractError("empty autonomous research output")
-
-    # Fast path: strict JSON or a single fenced JSON block.
     candidates = [text]
     if text.startswith("```"):
         lines = text.splitlines()
@@ -38,7 +32,6 @@ def _extract_json(text: str):
         if lines and lines[-1].strip() == "```":
             lines = lines[:-1]
         candidates.append("\n".join(lines).strip())
-
     for candidate in candidates:
         try:
             payload = json.loads(candidate)
@@ -47,9 +40,6 @@ def _extract_json(text: str):
             return payload
         except json.JSONDecodeError:
             pass
-
-    # Bounded recovery for prefix/suffix chatter: scan for the first decodable
-    # top-level object and reject any case where none is found.
     decoder = json.JSONDecoder()
     for idx, ch in enumerate(text):
         if ch != "{":
@@ -60,7 +50,6 @@ def _extract_json(text: str):
             continue
         if isinstance(payload, dict):
             return payload
-
     preview = text[:180].replace("\n", " ")
     raise ResearchContractError(f"no valid top-level JSON object found; raw_prefix={preview!r}")
 
@@ -80,6 +69,58 @@ def _unknown(driver_id: str, run_id: str, reason: str) -> dict:
         "researched_at_utc": _utcnow(),
         "research_run_id": run_id,
     }
+
+
+def _source_urls(items) -> set[str]:
+    if not isinstance(items, list):
+        return set()
+    return {
+        str(item.get("source_url"))
+        for item in items
+        if isinstance(item, dict) and item.get("source_url")
+    }
+
+
+def _company_source_urls(row: dict) -> set[str]:
+    urls = _source_urls(row.get("fundamental_evidence")) | _source_urls(row.get("international_evidence"))
+    proof = row.get("local_scope_evidence")
+    if isinstance(proof, dict):
+        for key in ("event_evidence", "global_alternative_evidence"):
+            item = proof.get(key)
+            if isinstance(item, dict) and item.get("source_url"):
+                urls.add(str(item["source_url"]))
+    return urls
+
+
+def _prefetch_allowlists(run_id: str) -> tuple[dict[str, set[str]], dict[tuple[str, str], set[str]]]:
+    path = Path(os.getenv("ALPHA_HUNTER_RESEARCH_TRANSPORT_PATH", str(DEFAULT_PREFETCH)))
+    if not path.exists():
+        raise ResearchContractError("DETERMINISTIC_SOURCE_TRANSPORT_MISSING")
+    data = json.loads(path.read_text(encoding="utf-8"))
+    if data.get("contract") != PREFETCH_CONTRACT or data.get("status") != "PASS":
+        raise ResearchContractError("DETERMINISTIC_SOURCE_TRANSPORT_INVALID")
+    if str(data.get("research_run_id", "")) != str(run_id):
+        raise ResearchContractError("DETERMINISTIC_SOURCE_TRANSPORT_RUN_MISMATCH")
+
+    drivers: dict[str, set[str]] = {}
+    for target in data.get("targets") or []:
+        if not isinstance(target, dict):
+            continue
+        drivers[str(target.get("driver_id", ""))] = _source_urls(target.get("candidate_sources"))
+
+    companies: dict[tuple[str, str], set[str]] = {}
+    for target in data.get("company_targets") or []:
+        if not isinstance(target, dict):
+            continue
+        key = (str(target.get("ticker", "")), str(target.get("driver_id", "")))
+        companies[key] = _source_urls(target.get("candidate_sources"))
+    return drivers, companies
+
+
+def _assert_urls_prefetched(urls: set[str], allowed: set[str], label: str) -> None:
+    escaped = sorted(urls - allowed)
+    if escaped:
+        raise ResearchContractError(f"UNPREFETCHED_EVIDENCE_URL:{label}:{escaped[:3]}")
 
 
 def main() -> None:
@@ -108,6 +149,7 @@ def main() -> None:
     company_invalid_coverage = []
 
     try:
+        driver_allow, company_allow = _prefetch_allowlists(run_id)
         raw_text = RAW.read_text(encoding="utf-8")
         payload = _extract_json(raw_text)
         if payload.get("contract") != "ALPHA_HUNTER_V3_AUTONOMOUS_RESEARCH":
@@ -132,22 +174,19 @@ def main() -> None:
                 if str(result.get("research_run_id")) != run_id:
                     raise ResearchContractError("per-driver run_id mismatch")
                 validate_research_result(result, target_set)
-                urls = {
-                    e.get("source_url")
-                    for e in (result.get("supporting_evidence") or []) + (result.get("counter_evidence") or [])
-                    if isinstance(e, dict) and e.get("source_url")
-                }
+                urls = _source_urls(result.get("supporting_evidence")) | _source_urls(result.get("counter_evidence"))
                 if int(result.get("source_count", -1)) != len(urls):
                     raise ResearchContractError("source_count must equal unique evidence URLs")
+                _assert_urls_prefetched(urls, driver_allow.get(driver_id, set()), driver_id)
                 supplied[driver_id] = result
             except Exception as exc:
                 errors.append(f"{driver_id}: {exc}")
     except Exception as exc:
         status = "RESEARCH_UNAVAILABLE"
         errors.append(str(exc))
+        driver_allow, company_allow = {}, {}
+        payload = {}
 
-    # Optional company intelligence is independently validated and never activates V2 edges.
-    from research_handoff import company_research_targets
     from opportunity_advisory import validate_company_research
     company_targets = {(r['ticker'], r['driver_id']) for r in selection['company_research_targets']}
     if status == 'PASS':
@@ -158,9 +197,10 @@ def main() -> None:
                 key = (row['ticker'], row['driver_id'])
                 if key in seen_company:
                     raise ValueError('DUPLICATE_COMPANY_RESEARCH')
+                _assert_urls_prefetched(_company_source_urls(row), company_allow.get(key, set()), f"{key[0]}:{key[1]}")
                 seen_company.add(key)
                 company_opportunities.append(row)
-            except (ValueError, TypeError) as exc:
+            except (ValueError, TypeError, ResearchContractError) as exc:
                 company_errors.append(str(exc))
                 if isinstance(row, dict) and (row.get('ticker'), row.get('driver_id')) in company_targets:
                     company_invalid_coverage.append(dict(ticker=row['ticker'], driver_id=row['driver_id'], status='UNRESOLVED', reason='Research failed validation: ' + str(exc)))
