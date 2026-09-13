@@ -5,7 +5,6 @@ from pathlib import Path
 from typing import Any
 
 
-# Live-validation trigger v2 only; no semantic effect.
 def thesis_id(ticker: str, driver_id: str, event_id: str | None = None) -> str:
     raw = f"{ticker}|{driver_id}|{event_id or ''}"
     return hashlib.sha256(raw.encode("utf-8")).hexdigest()[:20]
@@ -28,12 +27,12 @@ def _classify(row: dict) -> tuple[str, str, str]:
     gate = str(row.get("missing_gate") or "")
     reaction = str(row.get("reaction_state") or "")
     price_ready = bool(row.get("entry_research_ready"))
-    if gate == "GLOBAL_REJECTED" or reaction == "BROKEN":
-        return "DROP_THIS_RUN", "Hard veto or broken setup", "NEW_SESSION_OR_NEW_NONPRICE_EVENT"
+    if gate == "ECONOMIC_DRIVER_REJECTED" or reaction == "BROKEN":
+        return "DROP_THIS_RUN", "Economic thesis rejected or setup broken", "NEW_SESSION_OR_NEW_NONPRICE_EVENT"
     if gate == "ENTRY":
         return "NO_RESEARCH", "Thesis already reached entry gate", "ENTRY_OR_REGIME_CHANGE"
-    if gate == "GLOBAL_PRICE_UNCONFIRMED":
-        return "OBSERVE", "Economic evidence is not the current blocker", "GLOBAL_PRICE_STATE_CHANGE"
+    if gate in {"GLOBAL_PRICE_WEAK", "GLOBAL_PRICE_UNCONFIRMED"}:
+        return "OBSERVE", "Global price is a trading-risk blocker, not an economic research question", "GLOBAL_PRICE_STATE_CHANGE"
     if not price_ready or reaction == "EXTENDED":
         return "OBSERVE", "Evidence gap exists but current setup cannot change action", "ENTRY_SETUP_OR_NEW_NONPRICE_EVENT"
     if gate in {"DRIVER_UNKNOWN", "CAUSAL_UNVERIFIED", "COMPANY_TRANSMISSION_UNVERIFIED"}:
