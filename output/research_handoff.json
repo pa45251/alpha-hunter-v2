@@ -2,18 +2,18 @@
   "contract": "ALPHA_HUNTER_V2_6_1_RESEARCH_HANDOFF",
   "handoff_version": "1.0",
   "handoff_status": "PASS",
-  "generated_at_taipei": "2026-09-13T10:46:30.261337+08:00",
+  "generated_at_taipei": "2026-09-13T11:21:07.451447+08:00",
   "repository": "pa45251/alpha-hunter-v2",
-  "branch": "main",
+  "branch": "repair/exposure-resolution-live",
   "schema_version": "2.6",
   "scanner_version": "2.6.1",
-  "run_id": "20260913T104237+0800-0e081f40",
+  "run_id": "20260913T111753+0800-9c2a2885",
   "gate_status": "PASS",
   "causal_rule": "PRICE_CANNOT_CREATE_CAUSALITY",
   "transport_policy": {
     "source_identity": "GitHub repository pa45251/alpha-hunter-v2 branch main only",
     "preferred_transport": "GitHub connector exact path output/research_handoff.json",
-    "fallback_transport": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/research_handoff.json",
+    "fallback_transport": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/repair/exposure-resolution-live/output/research_handoff.json",
     "do_not_substitute": [
       "Streamlit tables",
       "GitHub search results",
@@ -25,28 +25,28 @@
   "artifacts": {
     "manifest": {
       "relative_path": "output/manifest.json",
-      "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/manifest.json",
-      "sha256": "3a6f1979fc6161b0bf52e874faae877ee4f719e58ac411ec6dbb4b9ebaaac74c",
-      "bytes": 20052
+      "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/repair/exposure-resolution-live/output/manifest.json",
+      "sha256": "b4751ce37a329d7501f37dc20d9a80f4f78ee2a3d3b02b56c1fc6aa57522142f",
+      "bytes": 20645
     },
     "gate_report": {
       "relative_path": "output/gate_report.json",
-      "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/gate_report.json",
-      "sha256": "4572cc0dea4b033774ee092d7e3ad687c706fe576d002c6ea9098062b19321ce",
-      "bytes": 3899
+      "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/repair/exposure-resolution-live/output/gate_report.json",
+      "sha256": "c3d5d194cdefd6d6b8f6b0a09acdf5317b55a2fd4485f79ffa4b5430c5e832af",
+      "bytes": 4034
     },
     "research_packet": {
       "relative_path": "output/research_packet.json",
-      "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/research_packet.json",
-      "sha256": "54ec9d7ee04e1758a0306659b9c56b0ae70653e66a2f6023b699e06b362490e6",
-      "bytes": 236057
+      "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/repair/exposure-resolution-live/output/research_packet.json",
+      "sha256": "b469d1fb97d48e0e85d8482dd29497165df89106e58b5664c04dc813e45cd6ea",
+      "bytes": 236597
     }
   },
   "research_entrypoint": {
     "relative_path": "output/research_packet.json",
-    "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/research_packet.json",
-    "sha256": "54ec9d7ee04e1758a0306659b9c56b0ae70653e66a2f6023b699e06b362490e6",
-    "bytes": 236057
+    "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/repair/exposure-resolution-live/output/research_packet.json",
+    "sha256": "b469d1fb97d48e0e85d8482dd29497165df89106e58b5664c04dc813e45cd6ea",
+    "bytes": 236597
   },
   "research_rule": "Research may begin only when handoff_status=PASS, gate_status=PASS, run_id is consistent, and the fetched research_packet SHA256 matches this handoff."
 }
