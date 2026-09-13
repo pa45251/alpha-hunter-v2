@@ -16,7 +16,7 @@
 
 ### 1. 3176.TWO 基亞 — RESEARCH — EXPOSURE
 
-- **WHY:** Official monthly revenue increased 197.4% year over year with overseas revenue cited, but no company-specific disclosure identifies a unique enabled driver; support and counter searches returned no usable additional sources.
+- **WHY:** Official monthly revenue increased 197.4% year over year and the issuer noted increased overseas revenue, but no source-backed product, customer, end-market, order, or revenue-mix evidence uniquely maps the company to an enabled driver taxonomy ID.
 - **Driver:** Unmapped opportunity — research WHY
 - **Blocking stage:** EXPOSURE
 - **Driver state:** UNVERIFIED
@@ -40,7 +40,7 @@
 
 ### 2. 2605.TW 新興 — RESEARCH — ACTIVATION
 
-- **WHY:** Official revenue remarks attribute growth to freight rates remaining high, but the exact global dry-bulk causal driver is conflicting because industry evidence also indicates 2026 strength may be rerouting-driven and vulnerable to a 2027 supply glut.
+- **WHY:** Monthly revenue increased 58.8% year over year and the issuer attributed the increase to freight rates remaining high, but independent international causal evidence for the exact dry-bulk mechanism and company-specific transmission is insufficient.
 - **Driver:** Dry-bulk freight / commodity shipping cycle
 - **Blocking stage:** ACTIVATION
 - **Driver state:** UNVERIFIED
@@ -64,7 +64,7 @@
 
 ### 3. 4967.TW 十銓 — RESEARCH — ACTIVATION
 
-- **WHY:** Official revenue increased 275.1% year over year, attributed to higher shipments and selling prices, but the disclosure does not identify NAND/storage-controller causality and independent exact-driver evidence is insufficient.
+- **WHY:** Monthly revenue increased 275.1% year over year, with the issuer citing higher shipment volume and selling prices, but the evidence does not establish that the improvement is specifically a NAND/storage-controller/module cycle rather than another memory product or company-specific factor.
 - **Driver:** NAND / storage controller and module cycle
 - **Blocking stage:** ACTIVATION
 - **Driver state:** UNVERIFIED
@@ -88,7 +88,7 @@
 
 ### 4. 3044.TW 健鼎 — RESEARCH — EXPOSURE
 
-- **WHY:** Official revenue increased 65.5% year over year due to customer order demand and shipments, but no product, customer, or end-market evidence uniquely maps the company to an enabled driver.
+- **WHY:** Monthly revenue increased 65.5% year over year and the issuer cited customer order demand and shipments, but no source-backed product, customer, end-market, or order evidence uniquely maps the company to an enabled driver taxonomy ID.
 - **Driver:** UNMAPPED / WHY?
 - **Blocking stage:** EXPOSURE
 - **Driver state:** UNVERIFIED
@@ -112,7 +112,7 @@
 
 ### 5. 2636.TW 台驊控股 — RESEARCH — EXPOSURE
 
-- **WHY:** Official revenue cites higher freight rates and cargo volume, but the evidence does not distinguish container freight from dry-bulk freight or establish a unique enabled mapping.
+- **WHY:** Monthly revenue increased 85.5% year over year and the issuer cited higher freight rates and cargo volume, but the available evidence does not distinguish container, dry-bulk, forwarding, or company-specific effects well enough for a unique taxonomy mapping.
 - **Driver:** UNMAPPED / WHY?
 - **Blocking stage:** EXPOSURE
 - **Driver state:** UNVERIFIED
@@ -136,7 +136,7 @@
 
 ### 6. 1609.TW 大亞 — RESEARCH — ACTIVATION
 
-- **WHY:** Official revenue increased 34.8% year over year, but no company transmission evidence connects the change to copper pricing, exchange inventories, regional premia, tariffs, or physical tightness; cable demand is not equivalent to the nominated commodity driver.
+- **WHY:** Monthly revenue increased 34.8% year over year, but no current external evidence verifies the exact copper price, inventory, trade-dislocation, or physical-tightness mechanism or its transmission to cable revenue.
 - **Driver:** Copper commodity price / trade-inventory cycle
 - **Blocking stage:** ACTIVATION
 - **Driver state:** UNVERIFIED
@@ -160,7 +160,7 @@
 
 ### 7. 4915.TW 致伸 — RESEARCH — EXPOSURE
 
-- **WHY:** Official revenue increased 20.4% year over year, but no company-specific product, customer, or end-market evidence uniquely identifies an enabled driver.
+- **WHY:** Monthly revenue increased 20.4% year over year, but no source-backed product, customer, end-market, order, or revenue-mix evidence uniquely maps the company to an enabled driver taxonomy ID.
 - **Driver:** UNMAPPED / WHY?
 - **Blocking stage:** EXPOSURE
 - **Driver state:** UNVERIFIED
@@ -184,7 +184,7 @@
 
 ### 8. 6150.TWO 撼訊 — RESEARCH — EXPOSURE
 
-- **WHY:** Official revenue fell 21.3% year over year despite a monthly increase; no company-specific evidence identifies a supported enabled driver.
+- **WHY:** Monthly revenue declined 21.3% year over year and cumulative revenue declined 26.5%; no source-backed evidence identifies a unique enabled driver or explains the observed company-specific movement.
 - **Driver:** UNMAPPED / WHY?
 - **Blocking stage:** EXPOSURE
 - **Driver state:** UNVERIFIED
@@ -208,7 +208,7 @@
 
 ### 9. 4951.TWO 精拓科 — RESEARCH — EXPOSURE
 
-- **WHY:** Official cumulative revenue was nearly flat year over year and no company-specific product, customer, or end-market evidence uniquely identifies an enabled driver.
+- **WHY:** Monthly revenue was only 3.2% above the prior year and cumulative revenue was nearly flat; no source-backed product, customer, end-market, or order evidence uniquely maps the company to an enabled driver taxonomy ID.
 - **Driver:** UNMAPPED / WHY?
 - **Blocking stage:** EXPOSURE
 - **Driver state:** UNVERIFIED
@@ -232,7 +232,7 @@
 
 ### 10. 5609.TWO 中菲行 — RESEARCH — EXPOSURE
 
-- **WHY:** Official revenue increased 39.1% year over year, but no company-specific transmission evidence uniquely maps the company to an enabled driver.
+- **WHY:** Monthly revenue increased 39.1% year over year, but no evidence separates container freight, air freight, forwarding volume, or company-specific factors sufficiently to select one enabled driver.
 - **Driver:** UNMAPPED / WHY?
 - **Blocking stage:** EXPOSURE
 - **Driver state:** UNVERIFIED
@@ -256,7 +256,7 @@
 
 ### 11. 2838.TW 聯邦銀 — RESEARCH — EXPOSURE
 
-- **WHY:** Official cumulative revenue increased 15.8% year over year, but the available monthly revenue data does not identify a unique rate, credit, loan-growth, or other enabled driver.
+- **WHY:** Monthly revenue increased 3.9% year over year, but no source-backed evidence identifies whether the relevant mechanism is NIM, credit, loan growth, fees, or a company-specific event.
 - **Driver:** UNMAPPED / WHY?
 - **Blocking stage:** EXPOSURE
 - **Driver state:** UNVERIFIED
@@ -280,7 +280,7 @@
 
 ### 12. 2023.TW 燁輝 — RESEARCH — EXPOSURE
 
-- **WHY:** Official monthly and cumulative revenue declined year over year; no company-specific evidence supports a unique enabled driver.
+- **WHY:** Monthly revenue declined 14.3% year over year and cumulative revenue declined 6.7%; no source-backed evidence uniquely identifies an enabled steel, commodity, or downstream-demand driver.
 - **Driver:** UNMAPPED / WHY?
 - **Blocking stage:** EXPOSURE
 - **Driver state:** UNVERIFIED

@@ -2,7 +2,7 @@
   "contract": "ALPHA_HUNTER_DECISION_PACKET",
   "decision_contract_version": "2.7.1",
   "run_id": "20260913T150831+0800-e625fba2",
-  "generated_at": "2026-09-13T07:13:42.446457+00:00",
+  "generated_at": "2026-09-13T08:22:21.951793+00:00",
   "gate_first_score_second": true,
   "price_can_create_causality": false,
   "auto_trade_allowed": false,
@@ -25,7 +25,7 @@
   },
   "decision_bridge": {
     "contract": "ALPHA_HUNTER_DECISION_BRIDGE_V2",
-    "public_lineage_id": "c09bf7adc3083a0286c2ad6322eaa28a1efd93d199b7ee05bb2ddc1a4297fffc",
+    "public_lineage_id": "c4ba2cf34074d19d0509cc02175bebe30cb5498e91b2fc27a423bf012af577f3",
     "canonical_snapshot_revalidated_immediately_before_decision": true,
     "persisted_gate_reused_without_revalidation": false,
     "mixed_snapshot_allowed": false,
@@ -80,7 +80,7 @@
     ],
     "validation_evidence_status": "PENDING_ACCEPTANCE_REVIEW",
     "current_shadow_statistics_are_strategy_validation": false,
-    "sealed_snapshot_id": "3149eee25fb1604e1d63f2aec750de8642fd4e73d434d7f6874406adbc8fc671"
+    "sealed_snapshot_id": "bbb31e8e8f9bbdc7d061f546b828afc9daba6e9a18c8c9f3f40ac813f3cacd61"
   },
   "shadow_validation_layer": {
     "validation_version": null,
