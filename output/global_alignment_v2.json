@@ -1,10 +1,10 @@
 {
-  "source_run_id": "20260914T062933+0800-c38e3d8b",
-  "csv_sha256": "110b8f78c5683a45f51833253eb5f777b29e941ec524953bdfd3cf12309ab6e2",
-  "public_lineage_id": "14a3d166f2aec327b5bdcc0533b9740b54e1b09601d7696926751b351832cf64",
+  "source_run_id": "20260915T063118+0800-2289d2aa",
+  "csv_sha256": "43fb3303f8606b03bc479f82baf1f6e865d5ee65f5a3f9727fe2b53da39abc0a",
+  "public_lineage_id": "5b29fa57dfcdfa2b303e77c70279e3bc41fc682f2a0704b6dc1b5fbaf2c1d48d",
   "contract": "ALPHA_HUNTER_GLOBAL_ALIGNMENT_V2",
   "schema_version": "2.0",
-  "generated_at": "2026-09-13T22:32:17.062157+00:00",
+  "generated_at": "2026-09-14T22:34:54.472395+00:00",
   "score_is_probability": false,
   "score_interpretation": "Relative alignment/evidence strength only; not a calibrated win probability.",
   "hard_rules": [
