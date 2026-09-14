@@ -1,9 +1,9 @@
 {
   "policy_version": "ORDERED_DRIVER_GATES_CANONICAL_RISK_3",
   "risk_contract": "LONG_ENTRY_UPPER_TO_INVALIDATION_V1",
-  "source_run_id": "20260915T063118+0800-2289d2aa",
-  "generated_at_utc": "2026-09-14T22:34:57.836630+00:00",
-  "public_lineage_id": "5b29fa57dfcdfa2b303e77c70279e3bc41fc682f2a0704b6dc1b5fbaf2c1d48d",
+  "source_run_id": "20260915T070604+0800-e85f99fe",
+  "generated_at_utc": "2026-09-14T23:09:36.854837+00:00",
+  "public_lineage_id": "5921d3b4bf96e881a489a8b0b5e95885466ee69abf19843d86e0e1d72b8f27e2",
   "auto_trade_allowed": false,
   "top_opportunities": [
     {
