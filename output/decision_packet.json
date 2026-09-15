@@ -1,8 +1,8 @@
 {
   "contract": "ALPHA_HUNTER_DECISION_PACKET",
   "decision_contract_version": "2.7.1",
-  "run_id": "20260915T070604+0800-e85f99fe",
-  "generated_at": "2026-09-14T23:09:31.649637+00:00",
+  "run_id": "20260916T062512+0800-3a36a2e4",
+  "generated_at": "2026-09-15T22:29:14.372934+00:00",
   "gate_first_score_second": true,
   "price_can_create_causality": false,
   "auto_trade_allowed": false,
@@ -12,7 +12,7 @@
     "FORWARD_ACCEPTANCE_REVIEW"
   ],
   "action_counts": {
-    "WATCH_RESEARCH": 34
+    "WATCH_RESEARCH": 31
   },
   "decision_focus": [],
   "entry_rule": "Only a PRE_CONFIRMATION/EARLY_CONFIRMATION -> CONFIRMING transition, or PULLBACK -> CONFIRMING recovery, can create an entry trigger. No fixed momentum threshold is invented.",
@@ -25,7 +25,7 @@
   },
   "decision_bridge": {
     "contract": "ALPHA_HUNTER_DECISION_BRIDGE_V2",
-    "public_lineage_id": "5921d3b4bf96e881a489a8b0b5e95885466ee69abf19843d86e0e1d72b8f27e2",
+    "public_lineage_id": "4b814b2c047eee0f17580c017ee45179704103fa313d50b01b53fc626407c7df",
     "canonical_snapshot_revalidated_immediately_before_decision": true,
     "persisted_gate_reused_without_revalidation": false,
     "mixed_snapshot_allowed": false,
@@ -33,8 +33,8 @@
   },
   "snapshot_lineage_layer": {
     "contract": "ALPHA_HUNTER_SNAPSHOT_LINEAGE_V2",
-    "run_id": "20260915T070604+0800-e85f99fe",
-    "manifest_sha256": "1d266d94623dee2bf012c3be278cc6adb3c4dedcab9a2e805d1f58e076ad60e6",
+    "run_id": "20260916T062512+0800-3a36a2e4",
+    "manifest_sha256": "b2ad46a8248a396d4a958bdcf22cd8a4d0caa825bad6de306af84c3f3ab0016a",
     "fresh_gate_status": "PASS",
     "persisted_gate_matches_current_files": true,
     "mixed_snapshot_allowed": false
@@ -80,7 +80,7 @@
     ],
     "validation_evidence_status": "PENDING_ACCEPTANCE_REVIEW",
     "current_shadow_statistics_are_strategy_validation": false,
-    "sealed_snapshot_id": "6f1b24b8a77a4c77bc7a9c034de0753702d85a732d15f8196672f0c8911b6088"
+    "sealed_snapshot_id": "93a4bb3ae6ddbd18918be8adf7662cfe23fb0a442720ad10541619c609231404"
   },
   "shadow_validation_layer": {
     "validation_version": null,

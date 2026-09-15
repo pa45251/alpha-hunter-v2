@@ -1,11 +1,11 @@
 # Alpha Hunter — Action Board
 
-- Run: `20260915T070604+0800-e85f99fe`
-- Market session: `2026-09-14`
+- Run: `20260916T062512+0800-3a36a2e4`
+- Market session: `2026-09-15`
 - Risk regime: **CAUTION**
 - Causal evidence: `UNKNOWN_NO_CURRENT_RESEARCH`
 - Core rule: price nominates; company facts define exposure; independent evidence validates the driver; company evidence validates transmission; price/risk decides timing.
-- Decision counts: BUY=0 / EARLY BUY=0 / WAIT=0 / RESEARCH=159 / PASS=19
+- Decision counts: BUY=0 / EARLY BUY=0 / WAIT=0 / RESEARCH=172 / PASS=5
 - RESEARCH is an unresolved evidence state, not a trading recommendation.
 
 ## Trading Decision Queue
@@ -14,7 +14,7 @@
 
 ## Active Research Queue
 
-### 1. 1710.TW 東聯 — RESEARCH — EXPOSURE
+### 1. 4714.TWO 永捷 — RESEARCH — EXPOSURE
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -28,17 +28,17 @@
 - **Relative:** UNVERIFIED
 - **Regime:** UNKNOWN
 - **Technical state:** Early strength / support recovery
-- **Why price:** Worst-zone downside (16 - 15.3) / 16 = 4.37%; within 8% policy limit; Observed 120-session resistance: 5.93R before costs (technical reference, not a price target).
+- **Why price:** Worst-zone downside (11.1 - 10.35) / 11.1 = 6.76%; within 8% policy limit; Observed 120-session resistance: 8.47R before costs (technical reference, not a price target).
 - **Entry state:** ENTRY_READY
-- **Entry:** 15.95–16
-- **Actual price risk:** Worst-zone downside (16 - 15.3) / 16 = 4.37%; within 8% policy limit
-- **Invalidation:** Exit on loss of 15.3; thesis failure also invalidates
-- **Add trigger:** Close above 16.9 with volume >=1.2x prior median; thesis still supported and recheck R/R
+- **Entry:** 11–11.1
+- **Actual price risk:** Worst-zone downside (11.1 - 10.35) / 11.1 = 6.76%; within 8% policy limit
+- **Invalidation:** Exit on loss of 10.35; thesis failure also invalidates
+- **Add trigger:** Close above 12.55 with volume >=1.2x prior median; thesis still supported and recheck R/R
 - **Main counter-evidence:** Unverified
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 2. 3044.TW 健鼎 — RESEARCH — EXPOSURE
+### 2. 2453.TW 凌群 — RESEARCH — EXPOSURE
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -52,17 +52,17 @@
 - **Relative:** UNVERIFIED
 - **Regime:** UNKNOWN
 - **Technical state:** Early strength / support recovery
-- **Why price:** Worst-zone downside (510 - 470) / 510 = 7.84%; within 8% policy limit; Observed 120-session resistance: 2.20R before costs (technical reference, not a price target).
+- **Why price:** Worst-zone downside (53.5 - 51.5) / 53.5 = 3.74%; within 8% policy limit; Observed 120-session resistance: 6.05R before costs (technical reference, not a price target).
 - **Entry state:** ENTRY_READY
-- **Entry:** 506–510
-- **Actual price risk:** Worst-zone downside (510 - 470) / 510 = 7.84%; within 8% policy limit
-- **Invalidation:** Exit on loss of 470; thesis failure also invalidates
-- **Add trigger:** Close above 521 with volume >=1.2x prior median; thesis still supported and recheck R/R
+- **Entry:** 53.5–53.5
+- **Actual price risk:** Worst-zone downside (53.5 - 51.5) / 53.5 = 3.74%; within 8% policy limit
+- **Invalidation:** Exit on loss of 51.5; thesis failure also invalidates
+- **Add trigger:** Close above 56.2 with volume >=1.2x prior median; thesis still supported and recheck R/R
 - **Main counter-evidence:** Unverified
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 3. 6739.TWO 竹陞科技 — RESEARCH — EXPOSURE
+### 3. 2371.TW 大同 — RESEARCH — EXPOSURE
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -76,17 +76,17 @@
 - **Relative:** UNVERIFIED
 - **Regime:** UNKNOWN
 - **Technical state:** Early strength / support recovery
-- **Why price:** Worst-zone downside (1145 - 1055) / 1145 = 7.86%; within 8% policy limit; Observed 120-session resistance: 6.83R before costs (technical reference, not a price target).
+- **Why price:** Worst-zone downside (28.1 - 27.05) / 28.1 = 3.74%; within 8% policy limit; Observed 120-session resistance: 5.19R before costs (technical reference, not a price target).
 - **Entry state:** ENTRY_READY
-- **Entry:** 1135–1145
-- **Actual price risk:** Worst-zone downside (1145 - 1055) / 1145 = 7.86%; within 8% policy limit
-- **Invalidation:** Exit on loss of 1055; thesis failure also invalidates
-- **Add trigger:** Close above 1390 with volume >=1.2x prior median; thesis still supported and recheck R/R
+- **Entry:** 27.9–28.1
+- **Actual price risk:** Worst-zone downside (28.1 - 27.05) / 28.1 = 3.74%; within 8% policy limit
+- **Invalidation:** Exit on loss of 27.05; thesis failure also invalidates
+- **Add trigger:** Close above 30.15 with volume >=1.2x prior median; thesis still supported and recheck R/R
 - **Main counter-evidence:** Unverified
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 4. 3024.TW 憶聲 — RESEARCH — EXPOSURE
+### 4. 3628.TWO 盈正 — RESEARCH — EXPOSURE
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -100,17 +100,17 @@
 - **Relative:** UNVERIFIED
 - **Regime:** UNKNOWN
 - **Technical state:** Early strength / support recovery
-- **Why price:** Worst-zone downside (14.65 - 13.55) / 14.65 = 7.51%; within 8% policy limit; Observed 120-session resistance: 3.41R before costs (technical reference, not a price target).
+- **Why price:** Worst-zone downside (72 - 66.8) / 72 = 7.22%; within 8% policy limit; Observed 120-session resistance: 2.12R before costs (technical reference, not a price target).
 - **Entry state:** ENTRY_READY
-- **Entry:** 14.6–14.65
-- **Actual price risk:** Worst-zone downside (14.65 - 13.55) / 14.65 = 7.51%; within 8% policy limit
-- **Invalidation:** Exit on loss of 13.55; thesis failure also invalidates
-- **Add trigger:** Close above 15.3 with volume >=1.2x prior median; thesis still supported and recheck R/R
+- **Entry:** 71.5–72
+- **Actual price risk:** Worst-zone downside (72 - 66.8) / 72 = 7.22%; within 8% policy limit
+- **Invalidation:** Exit on loss of 66.8; thesis failure also invalidates
+- **Add trigger:** Close above 78.8 with volume >=1.2x prior median; thesis still supported and recheck R/R
 - **Main counter-evidence:** Unverified
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 5. 7728.TWO 光焱科技 — RESEARCH — EXPOSURE
+### 5. 3147.TWO 大綜 — RESEARCH — EXPOSURE
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -124,17 +124,17 @@
 - **Relative:** UNVERIFIED
 - **Regime:** UNKNOWN
 - **Technical state:** Early strength / support recovery
-- **Why price:** Worst-zone downside (643 - 593) / 643 = 7.78%; within 8% policy limit; Observed 120-session resistance: 6.55R before costs (technical reference, not a price target).
+- **Why price:** Worst-zone downside (227 - 213) / 227 = 6.17%; within 8% policy limit; Observed 120-session resistance: 8.93R before costs (technical reference, not a price target).
 - **Entry state:** ENTRY_READY
-- **Entry:** 636–643
-- **Actual price risk:** Worst-zone downside (643 - 593) / 643 = 7.78%; within 8% policy limit
-- **Invalidation:** Exit on loss of 593; thesis failure also invalidates
-- **Add trigger:** Close above 696 with volume >=1.2x prior median; thesis still supported and recheck R/R
+- **Entry:** 225.5–227
+- **Actual price risk:** Worst-zone downside (227 - 213) / 227 = 6.17%; within 8% policy limit
+- **Invalidation:** Exit on loss of 213; thesis failure also invalidates
+- **Add trigger:** Close above 234.5 with volume >=1.2x prior median; thesis still supported and recheck R/R
 - **Main counter-evidence:** Unverified
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 6. 1314.TW 中石化 — RESEARCH — EXPOSURE
+### 6. 6894.TWO 衛司特 — RESEARCH — EXPOSURE
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -148,17 +148,17 @@
 - **Relative:** UNVERIFIED
 - **Regime:** UNKNOWN
 - **Technical state:** Early strength / support recovery
-- **Why price:** Worst-zone downside (8.22 - 7.94) / 8.22 = 3.41%; within 8% policy limit; Observed 120-session resistance: 8.86R before costs (technical reference, not a price target).
+- **Why price:** Worst-zone downside (352.5 - 327.5) / 352.5 = 7.09%; within 8% policy limit; Observed 120-session resistance: 2.62R before costs (technical reference, not a price target).
 - **Entry state:** ENTRY_READY
-- **Entry:** 8.17–8.22
-- **Actual price risk:** Worst-zone downside (8.22 - 7.94) / 8.22 = 3.41%; within 8% policy limit
-- **Invalidation:** Exit on loss of 7.94; thesis failure also invalidates
-- **Add trigger:** Close above 8.61 with volume >=1.2x prior median; thesis still supported and recheck R/R
+- **Entry:** 349.5–352.5
+- **Actual price risk:** Worst-zone downside (352.5 - 327.5) / 352.5 = 7.09%; within 8% policy limit
+- **Invalidation:** Exit on loss of 327.5; thesis failure also invalidates
+- **Add trigger:** Close above 377.5 with volume >=1.2x prior median; thesis still supported and recheck R/R
 - **Main counter-evidence:** Unverified
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 7. 5871.TW 中租-KY — RESEARCH — EXPOSURE
+### 7. 4951.TWO 精拓科 — RESEARCH — EXPOSURE
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -172,65 +172,17 @@
 - **Relative:** UNVERIFIED
 - **Regime:** UNKNOWN
 - **Technical state:** Early strength / support recovery
-- **Why price:** Worst-zone downside (113.5 - 110) / 113.5 = 3.08%; within 8% policy limit; Observed 120-session resistance: 2.45R before costs (technical reference, not a price target).
+- **Why price:** Worst-zone downside (80.1 - 77.6) / 80.1 = 3.12%; within 8% policy limit; Observed 120-session resistance: 25.36R before costs (technical reference, not a price target).
 - **Entry state:** ENTRY_READY
-- **Entry:** 113–113.5
-- **Actual price risk:** Worst-zone downside (113.5 - 110) / 113.5 = 3.08%; within 8% policy limit
-- **Invalidation:** Exit on loss of 110; thesis failure also invalidates
-- **Add trigger:** Close above 118.5 with volume >=1.2x prior median; thesis still supported and recheck R/R
-- **Main counter-evidence:** Unverified
-- **Main risk:** Unverified causal interpretation
-- **What would make us wrong:** A price-only story or weak company transmission
-
-### 8. 6026.TWO 福邦證 — RESEARCH — EXPOSURE
-
-- **WHY:** WHY unresolved: obtain company evidence before taking risk
-- **Driver:** UNMAPPED / WHY?
-- **Blocking stage:** EXPOSURE
-- **Driver state:** UNVERIFIED
-- **Company transmission:** Unverified
-- **International price:** UNKNOWN
-- **International causal:** UNKNOWN
-- **Current gate:** DRIVER_UNKNOWN
-- **International evidence:** Unverified — same-driver evidence required
-- **Relative:** UNVERIFIED
-- **Regime:** UNKNOWN
-- **Technical state:** Early strength / support recovery
-- **Why price:** Worst-zone downside (15.25 - 14.75) / 15.25 = 3.28%; within 8% policy limit; Observed 120-session resistance: 8.60R before costs (technical reference, not a price target).
-- **Entry state:** ENTRY_READY
-- **Entry:** 15.2–15.25
-- **Actual price risk:** Worst-zone downside (15.25 - 14.75) / 15.25 = 3.28%; within 8% policy limit
-- **Invalidation:** Exit on loss of 14.75; thesis failure also invalidates
-- **Add trigger:** Close above 15.55 with volume >=1.2x prior median; thesis still supported and recheck R/R
-- **Main counter-evidence:** Unverified
-- **Main risk:** Unverified causal interpretation
-- **What would make us wrong:** A price-only story or weak company transmission
-
-### 9. 4951.TWO 精拓科 — RESEARCH — EXPOSURE
-
-- **WHY:** WHY unresolved: obtain company evidence before taking risk
-- **Driver:** UNMAPPED / WHY?
-- **Blocking stage:** EXPOSURE
-- **Driver state:** UNVERIFIED
-- **Company transmission:** Unverified
-- **International price:** UNKNOWN
-- **International causal:** UNKNOWN
-- **Current gate:** DRIVER_UNKNOWN
-- **International evidence:** Unverified — same-driver evidence required
-- **Relative:** UNVERIFIED
-- **Regime:** UNKNOWN
-- **Technical state:** Early strength / support recovery
-- **Why price:** Worst-zone downside (81 - 77.6) / 81 = 4.20%; within 8% policy limit; Observed 120-session resistance: 18.38R before costs (technical reference, not a price target).
-- **Entry state:** ENTRY_READY
-- **Entry:** 80.5–81
-- **Actual price risk:** Worst-zone downside (81 - 77.6) / 81 = 4.20%; within 8% policy limit
+- **Entry:** 80–80.1
+- **Actual price risk:** Worst-zone downside (80.1 - 77.6) / 80.1 = 3.12%; within 8% policy limit
 - **Invalidation:** Exit on loss of 77.6; thesis failure also invalidates
 - **Add trigger:** Close above 85.6 with volume >=1.2x prior median; thesis still supported and recheck R/R
 - **Main counter-evidence:** Unverified
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 10. 6909.TW 創控 — RESEARCH — EXPOSURE
+### 8. 2530.TW 華建 — RESEARCH — EXPOSURE
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -244,17 +196,17 @@
 - **Relative:** UNVERIFIED
 - **Regime:** UNKNOWN
 - **Technical state:** Early strength / support recovery
-- **Why price:** Worst-zone downside (41.75 - 39) / 41.75 = 6.59%; within 8% policy limit; Observed 120-session resistance: 10.82R before costs (technical reference, not a price target).
+- **Why price:** Worst-zone downside (20.1 - 18.65) / 20.1 = 7.21%; within 8% policy limit; Observed 120-session resistance: 3.76R before costs (technical reference, not a price target).
 - **Entry state:** ENTRY_READY
-- **Entry:** 41.5–41.75
-- **Actual price risk:** Worst-zone downside (41.75 - 39) / 41.75 = 6.59%; within 8% policy limit
-- **Invalidation:** Exit on loss of 39; thesis failure also invalidates
-- **Add trigger:** Close above 44.25 with volume >=1.2x prior median; thesis still supported and recheck R/R
+- **Entry:** 20–20.1
+- **Actual price risk:** Worst-zone downside (20.1 - 18.65) / 20.1 = 7.21%; within 8% policy limit
+- **Invalidation:** Exit on loss of 18.65; thesis failure also invalidates
+- **Add trigger:** Close above 21.45 with volume >=1.2x prior median; thesis still supported and recheck R/R
 - **Main counter-evidence:** Unverified
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 11. 6742.TW 澤米 — RESEARCH — EXPOSURE
+### 9. 7728.TWO 光焱科技 — RESEARCH — EXPOSURE
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -268,17 +220,17 @@
 - **Relative:** UNVERIFIED
 - **Regime:** UNKNOWN
 - **Technical state:** Early strength / support recovery
-- **Why price:** Worst-zone downside (45.5 - 42.45) / 45.5 = 6.70%; within 8% policy limit; Observed 120-session resistance: 9.64R before costs (technical reference, not a price target).
+- **Why price:** Worst-zone downside (635 - 592) / 635 = 6.77%; within 8% policy limit; Observed 120-session resistance: 5.56R before costs (technical reference, not a price target).
 - **Entry state:** ENTRY_READY
-- **Entry:** 44.95–45.5
-- **Actual price risk:** Worst-zone downside (45.5 - 42.45) / 45.5 = 6.70%; within 8% policy limit
-- **Invalidation:** Exit on loss of 42.45; thesis failure also invalidates
-- **Add trigger:** Close above 50.15 with volume >=1.2x prior median; thesis still supported and recheck R/R
+- **Entry:** 627–635
+- **Actual price risk:** Worst-zone downside (635 - 592) / 635 = 6.77%; within 8% policy limit
+- **Invalidation:** Exit on loss of 592; thesis failure also invalidates
+- **Add trigger:** Close above 697 with volume >=1.2x prior median; thesis still supported and recheck R/R
 - **Main counter-evidence:** Unverified
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-### 12. 3162.TWO 精確 — RESEARCH — EXPOSURE
+### 10. 3094.TW 聯傑 — RESEARCH — EXPOSURE
 
 - **WHY:** WHY unresolved: obtain company evidence before taking risk
 - **Driver:** UNMAPPED / WHY?
@@ -292,23 +244,22 @@
 - **Relative:** UNVERIFIED
 - **Regime:** UNKNOWN
 - **Technical state:** Early strength / support recovery
-- **Why price:** Worst-zone downside (73.1 - 67.7) / 73.1 = 7.39%; within 8% policy limit; Observed 120-session resistance: 4.57R before costs (technical reference, not a price target).
+- **Why price:** Worst-zone downside (42.25 - 39.35) / 42.25 = 6.86%; within 8% policy limit; Observed 120-session resistance: 2.95R before costs (technical reference, not a price target).
 - **Entry state:** ENTRY_READY
-- **Entry:** 72.3–73.1
-- **Actual price risk:** Worst-zone downside (73.1 - 67.7) / 73.1 = 7.39%; within 8% policy limit
-- **Invalidation:** Exit on loss of 67.7; thesis failure also invalidates
-- **Add trigger:** Close above 79.3 with volume >=1.2x prior median; thesis still supported and recheck R/R
+- **Entry:** 42.2–42.25
+- **Actual price risk:** Worst-zone downside (42.25 - 39.35) / 42.25 = 6.86%; within 8% policy limit
+- **Invalidation:** Exit on loss of 39.35; thesis failure also invalidates
+- **Add trigger:** Close above 51.6 with volume >=1.2x prior median; thesis still supported and recheck R/R
 - **Main counter-evidence:** Unverified
 - **Main risk:** Unverified causal interpretation
 - **What would make us wrong:** A price-only story or weak company transmission
 
-- 5 additional research-eligible candidates remain in the canonical JSON ledger.
 
 ## Ledger Summary
 
-- Deferred unresolved candidates: 142
-- PASS candidates: 19
-- Total canonical candidates retained for audit: 178
+- Deferred unresolved candidates: 162
+- PASS candidates: 5
+- Total canonical candidates retained for audit: 177
 
 - BUY / EARLY BUY are advisory views at the displayed entry zone, never brokerage orders.
 - WAIT means the thesis reached the entry stage but timing/setup is not ready; unresolved evidence is shown as RESEARCH instead.
