@@ -10,7 +10,9 @@ import yfinance as yf
 
 OUT = Path("output")
 INDUSTRY_MAP = Path("config/manual_industry_map.csv")
+INDUSTRY_MAP_SUPPLEMENT = Path("config/manual_industry_map_supplement.csv")
 PEER_MAP = Path("config/manual_global_peers.csv")
+PEER_MAP_SUPPLEMENT = Path("config/manual_global_peers_supplement.csv")
 
 
 def _norm_code(value) -> str:
@@ -18,6 +20,30 @@ def _norm_code(value) -> str:
     if s.endswith(".0"):
         s = s[:-2]
     return s.zfill(4)
+
+
+def load_industry_map() -> pd.DataFrame:
+    """Load curated base mappings plus optional researched supplements.
+
+    Supplements are intentionally separate so scanner history stays stable and new
+    hand-researched coverage can be reviewed/removed without rewriting the base map.
+    A supplement row overrides a base row for the same Taiwan company code.
+    """
+    frames = [pd.read_csv(INDUSTRY_MAP, dtype={"code": str})]
+    if INDUSTRY_MAP_SUPPLEMENT.exists():
+        frames.append(pd.read_csv(INDUSTRY_MAP_SUPPLEMENT, dtype={"code": str}))
+    out = pd.concat(frames, ignore_index=True)
+    out["code"] = out["code"].map(_norm_code)
+    return out.drop_duplicates(subset=["code"], keep="last").reset_index(drop=True)
+
+
+def load_peer_map() -> pd.DataFrame:
+    """Load base and supplement global peer baskets with deterministic deduping."""
+    frames = [pd.read_csv(PEER_MAP)]
+    if PEER_MAP_SUPPLEMENT.exists():
+        frames.append(pd.read_csv(PEER_MAP_SUPPLEMENT))
+    out = pd.concat(frames, ignore_index=True)
+    return out.drop_duplicates(subset=["driver_id", "ticker"], keep="last").reset_index(drop=True)
 
 
 def _ret(close: pd.Series, periods: int) -> float:
@@ -238,8 +264,8 @@ def main() -> None:
     if not candidates_path.exists():
         raise SystemExit("output/taiwan_candidates.csv not found; run daily_scan.py first")
     candidates = pd.read_csv(candidates_path, dtype={"code": str})
-    industry_map = pd.read_csv(INDUSTRY_MAP, dtype={"code": str})
-    peer_map = pd.read_csv(PEER_MAP)
+    industry_map = load_industry_map()
+    peer_map = load_peer_map()
 
     peer_snapshot = build_peer_snapshot(peer_map)
     peer_snapshot.to_csv(OUT / "manual_global_peer_snapshot.csv", index=False)
