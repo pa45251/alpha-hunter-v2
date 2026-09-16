@@ -86,7 +86,7 @@ def test_rank_preserves_all_candidates_and_dedup():
 
 def test_extended_fillers_cannot_defeat_scanner_quota():
     x=pd.DataFrame([dict(ticker=str(i),avg_turnover20_twd=20e6,price=50,acceleration=.1,rs_20d_vs_bench=.1,keynes_v2=1,reaction_state='EXTENDED' if i else 'PRE_CONFIRMATION',taiwan_candidate_score_v1=1,taiwan_early_score_v2=1) for i in range(100)])
-    result=select_taiwan_candidates(x,TaiwanScanConfig(top_candidates=10))
+    result=select_taiwan_candidates(x,TaiwanScanConfig(top_candidates=10,min_turnover20=10e6))
     assert (result.reaction_state=='EXTENDED').sum()<=1
     assert '0' in set(result.ticker)
 
