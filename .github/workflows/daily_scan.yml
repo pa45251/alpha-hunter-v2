@@ -106,6 +106,7 @@ jobs:
             output/leader_registry.csv \
             output/feature_history.csv \
             output/taiwan_candidates.csv \
+            output/taiwan_shadow_universe.csv \
             output/taiwan_candidate_history.csv \
             output/taiwan_industry_breadth.csv \
             output/taiwan_universe.csv \
