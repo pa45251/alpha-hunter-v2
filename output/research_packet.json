@@ -2,12 +2,12 @@
   "contract": "ALPHA_HUNTER_V2_6_RESEARCH_PACKET",
   "research_packet_version": "1.0",
   "gate_status": "PASS",
-  "run_id": "20260916T192049+0800-9c1e4002",
+  "run_id": "20260916T203621+0800-ffbc652e",
   "schema_version": "2.6",
   "scanner_version": "2.6.1",
-  "generated_at_taipei": "2026-09-16T19:26:01.765397+08:00",
+  "generated_at_taipei": "2026-09-16T20:39:20.305952+08:00",
   "canonical_manifest_raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/manifest.json",
-  "manifest_sha256": "ff94063bd0da84e357da8cbc90d42112dbeaa320a1fd643be7417aab72a6eb98",
+  "manifest_sha256": "f87e029d4a251711de776541de73e0559d2284657e0487cf6243cf586e49e12f",
   "causal_rule": "PRICE_CANNOT_CREATE_CAUSALITY",
   "layer_contract": {
     "scanner": "WHAT_MOVED",
@@ -19,11 +19,11 @@
   "authoritative_sources": {
     "global_scan_quality.json": {
       "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/global_scan_quality.json",
-      "sha256": "19e357fa9e5cbc925ab3d9ec44622f54127826f8de71f3a12c31873aecd01e83"
+      "sha256": "2235319f130b38ab120ffe04ddc6e6ac17f1383f335c6365cf1dffdc6e8ddc7e"
     },
     "discovery_snapshot.csv": {
       "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/discovery_snapshot.csv",
-      "sha256": "bd68249051bdf862cecdff57b8d1500fafbeb08b5899994410b0983bbc48e447"
+      "sha256": "182e319ba5820f311392a00561c9d8a5249b5d81e06fe8cd62f9f09f814f9886"
     },
     "discovery_research_queue.csv": {
       "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/discovery_research_queue.csv",
@@ -31,11 +31,11 @@
     },
     "risk_regime.json": {
       "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/risk_regime.json",
-      "sha256": "bd8f57ad1a0f2e9f1306a40e7e971ef486790cc41eef40eff41ef9afb83be2e7"
+      "sha256": "518c9732d9b03fea890fd5af94bc18d26b0c30b6c803c743f8b8afd90dd9f087"
     },
     "market_snapshot.csv": {
       "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/market_snapshot.csv",
-      "sha256": "d109606d33da9a90093b07cb48920aaa207f46cf3f2bcdafdf627f3d20e88d4e"
+      "sha256": "7ad92e3b2ea7629b326398e3b3fcccbac6a5377324c523cc72cfcdf294e232cf"
     },
     "theme_breadth.csv": {
       "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/theme_breadth.csv",
@@ -43,15 +43,15 @@
     },
     "leader_registry.csv": {
       "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/leader_registry.csv",
-      "sha256": "54ffde53d2a2a5b168af49d254ea124cd8bb13f0d974f694cc6a20d7760e099c"
+      "sha256": "7002cf51e9e624fe41c0953fb75ba0266b300e64d4b8c0e21a637c1cb7b554bb"
     },
     "feature_history.csv": {
       "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/feature_history.csv",
-      "sha256": "eaf5d85595329ae2fcefe55005c927eb91e2bf817a084b4fb35e1c3946b5847d"
+      "sha256": "39d07841af746a33390c4e72f13886f271a6123267fec7abf8673ef8ffb3bdbf"
     },
     "market_snapshot.json": {
       "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/market_snapshot.json",
-      "sha256": "9aee472bc14fe2de72631be584c2086933de609f479d8b39627e744f66ceb2fa"
+      "sha256": "5e7fce8e0f672251e20d3d68d748961f8b03d2199f05b76c5d6fbb235291b152"
     },
     "taiwan_candidates.csv": {
       "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/taiwan_candidates.csv",
@@ -71,19 +71,19 @@
     },
     "causal_research_queue.csv": {
       "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/causal_research_queue.csv",
-      "sha256": "d74c6a9c82b2c40907def1a23ca8a5a9a0ae54747734f1e241bebfb21fd0b8d8"
+      "sha256": "40b64da3aa504fd4b3d2d7f53b8221ab3fa7218e72e826259ad9d1af2a74c542"
     },
     "reverse_transmission_candidates.csv": {
       "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/reverse_transmission_candidates.csv",
-      "sha256": "483ab6c08567d91cfba6a7a1ab869b340ab9596dd9358dbbb4a62be054975f49"
+      "sha256": "2264018da2fe6c16dc5188ee1c477732207d01f9b80aeb168d677ce44ed1c5e8"
     },
     "structural_matches.csv": {
       "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/structural_matches.csv",
-      "sha256": "ef3d534da5f729260d3812ab0e62e1f69cf940df2ffc43c135fa6f862cd07944"
+      "sha256": "fb61af01dfe2c47adada41daa31ea4d8c26e1e2ab7becf0b42b379f2c72864fb"
     },
     "causal_graph_audit.csv": {
       "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/causal_graph_audit.csv",
-      "sha256": "9ab869e68d58f2a017d17107f81d3100421f1f32e6a94e0611f3f1e156d82b07"
+      "sha256": "07aa25daa7c7653756c33d2a5396f4a979618c0fc51fb1bbf0fcb1916c1ad36c"
     },
     "causal_driver_taxonomy.csv": {
       "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/causal_driver_taxonomy.csv",
@@ -96,7 +96,7 @@
   },
   "research_queue_top30": [
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "research_priority": 0.959375,
       "global_theme": "Cybersecurity",
       "driver_id": "ENTERPRISE_CYBER_SPEND",
@@ -118,7 +118,7 @@
       "taiwan_reverse_anomaly_max": 0.9913617886
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "research_priority": 0.9548297764,
       "global_theme": "Shipping",
       "driver_id": "CONTAINER_FREIGHT",
@@ -140,7 +140,7 @@
       "taiwan_reverse_anomaly_max": 0.9618902439
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "research_priority": 0.9479166667,
       "global_theme": "Shipping",
       "driver_id": "DRY_BULK_FREIGHT",
@@ -162,7 +162,7 @@
       "taiwan_reverse_anomaly_max": 0.9029471545
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "research_priority": 0.8598793191,
       "global_theme": "AI_Server",
       "driver_id": "AI_SERVER_SHIPMENTS",
@@ -184,7 +184,7 @@
       "taiwan_reverse_anomaly_max": 0.9019308943
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "research_priority": 0.8380208333,
       "global_theme": "Consumer_Tech",
       "driver_id": "CONSUMER_ELECTRONICS_CYCLE",
@@ -206,7 +206,7 @@
       "taiwan_reverse_anomaly_max": null
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "research_priority": 0.8302083333,
       "global_theme": "Genomics",
       "driver_id": "GENOMICS_RISK_APPETITE",
@@ -228,7 +228,7 @@
       "taiwan_reverse_anomaly_max": null
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "research_priority": 0.8221074695,
       "global_theme": "Financials",
       "driver_id": "FINANCIALS_RATE_CREDIT_CYCLE",
@@ -250,7 +250,7 @@
       "taiwan_reverse_anomaly_max": 0.9862804878
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "research_priority": 0.7695939533,
       "global_theme": "AI_Server",
       "driver_id": "AI_SERVER_THERMAL_DENSITY",
@@ -272,7 +272,7 @@
       "taiwan_reverse_anomaly_max": 0.9039634146
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "research_priority": 0.765625,
       "global_theme": "Biotech",
       "driver_id": "BIOPHARMA_RISK_APPETITE",
@@ -294,7 +294,7 @@
       "taiwan_reverse_anomaly_max": null
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "research_priority": 0.7652293191,
       "global_theme": "AI_Server",
       "driver_id": "AI_SERVER_RACK_BUILD",
@@ -316,7 +316,7 @@
       "taiwan_reverse_anomaly_max": 0.8602642276
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "research_priority": 0.750709502,
       "global_theme": "MLCC",
       "driver_id": "MLCC_DEMAND_PRICING",
@@ -338,7 +338,7 @@
       "taiwan_reverse_anomaly_max": 0.8592479675
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "research_priority": 0.55625,
       "global_theme": "Copper",
       "driver_id": "COPPER_COMMODITY_TRADE_INVENTORY",
@@ -362,7 +362,7 @@
   ],
   "structural_matches_top120": [
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "research_priority_score": 0.8432144608,
       "global_theme": "Shipping",
       "driver_id": "DRY_BULK_FREIGHT",
@@ -409,7 +409,7 @@
       "source_summary": null
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "research_priority_score": 0.8432144608,
       "global_theme": "Shipping",
       "driver_id": "DRY_BULK_FREIGHT",
@@ -456,7 +456,7 @@
       "source_summary": null
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "research_priority_score": 0.8352144608,
       "global_theme": "Shipping",
       "driver_id": "DRY_BULK_FREIGHT",
@@ -503,7 +503,7 @@
       "source_summary": null
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "research_priority_score": 0.77453125,
       "global_theme": "Financials",
       "driver_id": "FINANCIALS_RATE_CREDIT_CYCLE",
@@ -550,7 +550,7 @@
       "source_summary": null
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "research_priority_score": 0.77453125,
       "global_theme": "Financials",
       "driver_id": "FINANCIALS_RATE_CREDIT_CYCLE",
@@ -597,7 +597,7 @@
       "source_summary": null
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "research_priority_score": 0.77453125,
       "global_theme": "Financials",
       "driver_id": "FINANCIALS_RATE_CREDIT_CYCLE",
@@ -644,7 +644,7 @@
       "source_summary": null
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "research_priority_score": 0.7712144608,
       "global_theme": "Shipping",
       "driver_id": "CONTAINER_FREIGHT",
@@ -691,7 +691,7 @@
       "source_summary": null
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "research_priority_score": 0.7712144608,
       "global_theme": "Shipping",
       "driver_id": "CONTAINER_FREIGHT",
@@ -738,7 +738,7 @@
       "source_summary": null
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "research_priority_score": 0.76653125,
       "global_theme": "Financials",
       "driver_id": "FINANCIALS_RATE_CREDIT_CYCLE",
@@ -785,7 +785,7 @@
       "source_summary": null
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "research_priority_score": 0.7592144608,
       "global_theme": "Shipping",
       "driver_id": "CONTAINER_FREIGHT",
@@ -832,7 +832,7 @@
       "source_summary": null
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "research_priority_score": 0.7052144608,
       "global_theme": "Shipping",
       "driver_id": "DRY_BULK_FREIGHT",
@@ -879,7 +879,7 @@
       "source_summary": null
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "research_priority_score": 0.6941262061,
       "global_theme": "AI_Server",
       "driver_id": "AI_SERVER_THERMAL_DENSITY",
@@ -926,7 +926,7 @@
       "source_summary": null
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "research_priority_score": 0.68344375,
       "global_theme": "Cybersecurity",
       "driver_id": "ENTERPRISE_CYBER_SPEND",
@@ -973,7 +973,7 @@
       "source_summary": null
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "research_priority_score": 0.6658617928,
       "global_theme": "AI_Server",
       "driver_id": "AI_SERVER_RACK_BUILD",
@@ -1020,7 +1020,7 @@
       "source_summary": "Foxconn expects Vera Rubin racks to enter mass production in Q3 and AI rack shipments to more than double for 2026; GIGABYTE is actively offering rack-scale GIGAPOD/AI-factory systems. Sources: Foxconn 2026-08-12; GIGABYTE 2026-03-02."
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "research_priority_score": 0.6626617928,
       "global_theme": "AI_Server",
       "driver_id": "AI_SERVER_SHIPMENTS",
@@ -1067,7 +1067,7 @@
       "source_summary": "Dell reported more than US$130B of AI-server orders in the past year and raised FY27 AI-server revenue guidance to US$74B; Foxconn reported sustained AI-rack volume growth and expects full-year AI rack shipments to more than double. Sources: Reuters 2026-09-01; Foxconn 2026-08-12."
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "research_priority_score": 0.6506617928,
       "global_theme": "AI_Server",
       "driver_id": "AI_SERVER_SHIPMENTS",
@@ -1114,7 +1114,7 @@
       "source_summary": "Dell reported more than US$130B of AI-server orders in the past year and raised FY27 AI-server revenue guidance to US$74B; Foxconn reported sustained AI-rack volume growth and expects full-year AI rack shipments to more than double. Sources: Reuters 2026-09-01; Foxconn 2026-08-12."
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "research_priority_score": 0.6506617928,
       "global_theme": "AI_Server",
       "driver_id": "AI_SERVER_SHIPMENTS",
@@ -1161,7 +1161,7 @@
       "source_summary": "Dell reported more than US$130B of AI-server orders in the past year and raised FY27 AI-server revenue guidance to US$74B; Foxconn reported sustained AI-rack volume growth and expects full-year AI rack shipments to more than double. Sources: Reuters 2026-09-01; Foxconn 2026-08-12."
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "research_priority_score": 0.6390617928,
       "global_theme": "AI_Server",
       "driver_id": "AI_SERVER_THERMAL_DENSITY",
@@ -1208,7 +1208,7 @@
       "source_summary": null
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "research_priority_score": 0.63128125,
       "global_theme": "MLCC",
       "driver_id": "MLCC_DEMAND_PRICING",
@@ -1255,7 +1255,7 @@
       "source_summary": null
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "research_priority_score": 0.5954617928,
       "global_theme": "AI_Server",
       "driver_id": "AI_SERVER_RACK_BUILD",
@@ -1302,7 +1302,7 @@
       "source_summary": "Foxconn expects Vera Rubin racks to enter mass production in Q3 and AI rack shipments to more than double for 2026; GIGABYTE is actively offering rack-scale GIGAPOD/AI-factory systems. Sources: Foxconn 2026-08-12; GIGABYTE 2026-03-02."
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "research_priority_score": 0.59328125,
       "global_theme": "MLCC",
       "driver_id": "MLCC_DEMAND_PRICING",
@@ -1349,7 +1349,7 @@
       "source_summary": null
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "research_priority_score": 0.5845262061,
       "global_theme": "AI_Server",
       "driver_id": "AI_SERVER_SHIPMENTS",
@@ -1396,7 +1396,7 @@
       "source_summary": "Dell reported more than US$130B of AI-server orders in the past year and raised FY27 AI-server revenue guidance to US$74B; Foxconn reported sustained AI-rack volume growth and expects full-year AI rack shipments to more than double. Sources: Reuters 2026-09-01; Foxconn 2026-08-12."
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "research_priority_score": 0.5834617928,
       "global_theme": "AI_Server",
       "driver_id": "AI_SERVER_THERMAL_DENSITY",
@@ -1443,7 +1443,7 @@
       "source_summary": null
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "research_priority_score": 0.54208125,
       "global_theme": "MLCC",
       "driver_id": "MLCC_DEMAND_PRICING",
@@ -1490,7 +1490,7 @@
       "source_summary": null
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "research_priority_score": 0.5397104167,
       "global_theme": "AI_Server",
       "driver_id": "AI_SERVER_THERMAL_DENSITY",
@@ -1537,7 +1537,7 @@
       "source_summary": null
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "research_priority_score": 0.5242625,
       "global_theme": "Copper",
       "driver_id": "COPPER_COMMODITY_TRADE_INVENTORY",
@@ -1584,7 +1584,7 @@
       "source_summary": null
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "research_priority_score": 0.4994617928,
       "global_theme": "AI_Server",
       "driver_id": "AI_SERVER_SHIPMENTS",
@@ -1631,7 +1631,7 @@
       "source_summary": "Dell reported more than US$130B of AI-server orders in the past year and raised FY27 AI-server revenue guidance to US$74B; Foxconn reported sustained AI-rack volume growth and expects full-year AI rack shipments to more than double. Sources: Reuters 2026-09-01; Foxconn 2026-08-12."
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "research_priority_score": 0.4878625,
       "global_theme": "Copper",
       "driver_id": "COPPER_COMMODITY_TRADE_INVENTORY",
@@ -1678,7 +1678,7 @@
       "source_summary": null
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "research_priority_score": 0.4746209978,
       "global_theme": "Consumer_Tech",
       "driver_id": "CONSUMER_ELECTRONICS_CYCLE",
@@ -1725,7 +1725,7 @@
       "source_summary": null
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "research_priority_score": 0.4599565845,
       "global_theme": "Consumer_Tech",
       "driver_id": "CONSUMER_ELECTRONICS_CYCLE",
@@ -1772,7 +1772,7 @@
       "source_summary": null
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "research_priority_score": 0.431374125,
       "global_theme": "Cybersecurity",
       "driver_id": "ENTERPRISE_CYBER_SPEND",
@@ -1819,7 +1819,7 @@
       "source_summary": null
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "research_priority_score": 0.4126625,
       "global_theme": "Copper",
       "driver_id": "COPPER_COMMODITY_TRADE_INVENTORY",
@@ -1866,7 +1866,7 @@
       "source_summary": null
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "research_priority_score": 0.3892923259,
       "global_theme": "Biotech",
       "driver_id": "BIOPHARMA_RISK_APPETITE",
@@ -1913,7 +1913,7 @@
       "source_summary": null
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "research_priority_score": 0.3892923259,
       "global_theme": "Biotech",
       "driver_id": "BIOPHARMA_RISK_APPETITE",
@@ -1962,7 +1962,7 @@
   ],
   "weak_provenance_edges_top120": [
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "driver_id": "AI_SERVER_SHIPMENTS",
       "driver_label": "AI server shipment / ODM cycle",
       "global_theme": "AI_Server",
@@ -1984,7 +1984,7 @@
       "duplicate_edge": false
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "driver_id": "AI_SERVER_SHIPMENTS",
       "driver_label": "AI server shipment / ODM cycle",
       "global_theme": "AI_Server",
@@ -2006,7 +2006,7 @@
       "duplicate_edge": false
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "driver_id": "AI_SERVER_SHIPMENTS",
       "driver_label": "AI server shipment / ODM cycle",
       "global_theme": "AI_Server",
@@ -2028,7 +2028,7 @@
       "duplicate_edge": false
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "driver_id": "AI_SERVER_SHIPMENTS",
       "driver_label": "AI server shipment / ODM cycle",
       "global_theme": "AI_Server",
@@ -2050,7 +2050,7 @@
       "duplicate_edge": false
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "driver_id": "AI_SERVER_SHIPMENTS",
       "driver_label": "AI server shipment / ODM cycle",
       "global_theme": "AI_Server",
@@ -2072,7 +2072,7 @@
       "duplicate_edge": false
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "driver_id": "AI_SERVER_RACK_BUILD",
       "driver_label": "AI rack / server system buildout",
       "global_theme": "AI_Server",
@@ -2094,7 +2094,7 @@
       "duplicate_edge": false
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "driver_id": "AI_SERVER_RACK_BUILD",
       "driver_label": "AI rack / server system buildout",
       "global_theme": "AI_Server",
@@ -2116,7 +2116,7 @@
       "duplicate_edge": false
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "driver_id": "AI_SERVER_THERMAL_DENSITY",
       "driver_label": "AI server thermal density / liquid cooling",
       "global_theme": "AI_Server",
@@ -2138,7 +2138,7 @@
       "duplicate_edge": false
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "driver_id": "AI_SERVER_THERMAL_DENSITY",
       "driver_label": "AI server thermal density / liquid cooling",
       "global_theme": "AI_Server",
@@ -2160,7 +2160,7 @@
       "duplicate_edge": false
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "driver_id": "AI_SERVER_THERMAL_DENSITY",
       "driver_label": "AI server thermal density / liquid cooling",
       "global_theme": "AI_Server",
@@ -2182,7 +2182,7 @@
       "duplicate_edge": false
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "driver_id": "AI_SERVER_THERMAL_DENSITY",
       "driver_label": "AI server thermal density / liquid cooling",
       "global_theme": "AI_Server",
@@ -2204,7 +2204,7 @@
       "duplicate_edge": false
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "driver_id": "DATACENTER_COOLING_INFRA",
       "driver_label": "Data-center cooling infrastructure capex",
       "global_theme": "AI_Infrastructure",
@@ -2226,7 +2226,7 @@
       "duplicate_edge": false
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "driver_id": "DATACENTER_COOLING_INFRA",
       "driver_label": "Data-center cooling infrastructure capex",
       "global_theme": "AI_Infrastructure",
@@ -2248,7 +2248,7 @@
       "duplicate_edge": false
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "driver_id": "DATACENTER_COOLING_INFRA",
       "driver_label": "Data-center cooling infrastructure capex",
       "global_theme": "AI_Infrastructure",
@@ -2270,7 +2270,7 @@
       "duplicate_edge": false
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "driver_id": "DATACENTER_POWER_INFRA",
       "driver_label": "Data-center power infrastructure capex",
       "global_theme": "AI_Infrastructure",
@@ -2292,7 +2292,7 @@
       "duplicate_edge": false
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "driver_id": "DATACENTER_POWER_INFRA",
       "driver_label": "Data-center power infrastructure capex",
       "global_theme": "AI_Infrastructure",
@@ -2314,7 +2314,7 @@
       "duplicate_edge": false
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "driver_id": "AI_NETWORKING_UPGRADE",
       "driver_label": "800G/1.6T AI networking upgrade",
       "global_theme": "AI_Networking",
@@ -2336,7 +2336,7 @@
       "duplicate_edge": false
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "driver_id": "AI_NETWORKING_UPGRADE",
       "driver_label": "800G/1.6T AI networking upgrade",
       "global_theme": "AI_Networking",
@@ -2358,7 +2358,7 @@
       "duplicate_edge": false
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "driver_id": "AI_NETWORKING_UPGRADE",
       "driver_label": "800G/1.6T AI networking upgrade",
       "global_theme": "AI_Networking",
@@ -2380,7 +2380,7 @@
       "duplicate_edge": false
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "driver_id": "AI_NETWORKING_UPGRADE",
       "driver_label": "800G/1.6T AI networking upgrade",
       "global_theme": "AI_Networking",
@@ -2402,7 +2402,7 @@
       "duplicate_edge": false
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "driver_id": "AI_NETWORKING_UPGRADE",
       "driver_label": "800G/1.6T AI networking upgrade",
       "global_theme": "AI_Networking",
@@ -2424,7 +2424,7 @@
       "duplicate_edge": false
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "driver_id": "DRAM_PRICING",
       "driver_label": "Commodity DRAM pricing / bit demand",
       "global_theme": "Memory",
@@ -2446,7 +2446,7 @@
       "duplicate_edge": false
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "driver_id": "SPECIALTY_MEMORY_PRICING",
       "driver_label": "Specialty DRAM / NOR / NAND pricing",
       "global_theme": "Memory",
@@ -2468,7 +2468,7 @@
       "duplicate_edge": false
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "driver_id": "SPECIALTY_MEMORY_PRICING",
       "driver_label": "Specialty DRAM / NOR / NAND pricing",
       "global_theme": "Memory",
@@ -2490,7 +2490,7 @@
       "duplicate_edge": false
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "driver_id": "MEMORY_IC_CYCLE",
       "driver_label": "Memory IC design demand / ASP cycle",
       "global_theme": "Memory",
@@ -2512,7 +2512,7 @@
       "duplicate_edge": false
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "driver_id": "MEMORY_IC_CYCLE",
       "driver_label": "Memory IC design demand / ASP cycle",
       "global_theme": "Memory",
@@ -2534,7 +2534,7 @@
       "duplicate_edge": false
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "driver_id": "NAND_STORAGE_CYCLE",
       "driver_label": "NAND / storage controller and module cycle",
       "global_theme": "Memory",
@@ -2556,7 +2556,7 @@
       "duplicate_edge": false
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "driver_id": "NAND_STORAGE_CYCLE",
       "driver_label": "NAND / storage controller and module cycle",
       "global_theme": "Memory",
@@ -2578,7 +2578,7 @@
       "duplicate_edge": false
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "driver_id": "NAND_STORAGE_CYCLE",
       "driver_label": "NAND / storage controller and module cycle",
       "global_theme": "Memory",
@@ -2600,7 +2600,7 @@
       "duplicate_edge": false
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "driver_id": "NAND_STORAGE_CYCLE",
       "driver_label": "NAND / storage controller and module cycle",
       "global_theme": "Memory",
@@ -2622,7 +2622,7 @@
       "duplicate_edge": false
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "driver_id": "LEADING_EDGE_FOUNDRY_AI_DEMAND",
       "driver_label": "Leading-edge foundry AI/HPC node demand",
       "global_theme": "Foundry",
@@ -2644,7 +2644,7 @@
       "duplicate_edge": false
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "driver_id": "MATURE_NODE_FOUNDRY_UTILIZATION",
       "driver_label": "Mature-node foundry utilization / pricing",
       "global_theme": "Foundry",
@@ -2666,7 +2666,7 @@
       "duplicate_edge": false
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "driver_id": "MATURE_NODE_FOUNDRY_UTILIZATION",
       "driver_label": "Mature-node foundry utilization / pricing",
       "global_theme": "Foundry",
@@ -2688,7 +2688,7 @@
       "duplicate_edge": false
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "driver_id": "MATURE_NODE_FOUNDRY_UTILIZATION",
       "driver_label": "Mature-node foundry utilization / pricing",
       "global_theme": "Foundry",
@@ -2710,7 +2710,7 @@
       "duplicate_edge": false
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "driver_id": "WAFER_FAB_EQUIPMENT_CAPEX",
       "driver_label": "Wafer-fab equipment capex",
       "global_theme": "Semiconductor_Equipment",
@@ -2732,7 +2732,7 @@
       "duplicate_edge": false
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "driver_id": "WAFER_FAB_EQUIPMENT_CAPEX",
       "driver_label": "Wafer-fab equipment capex",
       "global_theme": "Semiconductor_Equipment",
@@ -2754,7 +2754,7 @@
       "duplicate_edge": false
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "driver_id": "WAFER_FAB_EQUIPMENT_CAPEX",
       "driver_label": "Wafer-fab equipment capex",
       "global_theme": "Semiconductor_Equipment",
@@ -2776,7 +2776,7 @@
       "duplicate_edge": false
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "driver_id": "ADVANCED_PACKAGING_TEST_CAPEX",
       "driver_label": "Advanced packaging / test capex",
       "global_theme": "Semiconductor_Equipment",
@@ -2798,7 +2798,7 @@
       "duplicate_edge": false
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "driver_id": "ADVANCED_PACKAGING_TEST_CAPEX",
       "driver_label": "Advanced packaging / test capex",
       "global_theme": "Semiconductor_Equipment",
@@ -2820,7 +2820,7 @@
       "duplicate_edge": false
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "driver_id": "ADVANCED_PACKAGING_TEST_CAPEX",
       "driver_label": "Advanced packaging / test capex",
       "global_theme": "Semiconductor_Equipment",
@@ -2842,7 +2842,7 @@
       "duplicate_edge": false
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "driver_id": "WAFER_FAB_EQUIPMENT_CAPEX",
       "driver_label": "Wafer-fab equipment capex",
       "global_theme": "Semiconductor_Equipment",
@@ -2864,7 +2864,7 @@
       "duplicate_edge": false
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "driver_id": "MLCC_DEMAND_PRICING",
       "driver_label": "MLCC demand / pricing cycle",
       "global_theme": "MLCC",
@@ -2886,7 +2886,7 @@
       "duplicate_edge": false
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "driver_id": "MLCC_DEMAND_PRICING",
       "driver_label": "MLCC demand / pricing cycle",
       "global_theme": "MLCC",
@@ -2908,7 +2908,7 @@
       "duplicate_edge": false
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "driver_id": "MLCC_DEMAND_PRICING",
       "driver_label": "MLCC demand / pricing cycle",
       "global_theme": "MLCC",
@@ -2930,7 +2930,7 @@
       "duplicate_edge": false
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "driver_id": "GRID_CAPEX",
       "driver_label": "Grid modernization / transformer and cable capex",
       "global_theme": "Power_Grid",
@@ -2952,7 +2952,7 @@
       "duplicate_edge": false
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "driver_id": "GRID_CAPEX",
       "driver_label": "Grid modernization / transformer and cable capex",
       "global_theme": "Power_Grid",
@@ -2974,7 +2974,7 @@
       "duplicate_edge": false
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "driver_id": "GRID_CAPEX",
       "driver_label": "Grid modernization / transformer and cable capex",
       "global_theme": "Power_Grid",
@@ -2996,7 +2996,7 @@
       "duplicate_edge": false
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "driver_id": "GRID_CAPEX",
       "driver_label": "Grid modernization / transformer and cable capex",
       "global_theme": "Power_Grid",
@@ -3018,7 +3018,7 @@
       "duplicate_edge": false
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "driver_id": "GRID_CAPEX",
       "driver_label": "Grid modernization / transformer and cable capex",
       "global_theme": "Power_Grid",
@@ -3040,7 +3040,7 @@
       "duplicate_edge": false
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "driver_id": "POWER_ELECTRONICS_CAPEX",
       "driver_label": "Power equipment / electronics capex",
       "global_theme": "Power",
@@ -3062,7 +3062,7 @@
       "duplicate_edge": false
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "driver_id": "POWER_ELECTRONICS_CAPEX",
       "driver_label": "Power equipment / electronics capex",
       "global_theme": "Power",
@@ -3084,7 +3084,7 @@
       "duplicate_edge": false
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "driver_id": "POWER_ELECTRONICS_CAPEX",
       "driver_label": "Power equipment / electronics capex",
       "global_theme": "Power",
@@ -3106,7 +3106,7 @@
       "duplicate_edge": false
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "driver_id": "NUCLEAR_GRID_SECOND_ORDER",
       "driver_label": "Nuclear buildout second-order grid equipment",
       "global_theme": "Nuclear_Power",
@@ -3128,7 +3128,7 @@
       "duplicate_edge": false
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "driver_id": "NUCLEAR_GRID_SECOND_ORDER",
       "driver_label": "Nuclear buildout second-order grid equipment",
       "global_theme": "Nuclear_Power",
@@ -3150,7 +3150,7 @@
       "duplicate_edge": false
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "driver_id": "CONTAINER_FREIGHT",
       "driver_label": "Container freight / liner shipping cycle",
       "global_theme": "Shipping",
@@ -3172,7 +3172,7 @@
       "duplicate_edge": false
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "driver_id": "CONTAINER_FREIGHT",
       "driver_label": "Container freight / liner shipping cycle",
       "global_theme": "Shipping",
@@ -3194,7 +3194,7 @@
       "duplicate_edge": false
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "driver_id": "CONTAINER_FREIGHT",
       "driver_label": "Container freight / liner shipping cycle",
       "global_theme": "Shipping",
@@ -3216,7 +3216,7 @@
       "duplicate_edge": false
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "driver_id": "DRY_BULK_FREIGHT",
       "driver_label": "Dry-bulk freight / commodity shipping cycle",
       "global_theme": "Shipping",
@@ -3238,7 +3238,7 @@
       "duplicate_edge": false
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "driver_id": "DRY_BULK_FREIGHT",
       "driver_label": "Dry-bulk freight / commodity shipping cycle",
       "global_theme": "Shipping",
@@ -3260,7 +3260,7 @@
       "duplicate_edge": false
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "driver_id": "DRY_BULK_FREIGHT",
       "driver_label": "Dry-bulk freight / commodity shipping cycle",
       "global_theme": "Shipping",
@@ -3282,7 +3282,7 @@
       "duplicate_edge": false
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "driver_id": "DRY_BULK_FREIGHT",
       "driver_label": "Dry-bulk freight / commodity shipping cycle",
       "global_theme": "Shipping",
@@ -3304,7 +3304,7 @@
       "duplicate_edge": false
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "driver_id": "COPPER_COMMODITY_TRADE_INVENTORY",
       "driver_label": "Copper commodity price / trade-inventory cycle",
       "global_theme": "Copper",
@@ -3326,7 +3326,7 @@
       "duplicate_edge": false
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "driver_id": "COPPER_COMMODITY_TRADE_INVENTORY",
       "driver_label": "Copper commodity price / trade-inventory cycle",
       "global_theme": "Copper",
@@ -3348,7 +3348,7 @@
       "duplicate_edge": false
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "driver_id": "COPPER_COMMODITY_TRADE_INVENTORY",
       "driver_label": "Copper commodity price / trade-inventory cycle",
       "global_theme": "Copper",
@@ -3370,7 +3370,7 @@
       "duplicate_edge": false
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "driver_id": "ENTERPRISE_CYBER_SPEND",
       "driver_label": "Enterprise cybersecurity spending",
       "global_theme": "Cybersecurity",
@@ -3392,7 +3392,7 @@
       "duplicate_edge": false
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "driver_id": "ENTERPRISE_CYBER_SPEND",
       "driver_label": "Enterprise cybersecurity spending",
       "global_theme": "Cybersecurity",
@@ -3414,7 +3414,7 @@
       "duplicate_edge": false
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "driver_id": "BIOPHARMA_RISK_APPETITE",
       "driver_label": "Biopharma risk appetite / clinical-commercial cycle",
       "global_theme": "Biotech",
@@ -3436,7 +3436,7 @@
       "duplicate_edge": false
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "driver_id": "BIOPHARMA_RISK_APPETITE",
       "driver_label": "Biopharma risk appetite / clinical-commercial cycle",
       "global_theme": "Biotech",
@@ -3458,7 +3458,7 @@
       "duplicate_edge": false
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "driver_id": "GENOMICS_RISK_APPETITE",
       "driver_label": "Genomics risk appetite / platform cycle",
       "global_theme": "Genomics",
@@ -3480,7 +3480,7 @@
       "duplicate_edge": false
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "driver_id": "FINANCIALS_RATE_CREDIT_CYCLE",
       "driver_label": "Financials rate / credit / margin cycle",
       "global_theme": "Financials",
@@ -3502,7 +3502,7 @@
       "duplicate_edge": false
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "driver_id": "FINANCIALS_RATE_CREDIT_CYCLE",
       "driver_label": "Financials rate / credit / margin cycle",
       "global_theme": "Financials",
@@ -3524,7 +3524,7 @@
       "duplicate_edge": false
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "driver_id": "FINANCIALS_RATE_CREDIT_CYCLE",
       "driver_label": "Financials rate / credit / margin cycle",
       "global_theme": "Financials",
@@ -3546,7 +3546,7 @@
       "duplicate_edge": false
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "driver_id": "FINANCIALS_RATE_CREDIT_CYCLE",
       "driver_label": "Financials rate / credit / margin cycle",
       "global_theme": "Financials",
@@ -3568,7 +3568,7 @@
       "duplicate_edge": false
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "driver_id": "CONSUMER_ELECTRONICS_CYCLE",
       "driver_label": "Consumer electronics demand cycle",
       "global_theme": "Consumer_Tech",
@@ -3590,7 +3590,7 @@
       "duplicate_edge": false
     },
     {
-      "run_id": "20260916T192049+0800-9c1e4002",
+      "run_id": "20260916T203621+0800-ffbc652e",
       "driver_id": "CONSUMER_ELECTRONICS_CYCLE",
       "driver_label": "Consumer electronics demand cycle",
       "global_theme": "Consumer_Tech",
