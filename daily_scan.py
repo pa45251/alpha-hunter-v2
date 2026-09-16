@@ -45,11 +45,12 @@ def append_taiwan_candidate_history(candidates: pd.DataFrame, path: str = "outpu
     x = candidates.copy()
     x["snapshot_date_taipei"] = datetime.now(TAIPEI_TZ).date().isoformat()
     keep = [
-        "snapshot_date_taipei", "last_price_date", "candidate_rank", "candidate_bucket", "reaction_state",
-        "code", "ticker", "name", "exchange", "industry", "price", "ret_5d", "ret_20d", "ret_60d",
-        "rs_20d_vs_bench", "rs_60d_vs_bench", "acceleration", "er20", "vol20", "maxdd20",
-        "keynes_legacy", "keynes_v2", "bias20", "avg_turnover20_twd", "taiwan_candidate_score_v1",
-        "taiwan_early_score_v2", "volume_ratio20",
+        "snapshot_date_taipei", "last_price_date", "candidate_rank", "candidate_bucket", "trend_stage",
+        "reaction_state", "extension_risk", "code", "ticker", "name", "exchange", "industry", "price",
+        "ret_5d", "ret_20d", "ret_60d", "rs_5d_vs_bench", "rs_20d_vs_bench", "rs_60d_vs_bench",
+        "rs_acceleration", "acceleration", "er20", "vol20", "maxdd20", "keynes_legacy", "keynes_v2",
+        "bias20", "avg_turnover20_twd", "median_turnover20_twd", "liquidity_capacity_2pct_2d_twd",
+        "taiwan_candidate_score_v1", "taiwan_early_score_v2", "taiwan_early_score_v3", "volume_ratio20",
     ]
     x = x[[c for c in keep if c in x.columns]]
     p = Path(path)
@@ -65,6 +66,7 @@ def append_taiwan_candidate_history(candidates: pd.DataFrame, path: str = "outpu
 
 def write_taiwan_outputs(tw: dict) -> None:
     tw["candidates"].to_csv(OUT / "taiwan_candidates.csv", index=False)
+    tw["shadow"].to_csv(OUT / "taiwan_shadow_universe.csv", index=False)
     tw["breadth"].to_csv(OUT / "taiwan_industry_breadth.csv", index=False)
     tw["universe"].to_csv(OUT / "taiwan_universe.csv", index=False)
 
@@ -95,7 +97,7 @@ def build_manifest(
     required = [
         "global_scan_quality.json", "discovery_snapshot.csv", "discovery_research_queue.csv",
         "risk_regime.json", "market_snapshot.csv", "theme_breadth.csv", "leader_registry.csv", "feature_history.csv",
-        "market_snapshot.json", "taiwan_candidates.csv", "taiwan_candidate_history.csv",
+        "market_snapshot.json", "taiwan_candidates.csv", "taiwan_shadow_universe.csv", "taiwan_candidate_history.csv",
         "taiwan_industry_breadth.csv", "taiwan_universe.csv", "causal_research_queue.csv",
         "reverse_transmission_candidates.csv", "structural_matches.csv", "causal_graph_audit.csv",
         "causal_driver_taxonomy.csv", "structural_exposure_graph.csv",
@@ -159,6 +161,8 @@ def build_manifest(
             "scanned_count": int(len(t)),
             "coverage_pct": float(coverage),
             "candidate_count": int(len(tw["candidates"])),
+            "shadow_count": int(len(tw["shadow"])),
+            "primary_shadow_partition_complete": bool(len(tw["candidates"]) + len(tw["shadow"]) == len(t)),
             "industry_count": int(t["industry"].nunique()),
             "latest_price_date": str(t["last_price_date"].max()),
             "earliest_price_date": str(t["last_price_date"].min()),
@@ -288,6 +292,8 @@ if __name__ == "__main__":
         "formal_snapshot_core_only": global_results["stocks"].universe_layer.eq("CORE").all(),
         "global_outputs_generated": (OUT / "market_snapshot.csv").exists() and len(global_results["stocks"]) > 0,
         "taiwan_outputs_generated": (OUT / "taiwan_candidates.csv").exists() and len(tw["stocks"]) > 0,
+        "taiwan_shadow_generated": (OUT / "taiwan_shadow_universe.csv").exists() and len(tw["shadow"]) >= 0,
+        "taiwan_primary_shadow_partition_complete": len(tw["candidates"]) + len(tw["shadow"]) == len(tw["stocks"]),
         "causal_queue_rebuilt_this_run": (not research_queue.empty) and research_queue["run_id"].eq(run_id).all(),
         "reverse_discovery_rebuilt_this_run": (OUT / "reverse_transmission_candidates.csv").exists() and bool(reverse_current),
         "structural_matches_rebuilt_this_run": (not structural.empty) and structural["run_id"].eq(run_id).all(),
@@ -327,7 +333,7 @@ if __name__ == "__main__":
 
     print(f"Global: {len(global_results['stocks'])} securities / {global_results['stocks']['theme'].nunique()} themes")
     print(f"Taiwan: {len(tw['stocks'])}/{len(tw['universe'])} common stocks / {tw['stocks']['industry'].nunique()} industries")
-    print(f"Taiwan candidates: {len(tw['candidates'])}")
+    print(f"Taiwan candidates: {len(tw['candidates'])}; shadow: {len(tw['shadow'])}")
     print(f"Taiwan reverse candidates: {len(reverse_candidates)} across {reverse_candidates['driver_id'].nunique() if not reverse_candidates.empty else 0} drivers")
     print(f"Causal research queue: {len(research_queue)} unresolved driver tasks")
     print(f"Structural matches: {len(structural)}; activated by external research: {int(structural.get('dynamic_driver_state', pd.Series(dtype=str)).eq('ACTIVE_RESEARCH_VALIDATED').sum()) if not structural.empty else 0}")
