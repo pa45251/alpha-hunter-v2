@@ -31,11 +31,18 @@ class TaiwanScanConfig:
     min_obs: int = 140
     benchmark: str = "^TWII"
     batch_size: int = 80
-    top_candidates: int = 150
+    # Maximum expensive research load, not a target that must be filled.
+    top_candidates: int = 100
+    primary_research_cap: int = 100
     min_price: float = 5.0
-    # Research-load liquidity gate: require at least TWD 100m average daily turnover over 20 sessions.
+    # Keep the TWD 100m 20D average turnover floor. Median turnover is recorded
+    # separately as a robustness/capacity diagnostic, not a hard gate.
     min_turnover20: float = 100_000_000.0
+    early_reserve_fraction: float = 0.30
     output_dir: str = "output"
+
+    def __post_init__(self) -> None:
+        self.top_candidates = min(max(0, int(self.top_candidates)), max(0, int(self.primary_research_cap)))
 
 
 def _decode_twse_response(resp: requests.Response) -> str:
@@ -73,14 +80,10 @@ def _parse_isin_table(html: str, exchange: str, suffix: str) -> pd.DataFrame:
         if not m:
             continue
         code, name = m.group(1), m.group(2).strip()
-        # Strictly ordinary 4-digit common-share codes; excludes ETFs, ETNs,
-        # warrants, bonds, preferred-share letter suffixes and most structured products.
         if not re.fullmatch(r"\d{4}", code):
             continue
         industry = str(r.get(industry_col, "未分類")).strip() if industry_col else "未分類"
         cfi = str(r.get(cfi_col, "")).strip().upper() if cfi_col else ""
-        # CFI codes beginning with ES denote common/ordinary equity shares.
-        # This excludes numeric-code ETFs such as 0050/0056 that would otherwise pass the 4-digit filter.
         if cfi and not cfi.startswith("ES"):
             continue
         if industry in {"", "nan", "NaN"}:
@@ -166,21 +169,39 @@ def _add_turnover_feature(hist: pd.DataFrame, f: dict) -> None:
         vol = hist["Volume"].astype(float)
         turnover = (close * vol).dropna().tail(20)
         f["avg_turnover20_twd"] = float(turnover.mean()) if not turnover.empty else np.nan
+        f["median_turnover20_twd"] = float(turnover.median()) if not turnover.empty else np.nan
+        # Informational execution-capacity proxy only: 2% participation over two sessions.
+        f["liquidity_capacity_2pct_2d_twd"] = (
+            float(turnover.median()) * 0.04 if not turnover.empty else np.nan
+        )
     except Exception:
         f["avg_turnover20_twd"] = np.nan
+        f["median_turnover20_twd"] = np.nan
+        f["liquidity_capacity_2pct_2d_twd"] = np.nan
+
+
+def _col(df: pd.DataFrame, name: str, default=np.nan) -> pd.Series:
+    if name in df.columns:
+        return df[name]
+    return pd.Series(default, index=df.index)
 
 
 def add_taiwan_candidate_score(df: pd.DataFrame) -> pd.DataFrame:
-    """Transparent, deliberately non-optimized Taiwan discovery score.
+    """Transparent Taiwan discovery/research-priority features.
 
-    Unlike Global Leader Score, this places more weight on acceleration and trend quality,
-    because Taiwan Sensor is looking for improving / not-yet-fully-priced candidates.
-    It is a discovery heuristic, NOT a buy signal.
+    Scanner scores allocate research attention; they are not expected-return rankings
+    or trade signals. Lifecycle stage and extension risk are kept separate so an
+    otherwise valid trend is not semantically overwritten merely because price is hot.
     """
     x = add_cross_section_scores(df)
     x["r_turnover"] = x["avg_turnover20_twd"].rank(pct=True, method="average")
-    # Favor reasonable proximity to highs without rewarding extreme extension.
-    bias = x["bias20"].astype(float)
+
+    rs5 = pd.to_numeric(_col(x, "rs_5d_vs_bench"), errors="coerce")
+    rs20 = pd.to_numeric(_col(x, "rs_20d_vs_bench"), errors="coerce")
+    x["rs_acceleration"] = rs5 - rs20 / 4.0
+    x["r_rs_accel"] = x["rs_acceleration"].rank(pct=True, method="average")
+
+    bias = pd.to_numeric(_col(x, "bias20", 0.0), errors="coerce").fillna(0.0)
     x["extension_quality"] = (1.0 - (bias.abs() / 0.20)).clip(0, 1)
     x["r_extension"] = x["extension_quality"].rank(pct=True, method="average")
     x["taiwan_candidate_score_v1"] = (
@@ -193,25 +214,7 @@ def add_taiwan_candidate_score(df: pd.DataFrame) -> pd.DataFrame:
         + 0.10 * x["r_extension"]
     )
 
-    # v2.5 separates price confirmation from economic causality. This prevents the
-    # candidate funnel from becoming a hidden "must already be strong" gate.
-    rs20 = x["rs_20d_vs_bench"].fillna(-999)
-    rs60 = x["rs_60d_vs_bench"].fillna(-999)
-    accel = x["acceleration"].fillna(-999)
-    bias20 = x["bias20"].fillna(0)
-    ret5 = x["ret_5d"].fillna(0)
-    trend = x["trend"].fillna("UNKNOWN")
-
-    x["reaction_state"] = "UNKNOWN"
-    x.loc[(trend == "BEAR") & (rs20 < 0), "reaction_state"] = "BROKEN"
-    x.loc[(rs20 <= 0) & (accel > 0) & (trend != "BEAR"), "reaction_state"] = "PRE_CONFIRMATION"
-    x.loc[(rs20 > 0) & (accel > 0), "reaction_state"] = "CONFIRMING"
-    x.loc[(rs20 > 0) & (rs60 > 0) & (trend == "STRONG_UP"), "reaction_state"] = "PERSISTENT"
-    x.loc[(rs20 > 0) & (accel <= 0) & (trend == "PULLBACK"), "reaction_state"] = "PULLBACK"
-    x.loc[(bias20 > 0.20) | (ret5 > 0.25), "reaction_state"] = "EXTENDED"
-
-    # A separate early-discovery score favors acceleration/quality without requiring
-    # already-positive RS20. It is used only to preserve lead-lag candidates.
+    # Keep the historical v2 score for downstream compatibility/audit lineage.
     x["taiwan_early_score_v2"] = (
         0.30 * x["r_accel"]
         + 0.25 * x["r_quality"]
@@ -220,53 +223,184 @@ def add_taiwan_candidate_score(df: pd.DataFrame) -> pd.DataFrame:
         + 0.10 * x["r_turnover"]
         + 0.10 * x["r_extension"]
     )
+    # v3 adds relative-strength acceleration on the same 5D-equivalent scale.
+    x["taiwan_early_score_v3"] = (
+        0.25 * x["r_accel"]
+        + 0.20 * x["r_rs_accel"]
+        + 0.20 * x["r_quality"]
+        + 0.15 * x["r_slope"]
+        + 0.10 * x["r_volume"]
+        + 0.05 * x["r_turnover"]
+        + 0.05 * x["r_extension"]
+    )
+
+    rs60 = pd.to_numeric(_col(x, "rs_60d_vs_bench"), errors="coerce").fillna(-999)
+    accel = pd.to_numeric(_col(x, "acceleration"), errors="coerce").fillna(-999)
+    rs_accel = pd.to_numeric(x["rs_acceleration"], errors="coerce").fillna(-999)
+    ma20_slope = pd.to_numeric(_col(x, "ma20_slope"), errors="coerce").fillna(-999)
+    ret5 = pd.to_numeric(_col(x, "ret_5d", 0.0), errors="coerce").fillna(0.0)
+    trend = _col(x, "trend", "UNKNOWN").fillna("UNKNOWN").astype(str)
+    rs20_filled = rs20.fillna(-999)
+
+    # Lifecycle classification: confirmation requires an already constructive
+    # MA20/MA60 structure. Improving rebounds/bears remain visible as EARLY rather
+    # than being mislabeled confirmed or discarded.
+    broken = (
+        trend.eq("BEAR")
+        & (ma20_slope <= 0)
+        & (rs20_filled < 0)
+        & (rs_accel <= 0)
+    )
+    persistent = trend.eq("STRONG_UP") & (rs20_filled > 0) & (rs60 > 0)
+    pullback = trend.eq("PULLBACK") & (rs20_filled > 0)
+    confirmed = trend.eq("STRONG_UP") & (rs20_filled > 0)
+    improving = (accel > 0) | (rs_accel > 0) | (ma20_slope > 0)
+
+    x["trend_stage"] = "WATCH"
+    x.loc[broken, "trend_stage"] = "BROKEN"
+    x.loc[~broken & improving, "trend_stage"] = "EARLY"
+    x.loc[confirmed, "trend_stage"] = "CONFIRMED"
+    x.loc[pullback, "trend_stage"] = "PULLBACK"
+    x.loc[persistent, "trend_stage"] = "PERSISTENT"
+
+    # Compatibility surface for existing downstream consumers. EXTENDED is no
+    # longer a lifecycle state; it lives only in extension_risk.
+    x["reaction_state"] = x["trend_stage"].map({
+        "BROKEN": "BROKEN",
+        "EARLY": "PRE_CONFIRMATION",
+        "CONFIRMED": "CONFIRMING",
+        "PULLBACK": "PULLBACK",
+        "PERSISTENT": "PERSISTENT",
+        "WATCH": "UNKNOWN",
+    }).fillna("UNKNOWN")
+    x["extension_risk"] = np.where((bias > 0.20) | (ret5 > 0.25), "EXTENDED", "NORMAL")
+    # Legacy compatibility only: old consumers still recognize reaction_state=EXTENDED.
+    # trend_stage is the canonical lifecycle field and is never overwritten.
+    x.loc[x["extension_risk"].eq("EXTENDED"), "reaction_state"] = "EXTENDED"
     return x
 
 
-def select_taiwan_candidates(stocks: pd.DataFrame, cfg: TaiwanScanConfig) -> pd.DataFrame:
-    """Balanced discovery funnel.
-
-    v2.5 deliberately reserves room for PRE_CONFIRMATION names so the system does
-    not only discover stocks after the move is already obvious. EXTENDED names are
-    still visible but cannot dominate the entire list.
-    """
+def _ensure_selection_columns(stocks: pd.DataFrame) -> pd.DataFrame:
+    """Compatibility for tests/archived snapshots created before scanner vNext."""
     x = stocks.copy()
-    liquid = x["avg_turnover20_twd"].fillna(0) >= cfg.min_turnover20
-    price_ok = x["price"].fillna(0) >= cfg.min_price
+    if "trend_stage" not in x.columns:
+        legacy = _col(x, "reaction_state", "UNKNOWN").fillna("UNKNOWN").astype(str)
+        x["trend_stage"] = legacy.map({
+            "BROKEN": "BROKEN",
+            "PRE_CONFIRMATION": "EARLY",
+            "CONFIRMING": "CONFIRMED",
+            "PERSISTENT": "PERSISTENT",
+            "PULLBACK": "PULLBACK",
+            "EXTENDED": "WATCH",
+        }).fillna("WATCH")
+    if "extension_risk" not in x.columns:
+        legacy = _col(x, "reaction_state", "UNKNOWN").fillna("UNKNOWN").astype(str)
+        x["extension_risk"] = np.where(legacy.eq("EXTENDED"), "EXTENDED", "NORMAL")
+    if "rs_acceleration" not in x.columns:
+        rs5 = pd.to_numeric(_col(x, "rs_5d_vs_bench"), errors="coerce")
+        rs20 = pd.to_numeric(_col(x, "rs_20d_vs_bench"), errors="coerce")
+        x["rs_acceleration"] = rs5 - rs20 / 4.0
+    if "taiwan_early_score_v3" not in x.columns:
+        x["taiwan_early_score_v3"] = pd.to_numeric(
+            _col(x, "taiwan_early_score_v2"), errors="coerce"
+        )
+    return x
+
+
+def _eligibility_masks(x: pd.DataFrame, cfg: TaiwanScanConfig) -> tuple[pd.Series, pd.Series, pd.Series, pd.Series]:
+    liquid = pd.to_numeric(_col(x, "avg_turnover20_twd", 0), errors="coerce").fillna(0) >= cfg.min_turnover20
+    price_ok = pd.to_numeric(_col(x, "price", 0), errors="coerce").fillna(0) >= cfg.min_price
     improving = (
-        (x["acceleration"].fillna(-999) > 0)
-        | (x["rs_20d_vs_bench"].fillna(-999) > 0)
-        | (x["keynes_v2"].fillna(-999) > 0)
+        (pd.to_numeric(_col(x, "acceleration"), errors="coerce").fillna(-999) > 0)
+        | (pd.to_numeric(_col(x, "rs_20d_vs_bench"), errors="coerce").fillna(-999) > 0)
+        | (pd.to_numeric(_col(x, "keynes_v2"), errors="coerce").fillna(-999) > 0)
+        | (pd.to_numeric(_col(x, "rs_acceleration"), errors="coerce").fillna(-999) > 0)
     )
-    x["candidate_eligible"] = liquid & price_ok & improving & x["reaction_state"].ne("BROKEN")
+    structural = _col(x, "trend_stage", "WATCH").fillna("WATCH").astype(str).ne("BROKEN")
+    return liquid, price_ok, improving, structural
+
+
+def select_taiwan_candidates(stocks: pd.DataFrame, cfg: TaiwanScanConfig) -> pd.DataFrame:
+    """Select at most the expensive-research capacity without manufacturing fillers.
+
+    All stocks remain in the cheap full scan/shadow universe. Primary research is
+    limited to meaningful CONFIRMED/PULLBACK/PERSISTENT or EARLY lifecycle stages.
+    A protected early reserve prevents mature trends from crowding out new turns;
+    the remaining capacity is filled only by other meaningful-stage candidates.
+    """
+    x = _ensure_selection_columns(stocks)
+    liquid, price_ok, improving, structural = _eligibility_masks(x, cfg)
+    x["candidate_eligible"] = liquid & price_ok & improving & structural
     x = x[x["candidate_eligible"]].copy()
+    if x.empty:
+        return x
 
-    n = int(cfg.top_candidates)
-    n_early = max(1, int(n * 0.30))
-    n_extended = max(0, int(n * 0.15))
-    n_confirmed = max(1, n - n_early - n_extended)
+    stage = x["trend_stage"].fillna("WATCH").astype(str)
+    meaningful = x[stage.isin(["EARLY", "CONFIRMED", "PULLBACK", "PERSISTENT"])].copy()
+    if meaningful.empty:
+        return meaningful
 
-    confirmed = x[x["reaction_state"].isin(["CONFIRMING", "PERSISTENT", "PULLBACK"])].sort_values(
-        "taiwan_candidate_score_v1", ascending=False
-    ).head(n_confirmed)
-    early = x[x["reaction_state"].isin(["PRE_CONFIRMATION", "UNKNOWN"])].sort_values(
-        "taiwan_early_score_v2", ascending=False
-    ).head(n_early)
-    extended = x[x["reaction_state"].eq("EXTENDED")].sort_values(
-        "taiwan_candidate_score_v1", ascending=False
-    ).head(n_extended)
+    confirmed_mask = meaningful["trend_stage"].isin(["CONFIRMED", "PULLBACK", "PERSISTENT"])
+    meaningful["research_priority_score"] = np.where(
+        confirmed_mask,
+        pd.to_numeric(_col(meaningful, "taiwan_candidate_score_v1"), errors="coerce").fillna(0.0),
+        pd.to_numeric(_col(meaningful, "taiwan_early_score_v3"), errors="coerce").fillna(0.0),
+    )
+    meaningful["candidate_bucket"] = np.where(confirmed_mask, "CONFIRMED", "EARLY")
 
-    out = pd.concat([confirmed, early, extended], ignore_index=True).drop_duplicates("ticker", keep="first")
-    if len(out) < n:
-        filler = x[~x["ticker"].isin(out["ticker"]) & x["reaction_state"].ne("EXTENDED")].sort_values("taiwan_candidate_score_v1", ascending=False).head(n-len(out))
-        out = pd.concat([out, filler], ignore_index=True)
-    out["candidate_bucket"] = out["reaction_state"].map({
-        "PRE_CONFIRMATION": "EARLY", "UNKNOWN": "EARLY", "EXTENDED": "EXTENDED",
-        "CONFIRMING": "CONFIRMED", "PERSISTENT": "CONFIRMED", "PULLBACK": "CONFIRMED"
-    }).fillna("OTHER")
-    out = out.sort_values(["candidate_bucket", "taiwan_candidate_score_v1"], ascending=[True, False])
+    n = max(0, int(cfg.top_candidates))
+    if n == 0:
+        return meaningful.iloc[0:0].copy()
+    n_early_reserve = min(n, max(1, int(n * float(cfg.early_reserve_fraction))))
+    early = meaningful[meaningful["trend_stage"].eq("EARLY")].sort_values(
+        ["research_priority_score", "ticker"], ascending=[False, True]
+    )
+    protected_early = early.head(n_early_reserve)
+
+    remaining = meaningful[~meaningful["ticker"].isin(protected_early["ticker"])].sort_values(
+        ["research_priority_score", "ticker"], ascending=[False, True]
+    )
+    out = pd.concat([protected_early, remaining.head(max(0, n - len(protected_early)))], ignore_index=True)
+    out = out.drop_duplicates("ticker", keep="first").sort_values(
+        ["research_priority_score", "candidate_bucket", "ticker"],
+        ascending=[False, True, True],
+    ).head(n)
     out["candidate_rank"] = np.arange(1, len(out) + 1)
-    return out.head(n)
+    return out.reset_index(drop=True)
+
+
+def build_taiwan_shadow_universe(
+    stocks: pd.DataFrame,
+    candidates: pd.DataFrame,
+    cfg: TaiwanScanConfig,
+) -> pd.DataFrame:
+    """Keep every non-primary scanned stock cheaply observable for future promotion."""
+    x = _ensure_selection_columns(stocks)
+    liquid, price_ok, improving, structural = _eligibility_masks(x, cfg)
+    primary = set(candidates.get("ticker", pd.Series(dtype=str)).astype(str)) if candidates is not None else set()
+    x = x[~x["ticker"].astype(str).isin(primary)].copy()
+    if x.empty:
+        return x
+
+    liquid = liquid.reindex(x.index, fill_value=False)
+    price_ok = price_ok.reindex(x.index, fill_value=False)
+    improving = improving.reindex(x.index, fill_value=False)
+    structural = structural.reindex(x.index, fill_value=False)
+
+    x["shadow_reason"] = "PRIMARY_CAP_OR_PRIORITY"
+    x.loc[~liquid, "shadow_reason"] = "BELOW_LIQUIDITY_FLOOR"
+    x.loc[liquid & ~price_ok, "shadow_reason"] = "BELOW_PRICE_FLOOR"
+    x.loc[liquid & price_ok & ~structural, "shadow_reason"] = "BROKEN_STRUCTURE"
+    x.loc[liquid & price_ok & structural & ~improving, "shadow_reason"] = "NO_ACTIVE_IMPROVEMENT"
+    x.loc[
+        liquid & price_ok & structural & improving & x["trend_stage"].eq("WATCH"),
+        "shadow_reason",
+    ] = "WATCH_STAGE"
+
+    early_score = pd.to_numeric(_col(x, "taiwan_early_score_v3"), errors="coerce").fillna(0.0)
+    confirmed_score = pd.to_numeric(_col(x, "taiwan_candidate_score_v1"), errors="coerce").fillna(0.0)
+    x["shadow_priority_score"] = np.where(x["trend_stage"].eq("EARLY"), early_score, confirmed_score)
+    return x.sort_values(["shadow_priority_score", "ticker"], ascending=[False, True]).reset_index(drop=True)
 
 
 def run_taiwan_scan(cfg: TaiwanScanConfig = TaiwanScanConfig(), cached_universe: str = "output/taiwan_universe.csv"):
@@ -312,12 +446,16 @@ def run_taiwan_scan(cfg: TaiwanScanConfig = TaiwanScanConfig(), cached_universe:
     stocks = add_taiwan_candidate_score(stocks)
     stocks = stocks.sort_values("taiwan_candidate_score_v1", ascending=False)
     candidates = select_taiwan_candidates(stocks, cfg)
+    shadow = build_taiwan_shadow_universe(stocks, candidates, cfg)
+    Path(cfg.output_dir).mkdir(parents=True, exist_ok=True)
+    shadow.to_csv(Path(cfg.output_dir) / "taiwan_shadow_universe.csv", index=False)
     breadth_input = stocks.rename(columns={"industry": "theme"}) if "theme" not in stocks.columns else stocks
     breadth = compute_theme_breadth(breadth_input)
     return {
         "histories": data,
         "stocks": stocks,
         "candidates": candidates,
+        "shadow": shadow,
         "breadth": breadth,
         "universe": uni,
         "universe_source_status": uni_source_status,
