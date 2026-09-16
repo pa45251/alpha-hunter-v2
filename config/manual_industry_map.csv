@@ -1,0 +1,39 @@
+code,name,economic_subindustry,primary_driver_id,secondary_driver_ids,classification_confidence,notes
+3008,大立光,Mobile_Optics,MOBILE_OPTICS_UPGRADE,AUTOMOTIVE_VISION_CONTENT,HIGH,Precision camera lenses; primary monitoring anchored to mobile optics cycle.
+3406,玉晶光,Mobile_Optics,MOBILE_OPTICS_UPGRADE,XR_AI_GLASSES_OPTICS;AUTOMOTIVE_VISION_CONTENT,HIGH,Mobile lens exposure with XR and automotive optionality.
+3019,亞光,Automotive_Optics,AUTOMOTIVE_VISION_CONTENT,MOBILE_OPTICS_UPGRADE;XR_AI_GLASSES_OPTICS,HIGH,Multi-market optics; automotive vision is the preferred primary causal lens.
+3362,先進光,Mobile_Optics,MOBILE_OPTICS_UPGRADE,,MEDIUM,Camera-lens exposure; company-specific customer mix still requires manual validation.
+3504,揚明光,XR_Optics,XR_AI_GLASSES_OPTICS,,MEDIUM,Optical engine / XR-related exposure requires company-specific validation.
+2481,強茂,Diode_Discrete,DIODE_RECTIFIER_CYCLE,POWER_DISCRETE_CYCLE,HIGH,Discrete rectifier/diode cycle; do not validate with broad semiconductor breadth.
+5425,台半,Diode_Discrete,DIODE_RECTIFIER_CYCLE,POWER_DISCRETE_CYCLE,HIGH,Discrete rectifier/diode exposure.
+3675,德微,Diode_Discrete,DIODE_RECTIFIER_CYCLE,,HIGH,Discrete diode exposure.
+8255,朋程,Automotive_Diode,DIODE_RECTIFIER_CYCLE,AUTOMOTIVE_ELECTRONICS_CONTENT,HIGH,Automotive-focused rectifier/diode exposure; vehicle content matters.
+3317,尼克森,Power_MOSFET,POWER_DISCRETE_CYCLE,,HIGH,Power MOSFET exposure.
+8261,富鼎,Power_MOSFET,POWER_DISCRETE_CYCLE,,HIGH,Power MOSFET exposure.
+3707,漢磊,Power_Semiconductor,POWER_DISCRETE_CYCLE,,HIGH,Power semiconductor foundry/device-cycle exposure.
+3016,嘉晶,Power_Semiconductor_Materials,POWER_DISCRETE_CYCLE,,MEDIUM,Epitaxial wafer exposure; transmission is upstream and should be manually validated.
+2368,金像電,High_Layer_PCB,HIGH_LAYER_PCB_DEMAND,,HIGH,High-layer PCB exposure tied to server/networking demand.
+3044,健鼎,PCB,HIGH_LAYER_PCB_DEMAND,,HIGH,PCB demand; end-market mix must be checked manually.
+4958,臻鼎-KY,PCB,HIGH_LAYER_PCB_DEMAND,,HIGH,Diversified PCB exposure.
+2313,華通,HDI_PCB,HIGH_LAYER_PCB_DEMAND,,HIGH,HDI/high-density PCB exposure; end-market mix matters.
+5469,瀚宇博,PCB,HIGH_LAYER_PCB_DEMAND,,MEDIUM,PCB exposure; server/consumer mix requires manual validation.
+6191,精成科,PCB,HIGH_LAYER_PCB_DEMAND,,MEDIUM,PCB exposure; acquisition/customer mix requires manual validation.
+3037,欣興,PCB_Substrate,PACKAGE_SUBSTRATE_DEMAND,HIGH_LAYER_PCB_DEMAND,HIGH,PCB plus IC-substrate exposure; use substrate driver as primary.
+3189,景碩,ABF_Substrate,PACKAGE_SUBSTRATE_DEMAND,,HIGH,IC package substrate exposure.
+8046,南電,ABF_Substrate,PACKAGE_SUBSTRATE_DEMAND,,HIGH,IC package substrate exposure.
+2383,台光電,CCL_HighSpeed,CCL_LOW_LOSS_MATERIAL_DEMAND,HIGH_LAYER_PCB_DEMAND,HIGH,High-speed/low-loss CCL exposure.
+6213,聯茂,CCL_HighSpeed,CCL_LOW_LOSS_MATERIAL_DEMAND,HIGH_LAYER_PCB_DEMAND,HIGH,High-speed CCL exposure; avoid broad electronic-components breadth.
+6274,台燿,CCL_HighSpeed,CCL_LOW_LOSS_MATERIAL_DEMAND,HIGH_LAYER_PCB_DEMAND,HIGH,High-speed/low-loss CCL exposure.
+3533,嘉澤,Server_Connector,HIGH_SPEED_CONNECTOR_DEMAND,AI_SERVER_SHIPMENTS,HIGH,Server socket/connector exposure; company product mix remains essential.
+3665,貿聯-KY,HighSpeed_Cable_Connector,HIGH_SPEED_CONNECTOR_DEMAND,,HIGH,High-speed interconnect/cable exposure across data-center and other markets.
+3023,信邦,Cable_Connector,HIGH_SPEED_CONNECTOR_DEMAND,,MEDIUM,Diversified cable/connector exposure; end-market mix must be manually validated.
+3605,宏致,Connector,HIGH_SPEED_CONNECTOR_DEMAND,,MEDIUM,Connector exposure; exact high-speed/server contribution requires manual validation.
+6197,佳必琪,HighSpeed_Cable_Connector,HIGH_SPEED_CONNECTOR_DEMAND,,MEDIUM,High-speed cable/connector exposure; customer mix requires validation.
+2327,國巨,MLCC,MLCC_DEMAND_PRICING,PASSIVE_CAPACITOR_CYCLE,HIGH,MLCC/passive leader; existing MLCC causal map remains valid.
+2492,華新科,MLCC,MLCC_DEMAND_PRICING,,HIGH,MLCC/passive exposure.
+3026,禾伸堂,MLCC,MLCC_DEMAND_PRICING,,MEDIUM,MLCC/passive exposure with distribution/product-mix considerations.
+6173,信昌電,MLCC,MLCC_DEMAND_PRICING,,MEDIUM,Passive/MLCC exposure; product mix requires manual validation.
+2375,凱美,Capacitor,PASSIVE_CAPACITOR_CYCLE,,HIGH,Non-MLCC capacitor/passive exposure.
+2472,立隆電,Capacitor,PASSIVE_CAPACITOR_CYCLE,,HIGH,Aluminum electrolytic capacitor exposure.
+6449,鈺邦,Capacitor,PASSIVE_CAPACITOR_CYCLE,,HIGH,Capacitor exposure; end-market mix should be validated.
+8042,金山電,Capacitor,PASSIVE_CAPACITOR_CYCLE,,HIGH,Aluminum electrolytic capacitor exposure.
