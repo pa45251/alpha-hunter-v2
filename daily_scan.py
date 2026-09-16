@@ -66,7 +66,8 @@ def append_taiwan_candidate_history(candidates: pd.DataFrame, path: str = "outpu
 
 def write_taiwan_outputs(tw: dict) -> None:
     tw["candidates"].to_csv(OUT / "taiwan_candidates.csv", index=False)
-    tw["shadow"].to_csv(OUT / "taiwan_shadow_universe.csv", index=False)
+    # Rejected names are intentionally not persisted as a shadow/challenger pool.
+    (OUT / "taiwan_shadow_universe.csv").unlink(missing_ok=True)
     tw["breadth"].to_csv(OUT / "taiwan_industry_breadth.csv", index=False)
     tw["universe"].to_csv(OUT / "taiwan_universe.csv", index=False)
 
@@ -97,7 +98,7 @@ def build_manifest(
     required = [
         "global_scan_quality.json", "discovery_snapshot.csv", "discovery_research_queue.csv",
         "risk_regime.json", "market_snapshot.csv", "theme_breadth.csv", "leader_registry.csv", "feature_history.csv",
-        "market_snapshot.json", "taiwan_candidates.csv", "taiwan_shadow_universe.csv", "taiwan_candidate_history.csv",
+        "market_snapshot.json", "taiwan_candidates.csv", "taiwan_candidate_history.csv",
         "taiwan_industry_breadth.csv", "taiwan_universe.csv", "causal_research_queue.csv",
         "reverse_transmission_candidates.csv", "structural_matches.csv", "causal_graph_audit.csv",
         "causal_driver_taxonomy.csv", "structural_exposure_graph.csv",
@@ -161,8 +162,7 @@ def build_manifest(
             "scanned_count": int(len(t)),
             "coverage_pct": float(coverage),
             "candidate_count": int(len(tw["candidates"])),
-            "shadow_count": int(len(tw["shadow"])),
-            "primary_shadow_partition_complete": bool(len(tw["candidates"]) + len(tw["shadow"]) == len(t)),
+            "rejected_count": int(max(0, len(t) - len(tw["candidates"]))),
             "industry_count": int(t["industry"].nunique()),
             "latest_price_date": str(t["last_price_date"].max()),
             "earliest_price_date": str(t["last_price_date"].min()),
@@ -292,8 +292,7 @@ if __name__ == "__main__":
         "formal_snapshot_core_only": global_results["stocks"].universe_layer.eq("CORE").all(),
         "global_outputs_generated": (OUT / "market_snapshot.csv").exists() and len(global_results["stocks"]) > 0,
         "taiwan_outputs_generated": (OUT / "taiwan_candidates.csv").exists() and len(tw["stocks"]) > 0,
-        "taiwan_shadow_generated": (OUT / "taiwan_shadow_universe.csv").exists() and len(tw["shadow"]) >= 0,
-        "taiwan_primary_shadow_partition_complete": len(tw["candidates"]) + len(tw["shadow"]) == len(tw["stocks"]),
+        "taiwan_rejected_not_persisted": not (OUT / "taiwan_shadow_universe.csv").exists(),
         "causal_queue_rebuilt_this_run": (not research_queue.empty) and research_queue["run_id"].eq(run_id).all(),
         "reverse_discovery_rebuilt_this_run": (OUT / "reverse_transmission_candidates.csv").exists() and bool(reverse_current),
         "structural_matches_rebuilt_this_run": (not structural.empty) and structural["run_id"].eq(run_id).all(),
@@ -333,7 +332,7 @@ if __name__ == "__main__":
 
     print(f"Global: {len(global_results['stocks'])} securities / {global_results['stocks']['theme'].nunique()} themes")
     print(f"Taiwan: {len(tw['stocks'])}/{len(tw['universe'])} common stocks / {tw['stocks']['industry'].nunique()} industries")
-    print(f"Taiwan candidates: {len(tw['candidates'])}; shadow: {len(tw['shadow'])}")
+    print(f"Taiwan candidates: {len(tw['candidates'])}; rejected: {max(0, len(tw['stocks']) - len(tw['candidates']))}")
     print(f"Taiwan reverse candidates: {len(reverse_candidates)} across {reverse_candidates['driver_id'].nunique() if not reverse_candidates.empty else 0} drivers")
     print(f"Causal research queue: {len(research_queue)} unresolved driver tasks")
     print(f"Structural matches: {len(structural)}; activated by external research: {int(structural.get('dynamic_driver_state', pd.Series(dtype=str)).eq('ACTIVE_RESEARCH_VALIDATED').sum()) if not structural.empty else 0}")
