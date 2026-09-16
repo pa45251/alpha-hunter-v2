@@ -5,7 +5,6 @@ from taiwan_sensor import (
     TaiwanScanConfig,
     _add_turnover_feature,
     add_taiwan_candidate_score,
-    build_taiwan_shadow_universe,
     select_taiwan_candidates,
 )
 
@@ -123,15 +122,11 @@ def test_early_reserve_prevents_mature_trends_from_crowding_out_new_turns():
     assert len(out) == 10
 
 
-def test_shadow_keeps_every_non_primary_stock_with_reason():
+def test_rejected_names_are_not_returned_by_candidate_selection():
     stocks = pd.DataFrame([
         _selection_row("PRIMARY.TW", "CONFIRMED", score=0.9),
-        _selection_row("WATCH.TW", "WATCH", score=0.7),
-        _selection_row("ILLIQ.TW", "EARLY", early=0.8, turnover=50_000_000.0),
+        _selection_row("WATCH.TW", "WATCH", score=1.0, early=1.0),
+        _selection_row("ILLIQ.TW", "EARLY", early=1.0, turnover=50_000_000.0),
     ])
-    primary = select_taiwan_candidates(stocks, TaiwanScanConfig(top_candidates=1))
-    shadow = build_taiwan_shadow_universe(stocks, primary, TaiwanScanConfig(top_candidates=1))
-    assert set(shadow["ticker"]) == {"WATCH.TW", "ILLIQ.TW"}
-    reasons = shadow.set_index("ticker")["shadow_reason"].to_dict()
-    assert reasons["WATCH.TW"] == "WATCH_STAGE"
-    assert reasons["ILLIQ.TW"] == "BELOW_LIQUIDITY_FLOOR"
+    out = select_taiwan_candidates(stocks, TaiwanScanConfig(top_candidates=10))
+    assert out["ticker"].tolist() == ["PRIMARY.TW"]
