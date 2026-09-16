@@ -1,0 +1,3 @@
+code,name,economic_subindustry,primary_driver_id,secondary_driver_ids,classification_confidence,notes
+2305,全友,Document_Scanner_Imaging,DOCUMENT_SCANNER_IMAGING_CYCLE,,HIGH,Document/flatbed/ADF scanner and digital-imaging products; benchmark scanner vendors directly rather than medical imaging.
+6199,天品,Funeral_Services,FUNERAL_SERVICES_CYCLE,,HIGH,Funeral/cemetery/columbarium services; global death-care peers are direct business-model context.
