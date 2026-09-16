@@ -52,7 +52,7 @@ jobs:
           if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ inputs.force }}" = "true" ]; then
             force_arg="--force"
           fi
-          if ! python -c 'import json; from pathlib import Path; m=json.loads(Path("output/manifest.json").read_text()); assert any(f.get("name")=="risk_regime.json" for f in m.get("authoritative_files", [])); r=json.loads(Path("output/risk_regime.json").read_text()); assert "position_trends" not in r'; then
+          if ! python -c 'import json; from pathlib import Path; m=json.loads(Path("output/manifest.json").read_text()); names={f.get("name") for f in m.get("authoritative_files", [])}; assert "risk_regime.json" in names; assert "taiwan_shadow_universe.csv" in names; r=json.loads(Path("output/risk_regime.json").read_text()); assert "position_trends" not in r'; then
             force_arg="--force"
           fi
           python automation_guard_v4.py --mode scheduled-scan $force_arg
