@@ -1,0 +1,3 @@
+driver_id,driver_label,global_theme,ticker,name,region,benchmark,peer_role
+DOCUMENT_SCANNER_IMAGING_CYCLE,Document scanner / digital-imaging demand,Document_Imaging,7751.T,Canon,JP,^N225,DIRECT_PEER
+DOCUMENT_SCANNER_IMAGING_CYCLE,Document scanner / digital-imaging demand,Document_Imaging,6724.T,Seiko Epson,JP,^N225,DIRECT_PEER
