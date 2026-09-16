@@ -1,0 +1,105 @@
+driver_id,driver_label,global_theme,ticker,name,region,benchmark,peer_role
+ACOUSTIC_COMPONENTS_DEMAND,Acoustic / audio component demand,Acoustic_Components,2018.HK,AAC Technologies,HK,^HSI,DIRECT_PEER
+ACOUSTIC_COMPONENTS_DEMAND,Acoustic / audio component demand,Acoustic_Components,002241.SZ,Goertek,CN,000300.SS,DIRECT_PEER
+ASIC_DESIGN_SERVICES,ASIC design-service / custom silicon demand,ASIC_Design,SNPS,Synopsys,US,SPY,DEMAND_CONTEXT
+ASIC_DESIGN_SERVICES,ASIC design-service / custom silicon demand,ASIC_Design,CDNS,Cadence Design Systems,US,SPY,DEMAND_CONTEXT
+AUTOMOTIVE_ELECTRONICS_CONTENT,Automotive electronics content cycle,Auto_Electronics,APTV,Aptiv,US,SPY,DIRECT_PEER
+AUTOMOTIVE_ELECTRONICS_CONTENT,Automotive electronics content cycle,Auto_Electronics,MGA,Magna International,US,SPY,RELATED_PEER
+AUTO_FINANCE_CREDIT_CYCLE,Auto / consumer finance credit cycle,Specialty_Finance,ALLY,Ally Financial,US,SPY,DIRECT_PEER
+AUTO_FINANCE_CREDIT_CYCLE,Auto / consumer finance credit cycle,Specialty_Finance,CACC,Credit Acceptance,US,SPY,DIRECT_PEER
+AUTO_LIGHTING_AFTERMARKET,Automotive lighting / aftermarket cycle,Auto_Lighting,7276.T,Koito Manufacturing,JP,^N225,DIRECT_PEER
+AUTO_LIGHTING_AFTERMARKET,Automotive lighting / aftermarket cycle,Auto_Lighting,6923.T,Stanley Electric,JP,^N225,DIRECT_PEER
+BIOLOGICS_CDMO_BIOSIMILAR,Biologics CDMO / biosimilar demand,Biologics_CDMO,207940.KS,Samsung Biologics,KR,^KS11,DIRECT_PEER
+BIOLOGICS_CDMO_BIOSIMILAR,Biologics CDMO / biosimilar demand,Biologics_CDMO,2269.HK,WuXi Biologics,HK,^HSI,DIRECT_PEER
+BIOTECH_CLINICAL_RISK,Biotech clinical-development risk appetite,Biotech,XBI,SPDR S&P Biotech ETF,US,SPY,SECTOR_BREADTH
+BIOTECH_CLINICAL_RISK,Biotech clinical-development risk appetite,Biotech,IBB,iShares Biotechnology ETF,US,SPY,SECTOR_BREADTH
+BNCT_RADIOTHERAPY_ADOPTION,BNCT / particle-radiotherapy adoption,Medtech_Radiotherapy,6302.T,Sumitomo Heavy Industries,JP,^N225,DIRECT_PEER
+BNCT_RADIOTHERAPY_ADOPTION,BNCT / particle-radiotherapy adoption,Medtech_Radiotherapy,SHL.DE,Siemens Healthineers,EU,^STOXX,RELATED_PEER
+CABLE_HARNESS_INTERCONNECT,Cable-harness / interconnect demand,Interconnect,APH,Amphenol,US,SPY,DIRECT_PEER
+CABLE_HARNESS_INTERCONNECT,Cable-harness / interconnect demand,Interconnect,TEL,TE Connectivity,US,SPY,DIRECT_PEER
+CAPITAL_MARKETS_ACTIVITY,Capital-markets / brokerage activity,Capital_Markets,IBKR,Interactive Brokers,US,SPY,DIRECT_PEER
+CAPITAL_MARKETS_ACTIVITY,Capital-markets / brokerage activity,Capital_Markets,SCHW,Charles Schwab,US,SPY,DIRECT_PEER
+CONNECTIVITY_INTERFACE_IC_CYCLE,Connectivity / interface IC demand,Connectivity_IC,MRVL,Marvell Technology,US,SPY,RELATED_PEER
+CONNECTIVITY_INTERFACE_IC_CYCLE,Connectivity / interface IC demand,Connectivity_IC,MCHP,Microchip Technology,US,SPY,DIRECT_PEER
+CONTACT_LENS_DEMAND,Contact-lens demand cycle,Vision_Care,COO,CooperCompanies,US,SPY,DIRECT_PEER
+CONTACT_LENS_DEMAND,Contact-lens demand cycle,Vision_Care,ALC,Alcon,US,SPY,RELATED_PEER
+DISPLAY_DRIVER_IC_CYCLE,Display-driver IC / panel electronics cycle,Display_IC,HIMX,Himax Technologies,US,SPY,DIRECT_PEER
+DISPLAY_DRIVER_IC_CYCLE,Display-driver IC / panel electronics cycle,Display_IC,108320.KS,LX Semicon,KR,^KS11,DIRECT_PEER
+DISPLAY_OPTICAL_FILM,Display optical-film / polarizer demand,Display_Materials,6988.T,Nitto Denko,JP,^N225,DIRECT_PEER
+DISPLAY_OPTICAL_FILM,Display optical-film / polarizer demand,Display_Materials,4005.T,Sumitomo Chemical,JP,^N225,RELATED_PEER
+DIVERSIFIED_ELECTRONICS_ODM,Diversified electronics ODM / module demand,Electronics_ODM,JBL,Jabil,US,SPY,DIRECT_PEER
+DIVERSIFIED_ELECTRONICS_ODM,Diversified electronics ODM / module demand,Electronics_ODM,FLEX,Flex,US,SPY,DIRECT_PEER
+EDGE_AI_IP_ASIC,Edge-AI IP / ASIC adoption,Edge_AI,ARM,Arm Holdings,US,SPY,DEMAND_CONTEXT
+EDGE_AI_IP_ASIC,Edge-AI IP / ASIC adoption,Edge_AI,QCOM,Qualcomm,US,SPY,RELATED_PEER
+EDGE_AI_SENSOR_ODM,Edge-AI sensor / HMI ODM demand,Edge_AI,JBL,Jabil,US,SPY,RELATED_PEER
+EDGE_AI_SENSOR_ODM,Edge-AI sensor / HMI ODM demand,Edge_AI,FLEX,Flex,US,SPY,RELATED_PEER
+ELECTRONICS_CHASSIS_DEMAND,Electronics chassis / mechanical enclosure demand,Electronics_Mechanical,JBL,Jabil,US,SPY,RELATED_PEER
+ELECTRONICS_CHASSIS_DEMAND,Electronics chassis / mechanical enclosure demand,Electronics_Mechanical,FLEX,Flex,US,SPY,RELATED_PEER
+ELECTRONICS_WASTE_RECOVERY,Electronics-process waste recovery / environmental services,Environmental_Services,CLH,Clean Harbors,US,SPY,RELATED_PEER
+ELECTRONICS_WASTE_RECOVERY,Electronics-process waste recovery / environmental services,Environmental_Services,CWST,Casella Waste Systems,US,SPY,RELATED_PEER
+ENGINEERING_EPC_CAPEX,Engineering / EPC project capex cycle,Engineering_EPC,FLR,Fluor,US,SPY,DIRECT_PEER
+ENGINEERING_EPC_CAPEX,Engineering / EPC project capex cycle,Engineering_EPC,J,Jacobs Solutions,US,SPY,DIRECT_PEER
+ENTERPRISE_IT_SPEND,Enterprise IT integration / infrastructure spending,Enterprise_IT,CDW,CDW,US,SPY,DIRECT_PEER
+ENTERPRISE_IT_SPEND,Enterprise IT integration / infrastructure spending,Enterprise_IT,NSIT,Insight Enterprises,US,SPY,DIRECT_PEER
+FUNERAL_SERVICES_CYCLE,Funeral / death-care services cycle,Funeral_Services,SCI,Service Corporation International,US,SPY,DIRECT_PEER
+FUNERAL_SERVICES_CYCLE,Funeral / death-care services cycle,Funeral_Services,CSV,Carriage Services,US,SPY,DIRECT_PEER
+GLOBAL_FREIGHT_FORWARDING,Global freight-forwarding / logistics cycle,Logistics,EXPD,Expeditors International,US,SPY,DIRECT_PEER
+GLOBAL_FREIGHT_FORWARDING,Global freight-forwarding / logistics cycle,Logistics,KNIN.SW,Kuehne + Nagel,EU,^SSMI,DIRECT_PEER
+HMI_SENSOR_COMPONENTS,HMI / sensor / precision input-component demand,HMI_Components,6770.T,Alps Alpine,JP,^N225,DIRECT_PEER
+HMI_SENSOR_COMPONENTS,HMI / sensor / precision input-component demand,HMI_Components,TEL,TE Connectivity,US,SPY,RELATED_PEER
+HOME_FURNISHINGS_CYCLE,Home furnishings / window-covering demand,Home_Furnishings,SGI,Somnigroup International,US,SPY,RELATED_PEER
+HOME_FURNISHINGS_CYCLE,Home furnishings / window-covering demand,Home_Furnishings,WSM,Williams-Sonoma,US,SPY,DEMAND_CONTEXT
+INDUSTRIAL_AUTOMATION_CAPEX,Industrial automation / motion-control capex,Industrial_Automation,ROK,Rockwell Automation,US,SPY,DIRECT_PEER
+INDUSTRIAL_AUTOMATION_CAPEX,Industrial automation / motion-control capex,Industrial_Automation,EMR,Emerson Electric,US,SPY,RELATED_PEER
+INDUSTRIAL_EDGE_COMPUTING,Industrial edge-computing / embedded demand,Industrial_Computing,KTN.DE,Kontron,EU,^STOXX,DIRECT_PEER
+INDUSTRIAL_EDGE_COMPUTING,Industrial edge-computing / embedded demand,Industrial_Computing,ROK,Rockwell Automation,US,SPY,DEMAND_CONTEXT
+IT_DISTRIBUTION_CYCLE,IT / electronics distribution cycle,IT_Distribution,SNX,TD SYNNEX,US,SPY,DIRECT_PEER
+IT_DISTRIBUTION_CYCLE,IT / electronics distribution cycle,IT_Distribution,ARW,Arrow Electronics,US,SPY,DIRECT_PEER
+LED_COMPONENT_CYCLE,LED epitaxy / chip / package demand cycle,LED,AMS.SW,ams OSRAM,EU,^SSMI,DIRECT_PEER
+LED_COMPONENT_CYCLE,LED epitaxy / chip / package demand cycle,LED,046890.KQ,Seoul Semiconductor,KR,^KS11,DIRECT_PEER
+LUXURY_BOAT_CYCLE,Luxury boat / yacht demand cycle,Luxury_Boats,BC,Brunswick,US,SPY,DIRECT_PEER
+LUXURY_BOAT_CYCLE,Luxury boat / yacht demand cycle,Luxury_Boats,MPX,Marine Products,US,SPY,RELATED_PEER
+MEDTECH_IMAGING_DIAGNOSTICS,Medical imaging / diagnostics equipment demand,Medtech_Diagnostics,VREX,Varex Imaging,US,SPY,DIRECT_PEER
+MEDTECH_IMAGING_DIAGNOSTICS,Medical imaging / diagnostics equipment demand,Medtech_Diagnostics,ABT,Abbott Laboratories,US,SPY,RELATED_PEER
+OPTO_TEST_EQUIPMENT_CYCLE,Optoelectronic / semiconductor test-equipment cycle,Test_Equipment,KEYS,Keysight Technologies,US,SPY,DIRECT_PEER
+OPTO_TEST_EQUIPMENT_CYCLE,Optoelectronic / semiconductor test-equipment cycle,Test_Equipment,COHU,Cohu,US,SPY,DIRECT_PEER
+PASSENGER_RAIL_DEMAND,Passenger-rail ridership / fare demand,Passenger_Rail,9020.T,East Japan Railway,JP,^N225,DIRECT_PEER
+PASSENGER_RAIL_DEMAND,Passenger-rail ridership / fare demand,Passenger_Rail,9021.T,West Japan Railway,JP,^N225,DIRECT_PEER
+PASSIVE_COMPONENT_CYCLE,Precision passive-component demand cycle,Passive_Components,VSH,Vishay Intertechnology,US,SPY,DIRECT_PEER
+PASSIVE_COMPONENT_CYCLE,Precision passive-component demand cycle,Passive_Components,6762.T,TDK,JP,^N225,RELATED_PEER
+PCB_MATERIALS_DEMAND,PCB / FPCB advanced-material demand,PCB_Materials,DD,DuPont,US,SPY,RELATED_PEER
+PCB_MATERIALS_DEMAND,PCB / FPCB advanced-material demand,PCB_Materials,3402.T,Toray Industries,JP,^N225,DIRECT_PEER
+PC_DEVICE_CYCLE,PC / gaming hardware demand cycle,PC_Devices,HPQ,HP Inc.,US,SPY,DIRECT_PEER
+PC_DEVICE_CYCLE,PC / gaming hardware demand cycle,PC_Devices,DELL,Dell Technologies,US,SPY,DIRECT_PEER
+PHOTOMASK_DEMAND,Semiconductor photomask demand,Photomask,PLAB,Photronics,US,SPY,DIRECT_PEER
+PHOTOMASK_DEMAND,Semiconductor photomask demand,Photomask,7911.T,TOPPAN Holdings,JP,^N225,RELATED_PEER
+PHYSICAL_SECURITY_SERVICES,Physical security / monitoring services demand,Security_Services,ADT,ADT,US,SPY,DIRECT_PEER
+PHYSICAL_SECURITY_SERVICES,Physical security / monitoring services demand,Security_Services,SECU-B.ST,Securitas,EU,^STOXX,DIRECT_PEER
+PRECISION_OPTICS_DEMAND,Precision optical-lens / coating demand,Optics,2382.HK,Sunny Optical,HK,^HSI,DIRECT_PEER
+PRECISION_OPTICS_DEMAND,Precision optical-lens / coating demand,Optics,7741.T,HOYA,JP,^N225,RELATED_PEER
+QUARTZ_CRYSTAL_TIMING_CYCLE,Quartz crystal / timing-device demand,Timing_Components,6779.T,Nihon Dempa Kogyo,JP,^N225,DIRECT_PEER
+QUARTZ_CRYSTAL_TIMING_CYCLE,Quartz crystal / timing-device demand,Timing_Components,6962.T,Daishinku,JP,^N225,DIRECT_PEER
+RESTAURANT_RETAIL_CONSUMER,Restaurant / discretionary retail consumer demand,Consumer_Discretionary,MCD,McDonald's,US,SPY,RELATED_PEER
+RESTAURANT_RETAIL_CONSUMER,Restaurant / discretionary retail consumer demand,Consumer_Discretionary,YUM,Yum! Brands,US,SPY,RELATED_PEER
+RETAIL_FIXTURE_SMART_BED_DEMAND,Commercial fixture / smart-bed demand,Home_Retail_Fixtures,SNBR,Sleep Number,US,SPY,DIRECT_PEER
+RETAIL_FIXTURE_SMART_BED_DEMAND,Commercial fixture / smart-bed demand,Home_Retail_Fixtures,SGI,Somnigroup International,US,SPY,RELATED_PEER
+SEMICONDUCTOR_DISTRIBUTION_CYCLE,Semiconductor distribution / channel cycle,Semiconductor_Distribution,ARW,Arrow Electronics,US,SPY,DIRECT_PEER
+SEMICONDUCTOR_DISTRIBUTION_CYCLE,Semiconductor distribution / channel cycle,Semiconductor_Distribution,AVT,Avnet,US,SPY,DIRECT_PEER
+SEMICONDUCTOR_MATERIALS_CAPEX,Semiconductor materials / fab-chemicals demand,Semiconductor_Materials,ENTG,Entegris,US,SPY,DIRECT_PEER
+SEMICONDUCTOR_MATERIALS_CAPEX,Semiconductor materials / fab-chemicals demand,Semiconductor_Materials,4186.T,Tokyo Ohka Kogyo,JP,^N225,DIRECT_PEER
+SEMICONDUCTOR_PROCESS_CONTROL,Semiconductor process monitoring / control demand,Process_Control,A,Agilent Technologies,US,SPY,RELATED_PEER
+SEMICONDUCTOR_PROCESS_CONTROL,Semiconductor process monitoring / control demand,Process_Control,6856.T,HORIBA,JP,^N225,DIRECT_PEER
+SPECIALTY_CHEMICALS_CYCLE,Specialty / industrial chemicals demand cycle,Specialty_Chemicals,BASF.DE,BASF,EU,^STOXX,RELATED_PEER
+SPECIALTY_CHEMICALS_CYCLE,Specialty / industrial chemicals demand cycle,Specialty_Chemicals,HUN,Huntsman,US,SPY,RELATED_PEER
+SPECIALTY_FINANCE_RATE_CYCLE,Specialty finance / rate-spread cycle,Specialty_Finance,XLF,Financials ETF,US,SPY,MACRO_CONTEXT
+SPECIALTY_FINANCE_RATE_CYCLE,Specialty finance / rate-spread cycle,Specialty_Finance,GS,Goldman Sachs,US,SPY,MACRO_CONTEXT
+SPECIALTY_PHARMA_CYCLE,Specialty pharma / generics commercial cycle,Pharma,TEVA,Teva Pharmaceutical,US,SPY,DIRECT_PEER
+SPECIALTY_PHARMA_CYCLE,Specialty pharma / generics commercial cycle,Pharma,VTRS,Viatris,US,SPY,DIRECT_PEER
+TELECOM_OPERATOR_ARPU_5G,Telecom operator ARPU / 5G service cycle,Telecom,VZ,Verizon,US,SPY,DIRECT_PEER
+TELECOM_OPERATOR_ARPU_5G,Telecom operator ARPU / 5G service cycle,Telecom,9432.T,Nippon Telegraph and Telephone,JP,^N225,DIRECT_PEER
+TEST_INTERFACE_CAPEX,IC test-interface / probe-board demand,Semiconductor_Test,COHU,Cohu,US,SPY,DIRECT_PEER
+TEST_INTERFACE_CAPEX,IC test-interface / probe-board demand,Semiconductor_Test,FORM,FormFactor,US,SPY,DIRECT_PEER
+TWO_WHEELER_AUTO_CYCLE,Two-wheeler / auto OEM demand cycle,Auto_TwoWheeler,7267.T,Honda Motor,JP,^N225,DIRECT_PEER
+TWO_WHEELER_AUTO_CYCLE,Two-wheeler / auto OEM demand cycle,Auto_TwoWheeler,7272.T,Yamaha Motor,JP,^N225,DIRECT_PEER
+VISION_INSPECTION_EQUIPMENT,Machine-vision / AOI inspection equipment demand,Machine_Vision,CGNX,Cognex,US,SPY,DIRECT_PEER
+VISION_INSPECTION_EQUIPMENT,Machine-vision / AOI inspection equipment demand,Machine_Vision,6861.T,Keyence,JP,^N225,RELATED_PEER
