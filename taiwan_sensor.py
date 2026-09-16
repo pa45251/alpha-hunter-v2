@@ -33,7 +33,8 @@ class TaiwanScanConfig:
     batch_size: int = 80
     top_candidates: int = 150
     min_price: float = 5.0
-    min_turnover20: float = 10_000_000.0
+    # Research-load liquidity gate: require at least TWD 100m average daily turnover over 20 sessions.
+    min_turnover20: float = 100_000_000.0
     output_dir: str = "output"
 
 
