@@ -100,12 +100,14 @@ def test_rebound_fails_early_if_relative_strength_is_not_accelerating():
 def test_rebound_requires_two_of_three_supporting_votes():
     out = add_taiwan_candidate_score(pd.DataFrame([
         _feature_row(
-            acceleration=-0.01,
+            ret_5d=-0.05,
+            ret_20d=0.10,
             rs_20d_vs_bench=-0.01,
             rs_5d_vs_bench=0.02,
             keynes_v2=0.5,
         )
     ]))
+    assert out.iloc[0]["acceleration"] < 0
     assert out.iloc[0]["rs_acceleration"] > 0
     assert out.iloc[0]["trend_stage"] == "WATCH"
 
