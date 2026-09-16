@@ -321,12 +321,11 @@ def _eligibility_masks(x: pd.DataFrame, cfg: TaiwanScanConfig) -> tuple[pd.Serie
 
 
 def select_taiwan_candidates(stocks: pd.DataFrame, cfg: TaiwanScanConfig) -> pd.DataFrame:
-    """Select at most the expensive-research capacity without manufacturing fillers.
+    """Select only admitted candidates, capped by expensive-research capacity.
 
-    All stocks remain in the cheap full scan/shadow universe. Primary research is
-    limited to meaningful CONFIRMED/PULLBACK/PERSISTENT or EARLY lifecycle stages.
-    A protected early reserve prevents mature trends from crowding out new turns;
-    the remaining capacity is filled only by other meaningful-stage candidates.
+    Stocks that fail admission or miss the capacity cut are rejected for this scan.
+    No shadow/challenger pool is retained. A protected early reserve prevents mature
+    trends from crowding out new turns, and WATCH/BROKEN names never fill quota.
     """
     x = _ensure_selection_columns(stocks)
     liquid, price_ok, improving, structural = _eligibility_masks(x, cfg)
@@ -367,40 +366,6 @@ def select_taiwan_candidates(stocks: pd.DataFrame, cfg: TaiwanScanConfig) -> pd.
     ).head(n)
     out["candidate_rank"] = np.arange(1, len(out) + 1)
     return out.reset_index(drop=True)
-
-
-def build_taiwan_shadow_universe(
-    stocks: pd.DataFrame,
-    candidates: pd.DataFrame,
-    cfg: TaiwanScanConfig,
-) -> pd.DataFrame:
-    """Keep every non-primary scanned stock cheaply observable for future promotion."""
-    x = _ensure_selection_columns(stocks)
-    liquid, price_ok, improving, structural = _eligibility_masks(x, cfg)
-    primary = set(candidates.get("ticker", pd.Series(dtype=str)).astype(str)) if candidates is not None else set()
-    x = x[~x["ticker"].astype(str).isin(primary)].copy()
-    if x.empty:
-        return x
-
-    liquid = liquid.reindex(x.index, fill_value=False)
-    price_ok = price_ok.reindex(x.index, fill_value=False)
-    improving = improving.reindex(x.index, fill_value=False)
-    structural = structural.reindex(x.index, fill_value=False)
-
-    x["shadow_reason"] = "PRIMARY_CAP_OR_PRIORITY"
-    x.loc[~liquid, "shadow_reason"] = "BELOW_LIQUIDITY_FLOOR"
-    x.loc[liquid & ~price_ok, "shadow_reason"] = "BELOW_PRICE_FLOOR"
-    x.loc[liquid & price_ok & ~structural, "shadow_reason"] = "BROKEN_STRUCTURE"
-    x.loc[liquid & price_ok & structural & ~improving, "shadow_reason"] = "NO_ACTIVE_IMPROVEMENT"
-    x.loc[
-        liquid & price_ok & structural & improving & x["trend_stage"].eq("WATCH"),
-        "shadow_reason",
-    ] = "WATCH_STAGE"
-
-    early_score = pd.to_numeric(_col(x, "taiwan_early_score_v3"), errors="coerce").fillna(0.0)
-    confirmed_score = pd.to_numeric(_col(x, "taiwan_candidate_score_v1"), errors="coerce").fillna(0.0)
-    x["shadow_priority_score"] = np.where(x["trend_stage"].eq("EARLY"), early_score, confirmed_score)
-    return x.sort_values(["shadow_priority_score", "ticker"], ascending=[False, True]).reset_index(drop=True)
 
 
 def run_taiwan_scan(cfg: TaiwanScanConfig = TaiwanScanConfig(), cached_universe: str = "output/taiwan_universe.csv"):
@@ -446,16 +411,12 @@ def run_taiwan_scan(cfg: TaiwanScanConfig = TaiwanScanConfig(), cached_universe:
     stocks = add_taiwan_candidate_score(stocks)
     stocks = stocks.sort_values("taiwan_candidate_score_v1", ascending=False)
     candidates = select_taiwan_candidates(stocks, cfg)
-    shadow = build_taiwan_shadow_universe(stocks, candidates, cfg)
-    Path(cfg.output_dir).mkdir(parents=True, exist_ok=True)
-    shadow.to_csv(Path(cfg.output_dir) / "taiwan_shadow_universe.csv", index=False)
     breadth_input = stocks.rename(columns={"industry": "theme"}) if "theme" not in stocks.columns else stocks
     breadth = compute_theme_breadth(breadth_input)
     return {
         "histories": data,
         "stocks": stocks,
         "candidates": candidates,
-        "shadow": shadow,
         "breadth": breadth,
         "universe": uni,
         "universe_source_status": uni_source_status,
