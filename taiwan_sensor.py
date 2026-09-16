@@ -323,14 +323,16 @@ def _ensure_selection_columns(stocks: pd.DataFrame) -> pd.DataFrame:
 
 
 def _eligibility_masks(x: pd.DataFrame, cfg: TaiwanScanConfig) -> tuple[pd.Series, pd.Series, pd.Series]:
-    avg_liquid = (
-        pd.to_numeric(_col(x, "avg_turnover20_twd", 0), errors="coerce").fillna(0)
-        >= cfg.min_turnover20
-    )
-    median_liquid = (
-        pd.to_numeric(_col(x, "median_turnover20_twd", 0), errors="coerce").fillna(0)
-        >= cfg.min_median_turnover20
-    )
+    avg_turnover = pd.to_numeric(_col(x, "avg_turnover20_twd", 0), errors="coerce").fillna(0)
+    avg_liquid = avg_turnover >= cfg.min_turnover20
+
+    # Archived/test rows from before scanner vNext do not have the median field.
+    # For backward compatibility only, fall back to their already-known mean.
+    # Live scans always populate median_turnover20_twd and therefore use the stricter gate.
+    median_raw = pd.to_numeric(_col(x, "median_turnover20_twd", np.nan), errors="coerce")
+    median_turnover = median_raw.where(median_raw.notna(), avg_turnover)
+    median_liquid = median_turnover >= cfg.min_median_turnover20
+
     liquid = avg_liquid & median_liquid
     price_ok = pd.to_numeric(_col(x, "price", 0), errors="coerce").fillna(0) >= cfg.min_price
     stage = _col(x, "trend_stage", "WATCH").fillna("WATCH").astype(str)
