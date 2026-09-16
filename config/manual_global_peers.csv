@@ -32,3 +32,79 @@ MLCC_DEMAND_PRICING,MLCC demand / pricing cycle,MLCC,009150.KS,Samsung Electro-M
 PASSIVE_CAPACITOR_CYCLE,Non-MLCC capacitor demand / utilization cycle,Passive_Components,6996.T,Nichicon,JP,^N225,DIRECT_PEER
 PASSIVE_CAPACITOR_CYCLE,Non-MLCC capacitor demand / utilization cycle,Passive_Components,6997.T,Nippon Chemi-Con,JP,^N225,DIRECT_PEER
 PASSIVE_CAPACITOR_CYCLE,Non-MLCC capacitor demand / utilization cycle,Passive_Components,VSH,Vishay Intertechnology,US,SPY,RELATED_PEER
+ENTERPRISE_CYBER_SPEND,Enterprise cybersecurity spending,Cybersecurity,HACK,Cybersecurity ETF,US,SPY,SECTOR_BREADTH
+ENTERPRISE_CYBER_SPEND,Enterprise cybersecurity spending,Cybersecurity,CIBR,Cybersecurity ETF,US,SPY,SECTOR_BREADTH
+ENTERPRISE_CYBER_SPEND,Enterprise cybersecurity spending,Cybersecurity,PANW,Palo Alto Networks,US,SPY,DIRECT_PEER
+ENTERPRISE_CYBER_SPEND,Enterprise cybersecurity spending,Cybersecurity,CRWD,CrowdStrike,US,SPY,DIRECT_PEER
+ENTERPRISE_CYBER_SPEND,Enterprise cybersecurity spending,Cybersecurity,FTNT,Fortinet,US,SPY,DIRECT_PEER
+CLOUD_MSP_ENTERPRISE_SPEND,Cloud adoption / MSP enterprise spend,Cloud_AI,SKYY,Cloud Computing ETF,US,SPY,SECTOR_BREADTH
+CLOUD_MSP_ENTERPRISE_SPEND,Cloud adoption / MSP enterprise spend,Cloud_AI,CLOU,Cloud Computing ETF,US,SPY,SECTOR_BREADTH
+CLOUD_MSP_ENTERPRISE_SPEND,Cloud adoption / MSP enterprise spend,Cloud_AI,MSFT,Microsoft Azure,US,SPY,DEMAND_CONTEXT
+CLOUD_MSP_ENTERPRISE_SPEND,Cloud adoption / MSP enterprise spend,Cloud_AI,AMZN,Amazon AWS,US,SPY,DEMAND_CONTEXT
+CLOUD_MSP_ENTERPRISE_SPEND,Cloud adoption / MSP enterprise spend,Cloud_AI,ORCL,Oracle Cloud,US,SPY,DEMAND_CONTEXT
+AI_NETWORKING_UPGRADE,800G/1.6T AI networking upgrade,AI_Networking,ANET,Arista Networks,US,SPY,DIRECT_PEER
+AI_NETWORKING_UPGRADE,800G/1.6T AI networking upgrade,AI_Networking,MRVL,Marvell Technology,US,SPY,DIRECT_PEER
+AI_NETWORKING_UPGRADE,800G/1.6T AI networking upgrade,AI_Networking,COHR,Coherent,US,SPY,RELATED_PEER
+AI_NETWORKING_UPGRADE,800G/1.6T AI networking upgrade,AI_Networking,LITE,Lumentum,US,SPY,RELATED_PEER
+AI_NETWORKING_UPGRADE,800G/1.6T AI networking upgrade,AI_Networking,CIEN,Ciena,US,SPY,RELATED_PEER
+AI_SERVER_SHIPMENTS,AI server shipment / ODM cycle,AI_Server,DELL,Dell,US,SPY,DIRECT_PEER
+AI_SERVER_SHIPMENTS,AI server shipment / ODM cycle,AI_Server,HPE,HPE,US,SPY,DIRECT_PEER
+AI_SERVER_SHIPMENTS,AI server shipment / ODM cycle,AI_Server,SMCI,Super Micro Computer,US,SPY,DIRECT_PEER
+AI_SERVER_RACK_BUILD,AI rack / server system buildout,AI_Server,DELL,Dell,US,SPY,RELATED_PEER
+AI_SERVER_RACK_BUILD,AI rack / server system buildout,AI_Server,HPE,HPE,US,SPY,RELATED_PEER
+AI_SERVER_RACK_BUILD,AI rack / server system buildout,AI_Server,SMCI,Super Micro Computer,US,SPY,DIRECT_PEER
+AI_SERVER_THERMAL_DENSITY,AI server thermal density / liquid cooling,AI_Infrastructure,VRT,Vertiv,US,SPY,DIRECT_PEER
+AI_SERVER_THERMAL_DENSITY,AI server thermal density / liquid cooling,AI_Infrastructure,NVT,nVent Electric,US,SPY,RELATED_PEER
+AI_SERVER_THERMAL_DENSITY,AI server thermal density / liquid cooling,AI_Infrastructure,ETN,Eaton,US,SPY,RELATED_PEER
+DATACENTER_COOLING_INFRA,Data-center cooling infrastructure capex,AI_Infrastructure,VRT,Vertiv,US,SPY,DIRECT_PEER
+DATACENTER_COOLING_INFRA,Data-center cooling infrastructure capex,AI_Infrastructure,NVT,nVent Electric,US,SPY,RELATED_PEER
+DATACENTER_COOLING_INFRA,Data-center cooling infrastructure capex,AI_Infrastructure,ETN,Eaton,US,SPY,RELATED_PEER
+DATACENTER_POWER_INFRA,Data-center power infrastructure capex,AI_Infrastructure,VRT,Vertiv,US,SPY,DIRECT_PEER
+DATACENTER_POWER_INFRA,Data-center power infrastructure capex,AI_Infrastructure,ETN,Eaton,US,SPY,DIRECT_PEER
+DATACENTER_POWER_INFRA,Data-center power infrastructure capex,AI_Infrastructure,NVT,nVent Electric,US,SPY,RELATED_PEER
+DATACENTER_POWER_INFRA,Data-center power infrastructure capex,AI_Infrastructure,SU.PA,Schneider Electric,EU,^STOXX,RELATED_PEER
+WAFER_FAB_EQUIPMENT_CAPEX,Wafer-fab equipment capex,Semiconductor_Equipment,ASML,ASML,EU,SPY,DIRECT_PEER
+WAFER_FAB_EQUIPMENT_CAPEX,Wafer-fab equipment capex,Semiconductor_Equipment,AMAT,Applied Materials,US,SPY,DIRECT_PEER
+WAFER_FAB_EQUIPMENT_CAPEX,Wafer-fab equipment capex,Semiconductor_Equipment,LRCX,Lam Research,US,SPY,DIRECT_PEER
+WAFER_FAB_EQUIPMENT_CAPEX,Wafer-fab equipment capex,Semiconductor_Equipment,KLAC,KLA,US,SPY,DIRECT_PEER
+WAFER_FAB_EQUIPMENT_CAPEX,Wafer-fab equipment capex,Semiconductor_Equipment,8035.T,Tokyo Electron,JP,^N225,DIRECT_PEER
+ADVANCED_PACKAGING_TEST_CAPEX,Advanced packaging / test capex,Semiconductor_Equipment,6857.T,Advantest,JP,^N225,DIRECT_PEER
+ADVANCED_PACKAGING_TEST_CAPEX,Advanced packaging / test capex,Semiconductor_Equipment,TER,Teradyne,US,SPY,DIRECT_PEER
+ADVANCED_PACKAGING_TEST_CAPEX,Advanced packaging / test capex,Semiconductor_Equipment,BESI.AS,BE Semiconductor Industries,EU,^STOXX,DIRECT_PEER
+ADVANCED_PACKAGING_TEST_CAPEX,Advanced packaging / test capex,Semiconductor_Equipment,6146.T,Disco,JP,^N225,RELATED_PEER
+DRAM_PRICING,Commodity DRAM pricing / bit demand,Memory,MU,Micron,US,SPY,DIRECT_PEER
+DRAM_PRICING,Commodity DRAM pricing / bit demand,Memory,000660.KS,SK Hynix,KR,^KS11,DIRECT_PEER
+DRAM_PRICING,Commodity DRAM pricing / bit demand,Memory,005930.KS,Samsung Electronics,KR,^KS11,DIRECT_PEER
+SPECIALTY_MEMORY_PRICING,Specialty DRAM / NOR / NAND pricing,Memory,MU,Micron,US,SPY,RELATED_PEER
+SPECIALTY_MEMORY_PRICING,Specialty DRAM / NOR / NAND pricing,Memory,005930.KS,Samsung Electronics,KR,^KS11,RELATED_PEER
+SPECIALTY_MEMORY_PRICING,Specialty DRAM / NOR / NAND pricing,Memory,SNDK,SanDisk,US,SPY,RELATED_PEER
+MEMORY_IC_CYCLE,Memory IC design demand / ASP cycle,Memory,MU,Micron,US,SPY,RELATED_PEER
+MEMORY_IC_CYCLE,Memory IC design demand / ASP cycle,Memory,000660.KS,SK Hynix,KR,^KS11,RELATED_PEER
+MEMORY_IC_CYCLE,Memory IC design demand / ASP cycle,Memory,005930.KS,Samsung Electronics,KR,^KS11,RELATED_PEER
+NAND_STORAGE_CYCLE,NAND / storage controller and module cycle,Memory,SNDK,SanDisk,US,SPY,DIRECT_PEER
+NAND_STORAGE_CYCLE,NAND / storage controller and module cycle,Memory,WDC,Western Digital,US,SPY,DIRECT_PEER
+NAND_STORAGE_CYCLE,NAND / storage controller and module cycle,Memory,005930.KS,Samsung Electronics,KR,^KS11,RELATED_PEER
+GRID_CAPEX,Grid modernization / transformer and cable capex,Power_Grid,GEV,GE Vernova,US,SPY,DIRECT_PEER
+GRID_CAPEX,Grid modernization / transformer and cable capex,Power_Grid,ETN,Eaton,US,SPY,DIRECT_PEER
+GRID_CAPEX,Grid modernization / transformer and cable capex,Power_Grid,HUBB,Hubbell,US,SPY,DIRECT_PEER
+GRID_CAPEX,Grid modernization / transformer and cable capex,Power_Grid,PWR,Quanta Services,US,SPY,RELATED_PEER
+GRID_CAPEX,Grid modernization / transformer and cable capex,Power_Grid,ABBN.SW,ABB,EU,^SSMI,DIRECT_PEER
+LEADING_EDGE_FOUNDRY_AI_DEMAND,Leading-edge foundry AI/HPC node demand,Foundry,TSM,TSMC ADR,US,SPY,DIRECT_PEER
+LEADING_EDGE_FOUNDRY_AI_DEMAND,Leading-edge foundry AI/HPC node demand,Foundry,005930.KS,Samsung Electronics,KR,^KS11,RELATED_PEER
+LEADING_EDGE_FOUNDRY_AI_DEMAND,Leading-edge foundry AI/HPC node demand,Foundry,INTC,Intel,US,SPY,RELATED_PEER
+MATURE_NODE_FOUNDRY_UTILIZATION,Mature-node foundry utilization / pricing,Foundry,GFS,GlobalFoundries,US,SPY,DIRECT_PEER
+MATURE_NODE_FOUNDRY_UTILIZATION,Mature-node foundry utilization / pricing,Foundry,0981.HK,SMIC,HK,^HSI,DIRECT_PEER
+MATURE_NODE_FOUNDRY_UTILIZATION,Mature-node foundry utilization / pricing,Foundry,1347.HK,Hua Hong Semiconductor,HK,^HSI,DIRECT_PEER
+CONTAINER_FREIGHT,Container freight / liner shipping cycle,Shipping,ZIM,ZIM,US,SPY,DIRECT_PEER
+CONTAINER_FREIGHT,Container freight / liner shipping cycle,Shipping,MATX,Matson,US,SPY,DIRECT_PEER
+CONTAINER_FREIGHT,Container freight / liner shipping cycle,Shipping,MAERSK-B.CO,Maersk,EU,^OMXC25,DIRECT_PEER
+CONTAINER_FREIGHT,Container freight / liner shipping cycle,Shipping,HLAG.DE,Hapag-Lloyd,EU,^STOXX,DIRECT_PEER
+CONTAINER_FREIGHT,Container freight / liner shipping cycle,Shipping,1919.HK,COSCO Shipping Holdings,HK,^HSI,DIRECT_PEER
+DRY_BULK_FREIGHT,Dry-bulk freight / commodity shipping cycle,Shipping,SBLK,Star Bulk,US,SPY,DIRECT_PEER
+DRY_BULK_FREIGHT,Dry-bulk freight / commodity shipping cycle,Shipping,9101.T,Nippon Yusen,JP,^N225,RELATED_PEER
+DRY_BULK_FREIGHT,Dry-bulk freight / commodity shipping cycle,Shipping,9104.T,Mitsui OSK Lines,JP,^N225,RELATED_PEER
+DRY_BULK_FREIGHT,Dry-bulk freight / commodity shipping cycle,Shipping,9107.T,Kawasaki Kisen,JP,^N225,RELATED_PEER
+FINANCIALS_RATE_CREDIT_CYCLE,Financials rate / credit / margin cycle,Financials,XLF,Financials ETF,US,SPY,MACRO_CONTEXT
+FINANCIALS_RATE_CREDIT_CYCLE,Financials rate / credit / margin cycle,Financials,JPM,JPMorgan,US,SPY,MACRO_CONTEXT
+FINANCIALS_RATE_CREDIT_CYCLE,Financials rate / credit / margin cycle,Financials,BAC,Bank of America,US,SPY,MACRO_CONTEXT
+FINANCIALS_RATE_CREDIT_CYCLE,Financials rate / credit / margin cycle,Financials,GS,Goldman Sachs,US,SPY,MACRO_CONTEXT
