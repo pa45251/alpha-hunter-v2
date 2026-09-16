@@ -1,0 +1,34 @@
+driver_id,driver_label,global_theme,ticker,name,region,benchmark,peer_role
+MOBILE_OPTICS_UPGRADE,Mobile camera optics upgrade,Optics,2382.HK,Sunny Optical,HK,^HSI,DIRECT_PEER
+MOBILE_OPTICS_UPGRADE,Mobile camera optics upgrade,Optics,011070.KS,LG Innotek,KR,^KS11,DIRECT_PEER
+MOBILE_OPTICS_UPGRADE,Mobile camera optics upgrade,Optics,2018.HK,AAC Technologies,HK,^HSI,RELATED_PEER
+AUTOMOTIVE_VISION_CONTENT,Automotive camera / sensing optical content,Optics,2382.HK,Sunny Optical,HK,^HSI,DIRECT_PEER
+AUTOMOTIVE_VISION_CONTENT,Automotive camera / sensing optical content,Optics,011070.KS,LG Innotek,KR,^KS11,RELATED_PEER
+XR_AI_GLASSES_OPTICS,XR / AI-glasses optics demand,Optics,002241.SZ,Goertek,CN,000300.SS,DIRECT_PEER
+XR_AI_GLASSES_OPTICS,XR / AI-glasses optics demand,Optics,2018.HK,AAC Technologies,HK,^HSI,RELATED_PEER
+XR_AI_GLASSES_OPTICS,XR / AI-glasses optics demand,Optics,2382.HK,Sunny Optical,HK,^HSI,RELATED_PEER
+DIODE_RECTIFIER_CYCLE,Discrete diode / rectifier cycle,Power_Discrete,DIOD,Diodes Incorporated,US,SPY,DIRECT_PEER
+DIODE_RECTIFIER_CYCLE,Discrete diode / rectifier cycle,Power_Discrete,VSH,Vishay Intertechnology,US,SPY,DIRECT_PEER
+DIODE_RECTIFIER_CYCLE,Discrete diode / rectifier cycle,Power_Discrete,ON,onsemi,US,SPY,RELATED_PEER
+POWER_DISCRETE_CYCLE,Power discrete / MOSFET / SiC cycle,Power_Discrete,ON,onsemi,US,SPY,DIRECT_PEER
+POWER_DISCRETE_CYCLE,Power discrete / MOSFET / SiC cycle,Power_Discrete,IFX.DE,Infineon Technologies,EU,^STOXX,DIRECT_PEER
+POWER_DISCRETE_CYCLE,Power discrete / MOSFET / SiC cycle,Power_Discrete,STMPA.PA,STMicroelectronics,EU,^STOXX,DIRECT_PEER
+POWER_DISCRETE_CYCLE,Power discrete / MOSFET / SiC cycle,Power_Discrete,VSH,Vishay Intertechnology,US,SPY,RELATED_PEER
+HIGH_LAYER_PCB_DEMAND,High-layer / high-speed PCB demand,PCB_Interconnect,TTMI,TTM Technologies,US,SPY,DIRECT_PEER
+HIGH_LAYER_PCB_DEMAND,High-layer / high-speed PCB demand,PCB_Interconnect,4062.T,IBIDEN,JP,^N225,RELATED_PEER
+HIGH_LAYER_PCB_DEMAND,High-layer / high-speed PCB demand,PCB_Interconnect,6967.T,Shinko Electric Industries,JP,^N225,RELATED_PEER
+PACKAGE_SUBSTRATE_DEMAND,IC package substrate demand,PCB_Interconnect,4062.T,IBIDEN,JP,^N225,DIRECT_PEER
+PACKAGE_SUBSTRATE_DEMAND,IC package substrate demand,PCB_Interconnect,6967.T,Shinko Electric Industries,JP,^N225,DIRECT_PEER
+PACKAGE_SUBSTRATE_DEMAND,IC package substrate demand,PCB_Interconnect,TTMI,TTM Technologies,US,SPY,RELATED_PEER
+CCL_LOW_LOSS_MATERIAL_DEMAND,High-speed / low-loss CCL material demand,PCB_Interconnect,TTMI,TTM Technologies,US,SPY,DOWNSTREAM_PEER
+CCL_LOW_LOSS_MATERIAL_DEMAND,High-speed / low-loss CCL material demand,PCB_Interconnect,4062.T,IBIDEN,JP,^N225,DOWNSTREAM_PEER
+CCL_LOW_LOSS_MATERIAL_DEMAND,High-speed / low-loss CCL material demand,PCB_Interconnect,6967.T,Shinko Electric Industries,JP,^N225,DOWNSTREAM_PEER
+HIGH_SPEED_CONNECTOR_DEMAND,High-speed data-center / networking connector demand,Connector,APH,Amphenol,US,SPY,DIRECT_PEER
+HIGH_SPEED_CONNECTOR_DEMAND,High-speed data-center / networking connector demand,Connector,TEL,TE Connectivity,US,SPY,DIRECT_PEER
+HIGH_SPEED_CONNECTOR_DEMAND,High-speed data-center / networking connector demand,Connector,6806.T,Hirose Electric,JP,^N225,DIRECT_PEER
+MLCC_DEMAND_PRICING,MLCC demand / pricing cycle,MLCC,6981.T,Murata,JP,^N225,DIRECT_PEER
+MLCC_DEMAND_PRICING,MLCC demand / pricing cycle,MLCC,6976.T,Taiyo Yuden,JP,^N225,DIRECT_PEER
+MLCC_DEMAND_PRICING,MLCC demand / pricing cycle,MLCC,009150.KS,Samsung Electro-Mechanics,KR,^KS11,DIRECT_PEER
+PASSIVE_CAPACITOR_CYCLE,Non-MLCC capacitor demand / utilization cycle,Passive_Components,6996.T,Nichicon,JP,^N225,DIRECT_PEER
+PASSIVE_CAPACITOR_CYCLE,Non-MLCC capacitor demand / utilization cycle,Passive_Components,6997.T,Nippon Chemi-Con,JP,^N225,DIRECT_PEER
+PASSIVE_CAPACITOR_CYCLE,Non-MLCC capacitor demand / utilization cycle,Passive_Components,VSH,Vishay Intertechnology,US,SPY,RELATED_PEER
