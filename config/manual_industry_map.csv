@@ -37,3 +37,73 @@ code,name,economic_subindustry,primary_driver_id,secondary_driver_ids,classifica
 2472,立隆電,Capacitor,PASSIVE_CAPACITOR_CYCLE,,HIGH,Aluminum electrolytic capacitor exposure.
 6449,鈺邦,Capacitor,PASSIVE_CAPACITOR_CYCLE,,HIGH,Capacitor exposure; end-market mix should be validated.
 8042,金山電,Capacitor,PASSIVE_CAPACITOR_CYCLE,,HIGH,Aluminum electrolytic capacitor exposure.
+3029,零壹,Cybersecurity_Distribution,ENTERPRISE_CYBER_SPEND,,MEDIUM,Security distribution/channel exposure; global cyber strength is context and vendor mix/order evidence remains mandatory.
+6690,安碁資訊,Cybersecurity_MSSP,ENTERPRISE_CYBER_SPEND,,HIGH,Managed security and cybersecurity services; verify recurring demand and customer/project mix.
+2480,敦陽科,Enterprise_IT_Security,ENTERPRISE_CYBER_SPEND,CLOUD_MSP_ENTERPRISE_SPEND,MEDIUM,Enterprise IT/security integration; security contribution and project mix require validation.
+6140,訊達,Enterprise_IT_Channel,ENTERPRISE_CYBER_SPEND,CLOUD_MSP_ENTERPRISE_SPEND,MEDIUM,Enterprise IT/security channel; vendor mix and security revenue contribution require validation.
+6214,精誠,Enterprise_IT_Integration,CLOUD_MSP_ENTERPRISE_SPEND,ENTERPRISE_CYBER_SPEND,MEDIUM,Enterprise IT/cloud integration with security exposure; segment mix must be checked manually.
+6689,伊雲谷,Cloud_MSP,CLOUD_MSP_ENTERPRISE_SPEND,,HIGH,Cloud MSP / migration and managed cloud exposure; verify hyperscaler demand and recurring service mix.
+6811,宏碁資訊,Cloud_MSP,CLOUD_MSP_ENTERPRISE_SPEND,,HIGH,Cloud and enterprise IT service exposure; verify cloud project and managed-service contribution.
+6112,邁達特,Cloud_IT_Distribution,CLOUD_MSP_ENTERPRISE_SPEND,,MEDIUM,Cloud/enterprise IT distribution and services; vendor and solution mix require validation.
+6870,騰雲,Cloud_SaaS_Digital,CLOUD_MSP_ENTERPRISE_SPEND,,MEDIUM,Cloud/digital-service exposure; exact SaaS/MSP transmission requires company-level validation.
+2345,智邦,AI_Network_Switch,AI_NETWORKING_UPGRADE,,HIGH,AI cluster high-speed switch exposure; monitor 800G/1.6T demand and hyperscaler orders.
+6285,啟碁,Networking_Equipment,AI_NETWORKING_UPGRADE,,MEDIUM,Networking equipment exposure; exact AI/data-center contribution requires validation.
+5388,中磊,Networking_Equipment,AI_NETWORKING_UPGRADE,,MEDIUM,Network equipment demand exposure; product and customer mix require validation.
+3596,智易,Networking_Equipment,AI_NETWORKING_UPGRADE,,MEDIUM,Networking equipment exposure; distinguish broadband/consumer from AI networking.
+3704,合勤控,Networking_Equipment,AI_NETWORKING_UPGRADE,,MEDIUM,Enterprise/telecom networking exposure; AI data-center linkage is second order.
+6416,瑞祺電通,Network_Appliance,AI_NETWORKING_UPGRADE,,MEDIUM,Network appliance exposure; AI/data-center transmission must be verified before using global networking strength.
+2382,廣達,AI_Server_ODM,AI_SERVER_SHIPMENTS,,HIGH,AI server ODM exposure; shipment backlog and customer mix are primary validation.
+3231,緯創,AI_Server_ODM,AI_SERVER_SHIPMENTS,,HIGH,AI server ODM exposure; shipment and customer program evidence required.
+6669,緯穎,Hyperscale_AI_Server,AI_SERVER_SHIPMENTS,,HIGH,Hyperscale AI server exposure; hyperscaler capex and backlog are direct context.
+2317,鴻海,AI_Server_Manufacturing,AI_SERVER_SHIPMENTS,,HIGH,AI server manufacturing/rack integration exposure; verify AI server revenue mix.
+2356,英業達,AI_Server_ODM,AI_SERVER_SHIPMENTS,,MEDIUM,Server ODM exposure; AI server mix and order evidence required.
+2376,技嘉,AI_Server_Systems,AI_SERVER_RACK_BUILD,AI_SERVER_SHIPMENTS,MEDIUM,AI/enterprise server systems; rack/server mix and channel demand require validation.
+3693,營邦,AI_Server_Chassis,AI_SERVER_RACK_BUILD,AI_SERVER_SHIPMENTS,MEDIUM,Server chassis/rack exposure; AI customer and product evidence required.
+3017,奇鋐,AI_Cooling,DATACENTER_COOLING_INFRA,AI_SERVER_THERMAL_DENSITY,HIGH,AI server thermal and data-center cooling exposure; liquid-cooling mix and orders are primary evidence.
+3324,雙鴻,AI_Cooling,DATACENTER_COOLING_INFRA,AI_SERVER_THERMAL_DENSITY,HIGH,AI server cooling exposure; liquid-cooling/server revenue evidence required.
+6230,尼得科超眾,Server_Cooling,DATACENTER_COOLING_INFRA,AI_SERVER_THERMAL_DENSITY,MEDIUM,Server thermal-management exposure; exact AI cooling mix requires validation.
+8996,高力,Liquid_Cooling_HeatExchange,DATACENTER_COOLING_INFRA,AI_SERVER_THERMAL_DENSITY,HIGH,Data-center heat-exchange/liquid-cooling exposure; order and customer evidence required.
+2308,台達電,Datacenter_Power,DATACENTER_POWER_INFRA,GRID_CAPEX,HIGH,Data-center power and thermal infrastructure exposure; data-center revenue/order evidence required.
+6409,旭隼,UPS_Power,DATACENTER_POWER_INFRA,,HIGH,UPS and power-continuity exposure; data-center/customer mix requires validation.
+3131,弘塑,Semicap_Wet_Process,WAFER_FAB_EQUIPMENT_CAPEX,ADVANCED_PACKAGING_TEST_CAPEX,HIGH,Semicap wet-process/advanced packaging exposure; order backlog and customer capex required.
+3583,辛耘,Semicap_Equipment,WAFER_FAB_EQUIPMENT_CAPEX,ADVANCED_PACKAGING_TEST_CAPEX,HIGH,Foundry and advanced-packaging equipment exposure; order backlog required.
+6187,萬潤,Advanced_Packaging_Equipment,WAFER_FAB_EQUIPMENT_CAPEX,ADVANCED_PACKAGING_TEST_CAPEX,HIGH,Advanced packaging equipment exposure; AI/HBM packaging orders are key.
+6640,均華,Advanced_Packaging_Equipment,ADVANCED_PACKAGING_TEST_CAPEX,,HIGH,Advanced packaging equipment exposure; customer orders and packaging mix required.
+6223,旺矽,Probe_Test,ADVANCED_PACKAGING_TEST_CAPEX,,HIGH,Probe/test exposure tied to advanced AI/HPC chips; probe-card orders are key.
+6510,精測,Test_Interface,ADVANCED_PACKAGING_TEST_CAPEX,,HIGH,Advanced chip test-interface exposure; AI/HPC test demand and customer mix required.
+3680,家登,Semicap_Consumables,WAFER_FAB_EQUIPMENT_CAPEX,,HIGH,Advanced-node/EUV fab consumables exposure; qualification and fab capacity are key.
+2408,南亞科,Commodity_DRAM,DRAM_PRICING,,HIGH,Commodity DRAM manufacturer; ASP bit-demand and inventory cycle are direct drivers.
+2344,華邦電,Specialty_Memory,SPECIALTY_MEMORY_PRICING,,HIGH,Specialty DRAM/NOR exposure; ASP utilization and inventory required.
+2337,旺宏,NOR_NAND_Memory,SPECIALTY_MEMORY_PRICING,NAND_STORAGE_CYCLE,HIGH,NOR/NAND memory exposure; pricing utilization and inventory are key.
+3006,晶豪科,Memory_IC_Design,MEMORY_IC_CYCLE,,HIGH,Memory IC design exposure; product ASP and demand cycle required.
+5351,鈺創,Memory_IC_Design,MEMORY_IC_CYCLE,,MEDIUM,Memory IC cycle exposure; revenue and ASP evidence required.
+8299,群聯,NAND_Controller,NAND_STORAGE_CYCLE,,HIGH,NAND controller/storage exposure; NAND pricing and controller shipment demand are key.
+3260,威剛,Memory_Module,NAND_STORAGE_CYCLE,DRAM_PRICING,HIGH,DRAM/NAND module exposure; inventory gains ASP and end demand require validation.
+4967,十銓,Memory_Module,NAND_STORAGE_CYCLE,DRAM_PRICING,HIGH,Memory module exposure; inventory ASP and demand cycle are key.
+5289,宜鼎,Industrial_Memory,NAND_STORAGE_CYCLE,,HIGH,Industrial memory/storage exposure; industrial demand and memory ASP required.
+1519,華城,Grid_Transformer,GRID_CAPEX,DATACENTER_POWER_INFRA,HIGH,Transformer/substation exposure to grid capex; backlog and project timing are key.
+1513,中興電,Grid_Equipment,GRID_CAPEX,,HIGH,Grid/substation equipment exposure; backlog and utility capex are key.
+1503,士電,Grid_Equipment,GRID_CAPEX,,HIGH,Transformer/electrical equipment exposure; grid order backlog required.
+1609,大亞,Grid_Cable,GRID_CAPEX,,HIGH,Physical power-cable/grid buildout exposure; copper price alone is not confirmation.
+1608,華榮,Grid_Cable,GRID_CAPEX,,HIGH,Physical power-cable/grid buildout exposure; cable orders and grid projects required.
+2330,台積電,Leading_Edge_Foundry,LEADING_EDGE_FOUNDRY_AI_DEMAND,,HIGH,Leading-edge foundry AI/HPC exposure; advanced-node utilization and capacity are direct drivers.
+2303,聯電,Mature_Node_Foundry,MATURE_NODE_FOUNDRY_UTILIZATION,,HIGH,Mature-node foundry exposure; utilization pricing and customer inventory are direct drivers.
+5347,世界,Mature_Specialty_Foundry,MATURE_NODE_FOUNDRY_UTILIZATION,,HIGH,Mature/specialty foundry exposure; utilization and specialty demand required.
+6770,力積電,Mature_Memory_Foundry,MATURE_NODE_FOUNDRY_UTILIZATION,SPECIALTY_MEMORY_PRICING,HIGH,Mature-node and memory-foundry exposure; utilization pricing and memory mix required.
+2603,長榮,Container_Shipping,CONTAINER_FREIGHT,,HIGH,Container freight-rate and capacity cycle; freight/load-factor/capacity are direct drivers.
+2609,陽明,Container_Shipping,CONTAINER_FREIGHT,,HIGH,Container freight-rate and capacity cycle; freight/load-factor/capacity are direct drivers.
+2615,萬海,Container_Shipping,CONTAINER_FREIGHT,,HIGH,Container freight-rate and capacity cycle; route mix and freight rates are key.
+2605,新興,Dry_Bulk_Shipping,DRY_BULK_FREIGHT,,HIGH,Dry-bulk freight and vessel-supply cycle; BDI/Capesize/Panamax context required.
+2606,裕民,Dry_Bulk_Shipping,DRY_BULK_FREIGHT,,HIGH,Dry-bulk freight cycle; charter rates fleet supply and commodity volumes are key.
+2617,台航,Dry_Bulk_Shipping,DRY_BULK_FREIGHT,,HIGH,Dry-bulk freight cycle; charter rates and fleet supply are key.
+2637,慧洋-KY,Dry_Bulk_Shipping,DRY_BULK_FREIGHT,,HIGH,Dry-bulk freight cycle; charter rates fleet supply and vessel mix are key.
+2881,富邦金,Financial_Holding,FINANCIALS_RATE_CREDIT_CYCLE,,MEDIUM,Global financials are macro context only; Taiwan rates credit investment income and insurance mix remain mandatory.
+2882,國泰金,Financial_Holding,FINANCIALS_RATE_CREDIT_CYCLE,,MEDIUM,Global financials are macro context only; Taiwan rates credit investment income and insurance mix remain mandatory.
+2891,中信金,Bank_Financial_Holding,FINANCIALS_RATE_CREDIT_CYCLE,,MEDIUM,Taiwan NIM credit loan growth and fee income dominate; global banks are contextual peers only.
+2886,兆豐金,Bank_Financial_Holding,FINANCIALS_RATE_CREDIT_CYCLE,,MEDIUM,Taiwan NIM credit loan growth and fee income dominate; global banks are contextual peers only.
+2801,彰銀,Bank,FINANCIALS_RATE_CREDIT_CYCLE,,MEDIUM,Taiwan bank NIM credit quality and loan growth dominate; global bank strength is context only.
+2890,永豐金,Bank_Financial_Holding,FINANCIALS_RATE_CREDIT_CYCLE,,MEDIUM,Taiwan rates NIM credit and fee-income mix require local validation.
+2880,華南金,Bank_Financial_Holding,FINANCIALS_RATE_CREDIT_CYCLE,,MEDIUM,Taiwan bank earnings cycle requires local rate/NIM/credit validation.
+2884,玉山金,Bank_Financial_Holding,FINANCIALS_RATE_CREDIT_CYCLE,,MEDIUM,Taiwan NIM loan growth and fee-income cycle dominate; global peers are context only.
+2892,第一金,Bank_Financial_Holding,FINANCIALS_RATE_CREDIT_CYCLE,,MEDIUM,Taiwan NIM credit and loan-growth conditions require local validation.
+5880,合庫金,Bank_Financial_Holding,FINANCIALS_RATE_CREDIT_CYCLE,,MEDIUM,Taiwan NIM credit and loan-growth conditions require local validation.
