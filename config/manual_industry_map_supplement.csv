@@ -1,1 +1,119 @@
-PLACEHOLDER
+code,name,economic_subindustry,primary_driver_id,secondary_driver_ids,classification_confidence,notes
+7799,禾榮科,BNCT_Radiotherapy,BNCT_RADIOTHERAPY_ADOPTION,,HIGH,Accelerator-based BNCT cancer radiotherapy; treatment-center adoption and clinical utilization matter.
+6706,惠特,Optoelectronic_Semicap_Test,OPTO_TEST_EQUIPMENT_CYCLE,ADVANCED_PACKAGING_TEST_CAPEX,HIGH,LED/MicroLED/VCSEL/silicon-photonics and semiconductor test equipment; use equipment capex context.
+2254,巨鎧精密-創,Automotive_Aftermarket_Lighting,AUTO_LIGHTING_AFTERMARKET,,HIGH,Aftermarket LED automotive head/tail lamps; North American aftermarket demand and lighting peers are direct context.
+6957,裕慶-KY,Commercial_Fixtures_Smart_Bed,RETAIL_FIXTURE_SMART_BED_DEMAND,,MEDIUM,Commercial display fixtures plus smart/electric-bed mechanisms; peer basket is mixed demand context.
+3311,閎暉,Precision_HMI_Auto_Components,HMI_SENSOR_COMPONENTS,,MEDIUM,Precision HMI and automotive electronic components; use component peers as context and verify customer mix.
+4915,致伸,EdgeAI_Multisensor_ODM,EDGE_AI_SENSOR_ODM,,MEDIUM,Vision/acoustics/HMI and edge-AI ODM; global ODM/sensor peers are context and product mix is mandatory.
+1709,和益,Petrochemical_Intermediates,SPECIALTY_CHEMICALS_CYCLE,,HIGH,Surfactant/petrochemical intermediates; specialty-chemical spreads and end demand are the relevant global context.
+3094,聯傑,Ethernet_Controller_IC,CONNECTIVITY_INTERFACE_IC_CYCLE,,HIGH,Ethernet controller/interface IC exposure; use connectivity semiconductor peers rather than broad SOX.
+2412,中華電,Telecom_Operator,TELECOM_OPERATOR_ARPU_5G,,MEDIUM,Telecom operator; ARPU subscriber mix enterprise/cloud and capex are primary local checks.
+3045,台灣大,Telecom_Operator,TELECOM_OPERATOR_ARPU_5G,,MEDIUM,Telecom operator; ARPU subscriber mix and service monetization dominate.
+6168,宏齊,LED_Packaging,LED_COMPONENT_CYCLE,,HIGH,LED package/component exposure; global LED component cycle is direct context.
+2471,資通,Enterprise_Software_SI,ENTERPRISE_IT_SPEND,,MEDIUM,Enterprise software and system integration; overseas IT-services peers are demand context only.
+2453,凌群,Enterprise_IT_SI,ENTERPRISE_IT_SPEND,,MEDIUM,Enterprise IT/system integration; local project backlog and government/enterprise spending remain primary.
+3066,李洲,LED_Components_EMS,LED_COMPONENT_CYCLE,,HIGH,LED display/components/lighting plus EMS; LED cycle is the primary international context.
+2340,台亞,LED_Sensor_Semiconductor,LED_COMPONENT_CYCLE,,HIGH,LED epitaxy/chip and sensing semiconductor exposure; monitor global LED/opto component peers.
+6227,茂綸,Semiconductor_Distribution,SEMICONDUCTOR_DISTRIBUTION_CYCLE,,MEDIUM,Semiconductor distributor; vendor inventory/channel cycle is the main transmission.
+9933,中鼎,Global_EPC_Engineering,ENGINEERING_EPC_CAPEX,,HIGH,Global EPC/engineering contractor; energy/infrastructure project capex and backlog are key.
+6133,金橋,Cable_Harness_Interconnect,CABLE_HARNESS_INTERCONNECT,,MEDIUM,Cable/harness interconnect exposure; end-market and customer mix require validation.
+2427,三商電,Enterprise_IT_SI,ENTERPRISE_IT_SPEND,,MEDIUM,Enterprise IT/payment/system integration; local project mix remains primary.
+6199,天品,Funeral_Services_Holding,FUNERAL_SERVICES_CYCLE,DATACENTER_COOLING_INFRA,LOW,Diversified holding with funeral-related exposure and other businesses; overseas funeral peers are context only.
+3580,友威科,PVD_Etch_Equipment,WAFER_FAB_EQUIPMENT_CAPEX,,HIGH,PVD/etch and semiconductor equipment exposure; fab-equipment capex and orders are direct context.
+2905,三商,Retail_Restaurant_Holding,RESTAURANT_RETAIL_CONSUMER,,LOW,Diversified retail/restaurant holding; overseas consumer peers are only broad demand context.
+2820,華票,Bills_Finance,SPECIALTY_FINANCE_RATE_CYCLE,,MEDIUM,Bills-finance business; Taiwan rates funding spreads and bond conditions dominate.
+7765,中華資安,Cybersecurity_MSSP,ENTERPRISE_CYBER_SPEND,,HIGH,Cybersecurity/MSSP exposure; enterprise security spending is the direct research lens.
+5876,上海商銀,Bank,FINANCIALS_RATE_CREDIT_CYCLE,,MEDIUM,Taiwan bank; global banks are macro context only while local NIM/credit dominate.
+1727,中華化,Electronic_Chemicals,SEMICONDUCTOR_MATERIALS_CAPEX,,HIGH,Electronic-grade cleaning/etching chemicals; semiconductor materials/fab demand is primary.
+2399,映泰,PC_Gaming_Hardware,PC_DEVICE_CYCLE,,MEDIUM,Motherboard/PC/gaming hardware exposure; global PC device cycle is primary context.
+2439,美律,Acoustic_Components,ACOUSTIC_COMPONENTS_DEMAND,,HIGH,Acoustic/audio components and sensors; global acoustic component peers are direct context.
+3024,憶聲,Automotive_Electronics_Brand,AUTOMOTIVE_ELECTRONICS_CONTENT,,LOW,Automotive electronics plus brand/asset businesses; auto electronics peers are context only.
+2897,王道銀行,Bank,FINANCIALS_RATE_CREDIT_CYCLE,,MEDIUM,Taiwan bank; global financials are macro context only.
+6861,睿生光電,Xray_FlatPanel_Detector,MEDTECH_IMAGING_DIAGNOSTICS,,HIGH,X-ray flat-panel detector components/modules; medical imaging demand is direct context.
+2342,茂矽,Power_Discrete_Foundry,POWER_DISCRETE_CYCLE,,HIGH,Power-discrete wafer/foundry exposure including MOSFET/IGBT/Schottky.
+3176,基亞,Oncology_Biotech,BIOTECH_CLINICAL_RISK,,LOW,Oncology/new-drug/cell-therapy exposure; biotech basket is risk context and company clinical evidence dominates.
+6491,晶碩,Contact_Lenses,CONTACT_LENS_DEMAND,,HIGH,Contact-lens manufacturer; global vision-care/contact-lens peers are direct context.
+7714,創泓科技,Cybersecurity_Channel,ENTERPRISE_CYBER_SPEND,,MEDIUM,Cybersecurity solutions/channel exposure; vendor mix and project pipeline require validation.
+6204,艾華,HMI_Sensors_Controls,HMI_SENSOR_COMPONENTS,,HIGH,Flexible HMI sensors/switches/encoders; precision input-component demand is the right lens.
+4768,晶呈科技,Semiconductor_Specialty_Materials,SEMICONDUCTOR_MATERIALS_CAPEX,,HIGH,Semiconductor specialty materials exposure; fab utilization and materials capex are primary.
+2838,聯邦銀,Bank,FINANCIALS_RATE_CREDIT_CYCLE,,MEDIUM,Taiwan bank; global banks are macro context only.
+6909,創控,Process_Environmental_Monitoring,SEMICONDUCTOR_PROCESS_CONTROL,,HIGH,Semiconductor VOC/process/cleanroom monitoring; process-control instrumentation peers are relevant.
+4904,遠傳,Telecom_Operator,TELECOM_OPERATOR_ARPU_5G,,MEDIUM,Telecom operator; ARPU enterprise ICT and service mix dominate.
+3147,大綜,Enterprise_IT_SI,ENTERPRISE_IT_SPEND,,MEDIUM,Enterprise IT/system integration; overseas IT-services peers are spending context only.
+3443,創意,ASIC_Design_Service,ASIC_DESIGN_SERVICES,,HIGH,ASIC design-service/custom-silicon exposure; EDA/custom-silicon ecosystem demand is relevant.
+9917,中保科,Physical_Security_Services,PHYSICAL_SECURITY_SERVICES,,HIGH,Physical security/monitoring services; global alarm/security-service peers are direct context.
+6742,澤米,Optical_Coating_AdvancedGlass,PRECISION_OPTICS_DEMAND,,HIGH,Optical thin-film/coating and advanced-glass exposure; optics demand is the main international lens.
+2889,國票金,Brokerage_Financial_Holding,CAPITAL_MARKETS_ACTIVITY,FINANCIALS_RATE_CREDIT_CYCLE,MEDIUM,Brokerage-heavy financial holding; trading/capital-markets activity is more relevant than bank breadth.
+2883,凱基金,Financial_Holding,FINANCIALS_RATE_CREDIT_CYCLE,CAPITAL_MARKETS_ACTIVITY,MEDIUM,Financial holding with banking/securities/insurance mix; local segment mix remains mandatory.
+2887,台新新光金,Financial_Holding,FINANCIALS_RATE_CREDIT_CYCLE,,MEDIUM,Financial holding; Taiwan rate/credit/insurance mix dominates.
+4961,天鈺,Display_Driver_PMIC,DISPLAY_DRIVER_IC_CYCLE,,HIGH,Display-driver and power-management IC exposure; display electronics cycle is primary.
+2413,環科,Power_IoT_Radar_ODM,DIVERSIFIED_ELECTRONICS_ODM,,MEDIUM,Diversified electronics ODM with IoT/radar/power products; broad ODM peers are context only.
+6651,全宇昕,Power_MOSFET,POWER_DISCRETE_CYCLE,,HIGH,Power MOSFET/transistor/diode exposure; use power-discrete cycle.
+3518,柏騰,AdvancedPackaging_PVD_SiC,ADVANCED_PACKAGING_TEST_CAPEX,POWER_DISCRETE_CYCLE,MEDIUM,PVD thin film/advanced-packaging seed-layer and SiC exposure; packaging capex is primary.
+3034,聯詠,Display_Driver_IC,DISPLAY_DRIVER_IC_CYCLE,,HIGH,Display-driver IC and SoC exposure; global display IC peers are direct context.
+6894,衛司特,ElectronicWaste_Recovery,ELECTRONICS_WASTE_RECOVERY,HIGH_LAYER_PCB_DEMAND,HIGH,Semiconductor/PCB process waste-liquid recovery and copper recycling; environmental-process peers are context.
+5209,新鼎,Industrial_Automation_EPC,INDUSTRIAL_AUTOMATION_CAPEX,,HIGH,Industrial automation/control and engineering services; automation capex is primary.
+7712,博盛半導體,Power_Semiconductor_Design,POWER_DISCRETE_CYCLE,,HIGH,Fabless MOSFET/IGBT/SiC/GaN power semiconductor exposure.
+5426,振發,Metal_Enclosure_Chassis,ELECTRONICS_CHASSIS_DEMAND,,MEDIUM,Metal chassis/enclosure exposure; EMS/mechanical-demand peers are context.
+6021,美好證,Brokerage,CAPITAL_MARKETS_ACTIVITY,,HIGH,Securities brokerage; trading volume and capital-market activity are direct drivers.
+4736,泰博,Home_Diagnostics_Medtech,MEDTECH_IMAGING_DIAGNOSTICS,,HIGH,Glucose/BP/oximeter/ECG/HbA1c diagnostics; medtech diagnostics peers are direct context.
+4119,旭富,Pharma_API,SPECIALTY_PHARMA_CYCLE,,HIGH,Pharmaceutical API exposure; specialty-pharma/generics commercial cycle is relevant.
+4956,光鋐,LED_Epi_Chip,LED_COMPONENT_CYCLE,,HIGH,LED epitaxy/chip/module exposure; use global LED component cycle.
+9941,裕融,Auto_Consumer_Finance,AUTO_FINANCE_CREDIT_CYCLE,,HIGH,Auto/consumer finance exposure; funding costs credit losses and auto finance demand are key.
+4105,東洋,Specialty_Pharma_Oncology,SPECIALTY_PHARMA_CYCLE,,MEDIUM,Specialty pharma/oncology commercial exposure; product-specific earnings evidence remains mandatory.
+2474,可成,Precision_Mechanical_Casing,ELECTRONICS_CHASSIS_DEMAND,,MEDIUM,Precision mechanical casing/components; end-market mix and capital allocation reduce direct peer purity.
+2812,台中銀,Bank,FINANCIALS_RATE_CREDIT_CYCLE,,MEDIUM,Taiwan bank; global banks are macro context only.
+4714,永捷,Polyurethane_Specialty_Chem,SPECIALTY_CHEMICALS_CYCLE,,HIGH,Polyurethane/specialty chemicals; global specialty-chemical peers are relevant.
+8215,明基材,Display_Optical_Film,DISPLAY_OPTICAL_FILM,,HIGH,Polarizer/functional films/OCA/smart-film exposure; display-material peers are direct context.
+2353,宏碁,PC_Devices,PC_DEVICE_CYCLE,,HIGH,PC/device brand exposure; global PC shipment cycle is primary.
+7728,光焱科技,Optoelectronic_Test_Instrumentation,OPTO_TEST_EQUIPMENT_CYCLE,,HIGH,Solar-simulator/optoelectronic/wafer-level test instrumentation; test-equipment peers are relevant.
+4540,全球傳動,Industrial_Motion_Control,INDUSTRIAL_AUTOMATION_CAPEX,,HIGH,Linear motion/transmission components; industrial automation capex is the direct demand lens.
+5434,崇越,Semiconductor_Materials_Services,SEMICONDUCTOR_MATERIALS_CAPEX,WAFER_FAB_EQUIPMENT_CAPEX,HIGH,Semiconductor materials/equipment/services; fab materials demand and capex are key.
+7749,意騰-KY,EdgeAI_IP_ASIC,EDGE_AI_IP_ASIC,,HIGH,Edge-AI algorithm/IP and Edge ASIC exposure; global edge-AI IP ecosystem is relevant.
+5269,祥碩,HighSpeed_Interface_IC,CONNECTIVITY_INTERFACE_IC_CYCLE,,HIGH,High-speed interface/controller IC exposure; connectivity-interface semiconductor peers are direct context.
+2347,聯強,IT_Distribution,IT_DISTRIBUTION_CYCLE,,HIGH,Global IT/electronics distribution; channel inventory and enterprise/device demand are primary.
+4977,眾達-KY,Optical_Transceiver,AI_NETWORKING_UPGRADE,,HIGH,Optical transceiver exposure; AI-networking/optical demand is the main global context.
+6147,頎邦,DisplayDriver_OSAT,DISPLAY_DRIVER_IC_CYCLE,,HIGH,Display-driver/bumper OSAT exposure; panel/display-driver cycle is primary.
+3455,由田,AOI_MachineVision_Equipment,VISION_INSPECTION_EQUIPMENT,ADVANCED_PACKAGING_TEST_CAPEX,HIGH,AOI/machine-vision equipment for IC substrate/display/PCB; inspection capex is direct context.
+3031,佰鴻,LED_Packaging,LED_COMPONENT_CYCLE,,HIGH,LED package/component exposure; use global LED component cycle.
+2206,三陽工業,TwoWheeler_Auto,TWO_WHEELER_AUTO_CYCLE,,HIGH,Two-wheeler/auto OEM exposure; regional motorcycle/auto demand is primary.
+2379,瑞昱,Connectivity_Audio_IC,CONNECTIVITY_INTERFACE_IC_CYCLE,,HIGH,Connectivity/network/audio IC exposure; use connectivity semiconductor peer basket.
+8478,東哥遊艇,Luxury_Yachts,LUXURY_BOAT_CYCLE,,HIGH,Luxury yacht manufacturer; global marine/luxury-boat demand is direct context.
+2395,研華,Industrial_Edge_Computing,INDUSTRIAL_EDGE_COMPUTING,,HIGH,Industrial edge/embedded computing; global industrial-computing demand is direct context.
+4951,精拓科,Industrial_IO_Controller_IC,CONNECTIVITY_INTERFACE_IC_CYCLE,,HIGH,Super-I/O/bridge/UART/RS485/CAN controller ICs; industrial connectivity IC peers are relevant.
+5285,界霖,Leadframe_PowerPackage,POWER_DISCRETE_CYCLE,,HIGH,Leadframes for power transistor/diode/rectifier/IPM/IC; upstream power-discrete cycle is primary.
+8050,廣積,Industrial_Edge_Computing,INDUSTRIAL_EDGE_COMPUTING,,HIGH,Industrial/embedded edge computing exposure; use industrial computing peers.
+1314,中石化,Caprolactam_Nylon,SPECIALTY_CHEMICALS_CYCLE,,HIGH,Caprolactam/nylon/petrochemical exposure; chemical spreads and demand cycle are primary.
+2633,台灣高鐵,Passenger_Rail,PASSENGER_RAIL_DEMAND,,HIGH,Passenger rail operator; ridership fare and travel demand are direct drivers.
+5530,龍巖,Funeral_Services,FUNERAL_SERVICES_CYCLE,,HIGH,Funeral/death-care services; global death-care service peers are direct business-model context.
+8464,億豐,Home_Furnishings_WindowCoverings,HOME_FURNISHINGS_CYCLE,,HIGH,Window coverings/home furnishings; housing/remodeling and furnishing demand are primary.
+2546,根基,Construction_Engineering,ENGINEERING_EPC_CAPEX,,MEDIUM,Taiwan construction/engineering; global EPC peers are only project-cycle context.
+2753,八方雲集,Restaurant_Chain,RESTAURANT_RETAIL_CONSUMER,,MEDIUM,Restaurant chain; consumer traffic/input costs and same-store sales dominate.
+3042,晶技,Quartz_Crystal_Timing,QUARTZ_CRYSTAL_TIMING_CYCLE,,HIGH,Quartz crystal/timing devices; global timing-component peers are direct context.
+2302,麗正,Diode_Discrete,DIODE_RECTIFIER_CYCLE,,MEDIUM,Discrete semiconductor/diode exposure; verify product mix before using diode cycle.
+6589,台康生技,Biologics_CDMO_Biosimilar,BIOLOGICS_CDMO_BIOSIMILAR,,HIGH,Biologics CDMO/biosimilar exposure; global biologics outsourcing peers are direct context.
+3490,單井,Packaging_Mold_Automation,ADVANCED_PACKAGING_TEST_CAPEX,LED_COMPONENT_CYCLE,HIGH,IC/LED/diode packaging molds and automation; advanced-packaging equipment capex is primary.
+2636,台驊控股,Freight_Forwarding_Logistics,GLOBAL_FREIGHT_FORWARDING,CONTAINER_FREIGHT,HIGH,Ocean/air/rail freight forwarding and supply-chain logistics; global forwarders are direct peers.
+3450,聯鈞,Optical_Transceiver_Components,AI_NETWORKING_UPGRADE,,HIGH,Optical transceiver components; AI-networking optical demand is primary global context.
+2393,億光,LED_Packaging,LED_COMPONENT_CYCLE,,HIGH,LED packaging/components; use global LED peers.
+2305,全友,Imaging_Scanner_Instruments,MEDTECH_IMAGING_DIAGNOSTICS,,MEDIUM,Imaging/scanner instruments; medtech/imaging basket is broad demand context only.
+3467,台灣精材,Semicap_Consumables,SEMICONDUCTOR_MATERIALS_CAPEX,WAFER_FAB_EQUIPMENT_CAPEX,HIGH,Precision ceramic/quartz/silicon semiconductor front-end consumables; fab materials demand is primary.
+6218,豪勉,Enterprise_Network_SI,ENTERPRISE_IT_SPEND,OPTO_TEST_EQUIPMENT_CYCLE,MEDIUM,Enterprise network/security/cloud solutions with opto/semicap equipment exposure; segment mix must be checked.
+2338,光罩,Photomask,PHOTOMASK_DEMAND,MATURE_NODE_FOUNDRY_UTILIZATION,HIGH,Semiconductor photomask exposure; mask demand and foundry utilization are direct drivers.
+3624,光頡,Precision_Passives,PASSIVE_COMPONENT_CYCLE,,HIGH,Precision thin/thick-film resistors plus inductors/capacitors; passive-component cycle is relevant.
+1528,恩德,CNC_Machinery,INDUSTRIAL_AUTOMATION_CAPEX,,HIGH,CNC routers/machining centers/automation; machinery capex cycle is primary.
+6148,驊宏資,Enterprise_IT_Infrastructure,ENTERPRISE_IT_SPEND,,MEDIUM,Server/storage/network infrastructure and integration; enterprise IT spending is primary context.
+8227,巨有科技,ASIC_Design_Service,ASIC_DESIGN_SERVICES,,HIGH,TSMC ASIC turnkey/IP/SoC and CoWoS design services; custom-silicon demand is primary.
+6221,晉泰,Enterprise_IT_SI,ENTERPRISE_IT_SPEND,,MEDIUM,Enterprise IT/system integration; local project backlog remains mandatory.
+2468,華經,Enterprise_IT_SI,ENTERPRISE_IT_SPEND,CLOUD_MSP_ENTERPRISE_SPEND,HIGH,SI/cloud/cybersecurity/software exposure; enterprise IT spending is primary.
+6683,雍智科技,IC_Test_Interface,TEST_INTERFACE_CAPEX,ADVANCED_PACKAGING_TEST_CAPEX,HIGH,Probe/load/burn-in boards and IC test interfaces; test capex and advanced packaging are key.
+5464,霖宏,PCB,HIGH_LAYER_PCB_DEMAND,,HIGH,PCB exposure for server/storage/network/auto; high-layer PCB demand is direct context.
+3441,聯一光,Precision_Optical_Lens,PRECISION_OPTICS_DEMAND,AUTOMOTIVE_VISION_CONTENT,HIGH,Optical lens exposure; precision optics and automotive vision peers are relevant.
+3021,鴻名,Cable_Harness_IT_SI,CABLE_HARNESS_INTERCONNECT,ENTERPRISE_IT_SPEND,HIGH,Cable harness/connectors plus IT integration; interconnect demand is primary.
+6226,光鼎,LED_Packaging_PowerSemi,LED_COMPONENT_CYCLE,POWER_DISCRETE_CYCLE,HIGH,LED components/modules plus IGBT/SiC power semiconductor exposure; LED is primary current classification.
+6945,圓祥生技,Bispecific_Antibody_Biotech,BIOTECH_CLINICAL_RISK,,LOW,Clinical-stage bispecific antibody platform; biotech basket is risk context only and trial data dominate.
+3055,蔚華科,Semiconductor_Test_Inspection,ADVANCED_PACKAGING_TEST_CAPEX,,HIGH,Semiconductor test/packaging/inspection equipment including TGV/TSV/SiC; equipment capex is primary.
+2221,大甲,Semiconductor_Facility_GasComponents,SEMICONDUCTOR_MATERIALS_CAPEX,WAFER_FAB_EQUIPMENT_CAPEX,HIGH,Semiconductor fab ultra-pure/special-gas/chemical supply-system components; fab materials/capex are primary.
+6179,亞通,Energy_Infrastructure_EPC,ENGINEERING_EPC_CAPEX,GRID_CAPEX,HIGH,Energy/power/petrochemical/renewable EPC and installation; infrastructure project capex is primary.
+3354,律勝,Advanced_PI_FPCB_Materials,PCB_MATERIALS_DEMAND,HIGH_LAYER_PCB_DEMAND,HIGH,PI/PSPI and advanced FPCB/PCB materials; PCB-material demand is primary.
+6620,漢達,Specialty_Pharma_505b2,SPECIALTY_PHARMA_CYCLE,,HIGH,505(b)(2) new drugs/specialty generics/CDMO exposure; specialty-pharma commercial cycle is context.
