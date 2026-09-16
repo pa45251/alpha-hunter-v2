@@ -1,3 +1,6 @@
 driver_id,driver_label,global_theme,ticker,name,region,benchmark,peer_role
 DOCUMENT_SCANNER_IMAGING_CYCLE,Document scanner / digital-imaging demand,Document_Imaging,7751.T,Canon,JP,^N225,DIRECT_PEER
 DOCUMENT_SCANNER_IMAGING_CYCLE,Document scanner / digital-imaging demand,Document_Imaging,6724.T,Seiko Epson,JP,^N225,DIRECT_PEER
+RETAIL_FIXTURE_SMART_BED_DEMAND,Commercial fixture / smart-bed demand,Home_Retail_Fixtures,PRPL,Purple Innovation,US,SPY,RELATED_PEER
+LUXURY_BOAT_CYCLE,Luxury boat / yacht demand cycle,Luxury_Boats,MCFT,MasterCraft Boat Holdings,US,SPY,DIRECT_PEER
+SPECIALTY_CHEMICALS_CYCLE,Specialty / industrial chemicals demand cycle,Specialty_Chemicals,BAS.DE,BASF,EU,^STOXX,RELATED_PEER
