@@ -15,6 +15,42 @@ def test_priority_industry_ontology_has_expected_subindustries():
     assert by_code.loc["2472", "economic_subindustry"] == "Capacitor"
 
 
+def test_core_sector_ontology_expansion_maps_representative_taiwan_names():
+    m = pd.read_csv(Path("config/manual_industry_map.csv"), dtype={"code": str}).set_index("code")
+    expected = {
+        "3029": "ENTERPRISE_CYBER_SPEND",
+        "6689": "CLOUD_MSP_ENTERPRISE_SPEND",
+        "2345": "AI_NETWORKING_UPGRADE",
+        "2382": "AI_SERVER_SHIPMENTS",
+        "3017": "DATACENTER_COOLING_INFRA",
+        "3131": "WAFER_FAB_EQUIPMENT_CAPEX",
+        "6223": "ADVANCED_PACKAGING_TEST_CAPEX",
+        "2408": "DRAM_PRICING",
+        "8299": "NAND_STORAGE_CYCLE",
+        "1519": "GRID_CAPEX",
+        "2330": "LEADING_EDGE_FOUNDRY_AI_DEMAND",
+        "2303": "MATURE_NODE_FOUNDRY_UTILIZATION",
+        "2603": "CONTAINER_FREIGHT",
+        "2606": "DRY_BULK_FREIGHT",
+        "2801": "FINANCIALS_RATE_CREDIT_CYCLE",
+    }
+    for code, driver in expected.items():
+        assert m.loc[code, "primary_driver_id"] == driver
+
+
+def test_core_sector_mapping_keeps_weak_transmission_conservative():
+    m = pd.read_csv(Path("config/manual_industry_map.csv"), dtype={"code": str}).set_index("code")
+    assert m.loc["3029", "classification_confidence"] == "MEDIUM"
+    assert m.loc["6416", "classification_confidence"] == "MEDIUM"
+    assert m.loc["2801", "classification_confidence"] == "MEDIUM"
+    assert "context only" in m.loc["2801", "notes"].lower()
+
+
+def test_manual_industry_map_has_unique_company_codes():
+    m = pd.read_csv(Path("config/manual_industry_map.csv"), dtype={"code": str})
+    assert not m["code"].duplicated().any()
+
+
 def test_every_manual_driver_has_configured_international_peers():
     m = pd.read_csv(Path("config/manual_industry_map.csv"), dtype={"code": str})
     p = pd.read_csv(Path("config/manual_global_peers.csv"))
@@ -22,6 +58,24 @@ def test_every_manual_driver_has_configured_international_peers():
     peer_drivers = set(p["driver_id"].dropna().astype(str))
     assert mapped <= peer_drivers
     assert p.groupby("driver_id")["ticker"].nunique().min() >= 2
+
+
+def test_new_core_sector_peer_baskets_have_expected_context():
+    p = pd.read_csv(Path("config/manual_global_peers.csv"))
+    peers = p.groupby("driver_id")["ticker"].apply(set).to_dict()
+    assert {"HACK", "PANW"} <= peers["ENTERPRISE_CYBER_SPEND"]
+    assert {"SKYY", "MSFT"} <= peers["CLOUD_MSP_ENTERPRISE_SPEND"]
+    assert {"ANET", "MRVL"} <= peers["AI_NETWORKING_UPGRADE"]
+    assert {"DELL", "SMCI"} <= peers["AI_SERVER_SHIPMENTS"]
+    assert {"VRT", "ETN"} <= peers["DATACENTER_POWER_INFRA"]
+    assert {"AMAT", "LRCX"} <= peers["WAFER_FAB_EQUIPMENT_CAPEX"]
+    assert {"MU", "000660.KS"} <= peers["DRAM_PRICING"]
+    assert {"GEV", "HUBB"} <= peers["GRID_CAPEX"]
+    assert {"TSM", "005930.KS"} <= peers["LEADING_EDGE_FOUNDRY_AI_DEMAND"]
+    assert {"GFS", "0981.HK"} <= peers["MATURE_NODE_FOUNDRY_UTILIZATION"]
+    assert {"ZIM", "MAERSK-B.CO"} <= peers["CONTAINER_FREIGHT"]
+    assert {"SBLK", "9101.T"} <= peers["DRY_BULK_FREIGHT"]
+    assert {"XLF", "JPM"} <= peers["FINANCIALS_RATE_CREDIT_CYCLE"]
 
 
 def test_peer_map_excludes_delisted_shinko_and_uses_live_replacements():
