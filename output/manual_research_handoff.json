@@ -4,7 +4,7 @@
   "automated_model_research_enabled": false,
   "automated_trade_selection_enabled": false,
   "candidate_count": 150,
-  "mapped_candidate_count": 150,
-  "unmapped_candidate_count": 0,
+  "mapped_candidate_count": 93,
+  "unmapped_candidate_count": 57,
   "instruction": "Use this handoff only to prioritize manual research. Peer price agreement is context, not causality and not a BUY signal. For every candidate, manually verify industry trend, exact company transmission, counter-evidence, valuation/expectations, and entry risk."
 }
