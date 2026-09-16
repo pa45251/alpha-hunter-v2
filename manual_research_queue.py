@@ -11,8 +11,11 @@ import yfinance as yf
 OUT = Path("output")
 INDUSTRY_MAP = Path("config/manual_industry_map.csv")
 INDUSTRY_MAP_SUPPLEMENT = Path("config/manual_industry_map_supplement.csv")
+INDUSTRY_MAP_CORRECTIONS = Path("config/manual_industry_map_corrections.csv")
 PEER_MAP = Path("config/manual_global_peers.csv")
 PEER_MAP_SUPPLEMENT = Path("config/manual_global_peers_supplement.csv")
+PEER_MAP_CORRECTIONS = Path("config/manual_global_peers_corrections.csv")
+PEER_EXCLUSIONS = Path("config/manual_global_peer_exclusions.csv")
 
 
 def _norm_code(value) -> str:
@@ -23,27 +26,35 @@ def _norm_code(value) -> str:
 
 
 def load_industry_map() -> pd.DataFrame:
-    """Load curated base mappings plus optional researched supplements.
+    """Load curated base mappings plus researched supplements and audited corrections.
 
-    Supplements are intentionally separate so scanner history stays stable and new
-    hand-researched coverage can be reviewed/removed without rewriting the base map.
-    A supplement row overrides a base row for the same Taiwan company code.
+    Later layers override earlier rows for the same Taiwan company code. This preserves
+    a stable curated base while allowing researched scan-specific coverage and small
+    post-audit corrections without rewriting the whole ontology.
     """
     frames = [pd.read_csv(INDUSTRY_MAP, dtype={"code": str})]
-    if INDUSTRY_MAP_SUPPLEMENT.exists():
-        frames.append(pd.read_csv(INDUSTRY_MAP_SUPPLEMENT, dtype={"code": str}))
+    for path in (INDUSTRY_MAP_SUPPLEMENT, INDUSTRY_MAP_CORRECTIONS):
+        if path.exists():
+            frames.append(pd.read_csv(path, dtype={"code": str}))
     out = pd.concat(frames, ignore_index=True)
     out["code"] = out["code"].map(_norm_code)
+    out["secondary_driver_ids"] = out["secondary_driver_ids"].fillna("")
     return out.drop_duplicates(subset=["code"], keep="last").reset_index(drop=True)
 
 
 def load_peer_map() -> pd.DataFrame:
-    """Load base and supplement global peer baskets with deterministic deduping."""
+    """Load peer baskets, apply audited corrections, and remove known stale symbols."""
     frames = [pd.read_csv(PEER_MAP)]
-    if PEER_MAP_SUPPLEMENT.exists():
-        frames.append(pd.read_csv(PEER_MAP_SUPPLEMENT))
+    for path in (PEER_MAP_SUPPLEMENT, PEER_MAP_CORRECTIONS):
+        if path.exists():
+            frames.append(pd.read_csv(path))
     out = pd.concat(frames, ignore_index=True)
-    return out.drop_duplicates(subset=["driver_id", "ticker"], keep="last").reset_index(drop=True)
+    out = out.drop_duplicates(subset=["driver_id", "ticker"], keep="last").reset_index(drop=True)
+    if PEER_EXCLUSIONS.exists():
+        exclusions = pd.read_csv(PEER_EXCLUSIONS)
+        excluded = set(exclusions["ticker"].dropna().astype(str))
+        out = out[~out["ticker"].astype(str).isin(excluded)].reset_index(drop=True)
+    return out
 
 
 def _ret(close: pd.Series, periods: int) -> float:
