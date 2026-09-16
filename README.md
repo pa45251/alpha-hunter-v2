@@ -1,23 +1,65 @@
-# Alpha Hunter — Market Opportunity System
+# Alpha Hunter — Scanner + Manual Research System
 
-Global Evidence → Trend + Underlying Support → Entry + Risk → Action.
+Alpha Hunter now has one production responsibility: **find and structure market opportunities cheaply and reproducibly**. It scans global markets and the full Taiwan market, ranks price/trend candidates, preserves causal/structural context, and prepares a manual research handoff.
 
-Follow evidence-supported trends at a reasonable entry. When trend or support fails, avoid new risk; without edge, WAIT / PASS.
+**It does not autonomously choose the final stock and it does not require paid AI credits.** Final BUY / EARLY BUY / WAIT / PASS research is performed manually after the scan, currently by bringing the shortlist to ChatGPT for company-by-company deep research.
 
-Daily Core runs `daily_scan.py`, `decision_run_v2.py`, then `action_board_summary.py --refresh`. It publishes the complete canonical snapshot, decision and action board atomically. Downstream readers use sealed prices; research may update causal evidence only for that snapshot. Entry and alignment bind to the exact decision lineage.
+## Production flow
 
-Personal holdings, costs, quantities, weights and allocation do not affect market judgments. Portfolio maintenance and separate action-publishing workflows have been removed. Legacy portfolio modules remain historical code, outside production; their outputs are retired on refresh.
+```text
+Global market scan + Taiwan full-market scan
+        ↓
+Trend / RS / acceleration / liquidity candidate funnel
+        ↓
+Deterministic industry + international-peer context
+        ↓
+output/manual_research_queue.csv
+        ↓
+Manual ChatGPT deep research
+        ↓
+Human investment decision
+```
 
-The action board is `output/action_board.md`. Valid conditional entry plans require causal support, instrument price confirmation and observed liquidity. Price strength cannot create causality. Company alpha must justify stock exposure over ETF exposure. EOD plans never authorize immediate orders; automatic execution remains disabled.
+The weekday scheduled scan remains 06:20, 06:40 and 07:00 Asia/Taipei with the existing freshness guard. `daily_scan.py` remains the canonical scanner. After it finishes, `manual_research_queue.py` adds the manual research context. Neither step calls Copilot, OpenAI API, Gemini, or another paid model API.
 
-Risk regime retains the existing volatility, trend, breadth and credit heuristic. Treasury evidence uses FRED DGS2 for 2Y and the existing 10Y series. Missing evidence stays UNKNOWN. No personal cash target or rotation recommendation is produced.
+The previous Copilot autonomous-research workflow, OpenAI frontier-research workflow, and AI-dependent decision-refresh workflow are retired from production. Historical Python research/decision modules may remain in the repository for audit or possible future reuse, but no scheduled workflow invokes them and they are not authoritative outputs in manual-research mode.
 
-Daily Core validates canonical integrity and its own contracts. Full regression tests run in PR CI. Historical outcome evaluation is offline and does not download prices during market publication. Frozen release registries remain historical acceptance records and never authorize live execution.
+## Industry ontology and international peers
 
-Scheduled scans: weekdays 06:20, 06:40 and 07:00 Asia/Taipei, with a freshness guard. Manual Daily Scan defaults to a forced scan. Research and decision refresh rebuild the complete action output before publication; computed artifacts are never rebased over another run.
+Official TWSE/TPEX industries are retained because they are useful for broad market breadth, but they are too coarse for causal investment research. For example, `半導體業`, `電子零組件業`, and `光電業` contain businesses with very different economic drivers.
 
-The daily brief ranks up to five opportunities after causal and price assessment. Its only actions are BUY, EARLY BUY, WAIT and PASS. EARLY BUY means an advisory starter of 35% of a planned position: a measured company fundamental, defensible transmission, independent same-driver international evidence when applicable, compatible regime, and a nonextended entry with at least 2R to an observed resistance or disclosed base-height scenario. Further operating or breakout confirmation can promote BUY; neither action enables brokerage execution.
+`config/manual_industry_map.csv` therefore adds an auditable investment sub-industry layer for important Taiwan supply chains. Current priority coverage includes:
 
-Unmapped companies enter the existing research handoff with official MOPS revenue observations and company WHY searches. A supported local mechanism may remain provisional without a taxonomy edge. Missing company evidence remains unresolved, with a specific research reason. Broad equity weakness alone does not veto a company or sector thesis; systemic stress and relevant adverse rates do.
+- Mobile / automotive / XR optics
+- Diode and discrete semiconductors
+- Power MOSFET / power semiconductor
+- PCB and package substrates
+- High-speed / low-loss CCL
+- High-speed connectors and cable interconnect
+- MLCC
+- Non-MLCC capacitors
 
-`output/opportunity_advisory.json` preserves every assessed candidate, source evidence and policy version for prospective evaluation. Reproduce the six-case point-in-time audit with `python historical_early_audit.py`; see `docs/audit/early_detection_audit.md`. The historical archive does not establish actionable early-entry performance, and heuristic reward/risk is not calibrated expected value.
+`config/manual_global_peers.csv` assigns explicit international peer baskets to each driver. Examples include Sunny Optical / LG Innotek for optics, Diodes / Vishay / onsemi / Infineon / STMicroelectronics for discrete power, TTM / IBIDEN / Shinko for PCB and substrates, Amphenol / TE Connectivity / Hirose for connectors, and Japanese/Korean passive-component leaders for MLCC and capacitors.
+
+These mappings are **research priors, not causal proof**. A rising peer basket cannot create a company thesis. Company product mix, customer exposure, order transmission, expectations, counter-evidence and entry risk must still be checked manually.
+
+## Manual research outputs
+
+After each successful scan, the production workflow writes:
+
+- `output/manual_global_peer_snapshot.csv` — 5/20/60-day price context, MA20/MA60 and local-benchmark RS for the explicit international peers.
+- `output/manual_driver_breadth.csv` — transparent peer-basket breadth for each economic driver. `BROADLY_POSITIVE`, `MIXED`, and `BROADLY_WEAK` are context labels only, never trade actions.
+- `output/manual_research_queue.csv` — Taiwan candidate shortlist enriched with economic sub-industry, primary/secondary driver, peer basket and peer breadth.
+- `output/manual_research_handoff.json` — compact contract stating that model research and automated trade selection are disabled.
+
+Candidates not yet covered by the manual ontology are kept as `UNMAPPED`; they are never silently discarded. This makes missing coverage visible so the mapping can be expanded only when a real candidate makes the work worthwhile.
+
+## First-principles rules
+
+Price may discover an anomaly but may not invent causality. International peers validate an economic chain only when their business exposure matches the Taiwan company. Broad official-industry breadth is context, not proof. Company-specific evidence can veto a seemingly attractive global theme. If the global trend has no edge, the company transmission is weak, or the entry is poor, doing nothing remains valid.
+
+The scanner score is a ranking heuristic, not a probability and not expected return. Automatic brokerage execution remains disabled.
+
+## Cost policy
+
+Production must remain usable with **zero Copilot credits and zero OpenAI API balance**. A future paid-model lane must be explicitly reintroduced in a separate change; it must never silently become a dependency of the daily scanner.
