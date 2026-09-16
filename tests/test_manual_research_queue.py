@@ -24,6 +24,15 @@ def test_every_manual_driver_has_configured_international_peers():
     assert p.groupby("driver_id")["ticker"].nunique().min() >= 2
 
 
+def test_peer_map_excludes_delisted_shinko_and_uses_live_replacements():
+    p = pd.read_csv(Path("config/manual_global_peers.csv"))
+    tickers = set(p["ticker"].astype(str))
+    assert "6967.T" not in tickers
+    assert "6787.T" in tickers
+    package = p[p["driver_id"].eq("PACKAGE_SUBSTRATE_DEMAND")]
+    assert "009150.KS" in set(package["ticker"].astype(str))
+
+
 def test_manual_queue_preserves_unmapped_candidates_for_human_research():
     candidates = pd.DataFrame([
         {"candidate_rank": 1, "code": "3008", "ticker": "3008.TW", "name": "大立光", "industry": "光電業"},

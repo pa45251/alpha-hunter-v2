@@ -16,13 +16,13 @@ POWER_DISCRETE_CYCLE,Power discrete / MOSFET / SiC cycle,Power_Discrete,STMPA.PA
 POWER_DISCRETE_CYCLE,Power discrete / MOSFET / SiC cycle,Power_Discrete,VSH,Vishay Intertechnology,US,SPY,RELATED_PEER
 HIGH_LAYER_PCB_DEMAND,High-layer / high-speed PCB demand,PCB_Interconnect,TTMI,TTM Technologies,US,SPY,DIRECT_PEER
 HIGH_LAYER_PCB_DEMAND,High-layer / high-speed PCB demand,PCB_Interconnect,4062.T,IBIDEN,JP,^N225,RELATED_PEER
-HIGH_LAYER_PCB_DEMAND,High-layer / high-speed PCB demand,PCB_Interconnect,6967.T,Shinko Electric Industries,JP,^N225,RELATED_PEER
+HIGH_LAYER_PCB_DEMAND,High-layer / high-speed PCB demand,PCB_Interconnect,6787.T,Meiko Electronics,JP,^N225,RELATED_PEER
 PACKAGE_SUBSTRATE_DEMAND,IC package substrate demand,PCB_Interconnect,4062.T,IBIDEN,JP,^N225,DIRECT_PEER
-PACKAGE_SUBSTRATE_DEMAND,IC package substrate demand,PCB_Interconnect,6967.T,Shinko Electric Industries,JP,^N225,DIRECT_PEER
+PACKAGE_SUBSTRATE_DEMAND,IC package substrate demand,PCB_Interconnect,009150.KS,Samsung Electro-Mechanics,KR,^KS11,DIRECT_PEER
 PACKAGE_SUBSTRATE_DEMAND,IC package substrate demand,PCB_Interconnect,TTMI,TTM Technologies,US,SPY,RELATED_PEER
 CCL_LOW_LOSS_MATERIAL_DEMAND,High-speed / low-loss CCL material demand,PCB_Interconnect,TTMI,TTM Technologies,US,SPY,DOWNSTREAM_PEER
 CCL_LOW_LOSS_MATERIAL_DEMAND,High-speed / low-loss CCL material demand,PCB_Interconnect,4062.T,IBIDEN,JP,^N225,DOWNSTREAM_PEER
-CCL_LOW_LOSS_MATERIAL_DEMAND,High-speed / low-loss CCL material demand,PCB_Interconnect,6967.T,Shinko Electric Industries,JP,^N225,DOWNSTREAM_PEER
+CCL_LOW_LOSS_MATERIAL_DEMAND,High-speed / low-loss CCL material demand,PCB_Interconnect,6787.T,Meiko Electronics,JP,^N225,DOWNSTREAM_PEER
 HIGH_SPEED_CONNECTOR_DEMAND,High-speed data-center / networking connector demand,Connector,APH,Amphenol,US,SPY,DIRECT_PEER
 HIGH_SPEED_CONNECTOR_DEMAND,High-speed data-center / networking connector demand,Connector,TEL,TE Connectivity,US,SPY,DIRECT_PEER
 HIGH_SPEED_CONNECTOR_DEMAND,High-speed data-center / networking connector demand,Connector,6806.T,Hirose Electric,JP,^N225,DIRECT_PEER
