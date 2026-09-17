@@ -3,13 +3,13 @@
   "gate_version": "1.0",
   "gate_status": "PASS",
   "failure_code": null,
-  "validated_at_taipei": "2026-09-17T07:38:43.822088+08:00",
+  "validated_at_taipei": "2026-09-17T08:10:13.423477+08:00",
   "repository": "pa45251/alpha-hunter-v2",
   "branch": "main",
   "schema_version": "2.6",
   "scanner_version": "2.6.1",
-  "run_id": "20260917T073501+0800-d1509af2",
-  "manifest_sha256": "2b6db9f54d693d6cc0d52b48477a499d9ee664b0e3069972516b5965a3647eff",
+  "run_id": "20260917T080641+0800-0805d758",
+  "manifest_sha256": "f604cd5b92735f08df6e112b765b06eea0e80bf2724d8e1ef9f418e35aa99298",
   "checks": [
     {
       "name": "repository_identity",
@@ -50,13 +50,13 @@
     {
       "name": "pipeline_checks",
       "passed": true,
-      "detail": "{\"causal_queue_rebuilt_this_run\": true, \"causal_taxonomy_snapshot_present\": true, \"core_discovery_disjoint\": true, \"core_risk_evidence_ready\": true, \"formal_snapshot_core_only\": true, \"global_outputs_generated\": true, \"graph_audit_rebuilt_this_run\": true, \"reverse_discovery_rebuilt_this_run\": true, \"structural_graph_snapshot_present\": true, \"structural_matches_rebuilt_this_run\": true, \"taiwan_outputs_generated\": true, \"taiwan_primary_shadow_partition_complete\": true, \"taiwan_shadow_generated\": true}",
+      "detail": "{\"causal_queue_rebuilt_this_run\": true, \"causal_taxonomy_snapshot_present\": true, \"core_discovery_disjoint\": true, \"core_risk_evidence_ready\": true, \"formal_snapshot_core_only\": true, \"global_outputs_generated\": true, \"graph_audit_rebuilt_this_run\": true, \"reverse_discovery_rebuilt_this_run\": true, \"structural_graph_snapshot_present\": true, \"structural_matches_rebuilt_this_run\": true, \"taiwan_outputs_generated\": true, \"taiwan_rejected_not_persisted\": true}",
       "severity": "HARD"
     },
     {
       "name": "manifest_run_id",
       "passed": true,
-      "detail": "run_id=20260917T073501+0800-d1509af2",
+      "detail": "run_id=20260917T080641+0800-0805d758",
       "severity": "HARD"
     },
     {
@@ -74,13 +74,13 @@
     {
       "name": "authoritative_file_hashes",
       "passed": true,
-      "detail": "verified=20",
+      "detail": "verified=19",
       "severity": "HARD"
     },
     {
       "name": "run_consistency",
       "passed": true,
-      "detail": "all=20260917T073501+0800-d1509af2",
+      "detail": "all=20260917T080641+0800-0805d758",
       "severity": "HARD"
     },
     {
