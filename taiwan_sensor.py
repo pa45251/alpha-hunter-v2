@@ -35,14 +35,23 @@ class TaiwanScanConfig:
     top_candidates: int = 100
     primary_research_cap: int = 100
     min_price: float = 5.0
-    # Keep the TWD 100m 20D average turnover floor. Median turnover is recorded
-    # separately as a robustness/capacity diagnostic, not a hard gate.
+    # Liquidity must be durable, not created by one or two abnormal volume days.
     min_turnover20: float = 100_000_000.0
-    early_reserve_fraction: float = 0.30
+    # Defaults to 50% of the configured mean-turnover floor. With the production
+    # mean floor of TWD 100m this is TWD 50m; custom configs scale coherently.
+    min_median_turnover20: float | None = None
+    # When qualified names exceed research capacity, EARLY names may occupy at most
+    # this fraction. This is a ceiling, never a reserved quota.
+    early_max_fraction: float = 0.30
     output_dir: str = "output"
 
     def __post_init__(self) -> None:
         self.top_candidates = min(max(0, int(self.top_candidates)), max(0, int(self.primary_research_cap)))
+        if self.min_median_turnover20 is None:
+            self.min_median_turnover20 = 0.5 * float(self.min_turnover20)
+        else:
+            self.min_median_turnover20 = max(0.0, float(self.min_median_turnover20))
+        self.early_max_fraction = min(1.0, max(0.0, float(self.early_max_fraction)))
 
 
 def _decode_twse_response(resp: requests.Response) -> str:
@@ -238,13 +247,11 @@ def add_taiwan_candidate_score(df: pd.DataFrame) -> pd.DataFrame:
     accel = pd.to_numeric(_col(x, "acceleration"), errors="coerce").fillna(-999)
     rs_accel = pd.to_numeric(x["rs_acceleration"], errors="coerce").fillna(-999)
     ma20_slope = pd.to_numeric(_col(x, "ma20_slope"), errors="coerce").fillna(-999)
+    keynes = pd.to_numeric(_col(x, "keynes_v2"), errors="coerce").fillna(-999)
     ret5 = pd.to_numeric(_col(x, "ret_5d", 0.0), errors="coerce").fillna(0.0)
     trend = _col(x, "trend", "UNKNOWN").fillna("UNKNOWN").astype(str)
     rs20_filled = rs20.fillna(-999)
 
-    # Lifecycle classification: confirmation requires an already constructive
-    # MA20/MA60 structure. Improving rebounds/bears remain visible as EARLY rather
-    # than being mislabeled confirmed or discarded.
     broken = (
         trend.eq("BEAR")
         & (ma20_slope <= 0)
@@ -254,11 +261,25 @@ def add_taiwan_candidate_score(df: pd.DataFrame) -> pd.DataFrame:
     persistent = trend.eq("STRONG_UP") & (rs20_filled > 0) & (rs60 > 0)
     pullback = trend.eq("PULLBACK") & (rs20_filled > 0)
     confirmed = trend.eq("STRONG_UP") & (rs20_filled > 0)
-    improving = (accel > 0) | (rs_accel > 0) | (ma20_slope > 0)
+
+    # EARLY is deliberately stricter than a generic "improving" label. It must
+    # already be a REBOUND, have a rising MA20 and improving relative strength,
+    # then pass at least two of three supporting signals. BEAR names cannot qualify.
+    early_votes = (
+        (accel > 0).astype(int)
+        + (rs20_filled > 0).astype(int)
+        + (keynes > 0).astype(int)
+    )
+    early = (
+        trend.eq("REBOUND")
+        & (ma20_slope > 0)
+        & (rs_accel > 0)
+        & (early_votes >= 2)
+    )
 
     x["trend_stage"] = "WATCH"
     x.loc[broken, "trend_stage"] = "BROKEN"
-    x.loc[~broken & improving, "trend_stage"] = "EARLY"
+    x.loc[early, "trend_stage"] = "EARLY"
     x.loc[confirmed, "trend_stage"] = "CONFIRMED"
     x.loc[pullback, "trend_stage"] = "PULLBACK"
     x.loc[persistent, "trend_stage"] = "PERSISTENT"
@@ -307,36 +328,36 @@ def _ensure_selection_columns(stocks: pd.DataFrame) -> pd.DataFrame:
     return x
 
 
-def _eligibility_masks(x: pd.DataFrame, cfg: TaiwanScanConfig) -> tuple[pd.Series, pd.Series, pd.Series, pd.Series]:
-    liquid = pd.to_numeric(_col(x, "avg_turnover20_twd", 0), errors="coerce").fillna(0) >= cfg.min_turnover20
+def _eligibility_masks(x: pd.DataFrame, cfg: TaiwanScanConfig) -> tuple[pd.Series, pd.Series, pd.Series]:
+    avg_turnover = pd.to_numeric(_col(x, "avg_turnover20_twd", 0), errors="coerce").fillna(0)
+    avg_liquid = avg_turnover >= cfg.min_turnover20
+
+    # Archived/test rows from before scanner vNext do not have the median field.
+    # For backward compatibility only, fall back to their already-known mean.
+    # Live scans always populate median_turnover20_twd and therefore use the stricter gate.
+    median_raw = pd.to_numeric(_col(x, "median_turnover20_twd", np.nan), errors="coerce")
+    median_turnover = median_raw.where(median_raw.notna(), avg_turnover)
+    median_liquid = median_turnover >= cfg.min_median_turnover20
+
+    liquid = avg_liquid & median_liquid
     price_ok = pd.to_numeric(_col(x, "price", 0), errors="coerce").fillna(0) >= cfg.min_price
-    improving = (
-        (pd.to_numeric(_col(x, "acceleration"), errors="coerce").fillna(-999) > 0)
-        | (pd.to_numeric(_col(x, "rs_20d_vs_bench"), errors="coerce").fillna(-999) > 0)
-        | (pd.to_numeric(_col(x, "keynes_v2"), errors="coerce").fillna(-999) > 0)
-        | (pd.to_numeric(_col(x, "rs_acceleration"), errors="coerce").fillna(-999) > 0)
-    )
-    structural = _col(x, "trend_stage", "WATCH").fillna("WATCH").astype(str).ne("BROKEN")
-    return liquid, price_ok, improving, structural
+    stage = _col(x, "trend_stage", "WATCH").fillna("WATCH").astype(str)
+    admitted = stage.isin(["EARLY", "CONFIRMED", "PULLBACK", "PERSISTENT"])
+    return liquid, price_ok, admitted
 
 
 def select_taiwan_candidates(stocks: pd.DataFrame, cfg: TaiwanScanConfig) -> pd.DataFrame:
-    """Select at most the expensive-research capacity without manufacturing fillers.
+    """Select only truly admitted candidates, capped by research capacity.
 
-    All stocks remain in the cheap full scan/shadow universe. Primary research is
-    limited to meaningful CONFIRMED/PULLBACK/PERSISTENT or EARLY lifecycle stages.
-    A protected early reserve prevents mature trends from crowding out new turns;
-    the remaining capacity is filled only by other meaningful-stage candidates.
+    Qualification and ranking are deliberately separate. Mature trend stages are
+    admitted by their structural definition. EARLY must already have passed the
+    stricter reversal gate in add_taiwan_candidate_score. Rejected names disappear.
+    If admitted names exceed capacity, EARLY has a ceiling but no reserved quota.
     """
     x = _ensure_selection_columns(stocks)
-    liquid, price_ok, improving, structural = _eligibility_masks(x, cfg)
-    x["candidate_eligible"] = liquid & price_ok & improving & structural
-    x = x[x["candidate_eligible"]].copy()
-    if x.empty:
-        return x
-
-    stage = x["trend_stage"].fillna("WATCH").astype(str)
-    meaningful = x[stage.isin(["EARLY", "CONFIRMED", "PULLBACK", "PERSISTENT"])].copy()
+    liquid, price_ok, admitted = _eligibility_masks(x, cfg)
+    x["candidate_eligible"] = liquid & price_ok & admitted
+    meaningful = x[x["candidate_eligible"]].copy()
     if meaningful.empty:
         return meaningful
 
@@ -347,60 +368,28 @@ def select_taiwan_candidates(stocks: pd.DataFrame, cfg: TaiwanScanConfig) -> pd.
         pd.to_numeric(_col(meaningful, "taiwan_early_score_v3"), errors="coerce").fillna(0.0),
     )
     meaningful["candidate_bucket"] = np.where(confirmed_mask, "CONFIRMED", "EARLY")
+    ordered = meaningful.sort_values(
+        ["research_priority_score", "candidate_bucket", "ticker"],
+        ascending=[False, True, True],
+    )
 
     n = max(0, int(cfg.top_candidates))
     if n == 0:
-        return meaningful.iloc[0:0].copy()
-    n_early_reserve = min(n, max(1, int(n * float(cfg.early_reserve_fraction))))
-    early = meaningful[meaningful["trend_stage"].eq("EARLY")].sort_values(
-        ["research_priority_score", "ticker"], ascending=[False, True]
-    )
-    protected_early = early.head(n_early_reserve)
+        return ordered.iloc[0:0].copy()
+    if len(ordered) <= n:
+        out = ordered.copy()
+    else:
+        early_max = int(n * float(cfg.early_max_fraction))
+        mature_pool = ordered[ordered["candidate_bucket"].eq("CONFIRMED")].head(n)
+        early_pool = ordered[ordered["candidate_bucket"].eq("EARLY")].head(early_max)
+        out = pd.concat([mature_pool, early_pool], ignore_index=True).sort_values(
+            ["research_priority_score", "candidate_bucket", "ticker"],
+            ascending=[False, True, True],
+        ).head(n)
 
-    remaining = meaningful[~meaningful["ticker"].isin(protected_early["ticker"])].sort_values(
-        ["research_priority_score", "ticker"], ascending=[False, True]
-    )
-    out = pd.concat([protected_early, remaining.head(max(0, n - len(protected_early)))], ignore_index=True)
-    out = out.drop_duplicates("ticker", keep="first").sort_values(
-        ["research_priority_score", "candidate_bucket", "ticker"],
-        ascending=[False, True, True],
-    ).head(n)
+    out = out.drop_duplicates("ticker", keep="first").reset_index(drop=True)
     out["candidate_rank"] = np.arange(1, len(out) + 1)
-    return out.reset_index(drop=True)
-
-
-def build_taiwan_shadow_universe(
-    stocks: pd.DataFrame,
-    candidates: pd.DataFrame,
-    cfg: TaiwanScanConfig,
-) -> pd.DataFrame:
-    """Keep every non-primary scanned stock cheaply observable for future promotion."""
-    x = _ensure_selection_columns(stocks)
-    liquid, price_ok, improving, structural = _eligibility_masks(x, cfg)
-    primary = set(candidates.get("ticker", pd.Series(dtype=str)).astype(str)) if candidates is not None else set()
-    x = x[~x["ticker"].astype(str).isin(primary)].copy()
-    if x.empty:
-        return x
-
-    liquid = liquid.reindex(x.index, fill_value=False)
-    price_ok = price_ok.reindex(x.index, fill_value=False)
-    improving = improving.reindex(x.index, fill_value=False)
-    structural = structural.reindex(x.index, fill_value=False)
-
-    x["shadow_reason"] = "PRIMARY_CAP_OR_PRIORITY"
-    x.loc[~liquid, "shadow_reason"] = "BELOW_LIQUIDITY_FLOOR"
-    x.loc[liquid & ~price_ok, "shadow_reason"] = "BELOW_PRICE_FLOOR"
-    x.loc[liquid & price_ok & ~structural, "shadow_reason"] = "BROKEN_STRUCTURE"
-    x.loc[liquid & price_ok & structural & ~improving, "shadow_reason"] = "NO_ACTIVE_IMPROVEMENT"
-    x.loc[
-        liquid & price_ok & structural & improving & x["trend_stage"].eq("WATCH"),
-        "shadow_reason",
-    ] = "WATCH_STAGE"
-
-    early_score = pd.to_numeric(_col(x, "taiwan_early_score_v3"), errors="coerce").fillna(0.0)
-    confirmed_score = pd.to_numeric(_col(x, "taiwan_candidate_score_v1"), errors="coerce").fillna(0.0)
-    x["shadow_priority_score"] = np.where(x["trend_stage"].eq("EARLY"), early_score, confirmed_score)
-    return x.sort_values(["shadow_priority_score", "ticker"], ascending=[False, True]).reset_index(drop=True)
+    return out
 
 
 def run_taiwan_scan(cfg: TaiwanScanConfig = TaiwanScanConfig(), cached_universe: str = "output/taiwan_universe.csv"):
@@ -446,16 +435,12 @@ def run_taiwan_scan(cfg: TaiwanScanConfig = TaiwanScanConfig(), cached_universe:
     stocks = add_taiwan_candidate_score(stocks)
     stocks = stocks.sort_values("taiwan_candidate_score_v1", ascending=False)
     candidates = select_taiwan_candidates(stocks, cfg)
-    shadow = build_taiwan_shadow_universe(stocks, candidates, cfg)
-    Path(cfg.output_dir).mkdir(parents=True, exist_ok=True)
-    shadow.to_csv(Path(cfg.output_dir) / "taiwan_shadow_universe.csv", index=False)
     breadth_input = stocks.rename(columns={"industry": "theme"}) if "theme" not in stocks.columns else stocks
     breadth = compute_theme_breadth(breadth_input)
     return {
         "histories": data,
         "stocks": stocks,
         "candidates": candidates,
-        "shadow": shadow,
         "breadth": breadth,
         "universe": uni,
         "universe_source_status": uni_source_status,

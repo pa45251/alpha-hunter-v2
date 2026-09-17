@@ -1,28 +1,27 @@
 import json
-from pathlib import Path
 
 import pandas as pd
 
 import daily_scan
 
 
-def test_write_taiwan_outputs_publishes_shadow(tmp_path, monkeypatch):
+def test_write_taiwan_outputs_removes_legacy_shadow(tmp_path, monkeypatch):
     out = tmp_path / "output"
     out.mkdir()
+    legacy = out / "taiwan_shadow_universe.csv"
+    legacy.write_text("ticker\nOLD.TW\n", encoding="utf-8")
     monkeypatch.setattr(daily_scan, "OUT", out)
     tw = {
         "candidates": pd.DataFrame([{"ticker": "A.TW"}]),
-        "shadow": pd.DataFrame([{"ticker": "B.TW", "shadow_reason": "PRIMARY_CAP_OR_PRIORITY"}]),
         "breadth": pd.DataFrame([{"theme": "X"}]),
         "universe": pd.DataFrame([{"ticker": "A.TW"}, {"ticker": "B.TW"}]),
     }
     daily_scan.write_taiwan_outputs(tw)
-    assert (out / "taiwan_shadow_universe.csv").exists()
-    saved = pd.read_csv(out / "taiwan_shadow_universe.csv")
-    assert saved["ticker"].tolist() == ["B.TW"]
+    assert (out / "taiwan_candidates.csv").exists()
+    assert not legacy.exists()
 
 
-def test_manifest_canonicalizes_shadow_and_partition(tmp_path, monkeypatch):
+def test_manifest_has_rejected_count_but_no_shadow_contract(tmp_path, monkeypatch):
     out = tmp_path / "output"
     out.mkdir()
     monkeypatch.setattr(daily_scan, "OUT", out)
@@ -30,7 +29,7 @@ def test_manifest_canonicalizes_shadow_and_partition(tmp_path, monkeypatch):
     required = [
         "global_scan_quality.json", "discovery_snapshot.csv", "discovery_research_queue.csv",
         "risk_regime.json", "market_snapshot.csv", "theme_breadth.csv", "leader_registry.csv", "feature_history.csv",
-        "market_snapshot.json", "taiwan_candidates.csv", "taiwan_shadow_universe.csv", "taiwan_candidate_history.csv",
+        "market_snapshot.json", "taiwan_candidates.csv", "taiwan_candidate_history.csv",
         "taiwan_industry_breadth.csv", "taiwan_universe.csv", "causal_research_queue.csv",
         "reverse_transmission_candidates.csv", "structural_matches.csv", "causal_graph_audit.csv",
         "causal_driver_taxonomy.csv", "structural_exposure_graph.csv",
@@ -55,7 +54,6 @@ def test_manifest_canonicalizes_shadow_and_partition(tmp_path, monkeypatch):
         "stocks": stocks,
         "universe": stocks.copy(),
         "candidates": stocks.iloc[:1].copy(),
-        "shadow": stocks.iloc[1:].copy(),
         "universe_source_status": "TEST",
     }
     research_queue = pd.DataFrame([{"driver_id": "D"}])
@@ -66,12 +64,13 @@ def test_manifest_canonicalizes_shadow_and_partition(tmp_path, monkeypatch):
 
     daily_scan.build_manifest(
         global_results, tw, research_queue, reverse, structural, graph_audit,
-        activations, "run", {"shadow_contract": True},
+        activations, "run", {"no_shadow_contract": True},
     )
     manifest = json.loads((out / "manifest.json").read_text(encoding="utf-8"))
     names = {f["name"] for f in manifest["authoritative_files"]}
-    assert "taiwan_shadow_universe.csv" in names
+    assert "taiwan_shadow_universe.csv" not in names
     assert manifest["taiwan"]["candidate_count"] == 1
-    assert manifest["taiwan"]["shadow_count"] == 2
-    assert manifest["taiwan"]["primary_shadow_partition_complete"] is True
+    assert manifest["taiwan"]["rejected_count"] == 2
+    assert "shadow_count" not in manifest["taiwan"]
+    assert "primary_shadow_partition_complete" not in manifest["taiwan"]
     assert manifest["status"] == "PASS"
