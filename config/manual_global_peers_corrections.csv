@@ -32,3 +32,35 @@ CONSUMER_ELECTRONICS_CYCLE,Consumer electronics demand cycle,Consumer_Tech,6758.
 CONSUMER_ELECTRONICS_CYCLE,Consumer electronics demand cycle,Consumer_Tech,005930.KS,Samsung Electronics,KR,^KS11,DEMAND_CONTEXT
 POWER_ELECTRONICS_CAPEX,Power equipment / electronics capex,Power,VSH,Vishay Intertechnology,US,SPY,RELATED_PEER
 POWER_ELECTRONICS_CAPEX,Power equipment / electronics capex,Power,LFUS,Littelfuse,US,SPY,RELATED_PEER
+PETROCHEMICAL_MARGIN_CYCLE,Bulk petrochemical product / feedstock margin cycle,Petrochemicals,WLK,Westlake,US,SPY,DIRECT_PEER
+PETROCHEMICAL_MARGIN_CYCLE,Bulk petrochemical product / feedstock margin cycle,Petrochemicals,LYB,LyondellBasell,US,SPY,DIRECT_PEER
+PETROCHEMICAL_MARGIN_CYCLE,Bulk petrochemical product / feedstock margin cycle,Petrochemicals,BAS.DE,BASF,EU,^STOXX,RELATED_PEER
+PETROCHEMICAL_MARGIN_CYCLE,Bulk petrochemical product / feedstock margin cycle,Petrochemicals,051910.KS,LG Chem,KR,^KS11,RELATED_PEER
+REFINING_MARGIN_CYCLE,Refining crack-spread / utilization cycle,Refining,VLO,Valero Energy,US,SPY,DIRECT_PEER
+REFINING_MARGIN_CYCLE,Refining crack-spread / utilization cycle,Refining,MPC,Marathon Petroleum,US,SPY,DIRECT_PEER
+REFINING_MARGIN_CYCLE,Refining crack-spread / utilization cycle,Refining,PSX,Phillips 66,US,SPY,DIRECT_PEER
+WAFER_LEVEL_PACKAGING_DEMAND,Wafer-level packaging / test utilization,Semiconductor_Packaging,AMKR,Amkor Technology,US,SPY,DIRECT_PEER
+WAFER_LEVEL_PACKAGING_DEMAND,Wafer-level packaging / test utilization,Semiconductor_Packaging,ASX,ASE Technology Holding,US,SPY,DIRECT_PEER
+WAFER_LEVEL_PACKAGING_DEMAND,Wafer-level packaging / test utilization,Semiconductor_Packaging,6146.T,DISCO,JP,^N225,RELATED_PEER
+HIGH_SPEED_PCB_MATERIALS_DEMAND,High-speed low-loss PCB material demand,PCB_Materials,5706.T,Mitsui Mining and Smelting,JP,^N225,DIRECT_PEER
+HIGH_SPEED_PCB_MATERIALS_DEMAND,High-speed low-loss PCB material demand,PCB_Materials,5016.T,JX Advanced Metals,JP,^N225,DIRECT_PEER
+HIGH_SPEED_PCB_MATERIALS_DEMAND,High-speed low-loss PCB material demand,PCB_Materials,3110.T,Nittobo,JP,^N225,DIRECT_PEER
+HIGH_SPEED_PCB_MATERIALS_DEMAND,High-speed low-loss PCB material demand,PCB_Materials,DD,DuPont,US,SPY,RELATED_PEER
+DISPLAY_PANEL_CYCLE,Display-panel shipment / pricing cycle,Display_Panel,LPL,LG Display,US,SPY,DIRECT_PEER
+DISPLAY_PANEL_CYCLE,Display-panel shipment / pricing cycle,Display_Panel,000725.SZ,BOE Technology,CN,000300.SS,DIRECT_PEER
+DISPLAY_PANEL_CYCLE,Display-panel shipment / pricing cycle,Display_Panel,005930.KS,Samsung Electronics,KR,^KS11,DEMAND_CONTEXT
+IMAGE_SENSOR_PACKAGING_DEMAND,CMOS image-sensor packaging / unit demand,Image_Sensor,6758.T,Sony Group,JP,^N225,DEMAND_CONTEXT
+IMAGE_SENSOR_PACKAGING_DEMAND,CMOS image-sensor packaging / unit demand,Image_Sensor,ON,onsemi,US,SPY,DEMAND_CONTEXT
+IMAGE_SENSOR_PACKAGING_DEMAND,CMOS image-sensor packaging / unit demand,Image_Sensor,STM,STMicroelectronics,EU,^STOXX,DEMAND_CONTEXT
+IMAGE_SENSOR_PACKAGING_DEMAND,CMOS image-sensor packaging / unit demand,Image_Sensor,AMKR,Amkor Technology,US,SPY,RELATED_PEER
+MOBILE_SOC_DEMAND,Mobile SoC shipment / premium-mix cycle,Mobile_SoC,QCOM,Qualcomm,US,SPY,DIRECT_PEER
+MOBILE_SOC_DEMAND,Mobile SoC shipment / premium-mix cycle,Mobile_SoC,005930.KS,Samsung Electronics,KR,^KS11,RELATED_PEER
+MOBILE_SOC_DEMAND,Mobile SoC shipment / premium-mix cycle,Mobile_SoC,ARM,Arm Holdings,US,SPY,ECOSYSTEM_CONTEXT
+FOLDABLE_DEVICE_MECHANICALS,Foldable-device hinge / precision-mechanical demand,Foldable_Devices,005930.KS,Samsung Electronics,KR,^KS11,DEMAND_CONTEXT
+FOLDABLE_DEVICE_MECHANICALS,Foldable-device hinge / precision-mechanical demand,Foldable_Devices,1810.HK,Xiaomi,HK,^HSI,DEMAND_CONTEXT
+POLYESTER_PET_CHAIN,Polyester PET / fiber chain demand and spreads,Polyester_PET,IVL.BK,Indorama Ventures,TH,^SET.BK,DIRECT_PEER
+POLYESTER_PET_CHAIN,Polyester PET / fiber chain demand and spreads,Polyester_PET,EMN,Eastman Chemical,US,SPY,RELATED_PEER
+POLYESTER_PET_CHAIN,Polyester PET / fiber chain demand and spreads,Polyester_PET,3402.T,Toray Industries,JP,^N225,RELATED_PEER
+CONNECTIVITY_INTERFACE_IC_CYCLE,Connectivity / interface IC demand,Connectivity_IC,MXL,MaxLinear,US,SPY,DIRECT_PEER
+POWER_DISCRETE_CYCLE,Power-discrete / power-semiconductor demand,Power_Semiconductor,6966.T,Mitsui High-tec,JP,^N225,RELATED_PEER
+TEST_INTERFACE_CAPEX,IC test-interface / probe-board demand,Semiconductor_Test,TPRO.MI,Technoprobe,EU,^STOXX,DIRECT_PEER
