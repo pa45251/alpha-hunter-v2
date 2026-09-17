@@ -4,3 +4,27 @@ DOCUMENT_SCANNER_IMAGING_CYCLE,Document scanner / digital-imaging demand,Documen
 RETAIL_FIXTURE_SMART_BED_DEMAND,Commercial fixture / smart-bed demand,Home_Retail_Fixtures,PRPL,Purple Innovation,US,SPY,RELATED_PEER
 LUXURY_BOAT_CYCLE,Luxury boat / yacht demand cycle,Luxury_Boats,MCFT,MasterCraft Boat Holdings,US,SPY,DIRECT_PEER
 SPECIALTY_CHEMICALS_CYCLE,Specialty / industrial chemicals demand cycle,Specialty_Chemicals,BAS.DE,BASF,EU,^STOXX,RELATED_PEER
+OPTICAL_COMPONENT_DEMAND,Optical-component / photonics demand,Photonics,COHR,Coherent,US,SPY,DIRECT_PEER
+OPTICAL_COMPONENT_DEMAND,Optical-component / photonics demand,Photonics,LITE,Lumentum,US,SPY,DIRECT_PEER
+OPTICAL_COMPONENT_DEMAND,Optical-component / photonics demand,Photonics,IPGP,IPG Photonics,US,SPY,RELATED_PEER
+SEMICONDUCTOR_FAB_UTILIZATION_CONSUMABLES,Semiconductor fab-utilization / consumables demand,Semiconductor_Consumables,ENTG,Entegris,US,SPY,RELATED_PEER
+SEMICONDUCTOR_FAB_UTILIZATION_CONSUMABLES,Semiconductor fab-utilization / consumables demand,Semiconductor_Consumables,5384.T,Fujimi Incorporated,JP,^N225,DIRECT_PEER
+SEMICONDUCTOR_FAB_UTILIZATION_CONSUMABLES,Semiconductor fab-utilization / consumables demand,Semiconductor_Consumables,6146.T,DISCO,JP,^N225,RELATED_PEER
+LEO_SATCOM_DEPLOYMENT,LEO satellite / ground-infrastructure deployment,Satcom,MTSI,MACOM Technology Solutions,US,SPY,RELATED_PEER
+LEO_SATCOM_DEPLOYMENT,LEO satellite / ground-infrastructure deployment,Satcom,VSAT,Viasat,US,SPY,DEMAND_CONTEXT
+LEO_SATCOM_DEPLOYMENT,LEO satellite / ground-infrastructure deployment,Satcom,IRDM,Iridium Communications,US,SPY,DEMAND_CONTEXT
+CLINICAL_REGULATORY_COMMERCIALIZATION,Clinical / regulatory / commercialization milestones,Biotech,XBI,SPDR S&P Biotech ETF,US,SPY,RISK_CONTEXT
+CLINICAL_REGULATORY_COMMERCIALIZATION,Clinical / regulatory / commercialization milestones,Biotech,IBB,iShares Biotechnology ETF,US,SPY,RISK_CONTEXT
+SILICON_WAFER_DEMAND_PRICING,Silicon-wafer demand / pricing cycle,Silicon_Wafer,3436.T,SUMCO,JP,^N225,DIRECT_PEER
+SILICON_WAFER_DEMAND_PRICING,Silicon-wafer demand / pricing cycle,Silicon_Wafer,4063.T,Shin-Etsu Chemical,JP,^N225,DIRECT_PEER
+REINSURANCE_PRICING_CATA_CYCLE,Reinsurance pricing / catastrophe cycle,Reinsurance,SREN.SW,Swiss Re,EU,^SSMI,DIRECT_PEER
+REINSURANCE_PRICING_CATA_CYCLE,Reinsurance pricing / catastrophe cycle,Reinsurance,MUV2.DE,Munich Re,EU,^STOXX,DIRECT_PEER
+REINSURANCE_PRICING_CATA_CYCLE,Reinsurance pricing / catastrophe cycle,Reinsurance,HNR1.DE,Hannover Re,EU,^STOXX,DIRECT_PEER
+TAIWAN_AUTO_DEMAND,Taiwan auto-registration / delivery demand,Auto,7203.T,Toyota Motor,JP,^N225,DEMAND_CONTEXT
+TAIWAN_AUTO_DEMAND,Taiwan auto-registration / delivery demand,Auto,7201.T,Nissan Motor,JP,^N225,DEMAND_CONTEXT
+ANALOG_PMIC_DEMAND,Analog / PMIC demand cycle,Analog_IC,MPWR,Monolithic Power Systems,US,SPY,DIRECT_PEER
+ANALOG_PMIC_DEMAND,Analog / PMIC demand cycle,Analog_IC,POWI,Power Integrations,US,SPY,DIRECT_PEER
+ANALOG_PMIC_DEMAND,Analog / PMIC demand cycle,Analog_IC,MCHP,Microchip Technology,US,SPY,RELATED_PEER
+MOBILE_RF_FRONTEND_DEMAND,Mobile RF front-end demand,RF_Semiconductor,QRVO,Qorvo,US,SPY,DIRECT_PEER
+MOBILE_RF_FRONTEND_DEMAND,Mobile RF front-end demand,RF_Semiconductor,SWKS,Skyworks Solutions,US,SPY,DIRECT_PEER
+MOBILE_RF_FRONTEND_DEMAND,Mobile RF front-end demand,RF_Semiconductor,MTSI,MACOM Technology Solutions,US,SPY,RELATED_PEER
