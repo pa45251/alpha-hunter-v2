@@ -1,3 +1,41 @@
 code,name,economic_subindustry,primary_driver_id,secondary_driver_ids,classification_confidence,notes
 2305,全友,Document_Scanner_Imaging,DOCUMENT_SCANNER_IMAGING_CYCLE,,HIGH,Document/flatbed/ADF scanner and digital-imaging products; benchmark scanner vendors directly rather than medical imaging.
 6199,天品,Funeral_Services,FUNERAL_SERVICES_CYCLE,,HIGH,Funeral/cemetery/columbarium services; global death-care peers are direct business-model context.
+7717,萊德光電-KY,Passive_Optics_FiberLaser_Satcom,OPTICAL_COMPONENT_DEMAND,LEO_SATCOM_DEPLOYMENT,MEDIUM,Passive optical components plus fiber-laser and satellite optical exposure; validate segment mix before using peer price context.
+8103,瀚荃,Connector_Power_HighSpeed,HIGH_SPEED_CONNECTOR_DEMAND,AI_SERVER_SHIPMENTS,HIGH,Connector and cable-assembly exposure; server high-current and high-speed product mix should confirm transmission.
+2489,瑞軒,TV_Display_ODM,CONSUMER_ELECTRONICS_CYCLE,,HIGH,TV and display ODM exposure; global TV shipments panel pricing and ODM utilization are primary.
+1560,中砂,CMP_Consumables_Reclaim_Wafer,SEMICONDUCTOR_FAB_UTILIZATION_CONSUMABLES,WAFER_FAB_EQUIPMENT_CAPEX,HIGH,CMP diamond-disk consumables and reclaim-wafer demand; wafer starts and fab utilization are primary.
+6782,視陽,Contact_Lenses,CONTACT_LENS_DEMAND,,HIGH,Contact-lens manufacturer; global vision-care unit demand and product mix are direct context.
+3491,昇達科,Microwave_Satcom_LEO_Passives,LEO_SATCOM_DEPLOYMENT,,HIGH,Microwave passive components for satcom and LEO infrastructure; constellation and ground-equipment deployment are primary.
+2371,大同,Grid_Power_Equipment_Diversified,GRID_CAPEX,POWER_ELECTRONICS_CAPEX,MEDIUM,Diversified power and grid equipment exposure; local grid projects and equipment orders dominate.
+6668,中揚光,Precision_Optics_Lens_Molding,PRECISION_OPTICS_DEMAND,,HIGH,Precision optical lens and molding exposure; mobile and automotive camera demand are primary.
+3714,富采,LED_VCSEL_Compound_Semiconductor,LED_COMPONENT_CYCLE,,HIGH,LED and compound-semiconductor exposure including advanced optoelectronics; verify VCSEL and MiniLED mix separately.
+6617,共信-KY,Oncology_Local_Ablation_Biotech,CLINICAL_REGULATORY_COMMERCIALIZATION,BIOTECH_CLINICAL_RISK,LOW,Product-specific oncology regulatory and commercialization milestones dominate; biotech ETF prices are risk context only and must not validate the thesis.
+6588,東典光電,Optical_Filter_DataCenter,AI_NETWORKING_UPGRADE,,HIGH,Optical filter exposure for datacom and telecom; 800G/1.6T and PON shipment evidence should confirm demand.
+2834,臺企銀,Bank_SME,FINANCIALS_RATE_CREDIT_CYCLE,,MEDIUM,Taiwan SME-focused bank; local NIM loan growth deposit beta and credit quality dominate.
+3532,台勝科,Silicon_Wafer_200mm_300mm,SILICON_WAFER_DEMAND_PRICING,,HIGH,Semiconductor silicon-wafer exposure; 200mm/300mm shipment ASP inventory and foundry utilization are primary.
+2851,中再保,Reinsurance,REINSURANCE_PRICING_CATA_CYCLE,FINANCIALS_RATE_CREDIT_CYCLE,HIGH,Reinsurance pricing catastrophe losses combined ratio and investment yield dominate.
+6426,統新,Optical_Filter_PON_Datacom,AI_NETWORKING_UPGRADE,,HIGH,Thin-film optical-filter exposure; PON and datacom optical demand are primary transmission checks.
+2354,鴻準,Metal_Chassis_System_ODM,CONSUMER_ELECTRONICS_CYCLE,,MEDIUM,Precision metal chassis and system manufacturing exposure; consumer build cycle is primary unless server or EV mix is independently verified.
+2377,微星,PC_Gaming_Hardware,PC_DEVICE_CYCLE,AI_SERVER_RACK_BUILD,HIGH,PC gaming motherboard and GPU exposure with server optionality; PC and gaming demand remain primary.
+2845,遠東銀,Bank,FINANCIALS_RATE_CREDIT_CYCLE,,MEDIUM,Taiwan bank; NIM funding cost loan growth and credit quality dominate.
+2207,和泰車,Toyota_Distributor_Mobility,TAIWAN_AUTO_DEMAND,,HIGH,Toyota and Lexus Taiwan distribution; local registrations deliveries market share supply allocation and FX dominate.
+2426,鼎元,LED_Chip_Optosensor,LED_COMPONENT_CYCLE,,MEDIUM,LED chip and optosensor exposure; verify IR photodiode and sensing mix before extending LED peer conclusions.
+8021,尖點,PCB_Drill_Bit_Drilling_Service,HIGH_LAYER_PCB_DEMAND,,HIGH,PCB drill bits and drilling services; HDI and high-layer drilling intensity utilization and micro-drill demand are primary.
+6530,創威,Optical_Transceiver_Module,AI_NETWORKING_UPGRADE,,HIGH,Optical transceiver and module exposure; 800G/1.6T and hyperscaler networking demand are primary.
+3339,泰谷,III_V_Epitaxy_Laser_Diode,OPTICAL_COMPONENT_DEMAND,AI_NETWORKING_UPGRADE,MEDIUM,III-V epitaxy and laser-diode exposure; optical component orders must confirm transmission rather than generic AI-networking strength.
+2201,裕隆,Auto_Manufacturing_EV_Investment,TAIWAN_AUTO_DEMAND,,MEDIUM,Taiwan auto manufacturing and mobility-investment exposure; local registrations deliveries and investment contribution dominate.
+6291,沛亨,Power_Management_IC,ANALOG_PMIC_DEMAND,CONSUMER_ELECTRONICS_CYCLE,HIGH,Analog power-management IC exposure; PMIC units design wins channel inventory and end-market shipments are primary.
+2855,統一證,Brokerage,CAPITAL_MARKETS_ACTIVITY,,HIGH,Securities brokerage; Taiwan trading turnover financing balances IPO activity and wealth-management AUM are direct drivers.
+3264,欣銓,Semiconductor_Test_OSAT,ADVANCED_PACKAGING_TEST_CAPEX,,HIGH,Wafer sort and final-test OSAT exposure; test utilization and customer semiconductor volumes are primary.
+5443,均豪,Advanced_Packaging_AOI_Equipment,ADVANCED_PACKAGING_TEST_CAPEX,WAFER_FAB_EQUIPMENT_CAPEX,HIGH,Advanced-packaging automation and AOI equipment; CoWoS/FOPLP capex equipment orders and backlog are primary.
+8431,匯鑽科,Precision_Surface_Treatment_LiquidCooling,AI_SERVER_THERMAL_DENSITY,DATACENTER_COOLING_INFRA,MEDIUM,Precision surface-treatment exposure with liquid-cooling optionality; require liquid-cooling revenue or order evidence before using AI cooling peers.
+3105,穩懋,GaAs_RF_Foundry,MOBILE_RF_FRONTEND_DEMAND,,HIGH,GaAs RF foundry exposure; handset units RF content per device and GaAs utilization are primary.
+2885,元大金,Brokerage_ETF_Financial_Holding,CAPITAL_MARKETS_ACTIVITY,FINANCIALS_RATE_CREDIT_CYCLE,HIGH,Brokerage and ETF-heavy financial holding; Taiwan turnover ETF AUM flows and securities market share dominate.
+2466,冠西電,Optocoupler_Relay_OpticalModule,POWER_ELECTRONICS_CAPEX,,MEDIUM,Optocoupler relay and optical-module mix; industrial power-electronics demand is primary and optical segments require separate validation.
+2455,全新,III_V_Epitaxy_RF_Optical,MOBILE_RF_FRONTEND_DEMAND,AI_NETWORKING_UPGRADE,HIGH,GaAs and InP epitaxy exposure across RF and optical products; RF handset demand is primary with optical networking as secondary.
+6005,群益證,Brokerage,CAPITAL_MARKETS_ACTIVITY,,HIGH,Securities brokerage; Taiwan trading turnover financing balances and capital-market activity are direct drivers.
+6257,矽格,Semiconductor_Test_OSAT,ADVANCED_PACKAGING_TEST_CAPEX,,HIGH,Semiconductor test and OSAT exposure; test utilization HPC RF auto and customer volumes are primary.
+6933,AMAX-KY,AI_HPC_Server_Integrator,AI_SERVER_RACK_BUILD,AI_SERVER_SHIPMENTS,HIGH,AI and HPC server integration exposure; GPU server rack shipments accelerator supply and backlog are primary.
+4770,上品,HighPurity_Fluoropolymer_Fab_Chemical_Delivery,WAFER_FAB_EQUIPMENT_CAPEX,SEMICONDUCTOR_MATERIALS_CAPEX,HIGH,High-purity PFA chemical-delivery systems for semiconductor fabs; fab construction and wet-process capex are primary.
+4927,泰鼎-KY,PCB_Diversified_Consumer_Auto,CONSUMER_ELECTRONICS_CYCLE,HIGH_LAYER_PCB_DEMAND,MEDIUM,Diversified PCB exposure across display PC communications and auto; consumer cycle is primary until high-layer mix is independently verified.
