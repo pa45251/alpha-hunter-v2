@@ -33,7 +33,7 @@ def _feature_row(ticker="A.TW", **overrides):
     return row
 
 
-def _selection_row(ticker, stage, score=0.5, early=0.5, turnover=200_000_000.0, median=None, **overrides):
+def _selection_row(ticker, stage, score=0.5, early=0.5, turnover=400_000_000.0, median=None, **overrides):
     reaction = {
         "EARLY": "PRE_CONFIRMATION",
         "CONFIRMED": "CONFIRMING",
@@ -144,8 +144,8 @@ def test_median_turnover_and_capacity_are_diagnostics():
 
 def test_median_turnover_is_now_a_hard_liquidity_gate():
     stocks = pd.DataFrame([
-        _selection_row("GOOD.TW", "CONFIRMED", score=0.9, turnover=200_000_000.0, median=80_000_000.0),
-        _selection_row("SPIKE.TW", "CONFIRMED", score=1.0, turnover=300_000_000.0, median=40_000_000.0),
+        _selection_row("GOOD.TW", "CONFIRMED", score=0.9, turnover=400_000_000.0, median=200_000_000.0),
+        _selection_row("SPIKE.TW", "CONFIRMED", score=1.0, turnover=500_000_000.0, median=100_000_000.0),
     ])
     out = select_taiwan_candidates(stocks, TaiwanScanConfig(top_candidates=10))
     assert out["ticker"].tolist() == ["GOOD.TW"]
