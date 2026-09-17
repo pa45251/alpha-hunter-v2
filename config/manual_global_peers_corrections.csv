@@ -28,3 +28,7 @@ ANALOG_PMIC_DEMAND,Analog / PMIC demand cycle,Analog_IC,MCHP,Microchip Technolog
 MOBILE_RF_FRONTEND_DEMAND,Mobile RF front-end demand,RF_Semiconductor,QRVO,Qorvo,US,SPY,DIRECT_PEER
 MOBILE_RF_FRONTEND_DEMAND,Mobile RF front-end demand,RF_Semiconductor,SWKS,Skyworks Solutions,US,SPY,DIRECT_PEER
 MOBILE_RF_FRONTEND_DEMAND,Mobile RF front-end demand,RF_Semiconductor,MTSI,MACOM Technology Solutions,US,SPY,RELATED_PEER
+CONSUMER_ELECTRONICS_CYCLE,Consumer electronics demand cycle,Consumer_Tech,6758.T,Sony Group,JP,^N225,DEMAND_CONTEXT
+CONSUMER_ELECTRONICS_CYCLE,Consumer electronics demand cycle,Consumer_Tech,005930.KS,Samsung Electronics,KR,^KS11,DEMAND_CONTEXT
+POWER_ELECTRONICS_CAPEX,Power equipment / electronics capex,Power,VSH,Vishay Intertechnology,US,SPY,RELATED_PEER
+POWER_ELECTRONICS_CAPEX,Power equipment / electronics capex,Power,LFUS,Littelfuse,US,SPY,RELATED_PEER
