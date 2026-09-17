@@ -130,3 +130,63 @@ def test_new_causal_taxonomy_rows_encode_hard_indicators_and_counter_evidence():
 
     assert "must not validate" in by_driver.loc["CLINICAL_REGULATORY_COMMERCIALIZATION", "counter_evidence_required"].lower()
     assert "generic ai strength is not confirmation" in by_driver.loc["OPTICAL_COMPONENT_DEMAND", "counter_evidence_required"].lower()
+
+
+def test_current_scan_26_unmapped_candidates_are_curated():
+    m = load_industry_map().set_index("code")
+    expected = {
+        "4908": "OPTICAL_COMPONENT_DEMAND",
+        "8111": "LED_COMPONENT_CYCLE",
+        "1301": "PETROCHEMICAL_MARGIN_CYCLE",
+        "6505": "REFINING_MARGIN_CYCLE",
+        "3141": "DISPLAY_DRIVER_IC_CYCLE",
+        "3374": "WAFER_LEVEL_PACKAGING_DEMAND",
+        "8358": "HIGH_SPEED_PCB_MATERIALS_DEMAND",
+        "6290": "DATACENTER_POWER_INFRA",
+        "6209": "PRECISION_OPTICS_DEMAND",
+        "6526": "CONNECTIVITY_INTERFACE_IC_CYCLE",
+        "1303": "HIGH_SPEED_PCB_MATERIALS_DEMAND",
+        "2421": "AI_SERVER_THERMAL_DENSITY",
+        "2409": "DISPLAY_PANEL_CYCLE",
+        "6271": "IMAGE_SENSOR_PACKAGING_DEMAND",
+        "2454": "MOBILE_SOC_DEMAND",
+        "6805": "FOLDABLE_DEVICE_MECHANICALS",
+        "6547": "CLINICAL_REGULATORY_COMMERCIALIZATION",
+        "3234": "OPTICAL_COMPONENT_DEMAND",
+        "2351": "POWER_DISCRETE_CYCLE",
+        "7828": "TEST_INTERFACE_CAPEX",
+        "1326": "PETROCHEMICAL_MARGIN_CYCLE",
+        "1409": "POLYESTER_PET_CHAIN",
+        "5386": "IT_DISTRIBUTION_CYCLE",
+        "2357": "PC_DEVICE_CYCLE",
+        "3167": "HIGH_LAYER_PCB_DEMAND",
+        "5340": "HIGH_SPEED_PCB_MATERIALS_DEMAND",
+    }
+    assert len(expected) == 26
+    for code, driver in expected.items():
+        assert m.loc[code, "primary_driver_id"] == driver
+        assert m.loc[code, "economic_subindustry"] != "UNMAPPED"
+        assert m.loc[code, "classification_confidence"] in {"LOW", "MEDIUM", "HIGH"}
+
+
+def test_current_scan_new_driver_peer_baskets_are_explicit():
+    p = load_peer_map()
+    peers = p.groupby("driver_id")["ticker"].apply(set).to_dict()
+    assert {"WLK", "LYB", "BAS.DE"} <= peers["PETROCHEMICAL_MARGIN_CYCLE"]
+    assert {"VLO", "MPC", "PSX"} <= peers["REFINING_MARGIN_CYCLE"]
+    assert {"AMKR", "ASX"} <= peers["WAFER_LEVEL_PACKAGING_DEMAND"]
+    assert {"5706.T", "5016.T", "3110.T"} <= peers["HIGH_SPEED_PCB_MATERIALS_DEMAND"]
+    assert {"LPL", "000725.SZ"} <= peers["DISPLAY_PANEL_CYCLE"]
+    assert {"6758.T", "ON", "STM", "AMKR"} <= peers["IMAGE_SENSOR_PACKAGING_DEMAND"]
+    assert {"QCOM", "005930.KS", "ARM"} <= peers["MOBILE_SOC_DEMAND"]
+    assert {"005930.KS", "1810.HK"} <= peers["FOLDABLE_DEVICE_MECHANICALS"]
+    assert {"IVL.BK", "EMN", "3402.T"} <= peers["POLYESTER_PET_CHAIN"]
+
+
+def test_sensitive_current_mappings_do_not_overclaim_theme_exposure():
+    m = load_industry_map().set_index("code")
+    assert m.loc["2454", "primary_driver_id"] == "MOBILE_SOC_DEMAND"
+    assert m.loc["6805", "primary_driver_id"] == "FOLDABLE_DEVICE_MECHANICALS"
+    assert "do not infer liquid-cooling" in m.loc["6805", "notes"].lower()
+    assert m.loc["6547", "primary_driver_id"] == "CLINICAL_REGULATORY_COMMERCIALIZATION"
+    assert "must not validate" in m.loc["6547", "notes"].lower()
