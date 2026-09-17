@@ -2,13 +2,13 @@
   "contract": "ALPHA_HUNTER_CANONICAL_DATA_CONTRACT",
   "schema_version": "2.6",
   "scanner_version": "2.6.1",
-  "run_id": "20260917T202227+0800-6756dd42",
+  "run_id": "20260917T205830+0800-0fefbbf2",
   "repository": "pa45251/alpha-hunter-v2",
   "branch": "main",
   "canonical_output_directory": "https://github.com/pa45251/alpha-hunter-v2/tree/main/output",
   "canonical_manifest_raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/manifest.json",
-  "generated_at_utc": "2026-09-17T12:26:09.497489+00:00",
-  "generated_at_taipei": "2026-09-17T20:26:09.497506+08:00",
+  "generated_at_utc": "2026-09-17T13:16:08.704484+00:00",
+  "generated_at_taipei": "2026-09-17T21:16:08.704503+08:00",
   "status": "PASS",
   "missing_required_files": [],
   "pipeline_checks": {
@@ -34,7 +34,7 @@
       "member_count": 503,
       "sha256": "2f340b4557af4525bb170c7e349251fd922bb1622eb2508940a472e4edf943cc",
       "status": "PARTIAL_PRICE_DATA",
-      "age_days": 5.18,
+      "age_days": 5.2,
       "error": "",
       "discovery_count": 433,
       "membership_status": "READY",
@@ -485,7 +485,7 @@
         },
         "errors": {},
         "deadline_reached": false,
-        "elapsed_seconds": 27.429
+        "elapsed_seconds": 27.56
       }
     },
     "scanned_count": 220,
@@ -532,15 +532,15 @@
       "name": "global_scan_quality.json",
       "relative_path": "output/global_scan_quality.json",
       "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/global_scan_quality.json",
-      "sha256": "8674cf00f64224b7f6444acf110cf4e2a1eb75e925da45b556aa6011a83d6772",
-      "bytes": 13248
+      "sha256": "10b8dd71e0aeaefd65b4551737d81137bf942c6894431a9bd33734b1bc0e6b96",
+      "bytes": 13246
     },
     {
       "name": "discovery_snapshot.csv",
       "relative_path": "output/discovery_snapshot.csv",
       "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/discovery_snapshot.csv",
-      "sha256": "90b3b0bf1e2a65bc96d6d054ca9200337ec2382ffa0d1e7b6539c3288227c7e1",
-      "bytes": 250262
+      "sha256": "4cc4cf273264ca90aae47b8027aba58ca1bad84a480ced6970c1e1babe9d0db7",
+      "bytes": 250276
     },
     {
       "name": "discovery_research_queue.csv",
@@ -553,15 +553,15 @@
       "name": "risk_regime.json",
       "relative_path": "output/risk_regime.json",
       "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/risk_regime.json",
-      "sha256": "3192b94afc742225811a77ea590d2e2c6f797428e7dded1a525dc7dfef2ea9de",
+      "sha256": "520d770dfacf64a68cc55c955b2b9becd8f57afd1a5f6fb049e247a30d6dde4d",
       "bytes": 2426
     },
     {
       "name": "market_snapshot.csv",
       "relative_path": "output/market_snapshot.csv",
       "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/market_snapshot.csv",
-      "sha256": "a758930a66346abd6abb12a7685a731d8f3b6dfe6d6eae96e722d80074a5836a",
-      "bytes": 196444
+      "sha256": "e3e5ea944d1c926ae93f51076e10ff9cfed58d7234a2c6dec204069a31b501b9",
+      "bytes": 196437
     },
     {
       "name": "theme_breadth.csv",
@@ -574,21 +574,21 @@
       "name": "leader_registry.csv",
       "relative_path": "output/leader_registry.csv",
       "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/leader_registry.csv",
-      "sha256": "4f4776c10c4d2fcb66aa782aa524d11981d0877ef74c2f17952db7e52fc75b91",
+      "sha256": "d120e44017c68dd69df4eb7f2f4a067d9fca40281d31dc9aa6c0ce020dab5a1c",
       "bytes": 43613
     },
     {
       "name": "feature_history.csv",
       "relative_path": "output/feature_history.csv",
       "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/feature_history.csv",
-      "sha256": "e400054fd244844305138cf9f500ae06e94cf38c2aa1e5afb948b8be95709855",
-      "bytes": 971115
+      "sha256": "0a85a6b46c96b1cf2d688b645c599c25832ae5c6d74b0faec37f9086b5a55599",
+      "bytes": 971114
     },
     {
       "name": "market_snapshot.json",
       "relative_path": "output/market_snapshot.json",
       "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/market_snapshot.json",
-      "sha256": "d38bd3eb9be84423714891de69c6b9af2ad4fdbdadf5cd5c76daea2ba129b0ae",
+      "sha256": "64729727b4e3e091e6f641ac16aa392576d8e5cc1e4b536e8435d22c79d61bdc",
       "bytes": 1634641
     },
     {
@@ -623,28 +623,28 @@
       "name": "causal_research_queue.csv",
       "relative_path": "output/causal_research_queue.csv",
       "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/causal_research_queue.csv",
-      "sha256": "65a3ffbf9d593448c8c2aeb13d68a6d61546a9ad21a4980d61564992825f2509",
+      "sha256": "df3e27abfb453f5d37fd9e49750c134d56083e3b232f941887d0078f6efd47e0",
       "bytes": 14910
     },
     {
       "name": "reverse_transmission_candidates.csv",
       "relative_path": "output/reverse_transmission_candidates.csv",
       "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/reverse_transmission_candidates.csv",
-      "sha256": "ce71808b03646829e37b41bda7d15667b9b4cba3ce3a26e8d36681acc2286636",
+      "sha256": "f2e23b173b9b176d7cbc7b8482db05312cafcb16ded63802ae88286682aee95d",
       "bytes": 21557
     },
     {
       "name": "structural_matches.csv",
       "relative_path": "output/structural_matches.csv",
       "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/structural_matches.csv",
-      "sha256": "5b86878deeadae11f7083ecfc2f64ed16ed27640f049048b84aaf17fb0cad4f7",
+      "sha256": "75bf7fbba80a8d4f890ab01032062c6451f538623f109ed6023a95cb03de5f58",
       "bytes": 30197
     },
     {
       "name": "causal_graph_audit.csv",
       "relative_path": "output/causal_graph_audit.csv",
       "raw_url": "https://raw.githubusercontent.com/pa45251/alpha-hunter-v2/main/output/causal_graph_audit.csv",
-      "sha256": "485c0293197155be3e4613adb24b63f85398c2466064eb54b5a4589f696fef77",
+      "sha256": "dbfcbfd4a9916642ba548c8bbf2d270dd97a062365429644e04e6421820a3e89",
       "bytes": 23551
     },
     {
