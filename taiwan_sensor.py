@@ -36,9 +36,9 @@ class TaiwanScanConfig:
     primary_research_cap: int = 100
     min_price: float = 5.0
     # Liquidity must be durable, not created by one or two abnormal volume days.
-    min_turnover20: float = 100_000_000.0
+    min_turnover20: float = 300_000_000.0
     # Defaults to 50% of the configured mean-turnover floor. With the production
-    # mean floor of TWD 100m this is TWD 50m; custom configs scale coherently.
+    # mean floor of TWD 300m this is TWD 150m; custom configs scale coherently.
     min_median_turnover20: float | None = None
     # When qualified names exceed research capacity, EARLY names may occupy at most
     # this fraction. This is a ceiling, never a reserved quota.
@@ -330,7 +330,7 @@ def _ensure_selection_columns(stocks: pd.DataFrame) -> pd.DataFrame:
 
 def _eligibility_masks(x: pd.DataFrame, cfg: TaiwanScanConfig) -> tuple[pd.Series, pd.Series, pd.Series]:
     avg_turnover = pd.to_numeric(_col(x, "avg_turnover20_twd", 0), errors="coerce").fillna(0)
-    avg_liquid = avg_turnover >= cfg.min_turnover20
+    avg_liquid = avg_turnover > cfg.min_turnover20
 
     # Archived/test rows from before scanner vNext do not have the median field.
     # For backward compatibility only, fall back to their already-known mean.
