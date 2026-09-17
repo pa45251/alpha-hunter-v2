@@ -37,7 +37,9 @@ class TaiwanScanConfig:
     min_price: float = 5.0
     # Liquidity must be durable, not created by one or two abnormal volume days.
     min_turnover20: float = 100_000_000.0
-    min_median_turnover20: float = 50_000_000.0
+    # Defaults to 50% of the configured mean-turnover floor. With the production
+    # mean floor of TWD 100m this is TWD 50m; custom configs scale coherently.
+    min_median_turnover20: float | None = None
     # When qualified names exceed research capacity, EARLY names may occupy at most
     # this fraction. This is a ceiling, never a reserved quota.
     early_max_fraction: float = 0.30
@@ -45,6 +47,10 @@ class TaiwanScanConfig:
 
     def __post_init__(self) -> None:
         self.top_candidates = min(max(0, int(self.top_candidates)), max(0, int(self.primary_research_cap)))
+        if self.min_median_turnover20 is None:
+            self.min_median_turnover20 = 0.5 * float(self.min_turnover20)
+        else:
+            self.min_median_turnover20 = max(0.0, float(self.min_median_turnover20))
         self.early_max_fraction = min(1.0, max(0.0, float(self.early_max_fraction)))
 
 
