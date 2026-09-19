@@ -308,11 +308,16 @@ def build_manual_queue(candidates: pd.DataFrame, industry_map: pd.DataFrame, dri
     x = x.merge(m[keep], on="code", how="left")
     x["economic_subindustry"] = x["economic_subindustry"].fillna("UNMAPPED")
     x["primary_driver_id"] = x["primary_driver_id"].fillna("UNMAPPED")
-    x["secondary_driver_ids"] = x.get("secondary_driver_ids", "").fillna("")
-    x["base_driver_ids"] = x.get("base_driver_ids", "").fillna("")
-    x["thesis_driver_ids"] = x.get("thesis_driver_ids", "").fillna("")
+    for column in ("secondary_driver_ids", "base_driver_ids", "thesis_driver_ids"):
+        if column not in x.columns:
+            x[column] = ""
+        else:
+            x[column] = x[column].fillna("")
     x["classification_confidence"] = x["classification_confidence"].fillna("UNMAPPED")
-    x["mapping_source"] = x.get("mapping_source", "UNMAPPED").fillna("UNMAPPED")
+    if "mapping_source" not in x.columns:
+        x["mapping_source"] = "LEGACY_MANUAL_MAP"
+    else:
+        x["mapping_source"] = x["mapping_source"].fillna("UNMAPPED")
     x["manual_deep_research_required"] = True
 
     if not driver_breadth.empty:
