@@ -142,3 +142,55 @@ DISPLAY_PANEL_CYCLE,Display panel demand / pricing and utilization cycle,Display
 DISPLAY_DRIVER_IC_CYCLE,Display driver IC / TCON demand cycle,Display_IC,035900.KS,LX Semicon,KR,^KS11,DIRECT_PEER
 INDUSTRIAL_CHEMICAL_CYCLE,Industrial / specialty chemical demand cycle,Chemicals,DD,DuPont,US,SPY,RELATED_PEER
 PASSIVE_COMPONENT_CYCLE,Passive component demand / inventory cycle,Passive_Components,6762.T,TDK,JP,^N225,RELATED_PEER
+SEMICONDUCTOR_TEST_CYCLE,Semiconductor test / OSAT utilization cycle,Semiconductor_Test,6857.T,Advantest,JP,^N225,DIRECT_PEER
+SEMICONDUCTOR_TEST_CYCLE,Semiconductor test / OSAT utilization cycle,Semiconductor_Test,TER,Teradyne,US,SPY,DIRECT_PEER
+SEMICONDUCTOR_TEST_CYCLE,Semiconductor test / OSAT utilization cycle,Semiconductor_Test,COHU,Cohu,US,SPY,DIRECT_PEER
+ASIC_DESIGN_SERVICE_CYCLE,ASIC design-service / turnkey cycle,ASIC_Design,AVGO,Broadcom,US,SPY,RELATED_PEER
+ASIC_DESIGN_SERVICE_CYCLE,ASIC design-service / turnkey cycle,ASIC_Design,MRVL,Marvell Technology,US,SPY,RELATED_PEER
+SERVER_HARDWARE_CYCLE,Server / enterprise compute hardware cycle,Server_Hardware,DELL,Dell Technologies,US,SPY,DIRECT_PEER
+SERVER_HARDWARE_CYCLE,Server / enterprise compute hardware cycle,Server_Hardware,HPE,Hewlett Packard Enterprise,US,SPY,DIRECT_PEER
+SERVER_HARDWARE_CYCLE,Server / enterprise compute hardware cycle,Server_Hardware,SMCI,Super Micro Computer,US,SPY,DIRECT_PEER
+NETWORKING_CONNECTIVITY_CYCLE,Networking / connectivity semiconductor cycle,Networking,AVGO,Broadcom,US,SPY,DIRECT_PEER
+NETWORKING_CONNECTIVITY_CYCLE,Networking / connectivity semiconductor cycle,Networking,MRVL,Marvell Technology,US,SPY,DIRECT_PEER
+NETWORK_EQUIPMENT_CYCLE,Networking equipment / broadband CPE cycle,Networking_Equipment,CSCO,Cisco Systems,US,SPY,DIRECT_PEER
+NETWORK_EQUIPMENT_CYCLE,Networking equipment / broadband CPE cycle,Networking_Equipment,ANET,Arista Networks,US,SPY,DIRECT_PEER
+OPTICAL_PHOTONICS_CYCLE,Optical / photonics component cycle,Photonics,LITE,Lumentum,US,SPY,DIRECT_PEER
+OPTICAL_PHOTONICS_CYCLE,Optical / photonics component cycle,Photonics,COHR,Coherent,US,SPY,DIRECT_PEER
+PCB_MATERIALS_CYCLE,PCB / laminate / interconnect materials cycle,PCB,TTMI,TTM Technologies,US,SPY,DIRECT_PEER
+THERMAL_MANAGEMENT_CYCLE,Thermal-management component cycle,Thermal,VRT,Vertiv,US,SPY,RELATED_PEER
+THERMAL_MANAGEMENT_CYCLE,Thermal-management component cycle,Thermal,MOD,Modine Manufacturing,US,SPY,DIRECT_PEER
+POWER_CONNECTIVITY_CYCLE,Power interconnect / protection component cycle,Power_Components,APH,Amphenol,US,SPY,DIRECT_PEER
+POWER_CONNECTIVITY_CYCLE,Power interconnect / protection component cycle,Power_Components,TEL,TE Connectivity,US,SPY,DIRECT_PEER
+SEMICONDUCTOR_INFRA_SERVICES_CYCLE,Semiconductor infrastructure / analysis service cycle,Semiconductor_Services,ENTG,Entegris,US,SPY,RELATED_PEER
+SEMICONDUCTOR_INFRA_SERVICES_CYCLE,Semiconductor infrastructure / analysis service cycle,Semiconductor_Services,KLAC,KLA,US,SPY,RELATED_PEER
+SEMICONDUCTOR_EQUIPMENT_CYCLE,Semiconductor equipment / process-tool cycle,Semiconductor_Equipment,AMAT,Applied Materials,US,SPY,DIRECT_PEER
+SEMICONDUCTOR_EQUIPMENT_CYCLE,Semiconductor equipment / process-tool cycle,Semiconductor_Equipment,LRCX,Lam Research,US,SPY,DIRECT_PEER
+SEMICONDUCTOR_EQUIPMENT_CYCLE,Semiconductor equipment / process-tool cycle,Semiconductor_Equipment,KLAC,KLA,US,SPY,DIRECT_PEER
+FOUNDRY_CYCLE,Semiconductor foundry utilization / wafer cycle,Foundry,TSM,Taiwan Semiconductor Manufacturing,US,SPY,DIRECT_PEER
+FOUNDRY_CYCLE,Semiconductor foundry utilization / wafer cycle,Foundry,GFS,GlobalFoundries,US,SPY,DIRECT_PEER
+MEMORY_SEMICONDUCTOR_CYCLE,Memory semiconductor demand / pricing cycle,Memory,MU,Micron Technology,US,SPY,DIRECT_PEER
+MEMORY_SEMICONDUCTOR_CYCLE,Memory semiconductor demand / pricing cycle,Memory,000660.KS,SK hynix,KR,^KS11,DIRECT_PEER
+STORAGE_MEMORY_PRODUCTS_CYCLE,Storage / memory module product cycle,Storage,SNDK,Sandisk,US,SPY,RELATED_PEER
+STORAGE_MEMORY_PRODUCTS_CYCLE,Storage / memory module product cycle,Storage,MU,Micron Technology,US,SPY,RELATED_PEER
+GRID_ELECTRICAL_EQUIPMENT_CYCLE,Grid electrical equipment / transformer cycle,Grid_Equipment,GEV,GE Vernova,US,SPY,DIRECT_PEER
+GRID_ELECTRICAL_EQUIPMENT_CYCLE,Grid electrical equipment / transformer cycle,Grid_Equipment,ETN,Eaton,US,SPY,DIRECT_PEER
+WIRE_CABLE_CYCLE,Wire / cable demand and copper pass-through cycle,Wire_Cable,PRY.MI,Prysmian,IT,^STOXX50E,DIRECT_PEER
+UPS_POWER_SYSTEMS_CYCLE,UPS / power conversion systems cycle,Power_Systems,ETN,Eaton,US,SPY,DIRECT_PEER
+UPS_POWER_SYSTEMS_CYCLE,UPS / power conversion systems cycle,Power_Systems,VRT,Vertiv,US,SPY,DIRECT_PEER
+DRY_BULK_SHIPPING_CYCLE,Dry-bulk shipping / fleet cycle,Dry_Bulk,SBLK,Star Bulk Carriers,US,SPY,DIRECT_PEER
+DRY_BULK_SHIPPING_CYCLE,Dry-bulk shipping / fleet cycle,Dry_Bulk,GOGL,Golden Ocean Group,US,SPY,DIRECT_PEER
+CYBERSECURITY_IT_SERVICES_CYCLE,Cybersecurity / enterprise IT services cycle,Cybersecurity,PANW,Palo Alto Networks,US,SPY,RELATED_PEER
+CYBERSECURITY_IT_SERVICES_CYCLE,Cybersecurity / enterprise IT services cycle,Cybersecurity,CRWD,CrowdStrike,US,SPY,RELATED_PEER
+BIOPHARMA_COMMERCIALIZATION_CYCLE,Biopharma commercialization / pipeline cycle,Biopharma,XBI,SPDR S&P Biotech ETF,US,SPY,FACTOR_PROXY
+BIOPHARMA_COMMERCIALIZATION_CYCLE,Biopharma commercialization / pipeline cycle,Biopharma,IBB,iShares Biotechnology ETF,US,SPY,FACTOR_PROXY
+SOLAR_MANUFACTURING_CYCLE,Solar manufacturing / equipment cycle,Solar,FSLR,First Solar,US,SPY,RELATED_PEER
+SOLAR_MANUFACTURING_CYCLE,Solar manufacturing / equipment cycle,Solar,JKS,JinkoSolar,US,SPY,RELATED_PEER
+DISCRETE_POWER_SEMI_CYCLE,Discrete / power semiconductor demand cycle,Power_Semiconductor,ON,onsemi,US,SPY,DIRECT_PEER
+DISCRETE_POWER_SEMI_CYCLE,Discrete / power semiconductor demand cycle,Power_Semiconductor,IFX.DE,Infineon Technologies,DE,^STOXX50E,DIRECT_PEER
+CONSUMER_ELECTRONICS_CYCLE,Consumer electronics demand cycle,Consumer_Tech,AAPL,Apple,US,SPY,RELATED_PEER
+EMBEDDED_ETHERNET_IC_CYCLE,Embedded Ethernet / connectivity IC demand cycle,Networking_IC,MCHP,Microchip Technology,US,SPY,RELATED_PEER
+POWER_ELECTRONICS_CAPEX,Power equipment / electronics capex,Power,ETN,Eaton,US,SPY,RELATED_PEER
+SEMICONDUCTOR_FACILITY_BUILDOUT,Semiconductor fab facility / clean utility buildout,Semiconductor_Infrastructure,AMAT,Applied Materials,US,SPY,RELATED_PEER
+SOLAR_CELL_CAPEX_TECH_UPGRADE,Solar-cell manufacturing capex / technology upgrade,Solar,JKS,JinkoSolar,US,SPY,RELATED_PEER
+RENEWABLE_ENERGY_EPC_BUILDOUT,Renewable energy EPC / power infrastructure buildout,Renewable_Energy,PWR,Quanta Services,US,SPY,RELATED_PEER
+LED_COMPONENT_CYCLE,LED component / lighting demand cycle,LED,AMS.SW,ams OSRAM,CH,^STOXX50E,RELATED_PEER
