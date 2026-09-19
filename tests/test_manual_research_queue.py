@@ -163,3 +163,12 @@ def test_new_candidate_mapping_uses_structural_source_not_legacy_fallback():
     for code, driver in expected.items():
         assert mapping.loc[code, "primary_driver_id"] == driver
         assert mapping.loc[code, "mapping_source"] == "STRUCTURAL_EXPOSURE_GRAPH"
+
+
+def test_every_enabled_structural_driver_has_international_peer_context():
+    graph = pd.read_csv(Path("config/structural_exposure_graph.csv"), dtype={"taiwan_code": str})
+    graph = graph[pd.to_numeric(graph["enabled"], errors="coerce").fillna(0).eq(1)]
+    peers = pd.read_csv(Path("config/manual_global_peers.csv"))
+    used = set(graph["driver_id"].dropna().astype(str))
+    peer_drivers = set(peers["driver_id"].dropna().astype(str))
+    assert used <= peer_drivers
