@@ -131,3 +131,10 @@ def test_same_run_csv_tampering_is_rejected(tmp_path, monkeypatch):
     csv.write_text('ticker\nALTERED\n')
     with pytest.raises(RuntimeError, match='CONTENT_MISMATCH'):
         ce.assert_output_lineage(['decision_packet.json', 'global_alignment_v2.json'], tmp_path)
+
+
+def test_scanner_only_mode_does_not_expose_stale_action_board():
+    text = Path("output/action_board.md").read_text(encoding="utf-8")
+    assert "Action Board (Retired)" in text
+    assert "scanner-only manual research mode" in text
+    assert "Run:" not in text
