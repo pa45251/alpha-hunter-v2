@@ -2,7 +2,7 @@ from pathlib import Path
 
 import pandas as pd
 
-from manual_research_queue import build_driver_breadth, build_manual_queue
+from manual_research_queue import build_driver_breadth, build_manual_queue, load_industry_map
 
 
 def test_priority_industry_ontology_has_expected_subindustries():
@@ -131,3 +131,35 @@ def test_missing_relative_strength_fails_closed():
     ])
     out = build_driver_breadth(live, peers)
     assert out.iloc[0]["peer_signal"] == "DATA_UNAVAILABLE"
+
+
+def test_canonical_structural_graph_covers_current_taiwan_candidates():
+    candidates = pd.read_csv(Path("output/taiwan_candidates.csv"), dtype={"code": str})
+    mapping = load_industry_map().set_index("code")
+    codes = candidates["code"].astype(str).str.zfill(4)
+    missing = [code for code in codes if code not in mapping.index]
+    assert missing == []
+
+
+def test_manual_research_mapping_preserves_base_and_thesis_layers():
+    mapping = load_industry_map().set_index("code")
+    row = mapping.loc["3035"]
+    assert row["mapping_source"] == "STRUCTURAL_EXPOSURE_GRAPH"
+    assert "ASIC_DESIGN_SERVICE_CYCLE" in row["base_driver_ids"].split(";")
+    assert "ADVANCED_PACKAGING_TEST_CAPEX" in row["thesis_driver_ids"].split(";")
+    assert row["primary_driver_id"] == "ADVANCED_PACKAGING_TEST_CAPEX"
+
+
+def test_new_candidate_mapping_uses_structural_source_not_legacy_fallback():
+    mapping = load_industry_map().set_index("code")
+    expected = {
+        "2449": "SEMICONDUCTOR_TEST_CYCLE",
+        "6533": "ASIC_DESIGN_SERVICE_CYCLE",
+        "4979": "OPTICAL_COMPONENT_DEMAND",
+        "6278": "ELECTRONICS_MANUFACTURING_SERVICES_CYCLE",
+        "2395": "INDUSTRIAL_EDGE_COMPUTING_CYCLE",
+        "8932": "ENTERPRISE_SOFTWARE_CYCLE",
+    }
+    for code, driver in expected.items():
+        assert mapping.loc[code, "primary_driver_id"] == driver
+        assert mapping.loc[code, "mapping_source"] == "STRUCTURAL_EXPOSURE_GRAPH"
