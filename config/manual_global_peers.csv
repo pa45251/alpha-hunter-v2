@@ -221,3 +221,4 @@ GENOMICS_RISK_APPETITE,Genomics risk appetite,Biopharma,XBI,SPDR S&P Biotech ETF
 COPPER_COMMODITY_TRADE_INVENTORY,Copper commodity / trade / inventory,Commodities,COPX,Global X Copper Miners ETF,US,SPY,FACTOR_PROXY
 NUCLEAR_GRID_SECOND_ORDER,Nuclear / grid second-order capex,Grid_Equipment,ETN,Eaton,US,SPY,RELATED_PEER
 OPTOELECTRONIC_IMAGING_EQUIPMENT_CYCLE,Optoelectronic imaging / scanner equipment cycle,Optoelectronic_Equipment,CGNX,Cognex,US,SPY,RELATED_PEER
+SEMICONDUCTOR_FAB_UTILIZATION_CONSUMABLES,Semiconductor fab-utilization / consumables demand,Semiconductor_Consumables,LIN,Linde,US,SPY,RELATED_PEER
