@@ -113,3 +113,15 @@ AI_SERVER_RACK_BUILD,AI rack / server system buildout,AI_Server,APH,Amphenol,US,
 AI_SERVER_RACK_BUILD,AI rack / server system buildout,AI_Server,TEL,TE Connectivity,US,SPY,RELATED_PEER
 DATACENTER_POWER_INFRA,Data-center power infrastructure capex,AI_Infrastructure,TEL,TE Connectivity,US,SPY,DIRECT_PEER
 SEMICONDUCTOR_FAB_UTILIZATION_CONSUMABLES,Semiconductor fab-utilization / consumables demand,Semiconductor_Consumables,ENTG,Entegris,US,SPY,DIRECT_PEER
+LEO_SATCOM_DEPLOYMENT,LEO satellite / ground-infrastructure deployment,Satcom,VSAT,Viasat,US,SPY,RELATED_PEER
+LEO_SATCOM_DEPLOYMENT,LEO satellite / ground-infrastructure deployment,Satcom,GSAT.Globalstar,US,SPY,RELATED_PEER
+SILICON_WAFER_DEMAND_PRICING,Silicon-wafer demand / pricing cycle,Silicon_Wafer,3436.T,SUMCO,JP,^N225,DIRECT_PEER
+SILICON_WAFER_DEMAND_PRICING,Silicon-wafer demand / pricing cycle,Silicon_Wafer,4063.T,Shin-Etsu Chemical,JP,^N225,DIRECT_PEER
+OPTICAL_COMPONENT_DEMAND,Optical-component / photonics demand,Photonics,LITE,Lumentum,US,SPY,DIRECT_PEER
+OPTICAL_COMPONENT_DEMAND,Optical-component / photonics demand,Photonics,COHR,Coherent,US,SPY,DIRECT_PEER
+MOBILE_RF_FRONTEND_DEMAND,Mobile RF front-end demand,RF_Semiconductor,QRVO,Qorvo,US,SPY,DIRECT_PEER
+MOBILE_RF_FRONTEND_DEMAND,Mobile RF front-end demand,RF_Semiconductor,SWKS,Skyworks Solutions,US,SPY,DIRECT_PEER
+AI_SERVER_THERMAL_DENSITY,AI server thermal density / liquid cooling,AI_Server,VRT,Vertiv,US,SPY,DIRECT_PEER
+AI_SERVER_THERMAL_DENSITY,AI server thermal density / liquid cooling,AI_Server,MOD.Modine,US,SPY,RELATED_PEER
+FINANCIALS_RATE_CREDIT_CYCLE,Financials rate / credit / margin cycle,Financials,XLF,Financial Select Sector SPDR Fund,US,SPY,FACTOR_PROXY
+FINANCIALS_RATE_CREDIT_CYCLE,Financials rate / credit / margin cycle,Financials,KBE,SPDR S&P Bank ETF,US,SPY,FACTOR_PROXY
