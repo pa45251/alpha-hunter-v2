@@ -15,7 +15,6 @@ on:
       - '.github/workflows/action_board_publish.yml'
   workflow_run:
     workflows:
-      - "Alpha Hunter Daily Scan"
       - "Alpha Hunter v3 Autonomous Research"
       - "Alpha Hunter Portfolio Maintenance Recovery"
       - "Alpha Hunter Decision Refresh"
