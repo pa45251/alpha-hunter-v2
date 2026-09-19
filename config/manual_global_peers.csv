@@ -130,3 +130,15 @@ LEADING_EDGE_FOUNDRY_AI_DEMAND,Leading-edge foundry AI/HPC node demand,Foundry,A
 LEADING_EDGE_FOUNDRY_AI_DEMAND,Leading-edge foundry AI/HPC node demand,Foundry,MRVL,Marvell Technology,US,SPY,RELATED_PEER
 MLCC_DEMAND_PRICING,MLCC demand / pricing cycle,MLCC,6762.T,TDK,JP,^N225,DIRECT_PEER
 MLCC_DEMAND_PRICING,MLCC demand / pricing cycle,MLCC,6981.T,Murata Manufacturing,JP,^N225,DIRECT_PEER
+PETROCHEMICAL_CYCLE,Petrochemical feedstock / product spread cycle,Petrochemicals,LYB,LyondellBasell,US,SPY,DIRECT_PEER
+PETROCHEMICAL_CYCLE,Petrochemical feedstock / product spread cycle,Petrochemicals,012330.KS,LG Chem,KR,^KS11,DIRECT_PEER
+REFINING_MARGIN_CYCLE,Refining margin / crack-spread cycle,Refining,VLO,Valero Energy,US,SPY,DIRECT_PEER
+REFINING_MARGIN_CYCLE,Refining margin / crack-spread cycle,Refining,MPC,Marathon Petroleum,US,SPY,DIRECT_PEER
+TELECOM_SERVICE_CYCLE,Telecom service / ARPU and enterprise ICT cycle,Telecom,VZ,Verizon,US,SPY,DIRECT_PEER
+TELECOM_SERVICE_CYCLE,Telecom service / ARPU and enterprise ICT cycle,Telecom,T,AT&T,US,SPY,DIRECT_PEER
+PC_GAMING_HARDWARE_CYCLE,PC / gaming hardware replacement and GPU cycle,PC_Hardware,DELL,Dell Technologies,US,SPY,DIRECT_PEER
+PC_GAMING_HARDWARE_CYCLE,PC / gaming hardware replacement and GPU cycle,PC_Hardware,LOGI,Logitech,US,SPY,RELATED_PEER
+DISPLAY_PANEL_CYCLE,Display panel demand / pricing and utilization cycle,Display,034220.KS,LG Display,KR,^KS11,DIRECT_PEER
+DISPLAY_DRIVER_IC_CYCLE,Display driver IC / TCON demand cycle,Display_IC,035900.KS,LX Semicon,KR,^KS11,DIRECT_PEER
+INDUSTRIAL_CHEMICAL_CYCLE,Industrial / specialty chemical demand cycle,Chemicals,DD,DuPont,US,SPY,RELATED_PEER
+PASSIVE_COMPONENT_CYCLE,Passive component demand / inventory cycle,Passive_Components,6762.T,TDK,JP,^N225,RELATED_PEER
