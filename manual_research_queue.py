@@ -14,6 +14,7 @@ OUT = Path("output")
 INDUSTRY_MAP = Path("config/manual_industry_map.csv")
 INDUSTRY_MAP_SUPPLEMENT = Path("config/manual_industry_map_supplement.csv")
 INDUSTRY_MAP_CORRECTIONS = Path("config/manual_industry_map_corrections.csv")
+STRUCTURAL_MAP = Path("config/structural_exposure_graph.csv")
 PEER_MAP = Path("config/manual_global_peers.csv")
 PEER_MAP_SUPPLEMENT = Path("config/manual_global_peers_supplement.csv")
 PEER_MAP_CORRECTIONS = Path("config/manual_global_peers_corrections.csv")
@@ -35,21 +36,92 @@ def _norm_code(value) -> str:
     return s.zfill(4)
 
 
-def load_industry_map() -> pd.DataFrame:
-    """Load curated base mappings plus researched supplements and audited corrections.
+def _confidence_bucket(value) -> str:
+    try:
+        x = float(value)
+    except (TypeError, ValueError):
+        return "LOW"
+    if x >= 0.85:
+        return "HIGH"
+    if x >= 0.65:
+        return "MEDIUM"
+    return "LOW"
 
-    Later layers override earlier rows for the same Taiwan company code. This preserves
-    a stable curated base while allowing researched scan-specific coverage and small
-    post-audit corrections without rewriting the whole ontology.
+
+def load_industry_map() -> pd.DataFrame:
+    """Build the manual-research mapping view from the canonical structural graph.
+
+    The structural exposure graph is the sole authority for driver identity. Legacy
+    manual industry maps are retained only as optional human-readable annotations when
+    their driver is still present in the canonical graph. This prevents the research
+    handoff from silently diverging from BASE/THESIS mappings used by the scanner.
     """
-    frames = [pd.read_csv(INDUSTRY_MAP, dtype={"code": str})]
+    if not STRUCTURAL_MAP.exists():
+        raise RuntimeError("canonical structural exposure graph is missing")
+
+    graph = pd.read_csv(STRUCTURAL_MAP, dtype={"taiwan_code": str})
+    graph["taiwan_code"] = graph["taiwan_code"].map(_norm_code)
+    if "enabled" in graph.columns:
+        graph = graph[pd.to_numeric(graph["enabled"], errors="coerce").fillna(0).eq(1)].copy()
+    graph["mapping_layer"] = graph.get("mapping_layer", "THESIS").fillna("THESIS").astype(str).str.upper()
+    graph["linkage_confidence_num"] = pd.to_numeric(graph.get("linkage_confidence"), errors="coerce").fillna(0.0)
+
+    annotation_frames = [pd.read_csv(INDUSTRY_MAP, dtype={"code": str})]
     for path in (INDUSTRY_MAP_SUPPLEMENT, INDUSTRY_MAP_CORRECTIONS):
         if path.exists():
-            frames.append(pd.read_csv(path, dtype={"code": str}))
-    out = pd.concat(frames, ignore_index=True)
-    out["code"] = out["code"].map(_norm_code)
-    out["secondary_driver_ids"] = out["secondary_driver_ids"].fillna("")
-    return out.drop_duplicates(subset=["code"], keep="last").reset_index(drop=True)
+            annotation_frames.append(pd.read_csv(path, dtype={"code": str}))
+    annotations = pd.concat(annotation_frames, ignore_index=True)
+    annotations["code"] = annotations["code"].map(_norm_code)
+    annotations = annotations.drop_duplicates(subset=["code"], keep="last").set_index("code", drop=False)
+
+    rows = []
+    for code, group in graph.groupby("taiwan_code", sort=False):
+        group = group.copy()
+        thesis = group[group["mapping_layer"].eq("THESIS")].sort_values(
+            ["linkage_confidence_num", "driver_id"], ascending=[False, True]
+        )
+        base = group[group["mapping_layer"].eq("BASE")].sort_values(
+            ["linkage_confidence_num", "driver_id"], ascending=[False, True]
+        )
+        primary = thesis.iloc[0] if not thesis.empty else base.iloc[0] if not base.empty else group.sort_values(
+            ["linkage_confidence_num", "driver_id"], ascending=[False, True]
+        ).iloc[0]
+
+        base_ids = list(dict.fromkeys(base["driver_id"].dropna().astype(str)))
+        thesis_ids = list(dict.fromkeys(thesis["driver_id"].dropna().astype(str)))
+        all_ids = list(dict.fromkeys(group.sort_values(
+            ["mapping_layer", "linkage_confidence_num", "driver_id"],
+            ascending=[True, False, True],
+        )["driver_id"].dropna().astype(str)))
+        primary_id = str(primary["driver_id"])
+        secondary_ids = [driver for driver in all_ids if driver != primary_id]
+
+        annotation = annotations.loc[code] if code in annotations.index else None
+        annotation_valid = False
+        if annotation is not None:
+            annotated_driver = str(annotation.get("primary_driver_id") or "")
+            annotation_valid = annotated_driver in set(all_ids)
+
+        economic_subindustry = str(primary.get("economic_role") or primary.get("global_theme") or "UNMAPPED")
+        notes = str(primary.get("link_mechanism") or "")
+        if annotation_valid:
+            economic_subindustry = str(annotation.get("economic_subindustry") or economic_subindustry)
+            notes = str(annotation.get("notes") or notes)
+
+        rows.append({
+            "code": code,
+            "name": str(primary.get("taiwan_name_seed") or ""),
+            "economic_subindustry": economic_subindustry,
+            "primary_driver_id": primary_id,
+            "secondary_driver_ids": ";".join(secondary_ids),
+            "base_driver_ids": ";".join(base_ids),
+            "thesis_driver_ids": ";".join(thesis_ids),
+            "classification_confidence": _confidence_bucket(primary.get("linkage_confidence_num")),
+            "mapping_source": "STRUCTURAL_EXPOSURE_GRAPH",
+            "notes": notes,
+        })
+
+    return pd.DataFrame(rows).drop_duplicates(subset=["code"], keep="last").reset_index(drop=True)
 
 
 def load_peer_map() -> pd.DataFrame:
@@ -229,13 +301,18 @@ def build_manual_queue(candidates: pd.DataFrame, industry_map: pd.DataFrame, dri
     m["code"] = m["code"].map(_norm_code)
     keep = [
         "code", "economic_subindustry", "primary_driver_id", "secondary_driver_ids",
-        "classification_confidence", "notes",
+        "base_driver_ids", "thesis_driver_ids", "classification_confidence",
+        "mapping_source", "notes",
     ]
+    keep = [column for column in keep if column in m.columns]
     x = x.merge(m[keep], on="code", how="left")
     x["economic_subindustry"] = x["economic_subindustry"].fillna("UNMAPPED")
     x["primary_driver_id"] = x["primary_driver_id"].fillna("UNMAPPED")
-    x["secondary_driver_ids"] = x["secondary_driver_ids"].fillna("")
+    x["secondary_driver_ids"] = x.get("secondary_driver_ids", "").fillna("")
+    x["base_driver_ids"] = x.get("base_driver_ids", "").fillna("")
+    x["thesis_driver_ids"] = x.get("thesis_driver_ids", "").fillna("")
     x["classification_confidence"] = x["classification_confidence"].fillna("UNMAPPED")
+    x["mapping_source"] = x.get("mapping_source", "UNMAPPED").fillna("UNMAPPED")
     x["manual_deep_research_required"] = True
 
     if not driver_breadth.empty:
@@ -253,7 +330,8 @@ def build_manual_queue(candidates: pd.DataFrame, industry_map: pd.DataFrame, dri
 
     preferred = [
         "candidate_rank", "candidate_bucket", "reaction_state", "code", "ticker", "name", "industry",
-        "economic_subindustry", "primary_driver_id", "secondary_driver_ids", "classification_confidence",
+        "economic_subindustry", "primary_driver_id", "secondary_driver_ids", "base_driver_ids",
+        "thesis_driver_ids", "classification_confidence", "mapping_source",
         "driver_label", "global_theme", "peer_tickers", "peer_names", "peer_signal",
         "configured_peer_count", "live_peer_count", "above_ma20_pct", "above_ma60_pct",
         "positive_rs20_pct", "median_ret20", "median_rs20", "price", "ret_5d", "ret_20d", "ret_60d",
@@ -286,6 +364,7 @@ def write_handoff_summary(
         "mapping_input_sha256": {
             str(p): _sha256(p) for p in mapping_inputs if p.exists()
         },
+        "mapping_source_of_truth": str(STRUCTURAL_MAP),
         "peer_input_sha256": {
             str(p): _sha256(p) for p in peer_inputs if p.exists()
         },
@@ -353,6 +432,9 @@ def validate_manual_research_outputs(out_dir: str | Path, run_id: str) -> dict[s
             "economic_subindustry",
             "primary_driver_id",
             "classification_confidence",
+            "base_driver_ids",
+            "thesis_driver_ids",
+            "mapping_source",
             "peer_signal",
             "configured_peer_count",
             "live_peer_count",
@@ -404,7 +486,7 @@ def main(run_id: str | None = None) -> pd.DataFrame:
         OUT / "manual_research_handoff.json",
         run_id=run_id,
         source_candidates_sha256=_sha256(candidates_path),
-        mapping_inputs=[INDUSTRY_MAP, INDUSTRY_MAP_SUPPLEMENT, INDUSTRY_MAP_CORRECTIONS],
+        mapping_inputs=[STRUCTURAL_MAP, INDUSTRY_MAP, INDUSTRY_MAP_SUPPLEMENT, INDUSTRY_MAP_CORRECTIONS],
         peer_inputs=[PEER_MAP, PEER_MAP_SUPPLEMENT, PEER_MAP_CORRECTIONS, PEER_EXCLUSIONS],
     )
 
