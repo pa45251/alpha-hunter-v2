@@ -128,3 +128,5 @@ FINANCIALS_RATE_CREDIT_CYCLE,Financials rate / credit / margin cycle,Financials,
 AI_NETWORKING_UPGRADE,800G/1.6T AI networking upgrade,AI_Networking,AVGO,Broadcom,US,SPY,DIRECT_PEER
 LEADING_EDGE_FOUNDRY_AI_DEMAND,Leading-edge foundry AI/HPC node demand,Foundry,AVGO,Broadcom,US,SPY,RELATED_PEER
 LEADING_EDGE_FOUNDRY_AI_DEMAND,Leading-edge foundry AI/HPC node demand,Foundry,MRVL,Marvell Technology,US,SPY,RELATED_PEER
+MLCC_DEMAND_PRICING,MLCC demand / pricing cycle,MLCC,6762.T,TDK,JP,^N225,DIRECT_PEER
+MLCC_DEMAND_PRICING,MLCC demand / pricing cycle,MLCC,6981.T,Murata Manufacturing,JP,^N225,DIRECT_PEER
