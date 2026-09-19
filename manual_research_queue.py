@@ -49,12 +49,28 @@ def _confidence_bucket(value) -> str:
 
 
 def load_industry_map() -> pd.DataFrame:
-    """Build the manual-research mapping view from the canonical structural graph.
+    """Load the legacy curated manual ontology for compatibility and audit history.
 
-    The structural exposure graph is the sole authority for driver identity. Legacy
-    manual industry maps are retained only as optional human-readable annotations when
-    their driver is still present in the canonical graph. This prevents the research
-    handoff from silently diverging from BASE/THESIS mappings used by the scanner.
+    Production manual-research output does not use this table as driver authority.
+    The canonical scanner handoff uses load_canonical_industry_map(), which is derived
+    from config/structural_exposure_graph.csv.
+    """
+    frames = [pd.read_csv(INDUSTRY_MAP, dtype={"code": str})]
+    for path in (INDUSTRY_MAP_SUPPLEMENT, INDUSTRY_MAP_CORRECTIONS):
+        if path.exists():
+            frames.append(pd.read_csv(path, dtype={"code": str}))
+    out = pd.concat(frames, ignore_index=True)
+    out["code"] = out["code"].map(_norm_code)
+    out["secondary_driver_ids"] = out["secondary_driver_ids"].fillna("")
+    return out.drop_duplicates(subset=["code"], keep="last").reset_index(drop=True)
+
+
+def load_canonical_industry_map() -> pd.DataFrame:
+    """Build production research mappings from the canonical structural graph.
+
+    The structural exposure graph is the sole production authority for driver identity.
+    Legacy manual maps may supply human-readable labels only when their driver remains
+    present in the graph; they cannot create or override production driver mappings.
     """
     if not STRUCTURAL_MAP.exists():
         raise RuntimeError("canonical structural exposure graph is missing")
@@ -63,16 +79,17 @@ def load_industry_map() -> pd.DataFrame:
     graph["taiwan_code"] = graph["taiwan_code"].map(_norm_code)
     if "enabled" in graph.columns:
         graph = graph[pd.to_numeric(graph["enabled"], errors="coerce").fillna(0).eq(1)].copy()
-    graph["mapping_layer"] = graph.get("mapping_layer", "THESIS").fillna("THESIS").astype(str).str.upper()
-    graph["linkage_confidence_num"] = pd.to_numeric(graph.get("linkage_confidence"), errors="coerce").fillna(0.0)
+    if "mapping_layer" not in graph.columns:
+        graph["mapping_layer"] = "THESIS"
+    else:
+        graph["mapping_layer"] = graph["mapping_layer"].fillna("THESIS").astype(str).str.upper()
+    if "linkage_confidence" not in graph.columns:
+        graph["linkage_confidence"] = 0.0
+    graph["linkage_confidence_num"] = pd.to_numeric(
+        graph["linkage_confidence"], errors="coerce"
+    ).fillna(0.0)
 
-    annotation_frames = [pd.read_csv(INDUSTRY_MAP, dtype={"code": str})]
-    for path in (INDUSTRY_MAP_SUPPLEMENT, INDUSTRY_MAP_CORRECTIONS):
-        if path.exists():
-            annotation_frames.append(pd.read_csv(path, dtype={"code": str}))
-    annotations = pd.concat(annotation_frames, ignore_index=True)
-    annotations["code"] = annotations["code"].map(_norm_code)
-    annotations = annotations.drop_duplicates(subset=["code"], keep="last").set_index("code", drop=False)
+    annotations = load_industry_map().set_index("code", drop=False)
 
     rows = []
     for code, group in graph.groupby("taiwan_code", sort=False):
@@ -83,16 +100,16 @@ def load_industry_map() -> pd.DataFrame:
         base = group[group["mapping_layer"].eq("BASE")].sort_values(
             ["linkage_confidence_num", "driver_id"], ascending=[False, True]
         )
-        primary = thesis.iloc[0] if not thesis.empty else base.iloc[0] if not base.empty else group.sort_values(
+        ranked = group.sort_values(
             ["linkage_confidence_num", "driver_id"], ascending=[False, True]
-        ).iloc[0]
+        )
+        primary = thesis.iloc[0] if not thesis.empty else base.iloc[0] if not base.empty else ranked.iloc[0]
 
         base_ids = list(dict.fromkeys(base["driver_id"].dropna().astype(str)))
         thesis_ids = list(dict.fromkeys(thesis["driver_id"].dropna().astype(str)))
-        all_ids = list(dict.fromkeys(group.sort_values(
-            ["mapping_layer", "linkage_confidence_num", "driver_id"],
-            ascending=[True, False, True],
-        )["driver_id"].dropna().astype(str)))
+        all_ids = list(dict.fromkeys(
+            pd.concat([thesis, base, ranked], ignore_index=True)["driver_id"].dropna().astype(str)
+        ))
         primary_id = str(primary["driver_id"])
         secondary_ids = [driver for driver in all_ids if driver != primary_id]
 
@@ -484,7 +501,7 @@ def main(run_id: str | None = None) -> pd.DataFrame:
         raise RuntimeError("manual research handoff requires a canonical scanner run_id")
 
     candidates = pd.read_csv(candidates_path, dtype={"code": str})
-    industry_map = load_industry_map()
+    industry_map = load_canonical_industry_map()
     peer_map = load_peer_map()
 
     peer_snapshot = build_peer_snapshot(peer_map)
