@@ -3,13 +3,13 @@
   "gate_version": "1.0",
   "gate_status": "PASS",
   "failure_code": null,
-  "validated_at_taipei": "2026-09-19T12:16:18.720703+08:00",
+  "validated_at_taipei": "2026-09-19T12:47:39.341515+08:00",
   "repository": "pa45251/alpha-hunter-v2",
   "branch": "main",
   "schema_version": "2.6",
   "scanner_version": "2.6.1",
-  "run_id": "20260919T121203+0800-24dd3896",
-  "manifest_sha256": "4ab01a1a3ce5da781ed9167a940c6ae780ea59a99e1c03c3b5da94e73fbf761d",
+  "run_id": "20260919T124429+0800-ab10d0fe",
+  "manifest_sha256": "69e6b9c53e1dacaa418dff7fbc6decbaca95fcfaec0c49f71401cdf0d3fc7767",
   "checks": [
     {
       "name": "repository_identity",
@@ -50,13 +50,13 @@
     {
       "name": "pipeline_checks",
       "passed": true,
-      "detail": "{\"causal_queue_rebuilt_this_run\": true, \"causal_taxonomy_snapshot_present\": true, \"core_discovery_disjoint\": true, \"core_risk_evidence_ready\": true, \"formal_snapshot_core_only\": true, \"global_outputs_generated\": true, \"graph_audit_rebuilt_this_run\": true, \"reverse_discovery_rebuilt_this_run\": true, \"structural_graph_snapshot_present\": true, \"structural_matches_rebuilt_this_run\": true, \"taiwan_outputs_generated\": true, \"taiwan_rejected_not_persisted\": true}",
+      "detail": "{\"causal_queue_rebuilt_this_run\": true, \"causal_taxonomy_snapshot_present\": true, \"core_discovery_disjoint\": true, \"core_risk_evidence_ready\": true, \"formal_snapshot_core_only\": true, \"global_outputs_generated\": true, \"graph_audit_rebuilt_this_run\": true, \"manual_mapping_schema_valid\": true, \"manual_research_counts_consistent\": true, \"manual_research_outputs_generated\": true, \"manual_research_run_id_bound\": true, \"manual_research_source_bound\": true, \"reverse_discovery_rebuilt_this_run\": true, \"structural_graph_snapshot_present\": true, \"structural_matches_rebuilt_this_run\": true, \"taiwan_outputs_generated\": true, \"taiwan_rejected_not_persisted\": true}",
       "severity": "HARD"
     },
     {
       "name": "manifest_run_id",
       "passed": true,
-      "detail": "run_id=20260919T121203+0800-24dd3896",
+      "detail": "run_id=20260919T124429+0800-ab10d0fe",
       "severity": "HARD"
     },
     {
@@ -74,13 +74,13 @@
     {
       "name": "authoritative_file_hashes",
       "passed": true,
-      "detail": "verified=19",
+      "detail": "verified=23",
       "severity": "HARD"
     },
     {
       "name": "run_consistency",
       "passed": true,
-      "detail": "all=20260919T121203+0800-24dd3896",
+      "detail": "all=20260919T124429+0800-ab10d0fe",
       "severity": "HARD"
     },
     {
