@@ -222,3 +222,9 @@ COPPER_COMMODITY_TRADE_INVENTORY,Copper commodity / trade / inventory,Commoditie
 NUCLEAR_GRID_SECOND_ORDER,Nuclear / grid second-order capex,Grid_Equipment,ETN,Eaton,US,SPY,RELATED_PEER
 OPTOELECTRONIC_IMAGING_EQUIPMENT_CYCLE,Optoelectronic imaging / scanner equipment cycle,Optoelectronic_Equipment,CGNX,Cognex,US,SPY,RELATED_PEER
 SEMICONDUCTOR_FAB_UTILIZATION_CONSUMABLES,Semiconductor fab-utilization / consumables demand,Semiconductor_Consumables,LIN,Linde,US,SPY,RELATED_PEER
+ELECTRONICS_MANUFACTURING_SERVICES_CYCLE,Electronics manufacturing services / SMT cycle,Electronics_Manufacturing,FLEX,Flex,US,SPY,DIRECT_PEER
+ELECTRONICS_MANUFACTURING_SERVICES_CYCLE,Electronics manufacturing services / SMT cycle,Electronics_Manufacturing,JBL,Jabil,US,SPY,DIRECT_PEER
+INDUSTRIAL_EDGE_COMPUTING_CYCLE,Industrial edge computing / automation hardware cycle,Industrial_Computing,ROK,Rockwell Automation,US,SPY,RELATED_PEER
+INDUSTRIAL_EDGE_COMPUTING_CYCLE,Industrial edge computing / automation hardware cycle,Industrial_Computing,EMR,Emerson Electric,US,SPY,RELATED_PEER
+ENTERPRISE_SOFTWARE_CYCLE,Enterprise software / digital transformation cycle,Enterprise_Software,ORCL,Oracle,US,SPY,DIRECT_PEER
+ENTERPRISE_SOFTWARE_CYCLE,Enterprise software / digital transformation cycle,Enterprise_Software,SAP,SAP SE ADR,US,SPY,DIRECT_PEER
