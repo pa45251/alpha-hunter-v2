@@ -33,6 +33,8 @@ def test_manifest_has_rejected_count_but_no_shadow_contract(tmp_path, monkeypatc
         "taiwan_industry_breadth.csv", "taiwan_universe.csv", "causal_research_queue.csv",
         "reverse_transmission_candidates.csv", "structural_matches.csv", "causal_graph_audit.csv",
         "causal_driver_taxonomy.csv", "structural_exposure_graph.csv",
+        "manual_global_peer_snapshot.csv", "manual_driver_breadth.csv",
+        "manual_research_queue.csv", "manual_research_handoff.json",
     ]
     for name in required:
         (out / name).write_text("x", encoding="utf-8")
