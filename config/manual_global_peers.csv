@@ -114,7 +114,7 @@ AI_SERVER_RACK_BUILD,AI rack / server system buildout,AI_Server,TEL,TE Connectiv
 DATACENTER_POWER_INFRA,Data-center power infrastructure capex,AI_Infrastructure,TEL,TE Connectivity,US,SPY,DIRECT_PEER
 SEMICONDUCTOR_FAB_UTILIZATION_CONSUMABLES,Semiconductor fab-utilization / consumables demand,Semiconductor_Consumables,ENTG,Entegris,US,SPY,DIRECT_PEER
 LEO_SATCOM_DEPLOYMENT,LEO satellite / ground-infrastructure deployment,Satcom,VSAT,Viasat,US,SPY,RELATED_PEER
-LEO_SATCOM_DEPLOYMENT,LEO satellite / ground-infrastructure deployment,Satcom,GSAT.Globalstar,US,SPY,RELATED_PEER
+LEO_SATCOM_DEPLOYMENT,LEO satellite / ground-infrastructure deployment,Satcom,GSAT,Globalstar,US,SPY,RELATED_PEER
 SILICON_WAFER_DEMAND_PRICING,Silicon-wafer demand / pricing cycle,Silicon_Wafer,3436.T,SUMCO,JP,^N225,DIRECT_PEER
 SILICON_WAFER_DEMAND_PRICING,Silicon-wafer demand / pricing cycle,Silicon_Wafer,4063.T,Shin-Etsu Chemical,JP,^N225,DIRECT_PEER
 OPTICAL_COMPONENT_DEMAND,Optical-component / photonics demand,Photonics,LITE,Lumentum,US,SPY,DIRECT_PEER
@@ -122,7 +122,7 @@ OPTICAL_COMPONENT_DEMAND,Optical-component / photonics demand,Photonics,COHR,Coh
 MOBILE_RF_FRONTEND_DEMAND,Mobile RF front-end demand,RF_Semiconductor,QRVO,Qorvo,US,SPY,DIRECT_PEER
 MOBILE_RF_FRONTEND_DEMAND,Mobile RF front-end demand,RF_Semiconductor,SWKS,Skyworks Solutions,US,SPY,DIRECT_PEER
 AI_SERVER_THERMAL_DENSITY,AI server thermal density / liquid cooling,AI_Server,VRT,Vertiv,US,SPY,DIRECT_PEER
-AI_SERVER_THERMAL_DENSITY,AI server thermal density / liquid cooling,AI_Server,MOD.Modine,US,SPY,RELATED_PEER
+AI_SERVER_THERMAL_DENSITY,AI server thermal density / liquid cooling,AI_Server,MOD,Modine,US,SPY,RELATED_PEER
 FINANCIALS_RATE_CREDIT_CYCLE,Financials rate / credit / margin cycle,Financials,XLF,Financial Select Sector SPDR Fund,US,SPY,FACTOR_PROXY
 FINANCIALS_RATE_CREDIT_CYCLE,Financials rate / credit / margin cycle,Financials,KBE,SPDR S&P Bank ETF,US,SPY,FACTOR_PROXY
 AI_NETWORKING_UPGRADE,800G/1.6T AI networking upgrade,AI_Networking,AVGO,Broadcom,US,SPY,DIRECT_PEER
@@ -139,7 +139,7 @@ TELECOM_SERVICE_CYCLE,Telecom service / ARPU and enterprise ICT cycle,Telecom,T,
 PC_GAMING_HARDWARE_CYCLE,PC / gaming hardware replacement and GPU cycle,PC_Hardware,DELL,Dell Technologies,US,SPY,DIRECT_PEER
 PC_GAMING_HARDWARE_CYCLE,PC / gaming hardware replacement and GPU cycle,PC_Hardware,LOGI,Logitech,US,SPY,RELATED_PEER
 DISPLAY_PANEL_CYCLE,Display panel demand / pricing and utilization cycle,Display,034220.KS,LG Display,KR,^KS11,DIRECT_PEER
-DISPLAY_DRIVER_IC_CYCLE,Display driver IC / TCON demand cycle,Display_IC,035900.KS,LX Semicon,KR,^KS11,DIRECT_PEER
+DISPLAY_DRIVER_IC_CYCLE,Display driver IC / TCON demand cycle,Display_IC,108320.KS,LX Semicon,KR,^KS11,DIRECT_PEER
 INDUSTRIAL_CHEMICAL_CYCLE,Industrial / specialty chemical demand cycle,Chemicals,DD,DuPont,US,SPY,RELATED_PEER
 PASSIVE_COMPONENT_CYCLE,Passive component demand / inventory cycle,Passive_Components,6762.T,TDK,JP,^N225,RELATED_PEER
 SEMICONDUCTOR_TEST_CYCLE,Semiconductor test / OSAT utilization cycle,Semiconductor_Test,6857.T,Advantest,JP,^N225,DIRECT_PEER

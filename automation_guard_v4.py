@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import os
 from datetime import datetime, timezone
@@ -9,6 +10,7 @@ from zoneinfo import ZoneInfo
 
 TAIPEI = ZoneInfo("Asia/Taipei")
 DEFAULT_MANIFEST = Path("output/manifest.json")
+DEFAULT_MANUAL_HANDOFF = Path("output/manual_research_handoff.json")
 
 
 def _parse_iso(value: str) -> datetime:
@@ -27,6 +29,48 @@ def load_manifest(path: Path = DEFAULT_MANIFEST) -> dict:
         return {}
     return payload if isinstance(payload, dict) else {}
 
+
+def _sha256(path: Path) -> str:
+    h = hashlib.sha256()
+    with path.open("rb") as fh:
+        for chunk in iter(lambda: fh.read(1024 * 1024), b""):
+            h.update(chunk)
+    return h.hexdigest()
+
+
+def manual_research_inputs_are_current(
+    handoff_path: Path = DEFAULT_MANUAL_HANDOFF,
+    repo_root: Path = Path("."),
+) -> tuple[bool, str]:
+    """Invalidate a same-day snapshot when mapping/peer source files changed.
+
+    The handoff already seals exact input hashes. Reusing a PASS manifest after any
+    canonical mapping or international-peer config change would silently publish stale
+    research context, so the freshness guard must force one new scanner transaction.
+    """
+    try:
+        handoff = json.loads(handoff_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return False, "MANUAL_HANDOFF_MISSING_OR_INVALID"
+
+    if handoff.get("mapping_source_of_truth") != "config/structural_exposure_graph.csv":
+        return False, "MANUAL_MAPPING_SOURCE_NOT_CANONICAL"
+
+    sealed = {}
+    for field in ("mapping_input_sha256", "peer_input_sha256"):
+        values = handoff.get(field)
+        if not isinstance(values, dict) or not values:
+            return False, "MANUAL_INPUT_HASHES_MISSING"
+        sealed.update({str(k): str(v) for k, v in values.items()})
+
+    for rel_path, expected in sealed.items():
+        path = repo_root / rel_path
+        if not path.exists():
+            return False, f"MANUAL_INPUT_MISSING:{rel_path}"
+        if _sha256(path) != expected:
+            return False, f"MANUAL_INPUT_CHANGED:{rel_path}"
+
+    return True, "MANUAL_INPUTS_CURRENT"
 
 def canonical_snapshot_is_fresh_for_today(manifest: dict, now: datetime | None = None) -> tuple[bool, str]:
     now = (now or datetime.now(TAIPEI)).astimezone(TAIPEI)
@@ -103,6 +147,10 @@ def main() -> int:
             should_run, reason = True, "FORCED"
         else:
             fresh, reason = canonical_snapshot_is_fresh_for_today(manifest)
+            if fresh:
+                inputs_current, input_reason = manual_research_inputs_are_current()
+                if not inputs_current:
+                    fresh, reason = False, input_reason
             should_run = not fresh
     else:
         if not args.trigger_started_at_utc:

@@ -172,3 +172,10 @@ def test_every_enabled_structural_driver_has_international_peer_context():
     used = set(graph["driver_id"].dropna().astype(str))
     peer_drivers = set(peers["driver_id"].dropna().astype(str))
     assert used <= peer_drivers
+
+
+def test_manual_peer_symbols_are_well_formed_and_current():
+    peers = pd.read_csv(Path("config/manual_global_peers.csv"))
+    tickers = set(peers["ticker"].dropna().astype(str))
+    assert {"MOD", "GSAT", "108320.KS"} <= tickers
+    assert {"MOD.Modine", "GSAT.Globalstar", "035900.KS", "RELATED_PEER"}.isdisjoint(tickers)
