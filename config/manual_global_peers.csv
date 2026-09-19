@@ -194,3 +194,13 @@ SEMICONDUCTOR_FACILITY_BUILDOUT,Semiconductor fab facility / clean utility build
 SOLAR_CELL_CAPEX_TECH_UPGRADE,Solar-cell manufacturing capex / technology upgrade,Solar,JKS,JinkoSolar,US,SPY,RELATED_PEER
 RENEWABLE_ENERGY_EPC_BUILDOUT,Renewable energy EPC / power infrastructure buildout,Renewable_Energy,PWR,Quanta Services,US,SPY,RELATED_PEER
 LED_COMPONENT_CYCLE,LED component / lighting demand cycle,LED,AMS.SW,ams OSRAM,CH,^STOXX50E,RELATED_PEER
+BIOPHARMA_RISK_APPETITE,Biopharma risk appetite,Biopharma,XBI,SPDR S&P Biotech ETF,US,SPY,FACTOR_PROXY
+BIOPHARMA_RISK_APPETITE,Biopharma risk appetite,Biopharma,IBB,iShares Biotechnology ETF,US,SPY,FACTOR_PROXY
+GENOMICS_RISK_APPETITE,Genomics risk appetite,Biopharma,ARKG,ARK Genomic Revolution ETF,US,SPY,FACTOR_PROXY
+COPPER_COMMODITY_TRADE_INVENTORY,Copper commodity / trade / inventory,Commodities,CPER,United States Copper Index Fund,US,SPY,FACTOR_PROXY
+NUCLEAR_GRID_SECOND_ORDER,Nuclear / grid second-order capex,Grid_Equipment,GEV,GE Vernova,US,SPY,RELATED_PEER
+OPTOELECTRONIC_IMAGING_EQUIPMENT_CYCLE,Optoelectronic imaging / scanner equipment cycle,Optoelectronic_Equipment,KEYS,Keysight Technologies,US,SPY,RELATED_PEER
+PHARMA_505B2_GENERIC_COMMERCIALIZATION,505(b)(2) / complex-generic regulatory and commercialization cycle,Pharma,TEVA,Teva Pharmaceutical Industries,US,SPY,RELATED_PEER
+PHARMA_505B2_GENERIC_COMMERCIALIZATION,505(b)(2) / complex-generic regulatory and commercialization cycle,Pharma,VTRS,Viatris,US,SPY,RELATED_PEER
+VACCINE_COMMERCIALIZATION,Vaccine commercialization / regulatory cycle,Biotech,MRNA,Moderna,US,SPY,RELATED_PEER
+VACCINE_COMMERCIALIZATION,Vaccine commercialization / regulatory cycle,Biotech,BNTX,BioNTech,US,SPY,RELATED_PEER
