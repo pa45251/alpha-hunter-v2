@@ -2,7 +2,7 @@ from pathlib import Path
 
 import pandas as pd
 
-from manual_research_queue import build_driver_breadth, build_manual_queue, load_industry_map
+from manual_research_queue import build_driver_breadth, build_manual_queue, load_industry_map, load_canonical_industry_map
 
 
 def test_priority_industry_ontology_has_expected_subindustries():
@@ -135,14 +135,14 @@ def test_missing_relative_strength_fails_closed():
 
 def test_canonical_structural_graph_covers_current_taiwan_candidates():
     candidates = pd.read_csv(Path("output/taiwan_candidates.csv"), dtype={"code": str})
-    mapping = load_industry_map().set_index("code")
+    mapping = load_canonical_industry_map().set_index("code")
     codes = candidates["code"].astype(str).str.zfill(4)
     missing = [code for code in codes if code not in mapping.index]
     assert missing == []
 
 
 def test_manual_research_mapping_preserves_base_and_thesis_layers():
-    mapping = load_industry_map().set_index("code")
+    mapping = load_canonical_industry_map().set_index("code")
     row = mapping.loc["3035"]
     assert row["mapping_source"] == "STRUCTURAL_EXPOSURE_GRAPH"
     assert "ASIC_DESIGN_SERVICE_CYCLE" in row["base_driver_ids"].split(";")
@@ -151,7 +151,7 @@ def test_manual_research_mapping_preserves_base_and_thesis_layers():
 
 
 def test_new_candidate_mapping_uses_structural_source_not_legacy_fallback():
-    mapping = load_industry_map().set_index("code")
+    mapping = load_canonical_industry_map().set_index("code")
     expected = {
         "2449": "SEMICONDUCTOR_TEST_CYCLE",
         "6533": "ASIC_DESIGN_SERVICE_CYCLE",
