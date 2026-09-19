@@ -114,3 +114,20 @@ def test_driver_breadth_is_context_not_trade_action():
     out = build_driver_breadth(live, peers)
     assert out.iloc[0]["peer_signal"] == "BROADLY_POSITIVE"
     assert not any(c.lower() in {"buy", "sell", "action"} for c in out.columns)
+
+
+def test_missing_relative_strength_fails_closed():
+    peers = pd.DataFrame([
+        {"driver_id": "X", "driver_label": "X driver", "global_theme": "X",
+         "ticker": "A", "name": "A", "benchmark": "SPY"},
+        {"driver_id": "X", "driver_label": "X driver", "global_theme": "X",
+         "ticker": "B", "name": "B", "benchmark": "SPY"},
+    ])
+    live = pd.DataFrame([
+        {"driver_id": "X", "above_ma20": True, "above_ma60": True,
+         "rs_20d_vs_local_benchmark": float("nan"), "ret_20d": 0.10},
+        {"driver_id": "X", "above_ma20": True, "above_ma60": True,
+         "rs_20d_vs_local_benchmark": float("nan"), "ret_20d": 0.08},
+    ])
+    out = build_driver_breadth(live, peers)
+    assert out.iloc[0]["peer_signal"] == "DATA_UNAVAILABLE"

@@ -83,15 +83,18 @@ def test_history_roundtrip_has_no_downstream_download(tmp_path, monkeypatch):
 
 
 def test_daily_workflow_is_scanner_only_and_builds_manual_handoff():
-    text=Path('.github/workflows/daily_scan.yml').read_text()
-    assert 'run: python -m pytest -q\n' not in text
-    assert 'python daily_scan.py' in text
-    assert 'python manual_research_queue.py' in text
-    assert 'python decision_run_v2.py' not in text
-    assert 'python action_board_summary.py --refresh' not in text
-    assert 'copilot ' not in text.lower()
-    assert 'OPENAI_API_KEY' not in text
-    assert 'git rebase' not in text
+    workflow_text=Path('.github/workflows/daily_scan.yml').read_text()
+    scanner_text=Path('daily_scan.py').read_text()
+    assert 'run: python -m pytest -q\n' not in workflow_text
+    assert 'python daily_scan.py' in workflow_text
+    assert 'python manual_research_queue.py' not in workflow_text
+    assert 'build_manual_research_queue' in scanner_text
+    assert 'validate_manual_research_outputs' in scanner_text
+    assert 'python decision_run_v2.py' not in workflow_text
+    assert 'python action_board_summary.py --refresh' not in workflow_text
+    assert 'copilot ' not in workflow_text.lower()
+    assert 'OPENAI_API_KEY' not in workflow_text
+    assert 'git rebase' not in workflow_text
     assert not Path('.github/workflows/autonomous_research_v3.yml').exists()
     assert not Path('.github/workflows/frontier_research_v4.yml').exists()
     assert not Path('.github/workflows/decision_refresh.yml').exists()

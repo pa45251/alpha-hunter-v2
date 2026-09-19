@@ -1,6 +1,8 @@
 from __future__ import annotations
 
+import hashlib
 import json
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Dict
 
@@ -16,6 +18,14 @@ PEER_MAP = Path("config/manual_global_peers.csv")
 PEER_MAP_SUPPLEMENT = Path("config/manual_global_peers_supplement.csv")
 PEER_MAP_CORRECTIONS = Path("config/manual_global_peers_corrections.csv")
 PEER_EXCLUSIONS = Path("config/manual_global_peer_exclusions.csv")
+
+
+def _sha256(path: Path) -> str:
+    h = hashlib.sha256()
+    with path.open("rb") as fh:
+        for chunk in iter(lambda: fh.read(1024 * 1024), b""):
+            h.update(chunk)
+    return h.hexdigest()
 
 
 def _norm_code(value) -> str:
@@ -182,9 +192,15 @@ def build_driver_breadth(peer_snapshot: pd.DataFrame, peer_map: pd.DataFrame) ->
         positive_rs = float((rs.dropna() > 0).mean()) if rs.notna().any() else np.nan
         median_ret20 = float(pd.to_numeric(live["ret_20d"], errors="coerce").median())
         median_rs20 = float(rs.median()) if rs.notna().any() else np.nan
-        if above20 >= 2 / 3 and (not np.isfinite(positive_rs) or positive_rs >= 0.5):
+        # Missing relative-strength data must never be interpreted as either support
+        # or weakness. A peer basket is only directional when every live peer has
+        # both a usable 20D return and a usable benchmark-relative return.
+        rs_complete = bool(rs.notna().all() and pd.to_numeric(live["ret_20d"], errors="coerce").notna().all())
+        if not rs_complete:
+            signal = "DATA_UNAVAILABLE"
+        elif above20 >= 2 / 3 and positive_rs >= 0.5:
             signal = "BROADLY_POSITIVE"
-        elif above20 <= 1 / 3 and (not np.isfinite(positive_rs) or positive_rs <= 0.5):
+        elif above20 <= 1 / 3 and positive_rs <= 0.5:
             signal = "BROADLY_WEAK"
         else:
             signal = "MIXED"
@@ -251,11 +267,28 @@ def build_manual_queue(candidates: pd.DataFrame, industry_map: pd.DataFrame, dri
     return x
 
 
-def write_handoff_summary(queue: pd.DataFrame, path: Path) -> None:
+def write_handoff_summary(
+    queue: pd.DataFrame,
+    path: Path,
+    *,
+    run_id: str,
+    source_candidates_sha256: str,
+    mapping_inputs: list[Path],
+    peer_inputs: list[Path],
+) -> None:
     mapped = int(queue["primary_driver_id"].ne("UNMAPPED").sum()) if not queue.empty else 0
     payload = {
         "contract": "ALPHA_HUNTER_MANUAL_RESEARCH_HANDOFF_V1",
         "purpose": "Scanner shortlist plus deterministic international peer context for manual ChatGPT deep research.",
+        "run_id": run_id,
+        "generated_at_utc": datetime.now(timezone.utc).isoformat(),
+        "source_taiwan_candidates_sha256": source_candidates_sha256,
+        "mapping_input_sha256": {
+            str(p): _sha256(p) for p in mapping_inputs if p.exists()
+        },
+        "peer_input_sha256": {
+            str(p): _sha256(p) for p in peer_inputs if p.exists()
+        },
         "automated_model_research_enabled": False,
         "automated_trade_selection_enabled": False,
         "candidate_count": int(len(queue)),
@@ -269,28 +302,118 @@ def write_handoff_summary(queue: pd.DataFrame, path: Path) -> None:
     path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
 
 
-def main() -> None:
+def validate_manual_research_outputs(out_dir: str | Path, run_id: str) -> dict[str, bool]:
+    """Fail closed unless mapping outputs are present and bound to this scanner run."""
+    out = Path(out_dir)
+    names = (
+        "manual_global_peer_snapshot.csv",
+        "manual_driver_breadth.csv",
+        "manual_research_queue.csv",
+        "manual_research_handoff.json",
+    )
+    checks = {"outputs_exist": all((out / name).exists() for name in names)}
+    if not checks["outputs_exist"]:
+        return {
+            **checks,
+            "csv_run_id_bound": False,
+            "handoff_run_id_bound": False,
+            "candidate_source_hash_matches": False,
+            "handoff_counts_match": False,
+            "mapping_columns_present": False,
+        }
+
+    try:
+        csvs = [
+            pd.read_csv(out / "manual_global_peer_snapshot.csv"),
+            pd.read_csv(out / "manual_driver_breadth.csv"),
+            pd.read_csv(out / "manual_research_queue.csv"),
+        ]
+        handoff = json.loads((out / "manual_research_handoff.json").read_text(encoding="utf-8"))
+        candidates_path = out / "taiwan_candidates.csv"
+        queue = csvs[2]
+        csv_bound = all(
+            "run_id" in frame.columns
+            and set(frame["run_id"].dropna().astype(str)) in (set(), {str(run_id)})
+            for frame in csvs
+        )
+        checks["csv_run_id_bound"] = csv_bound
+        checks["handoff_run_id_bound"] = str(handoff.get("run_id", "")) == str(run_id)
+        checks["candidate_source_hash_matches"] = (
+            candidates_path.exists()
+            and handoff.get("source_taiwan_candidates_sha256") == _sha256(candidates_path)
+        )
+        mapped = int(queue["primary_driver_id"].ne("UNMAPPED").sum()) if not queue.empty else 0
+        checks["handoff_counts_match"] = (
+            int(handoff.get("candidate_count", -1)) == len(queue)
+            and int(handoff.get("mapped_candidate_count", -1)) == mapped
+            and int(handoff.get("unmapped_candidate_count", -1)) == len(queue) - mapped
+        )
+        checks["mapping_columns_present"] = {
+            "code",
+            "economic_subindustry",
+            "primary_driver_id",
+            "classification_confidence",
+            "peer_signal",
+            "configured_peer_count",
+            "live_peer_count",
+        }.issubset(queue.columns)
+    except (OSError, ValueError, TypeError, KeyError):
+        checks.update({
+            "csv_run_id_bound": False,
+            "handoff_run_id_bound": False,
+            "candidate_source_hash_matches": False,
+            "handoff_counts_match": False,
+            "mapping_columns_present": False,
+        })
+    return checks
+
+
+
+def main(run_id: str | None = None) -> pd.DataFrame:
     OUT.mkdir(parents=True, exist_ok=True)
     candidates_path = OUT / "taiwan_candidates.csv"
     if not candidates_path.exists():
         raise SystemExit("output/taiwan_candidates.csv not found; run daily_scan.py first")
+
+    if run_id is None:
+        manifest_path = OUT / "manifest.json"
+        if manifest_path.exists():
+            try:
+                run_id = str(json.loads(manifest_path.read_text(encoding="utf-8")).get("run_id") or "")
+            except (OSError, ValueError, TypeError):
+                run_id = ""
+    run_id = str(run_id or "").strip()
+    if not run_id:
+        raise RuntimeError("manual research handoff requires a canonical scanner run_id")
+
     candidates = pd.read_csv(candidates_path, dtype={"code": str})
     industry_map = load_industry_map()
     peer_map = load_peer_map()
 
     peer_snapshot = build_peer_snapshot(peer_map)
+    peer_snapshot.insert(0, "run_id", run_id)
     peer_snapshot.to_csv(OUT / "manual_global_peer_snapshot.csv", index=False)
-    driver_breadth = build_driver_breadth(peer_snapshot, peer_map)
+    driver_breadth = build_driver_breadth(peer_snapshot.drop(columns=["run_id"]), peer_map)
+    driver_breadth.insert(0, "run_id", run_id)
     driver_breadth.to_csv(OUT / "manual_driver_breadth.csv", index=False)
-    queue = build_manual_queue(candidates, industry_map, driver_breadth)
+    queue = build_manual_queue(candidates, industry_map, driver_breadth.drop(columns=["run_id"]))
+    queue.insert(0, "run_id", run_id)
     queue.to_csv(OUT / "manual_research_queue.csv", index=False)
-    write_handoff_summary(queue, OUT / "manual_research_handoff.json")
+    write_handoff_summary(
+        queue,
+        OUT / "manual_research_handoff.json",
+        run_id=run_id,
+        source_candidates_sha256=_sha256(candidates_path),
+        mapping_inputs=[INDUSTRY_MAP, INDUSTRY_MAP_SUPPLEMENT, INDUSTRY_MAP_CORRECTIONS],
+        peer_inputs=[PEER_MAP, PEER_MAP_SUPPLEMENT, PEER_MAP_CORRECTIONS, PEER_EXCLUSIONS],
+    )
 
     print(
         f"manual research queue: {len(queue)} candidates; "
         f"mapped={int(queue['primary_driver_id'].ne('UNMAPPED').sum())}; "
         f"peer_rows={len(peer_snapshot)}"
     )
+    return queue
 
 
 if __name__ == "__main__":
