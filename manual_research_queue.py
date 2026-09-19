@@ -404,6 +404,7 @@ def validate_manual_research_outputs(out_dir: str | Path, run_id: str) -> dict[s
             "candidate_source_hash_matches": False,
             "handoff_counts_match": False,
             "mapping_columns_present": False,
+            "canonical_mapping_source_bound": False,
         }
 
     try:
@@ -444,6 +445,14 @@ def validate_manual_research_outputs(out_dir: str | Path, run_id: str) -> dict[s
             "configured_peer_count",
             "live_peer_count",
         }.issubset(queue.columns)
+        mapped_rows = queue[queue["primary_driver_id"].astype(str).ne("UNMAPPED")]
+        checks["canonical_mapping_source_bound"] = (
+            handoff.get("mapping_source_of_truth") == str(STRUCTURAL_MAP)
+            and (
+                mapped_rows.empty
+                or mapped_rows["mapping_source"].astype(str).eq("STRUCTURAL_EXPOSURE_GRAPH").all()
+            )
+        )
     except (OSError, ValueError, TypeError, KeyError):
         checks.update({
             "csv_run_id_bound": False,
@@ -451,6 +460,7 @@ def validate_manual_research_outputs(out_dir: str | Path, run_id: str) -> dict[s
             "candidate_source_hash_matches": False,
             "handoff_counts_match": False,
             "mapping_columns_present": False,
+            "canonical_mapping_source_bound": False,
         })
     return checks
 
