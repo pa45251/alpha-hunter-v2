@@ -321,6 +321,7 @@ if __name__ == "__main__":
         "manual_research_source_bound": manual_handoff_checks["candidate_source_hash_matches"],
         "manual_research_counts_consistent": manual_handoff_checks["handoff_counts_match"],
         "manual_mapping_schema_valid": manual_handoff_checks["mapping_columns_present"],
+        "manual_mapping_source_canonical": manual_handoff_checks["canonical_mapping_source_bound"],
     })
 
     # Seal risk and entry prices with the scanner, before hashing the manifest.
