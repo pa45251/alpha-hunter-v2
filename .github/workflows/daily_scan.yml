@@ -12,7 +12,6 @@ on:
     branches: [main, "repair/**", "refactor/**"]
     paths:
       - '.alpha-hunter/scan_watchdog.json'
-      - '.github/workflows/action_board_publish.yml'
   schedule:
     # GitHub scheduled workflows can be delayed. Use staggered Asia/Taipei morning triggers.
     # UTC Sun-Thu maps to Taiwan Mon-Fri for these times.
