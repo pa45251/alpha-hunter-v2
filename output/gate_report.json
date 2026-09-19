@@ -3,13 +3,13 @@
   "gate_version": "1.0",
   "gate_status": "PASS",
   "failure_code": null,
-  "validated_at_taipei": "2026-09-19T08:05:16.370896+08:00",
+  "validated_at_taipei": "2026-09-19T10:40:30.818460+08:00",
   "repository": "pa45251/alpha-hunter-v2",
   "branch": "main",
   "schema_version": "2.6",
   "scanner_version": "2.6.1",
-  "run_id": "20260919T080126+0800-eb92a91e",
-  "manifest_sha256": "bf7565c40ae47987576b1fbbe5f387e22e9327ac0ea5a2eb22ea37800c0541bb",
+  "run_id": "20260919T103622+0800-29e70937",
+  "manifest_sha256": "70a61306ed7a64e03b391a1538e34c4703470a63d0b96c28fe67911636837865",
   "checks": [
     {
       "name": "repository_identity",
@@ -56,7 +56,7 @@
     {
       "name": "manifest_run_id",
       "passed": true,
-      "detail": "run_id=20260919T080126+0800-eb92a91e",
+      "detail": "run_id=20260919T103622+0800-29e70937",
       "severity": "HARD"
     },
     {
@@ -80,19 +80,19 @@
     {
       "name": "run_consistency",
       "passed": true,
-      "detail": "all=20260919T080126+0800-eb92a91e",
+      "detail": "all=20260919T103622+0800-29e70937",
       "severity": "HARD"
     },
     {
       "name": "causal_driver_id_integrity",
       "passed": true,
-      "detail": "taxonomy=35 graph_unknown=[] queue_unknown=[] match_unknown=[]",
+      "detail": "taxonomy=73 graph_unknown=[] queue_unknown=[] match_unknown=[]",
       "severity": "HARD"
     },
     {
       "name": "graph_audit_completeness",
       "passed": true,
-      "detail": "graph_rows=75 audit_rows=75",
+      "detail": "graph_rows=266 audit_rows=266",
       "severity": "HARD"
     },
     {
