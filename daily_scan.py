@@ -28,6 +28,10 @@ from reverse_discovery import (
 from scanner_core import TAIPEI_TZ, ScanConfig, append_audit_log, run_scan, write_outputs
 from taiwan_sensor import TaiwanScanConfig, run_taiwan_scan
 from canonical_gate import run_gate
+from manual_research_queue import (
+    main as build_manual_research_queue,
+    validate_manual_research_outputs,
+)
 
 OUT = Path("output")
 OUT.mkdir(parents=True, exist_ok=True)
@@ -102,6 +106,8 @@ def build_manifest(
         "taiwan_industry_breadth.csv", "taiwan_universe.csv", "causal_research_queue.csv",
         "reverse_transmission_candidates.csv", "structural_matches.csv", "causal_graph_audit.csv",
         "causal_driver_taxonomy.csv", "structural_exposure_graph.csv",
+        "manual_global_peer_snapshot.csv", "manual_driver_breadth.csv",
+        "manual_research_queue.csv", "manual_research_handoff.json",
     ]
     files, missing = [], []
     for name in required:
@@ -247,6 +253,11 @@ if __name__ == "__main__":
     write_taiwan_outputs(tw)
     append_taiwan_candidate_history(tw["candidates"], "output/taiwan_candidate_history.csv")
 
+    # Mapping and international peer context are part of this exact canonical scan
+    # transaction. Generate them before the manifest/gate so the snapshot seals the
+    # handoff inputs, output hashes, and shared run_id together.
+    build_manual_research_queue(run_id)
+
     # 3) Dual-lane causal discovery. Global-first and Taiwan-first price action may nominate research,
     # but neither lane may activate the exact driver.
     taxonomy = pd.read_csv("config/causal_driver_taxonomy.csv")
@@ -300,6 +311,17 @@ if __name__ == "__main__":
         "causal_taxonomy_snapshot_present": (OUT / "causal_driver_taxonomy.csv").exists(),
         "structural_graph_snapshot_present": (OUT / "structural_exposure_graph.csv").exists(),
     }
+    manual_handoff_checks = validate_manual_research_outputs(OUT, run_id)
+    pipeline_checks.update({
+        "manual_research_outputs_generated": manual_handoff_checks["outputs_exist"],
+        "manual_research_run_id_bound": (
+            manual_handoff_checks["csv_run_id_bound"]
+            and manual_handoff_checks["handoff_run_id_bound"]
+        ),
+        "manual_research_source_bound": manual_handoff_checks["candidate_source_hash_matches"],
+        "manual_research_counts_consistent": manual_handoff_checks["handoff_counts_match"],
+        "manual_mapping_schema_valid": manual_handoff_checks["mapping_columns_present"],
+    })
 
     # Seal risk and entry prices with the scanner, before hashing the manifest.
     from risk_regime import build_risk_regime, download_ust2y
