@@ -204,3 +204,20 @@ PHARMA_505B2_GENERIC_COMMERCIALIZATION,505(b)(2) / complex-generic regulatory an
 PHARMA_505B2_GENERIC_COMMERCIALIZATION,505(b)(2) / complex-generic regulatory and commercialization cycle,Pharma,VTRS,Viatris,US,SPY,RELATED_PEER
 VACCINE_COMMERCIALIZATION,Vaccine commercialization / regulatory cycle,Biotech,MRNA,Moderna,US,SPY,RELATED_PEER
 VACCINE_COMMERCIALIZATION,Vaccine commercialization / regulatory cycle,Biotech,BNTX,BioNTech,US,SPY,RELATED_PEER
+DISPLAY_PANEL_CYCLE,Display panel demand / pricing and utilization cycle,Display,LPL,LG Display ADR,US,SPY,DIRECT_PEER
+DISPLAY_DRIVER_IC_CYCLE,Display driver IC / TCON demand cycle,Display_IC,SYNA,Synaptics,US,SPY,RELATED_PEER
+INDUSTRIAL_CHEMICAL_CYCLE,Industrial / specialty chemical demand cycle,Chemicals,DOW,Dow,US,SPY,RELATED_PEER
+PASSIVE_COMPONENT_CYCLE,Passive component demand / inventory cycle,Passive_Components,6981.T,Murata Manufacturing,JP,^N225,DIRECT_PEER
+PCB_MATERIALS_CYCLE,PCB / laminate / interconnect materials cycle,PCB,4062.T,Ibiden,JP,^N225,RELATED_PEER
+WIRE_CABLE_CYCLE,Wire / cable demand and copper pass-through cycle,Wire_Cable,NEX.PA,Nexans,FR,^STOXX50E,DIRECT_PEER
+CONSUMER_ELECTRONICS_CYCLE,Consumer electronics demand cycle,Consumer_Tech,SONY,Sony Group,US,SPY,RELATED_PEER
+EMBEDDED_ETHERNET_IC_CYCLE,Embedded Ethernet / connectivity IC demand cycle,Networking_IC,NXPI,NXP Semiconductors,US,SPY,RELATED_PEER
+POWER_ELECTRONICS_CAPEX,Power equipment / electronics capex,Power,GEV,GE Vernova,US,SPY,RELATED_PEER
+SEMICONDUCTOR_FACILITY_BUILDOUT,Semiconductor fab facility / clean utility buildout,Semiconductor_Infrastructure,ENTG,Entegris,US,SPY,RELATED_PEER
+SOLAR_CELL_CAPEX_TECH_UPGRADE,Solar-cell manufacturing capex / technology upgrade,Solar,CSIQ,Canadian Solar,US,SPY,RELATED_PEER
+RENEWABLE_ENERGY_EPC_BUILDOUT,Renewable energy EPC / power infrastructure buildout,Renewable_Energy,MYRG,MYR Group,US,SPY,RELATED_PEER
+LED_COMPONENT_CYCLE,LED component / lighting demand cycle,LED,OLED,Universal Display,US,SPY,RELATED_PEER
+GENOMICS_RISK_APPETITE,Genomics risk appetite,Biopharma,XBI,SPDR S&P Biotech ETF,US,SPY,FACTOR_PROXY
+COPPER_COMMODITY_TRADE_INVENTORY,Copper commodity / trade / inventory,Commodities,COPX,Global X Copper Miners ETF,US,SPY,FACTOR_PROXY
+NUCLEAR_GRID_SECOND_ORDER,Nuclear / grid second-order capex,Grid_Equipment,ETN,Eaton,US,SPY,RELATED_PEER
+OPTOELECTRONIC_IMAGING_EQUIPMENT_CYCLE,Optoelectronic imaging / scanner equipment cycle,Optoelectronic_Equipment,CGNX,Cognex,US,SPY,RELATED_PEER
